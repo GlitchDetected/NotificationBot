@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+body {
+  background: #0B0D0D;
+  color: #eeeeee;
+  overflow-x: hidden;
+}
+
+.not-found {
+  animation: break 6s ease-in-out forwards;
+}
+
+@keyframes ScaleBlink {
+  50% {
+      transform: scale(1.2) rotate(12deg);
+  }
+}
+
+.svg-max svg {
+  height: 100%;
+  width: 100%;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background-color: #0B0D0D;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background: var(--background-rgb);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #141414;
+}
+
+#boom {
+  position: absolute;
+  top: 20%;
+  right: 20%;
+  width: 200px;
+  height: 200px;
+  background-image: url('/images/explode.gif');
+  background-size: cover;
+  animation: crash 6s linear;
+}
+
+@keyframes crash {
+  0% {
+    translate: -100vw;
+    background-image: url('/images/moon.gif');
+  }
+  49% {
+    background-image: url('/images/moon.gif');
+  }
+  50% {
+    translate: 0;
+    background-image: url('/images/explode.gif');
+  }
+  60% {
+    background-image: url('/images/explode.gif');
+  }
+}
+
+@keyframes break {
+  50% {
+    rotate: 0deg;
+    color: white;
+  }
+  52% {
+    rotate: 1deg;
+    color: red;
+  }
+  54% {
+    rotate: -1deg;
+  }
+  56% {
+    rotate: 2deg;
+  }
+  58% {
+    rotate: -2deg;
+  }
+  60% {
+    rotate: 6deg;
+    color: white;
+  }
+  100% {
+    rotate: 6deg;
+  }
+}
+
+
+.animate-scroll {
+  border: 2px solid #141414;
+  height: 2.2rem;
+  position: relative;
+  width: 20px;
+}
+
+.animate-scroll-wheel {
+  animation: scroll 2.5s ease infinite;
+  background: #141414;
+  border-radius: 1rem;
+  height: 0.5rem;
+  left: calc(50% - 1.5px);
+  position: absolute;
+  right: 50%;
+  top: 8px;
+  width: 3px;
+}
+
+@keyframes scroll {
+  0% {
+      transform: translateY(0);
+  }
+
+  50% {
+      transform: translateY(0.5rem);
+  }
+
+  51% {
+      opacity: 1;
+  }
+
+  100% {
+      opacity: 0;
+      transform: translateY(0);
+  }
+}
+
+.card {
+  padding: 1.5rem;
+  background-color: #212121;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.button {
+  background-color: #212121; 
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #1e293b;
+}
+
+.button-link {
+  margin-bottom: 4rem;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@layer components {
+  .container {
+    padding: 1rem;
+    margin-inline: auto;
+    max-width: 100%;
+  }
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+}
+
+@layer utilities {
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+  .bg-gradient-conic {
+    background-image: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+  }
+
+  .filter-blur-20 {
+    filter: blur(20px);
+  }
+  .filter-blur-25 {
+    filter: blur(25px);
+  }
+
+  .animate-trail {
+    animation: trail var(--duration) linear infinite;
+  }
+  .animate-marquee-horizontal {
+    animation: marquee-x var(--duration) infinite linear;
+  }
+  .animate-marquee-vertical {
+    animation: marquee-y var(--duration) linear infinite;
+  }
+  .animate-pop-blob {
+    animation: pop-blob 5s infinite;
+  }
+}
+
+@keyframes trail {
+  0% {
+    --angle: 0deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes pop-blob {
+  0% {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(1.2);
+  }
+  66% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

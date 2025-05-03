@@ -1,0 +1,34 @@
+{
+  "name": "notificationbot",
+  "main": "dist",
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run build && node .",
+    "build": "tsc",
+    "format": "npx prettier --write '**/*.{ts,json}' --config .prettierrc",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "canvacord": "^6.0.2",
+    "discord.js": "^14.19.2",
+    "dotenv": "^16.4.7",
+    "fs": "^0.0.1-security",
+    "ioredis": "^5.4.2",
+    "ms": "^2.1.3",
+    "node-fetch": "^3.3.2",
+    "path": "^0.12.7",
+    "prettier": "^3.4.2",
+    "pretty-ms": "^9.0.0",
+    "sequelize": "^6.37.5",
+    "typescript": "^5.7.3",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/ms": "^0.7.34",
+    "@types/pg": "^8.11.10",
+    "pg": "^8.13.1",
+    "ts-node": "^10.9.2"
+  }
+}

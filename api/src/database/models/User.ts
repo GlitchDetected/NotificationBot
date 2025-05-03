@@ -1,0 +1,47 @@
+import { Model, DataTypes } from "sequelize";
+import sequelize from "../index";
+
+class User extends Model {
+  declare id: string;
+  declare username: string;
+  declare avatarHash: string | null;
+  declare accessToken: string;
+  declare refreshToken: string;
+
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
+}
+
+User.init(
+  {
+    id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    avatarHash: {
+      type: DataTypes.STRING,
+      defaultValue: null
+    },
+    accessToken: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  },
+  {
+    sequelize,
+    modelName: "User",
+    tableName: "User",
+    timestamps: true
+  }
+);
+
+export default User;
