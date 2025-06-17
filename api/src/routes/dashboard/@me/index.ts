@@ -86,19 +86,25 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
   const guildsWithBot = await Promise.all(filteredGuilds.map(async (guild: any) => {
     const botInGuild = botGuilds.some((botGuild: any) => botGuild.id === guild.id);
 
-    const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/channels`, {
-      headers: {
-        Authorization: `Bot ${process.env.BOT_TOKEN}`
-      }
-    });
-
-    if (!channelsRes.ok) {
-      console.error(`Failed to fetch channels for guild ${guild.id}`);
-      throw new Error(`Failed to fetch channels for guild ${guild.id}`);
+    let channels = [];
+if (botInGuild) { // if bot is in the guild, fetch channels
+  const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/channels`, {
+    headers: {
+      Authorization: `Bot ${process.env.BOT_TOKEN}`
     }
+  });
 
-    const channels = await channelsRes.json();
-    const filteredChannels = channels.filter((channel: { type: number }) => channel.type !== 4 && channel.type !== 2);
+  if (channelsRes.ok) {
+    const rawChannels = await channelsRes.json();
+    channels = rawChannels.filter(
+      (channel: { type: number }) => channel.type !== 4 && channel.type !== 2
+    );
+  } else {
+    console.warn(`Bot is in guild ${guild.id} but failed to fetch channels`);
+  }
+}
+
+    // console.log("Filtered Guilds:", filteredGuilds);
 
     let botPrefix = ";";
     const prefixEntry = await Prefix.findOne({ where: { guildId: guild.id } });
@@ -108,11 +114,16 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
       ...guild,
       botInGuild,
       botPrefix,
-      channels: filteredChannels
+      channels
     };
   }));
 
-  await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
+  await redis.set(
+    `user-guilds:${req.user.id}`, 
+    JSON.stringify(guildsWithBot), 
+    "EX", 
+    600
+  );
 
   res.status(200).json(guildsWithBot);
 });

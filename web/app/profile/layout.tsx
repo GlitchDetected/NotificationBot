@@ -6,10 +6,8 @@ import { ListTab } from "@/components/list";
 import { Button, Skeleton } from "@nextui-org/react";
 import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
-import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick } from "react-icons/hi";
+import { HiSpeakerphone, HiHome} from "react-icons/hi";
 import Image from 'next/image';
-import { CopyToClipboardButton } from "@/components/ctc";
-import SadWumpusPic from "@/public/images/sad-wumpus.gif";
 import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from 'lucide-react';
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
@@ -74,8 +72,7 @@ export default function RootLayout({
         <ListTab
           tabs={[
             { name: "Overview", value: "/", icon: <HiHome /> },
-            { name: "Rank", value: "/rank", icon: <HiChartBar /> },
-            { name: "Afk", value: "/afk", icon: <HiUserAdd /> },
+            { name: "DM Notifications", value: "/dmnotifications", icon: <HiSpeakerphone /> },
           ]}
           url={`/profile`}
           disabled={!user?.id}

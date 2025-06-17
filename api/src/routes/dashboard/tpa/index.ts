@@ -5,7 +5,6 @@ import db from "../../../database/index";
 const router: Router = express.Router();
 router.use(express.json());
 
-// Define the RankConfigs model inline (corresponding to the "rankconfigs" table)
 const RankConfigs = db.define(
   "rankconfigs",
   {
@@ -30,7 +29,7 @@ const RankConfigs = db.define(
 );
 
 /**
- * GET /dashboard/rankconfigure?guildId=GUILD_ID
+ * GET /dashboard/thirdpartyannouncements?guildId=GUILD_ID
  * Fetch the rank configuration for a specific guild.
  */
 router.get("/", async (req: Request, res: Response): Promise<any> => {

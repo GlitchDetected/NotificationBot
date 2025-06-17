@@ -44,7 +44,7 @@ Object.keys(models).forEach((ele) => {
   if (model.associate) {
     model.associate(models);
   }
-  console.log(`[${model.name}]🍃`);
+  console.log(`Passed through model: ${model.name}`);
 });
 
 db.sync({

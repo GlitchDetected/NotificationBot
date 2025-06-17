@@ -6,10 +6,9 @@ import { ListTab } from "@/components/list";
 import { Button, Skeleton } from "@nextui-org/react";
 import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
-import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick } from "react-icons/hi";
+import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick, HiRss } from "react-icons/hi";
 import Image from 'next/image';
 import { CopyToClipboardButton } from "@/components/ctc";
-import SadWumpusPic from "@/public/images/sad-wumpus.gif";
 import Fallbacklogo from "@/public/images/fallbacklogo.png";
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
@@ -116,8 +115,9 @@ export default function RootLayout({
         <ListTab
           tabs={[
             { name: "Overview", value: "/", icon: <HiHome /> },
-            { name: "Rank", value: "/rank", icon: <HiChartBar /> },
-            { name: "Webhook", value: "/webhook", icon: <HiUserAdd /> },
+            { name: "Third Party Notifications", value: "/tpa", icon: <HiChartBar /> },
+            { name: "Custom Announcement", value: "/webhook", icon: <HiUserAdd /> },
+            { name: "Feed Notifications", value: "/webhook", icon: <HiRss /> },
           ]}
           url={`/dashboard/${guildId}`}
           disabled={!guild}

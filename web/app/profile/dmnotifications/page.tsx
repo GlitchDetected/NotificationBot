@@ -102,7 +102,9 @@ export default function UserRankConfigPage() {
 
   return (
     <div className="pt-10 px-4">
-      <h2 className="text-2xl font-semibold mb-4 text-white">Customize Rank Card</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-white">Setup DM Notifications</h2>
+      <h2 className="text-2 mb-4 text-gray-400">DM Notifications notify you about new uploads. Refer to /docs for help</h2>
+
       <form onSubmit={handleSubmit} className="bg-gray-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2 mb-4">
           <label className="text-white">Background Color:</label>
