@@ -6,7 +6,7 @@ const content = [
   {
     icon: RocketIcon,
     title: "Growing bot",
-    text: "ChatGuard is constantly growing",
+    text: "NotificationBot is constantly growing",
   },
   {
     icon: EraserIcon,

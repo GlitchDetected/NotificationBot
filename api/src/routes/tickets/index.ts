@@ -7,7 +7,7 @@ router.get("/guilds", (req: Request, res: Response) => {
   res.send("received!");
 });
 
-// GET: api.chatguard.com/tickets/guild/19873489234
+// GET: api.notificationbot.com/tickets/guild/19873489234
 
 router.get("/guild/:id", (req: Request, res: Response) => {
   const { id: guildId } = req.params;

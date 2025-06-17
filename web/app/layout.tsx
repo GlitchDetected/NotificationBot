@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 
 export const generateMetadata = (): Metadata => {
 
-  const title = "ChatGuard: Engage with your server";
+  const title = "NotificationBot: Engage with your server";
   const description = "Engage with leaderboards, levels, and more! Have fun with commands like /rank, /leaderboard and protect your server with /lockdown!";
 
   return {
@@ -31,8 +31,8 @@ export const generateMetadata = (): Metadata => {
       manifest: "/manifest.json",
       appleWebApp: {
           capable: true,
-          title: "ChatGuard",
-          startupImage: "/images/chatguard256.webp",
+          title: "NotificationBot",
+          startupImage: "/images/notificationbot256.webp",
           statusBarStyle: "black-translucent"
       },
 
@@ -54,12 +54,12 @@ export const generateMetadata = (): Metadata => {
       openGraph: {
           title: {
               default: title,
-              template: "%s on ChatGuard Dashboard"
+              template: "%s on NotificationBot Dashboard"
           },
           description,
           type: "website",
           url: getBaseUrl(),
-          images: `${getBaseUrl()}/images/chatguard256.webp`
+          images: `${getBaseUrl()}/images/notificationbot256.webp`
       },
 
       other: {

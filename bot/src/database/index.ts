@@ -11,7 +11,7 @@ if (!connection) {
 
 const sequelize = new Sequelize(connection, {
   dialect: "postgres",
-  logging: false // true for testing
+  logging: false // true when testing
 });
 
 export default sequelize;

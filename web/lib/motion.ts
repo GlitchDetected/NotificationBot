@@ -17,5 +17,4 @@ type MotionStyleWithCssVar = {
     | MotionValue<any>;
 };
 
-export const stylesWithCssVar = (styles: MotionStyleWithCssVar) =>
-  styles as any;
+export const stylesWithCssVar = (styles: MotionStyleWithCssVar) => styles as any;

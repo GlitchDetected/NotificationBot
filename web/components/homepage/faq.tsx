@@ -9,18 +9,18 @@ import { Section } from "./section";
 const data = [
     {
         startContent: <HiUserAdd />,
-        title: "How do I invite ChatGuard to my Server?",
-        subtitle: "Invite ChatGuard to your server to get started!",
+        title: "How do I invite NotificationBot to my Server?",
+        subtitle: "Invite NotificationBot to your server to get started!",
         content: (
             <ol
                 className="list-decimal list-inside marker:text-neutral-500"
                 itemProp="text"
             >
                 <li>
-                    Be sure to have the <Code color="secondary">Manage Server</Code> permission on the server you want <LinkTag href="/add">invite ChatGuard</LinkTag> into.
+                    Be sure to have the <Code color="secondary">Manage Server</Code> permission on the server you want <LinkTag href="/add">invite NotificationBot</LinkTag> into.
                 </li>
                 <li>
-                    Open Discord{"'"}s add-app flow at <LinkTag href="/add">chatguard.com/add</LinkTag>.
+                    Open Discord{"'"}s add-app flow at <LinkTag href="/add">notificationbot.com/add</LinkTag>.
                 </li>
                 <li>
                     Select a server and click on {"\""}Continue{"\""}.
@@ -39,7 +39,7 @@ const data = [
         title: "Is the rank system free to use?",
         content: (
             <div>
-                Yes, the ranking system will be free forever $0 total! But there is a catch, you will need to <LinkTag href="/vote">vote for ChatGuard on top.gg</LinkTag> if you start using it a lot.
+                Yes, the ranking system will be free forever $0 total! But there is a catch, you will need to <LinkTag href="/vote">vote for NotificationBot on top.gg</LinkTag> if you start using it a lot.
             </div>
         )
     },
@@ -50,7 +50,7 @@ const data = [
             <div itemProp="text">
                 <ol className="list-decimal list-inside marker:text-neutral-500 mb-4">
                     <li>
-                        <LinkTag href="/add">Invite ChatGuard</LinkTag> to your Server. If you do not own it, ask the server Administrators to add ChatGuard.
+                        <LinkTag href="/add">Invite NotificationBot</LinkTag> to your Server. If you do not own it, ask the server Administrators to add NotificationBot.
                     </li>
                     <li>
                         Go to the <LinkTag href="/dashboard">Dashboard</LinkTag>, find your server and click {"\""}manage{"\""}.
@@ -68,7 +68,7 @@ const data = [
                     className="mt-2 aspect-video rounded-lg"
                     width="100%"
                     src="https://www.youtube.com/embed/WLPlb1_OTfQ?si=nX8j5zjTKCLMNKyM"
-                    title="ChatGuard Ranking system"
+                    title="NotificationBot Ranking system"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                 />
             </div>
@@ -104,13 +104,13 @@ export function Faq({
                 ?
                 <Section
                     className="mb-4"
-                    title="Frequently Asked Questions about ChatGuard"
+                    title="Frequently Asked Questions about NotificationBot"
                 >
-                    Commonly asked questions about ChatGuard and how to use it.
+                    Commonly asked questions about NotificationBot and how to use it.
                 </Section>
                 :
                 <b className="sr-only">
-                    Frequently Asked Questions for ChatGuard
+                    Frequently Asked Questions for NotificationBot
                 </b>
             }
 

@@ -9,7 +9,7 @@ const pool = new Pool({
 console.log("Connected to Postgresql db");
 
 // localhost:3001/uptime/
-// api.chatguard/uptime/
+// api.notificationbot/uptime/
 
 router.get("/", (req: Request, res: Response) => {
   pool.query(`SELECT "Uptime" FROM "Uptime" WHERE id = $1`, [1], (err, result) => {

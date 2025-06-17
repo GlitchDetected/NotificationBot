@@ -50,11 +50,11 @@ export default function Home() {
         <div className="w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
           <h1 className="text-5xl font-semibold">
             <span className="bg-gradient-to-r from-zinc-800 to-zinc-700 bg-clip-text text-transparent">
-              Next generation
+              The Next generation
             </span>
             {" of "}
             <span className="inline-flex items-center">
-              Discord Moderation
+              notifications
             </span>
           </h1>
           <p className="text-lg mb-4">
@@ -71,7 +71,7 @@ export default function Home() {
     <Link href="https://discord.com/oauth2/authorize?client_id=1237878380838523001">
       <button className="button flex items-center gap-2">
       <Sparkles className="w-5 h-5" />
-        Invite ChatGuard
+        Invite NotificationBot
       </button>
     </Link>
   </div>

@@ -104,7 +104,7 @@ export function AddButton() {
             prefetch={false}
             startContent={<BsDiscord />}
         >
-            Add ChatGuard to your server
+            Add NotificationBot to your server
         </ClientButton>
     );
 }

@@ -15,7 +15,7 @@ Prefix.init(
     },
     prefix: {
       type: DataTypes.STRING,
-      defaultValue: "`",
+      defaultValue: ";",
       allowNull: false,
     },
   },

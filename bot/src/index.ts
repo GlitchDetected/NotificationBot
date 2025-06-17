@@ -27,11 +27,11 @@ const client = new Client({
       if (model.associate) {
         model.associate(models);
       }
-      console.log(`Connected to model: ${model.name}`);
+      console.log(`Passed through model: ${model.name}`);
     });
 
     await db.sync({
-      // force: forceDbReset, if true
+      // force: forceDbReset, if true ONLY
       force: false
     });
 

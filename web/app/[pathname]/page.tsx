@@ -5,7 +5,7 @@ interface Props {
 }
 
 const fetchOptions = { next: { revalidate: 60 * 60 } };
-const utm = "?utm_source=chatguard.up.railway.app&utm_medium=redirect";
+const utm = "?utm_source=notificationbot.up.railway.app&utm_medium=redirect";
 
 export default async function Home({ params }: Props) {
     const { pathname } = await params;

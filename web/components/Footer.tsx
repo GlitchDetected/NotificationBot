@@ -19,7 +19,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <p className="text-slate-600 mt-4 md:mt-0">© 2025 ChatGuard</p>
+        <p className="text-slate-600 mt-4 md:mt-0">© 2025 NotificationBot</p>
       </div>
     </footer>
   );

@@ -31,6 +31,10 @@ app.use(cookieParser());
 app.use("/", baseMiddleware);
 app.use("/", baseRouter);
 
+app.get("/", async (req: Request, res: Response): Promise<any> => {
+  return res.status(404).json({ message: "Resource not found" });
+});
+
 const PORT = Number(process.env.PORT) || 3001;
 
 console.clear();

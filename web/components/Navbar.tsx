@@ -72,8 +72,8 @@ export default function Navbar() {
     </div>
   ) : (
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/chatguard.png" alt="Logo" width={30} height={30} />
-            <span className="text-lg font-semibold">ChatGuard</span>
+            <Image src="/images/notificationbot.png" alt="Logo" width={30} height={30} />
+            <span className="text-lg font-semibold">NotificationBot</span>
           </Link>
           )}
         </div>

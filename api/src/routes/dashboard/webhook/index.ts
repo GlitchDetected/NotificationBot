@@ -24,8 +24,8 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
         // Send message through Discord webhook
         const response = await webhookClient.send({
             content: message || "empty message! please input a message",
-            username: username || "ChatGuard",
-            avatarURL: webhookavatar || "https://chatguard.up.railway.app/images/chatguard.png",
+            username: username || "NotificationBot",
+            avatarURL: webhookavatar || "https://notificationbot.up.railway.app/images/notificationbot.png",
         });
 
         res.json({

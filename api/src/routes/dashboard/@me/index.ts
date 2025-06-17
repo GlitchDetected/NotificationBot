@@ -65,7 +65,7 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
 
   const guilds = await guildsRes.json();
 
-  // Filter user's guilds where they have "ManageGuild" permission
+  // Filter user's guilds where they have the "ManageGuild" permission
   const filteredGuilds = guilds.filter((guild: { permissions: any }) =>
     hasPermissions(guild.permissions, "ManageGuild")
   );
@@ -83,11 +83,9 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
 
   const botGuilds = await botGuildsRes.json();
 
-  // Add "botInGuild" to each user guild, and fetch channels for each guild
-  const userGuildsWithBotInfo = await Promise.all(filteredGuilds.map(async (guild: any) => {
+  const guildsWithBot = await Promise.all(filteredGuilds.map(async (guild: any) => {
     const botInGuild = botGuilds.some((botGuild: any) => botGuild.id === guild.id);
 
-    // Fetch the guild channels using the bot token
     const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/channels`, {
       headers: {
         Authorization: `Bot ${process.env.BOT_TOKEN}`
@@ -102,7 +100,7 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
     const channels = await channelsRes.json();
     const filteredChannels = channels.filter((channel: { type: number }) => channel.type !== 4 && channel.type !== 2);
 
-    let botPrefix = "`";
+    let botPrefix = ";";
     const prefixEntry = await Prefix.findOne({ where: { guildId: guild.id } });
     if (prefixEntry) botPrefix = prefixEntry.getDataValue("prefix");
 
@@ -114,9 +112,9 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
     };
   }));
 
-  await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(userGuildsWithBotInfo), "EX", 600);
+  await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
 
-  res.status(200).json(userGuildsWithBotInfo);
+  res.status(200).json(guildsWithBot);
 });
 
 router.post("/guilds", async (req: Request, res: Response): Promise<any> => {
