@@ -2,6 +2,8 @@ import { Model, DataTypes } from "sequelize";
 import sequelize from "../index";
 
 class Tpa extends Model {
+  declare guildId: string;
+
   declare youtubeDiscordChannelId: string | null;
   declare youtubeChannelUrl: string | null;
 
@@ -10,6 +12,7 @@ class Tpa extends Model {
 
   declare twitchDiscordChannelId: string | null;
   declare twitchChannelUrl: string | null;
+  declare tpaEnabled: boolean;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -17,6 +20,15 @@ class Tpa extends Model {
 
 Tpa.init(
   {
+    guildId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true,
+    },
+    tpaEnabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
     youtubeDiscordChannelId: {
       type: DataTypes.STRING,
       allowNull: true,

@@ -1,36 +1,13 @@
 import express, { Request, Response, Router } from "express";
-import { DataTypes } from "sequelize";
-import db from "../../../database/index";
+
+import Tpa from "../../../database/models/tpa";
 
 const router: Router = express.Router();
 router.use(express.json());
 
-const RankConfigs = db.define(
-  "rankconfigs",
-  {
-    guildId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true,
-    },
-    rankchannel: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    rankconfigure: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-  },
-  {
-    tableName: "rankconfigs",
-    timestamps: true,
-  }
-);
-
 /**
  * GET /dashboard/thirdpartyannouncements?guildId=GUILD_ID
- * Fetch the rank configuration for a specific guild.
+ * Fetch the tpa configuration for a specific guild.
  */
 router.get("/", async (req: Request, res: Response): Promise<any> => {
   const { guildId } = req.query;
@@ -39,30 +16,44 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    const config = await RankConfigs.findOne({ where: { guildId } });
+    const config = await Tpa.findOne({ where: { guildId } });
     if (!config) {
       return res.status(404).json({ message: "No configuration found for this guild." });
     }
     return res.status(200).json({ config });
   } catch (error) {
-    console.error("Error fetching rank configuration:", error);
-    return res.status(500).json({ message: "Error fetching rank configuration", error });
+    console.error("Error fetching tpa configuration:", error);
+    return res.status(500).json({ message: "Error fetching tpa configuration", error });
   }
 });
 
 /**
- * POST locahost:3001/dashboard/rankconfigure
- * Create or update the rank configuration.
+ * POST locahost:3001/dashboard/thirdpartyannouncements
+ * Create or update the tpa configuration.
  *
  * Expected JSON payload:
  * {
  *   guildId: string,
- *   rankconfigure: boolean, // whether the rank system is enabled
- *   rankchannel?: string    // channel ID for rank messages (optional)
+ *   tpaEnabled?: boolean
+ *   youtubeDiscordChannelId?: string,
+ *   youtubeChannelUrl?: string,
+ *   tiktokDiscordChannelId?: string,
+ *   tiktokChannelUrl?: string,
+ *   twitchDiscordChannelId?: string,
+ *   twitchChannelUrl?: string
  * }
  */
 router.post("/", async (req: Request, res: Response): Promise<any> => {
-  const { guildId, rankconfigure, rankchannel } = req.body;
+      const {
+      guildId,
+      tpaEnabled,
+      youtubeDiscordChannelId,
+      youtubeChannelUrl,
+      tiktokDiscordChannelId,
+      tiktokChannelUrl,
+      twitchDiscordChannelId,
+      twitchChannelUrl,
+    } = req.body;
 
   if (!guildId) {
     return res.status(400).json({ message: "guildId is required" });
@@ -70,20 +61,44 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
 
   try {
     // Find an existing configuration for the guild, if any.
-    let config = await RankConfigs.findOne({ where: { guildId } });
+    let config = await Tpa.findOne({ where: { guildId } });
 
     if (config) {
-      // Update existing configuration
-      if (typeof rankconfigure !== "undefined") {
-        config.set("rankconfigure", rankconfigure);
+      // Update existing
+      if (typeof tpaEnabled !== "undefined") {
+        config.set("tpaEnabled", tpaEnabled);
       }
-      if (typeof rankchannel !== "undefined") {
-        config.set("rankchannel", rankchannel);
+      if (typeof youtubeDiscordChannelId !== "undefined") {
+        config.set("youtubeDiscordChannelId", youtubeDiscordChannelId);
+      }
+      if (typeof youtubeChannelUrl !== "undefined") {
+        config.set("youtubeChannelUrl", youtubeChannelUrl);
+      }
+      if (typeof tiktokDiscordChannelId !== "undefined") {
+        config.set("tiktokDiscordChannelId", tiktokDiscordChannelId);
+      }
+      if (typeof tiktokChannelUrl !== "undefined") {
+        config.set("tiktokChannelUrl", tiktokChannelUrl);
+      }
+      if (typeof twitchDiscordChannelId !== "undefined") {
+        config.set("twitchDiscordChannelId", twitchDiscordChannelId);
+      }
+      if (typeof twitchChannelUrl !== "undefined") {
+        config.set("twitchChannelUrl", twitchChannelUrl);
       }
       await config.save();
     } else {
-      // Create a new configuration record
-      config = await RankConfigs.create({ guildId, rankconfigure, rankchannel });
+      // Create a new record
+      config = await Tpa.create({
+      guildId,
+      tpaEnabled,
+      youtubeDiscordChannelId,
+      youtubeChannelUrl,
+      tiktokDiscordChannelId,
+      tiktokChannelUrl,
+      twitchDiscordChannelId,
+      twitchChannelUrl
+       });
     }
 
     return res.status(200).json({ config });
@@ -94,7 +109,7 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
 });
 
 /**
- * DELETE /dashboard/rankconfigure?guildId=GUILD_ID
+ * DELETE /dashboard/thirdpartyannouncements?guildId=GUILD_ID
  * Delete a guild's rank configuration.
  */
 router.delete("/", async (req: Request, res: Response): Promise<any> => {
@@ -104,14 +119,14 @@ router.delete("/", async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    const deletedCount = await RankConfigs.destroy({ where: { guildId } });
+    const deletedCount = await Tpa.destroy({ where: { guildId } });
     if (!deletedCount) {
       return res.status(404).json({ message: "No configuration found for this guild to delete." });
     }
     return res.status(200).json({ message: "Configuration deleted successfully." });
   } catch (error) {
-    console.error("Error deleting rank configuration:", error);
-    return res.status(500).json({ message: "Error deleting rank configuration", error });
+    console.error("Error deleting TPA configuration:", error);
+    return res.status(500).json({ message: "Error deleting TPA configuration", error });
   }
 });
 

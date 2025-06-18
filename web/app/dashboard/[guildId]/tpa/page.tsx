@@ -7,6 +7,8 @@ import { Loader2 } from 'lucide-react';
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 
 interface Tpa {
+  guildId: string;
+  
   youtubeDiscordChannelId: string | null;
   youtubeChannelUrl: string | null;
 
@@ -28,18 +30,19 @@ export default function TpaPage() {
   const [config, setConfig] = useState<Tpa | null>(null);
   const [loading, setLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
-  const [channel, setChannel] = useState('');
 
   const [youtubeDiscordChannel, setYoutubeDiscordChannel] = useState('');
   const [tiktokDiscordChannel, setTiktokDiscordChannel] = useState('');
   const [twitchDiscordChannel, setTwitchDiscordChannel] = useState('');
 
   const [youtubeUrl, setYoutubeUrl] = useState('');
-const [tiktokUrl, setTiktokUrl] = useState('');
-const [twitchUrl, setTwitchUrl] = useState('');
+  const [tiktokUrl, setTiktokUrl] = useState('');
+  const [twitchUrl, setTwitchUrl] = useState('');
 
   const params = useParams();
+
   const [channels, setChannels] = useState<Channel[]>([]);
+
   const url = `/guilds/${params.guildId}/tpa` as const;
 
   useEffect(() => {
@@ -55,14 +58,16 @@ const [twitchUrl, setTwitchUrl] = useState('');
         if (res.ok) {
           const data = await res.json();
           setConfig(data.config);
-          setEnabled(data.config.rankconfigure || false);
-          setChannel(data.config.rankchannel || '');
+          setEnabled(data.config.tpaEnabled || false);
+          setYoutubeDiscordChannel(data.config.youtubeDiscordChannel || '');
+          setTiktokDiscordChannel(data.config.tiktokDiscordChannel || '');
+          setTwitchDiscordChannel(data.config.twitchDiscordChannel || '');
         } else if (res.status === 404) {
           setConfig(null);
           setEnabled(false);
         }
 
-        // Fetch guild data (including channels) from /dashboard/@me/guilds/
+        // Fetch guild data from localhost:3001/dashboard/@me/guilds/
         const guildsRes = await fetch(
           `${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds/`,
           { credentials: 'include' }
@@ -72,20 +77,20 @@ const [twitchUrl, setTwitchUrl] = useState('');
           // Find the guild that matches the guildId and set its channels
           const guild = guildsData.find((g: any) => g.id === guildId);
           if (guild && guild.channels) {
-            setChannels(guild.channels); // Set the channels
+            setChannels(guild.channels);
           }
         } else {
           console.error('Error fetching guilds or channels');
         }
       } catch (error) {
-        console.error('Error fetching rank configuration:', error);
+        console.error('Error fetching tpa configuration:', error);
       }
       setLoading(false);
     })();
   }, [guildId]);
 
   if (!guildId) {
-    return <div>Error: Missing Guild ID! Please login!</div>;
+    return <div>Missing Guild ID! Login to view this!</div>;
   }
 
   if (loading) {
@@ -101,7 +106,7 @@ const [twitchUrl, setTwitchUrl] = useState('');
     setEnabled(newEnabledState);
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/rankconfigure`, {
+      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/thirdpartyannouncements`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -109,15 +114,20 @@ const [twitchUrl, setTwitchUrl] = useState('');
         },
         body: JSON.stringify({
           guildId,
-          rankconfigure: newEnabledState,
-          rankchannel: channel,
+          tpaEnabled: newEnabledState,
+  youtubeDiscordChannelId: youtubeDiscordChannel,
+  youtubeChannelUrl: youtubeUrl,
+  tiktokDiscordChannelId: tiktokDiscordChannel,
+  tiktokChannelUrl: tiktokUrl,
+  twitchDiscordChannelId: twitchDiscordChannel,
+  twitchChannelUrl: twitchUrl,
         }),
       });
 
       if (res.ok) {
         const data = await res.json();
         setConfig(data.config);
-        setEnabled(data.config.rankconfigure);
+        setEnabled(data.config.tpaEnabled);
       } else {
         alert('Error saving configuration.');
         setEnabled(!newEnabledState);
