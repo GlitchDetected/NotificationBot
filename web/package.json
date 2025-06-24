@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "npx prettier --write '**/*.{ts,json}' --config .prettierrc"
+    "format": "npx prettier --write '**/*.{ts,json,tsx}' --config .prettierrc"
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",

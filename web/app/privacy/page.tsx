@@ -1,4 +1,4 @@
-import Privacy from '@/public/legal/privacy.mdx'
+import Privacy from "@/public/legal/privacy.mdx";
 
 export default function tos() {
   return (

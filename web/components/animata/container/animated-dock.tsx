@@ -5,7 +5,7 @@ import {
   motion, // Main component for animations
   useMotionValue, // Hook to create a motion value
   useSpring, // Hook to create smooth spring animations
-  useTransform, // Hook to transform motion values
+  useTransform // Hook to transform motion values
 } from "framer-motion";
 import Link from "next/link"; // Next.js Link component for navigation
 import React, { useRef, useState } from "react"; // Importing React hooks
@@ -33,7 +33,7 @@ export default function AnimatedDock({ items, largeClassName, smallClassName }: 
 // Component for the large dock, visible on larger screens
 const LargeDock = ({
   items,
-  className,
+  className
 }: {
   items: { title: string; icon: React.ReactNode; href: string }[]; // Items to display
   className?: string; // Optional class name
@@ -46,7 +46,7 @@ const LargeDock = ({
       className={cn(
         "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-white/10 px-4 pb-3 dark:bg-black/10 md:flex", // Large dock styles
         className,
-        "border border-gray-200/30 backdrop-blur-sm dark:border-gray-800/30",
+        "border border-gray-200/30 backdrop-blur-sm dark:border-gray-800/30"
       )}
     >
       {/* Render each dock icon */}
@@ -62,7 +62,7 @@ function DockIcon({
   mouseX,
   title,
   icon,
-  href,
+  href
 }: {
   mouseX: MotionValue; // Motion value for mouse position
   title: string; // Title of the icon
@@ -129,7 +129,7 @@ function DockIcon({
 // Component for the small dock, visible on smaller screens
 const SmallDock = ({
   items,
-  className,
+  className
 }: {
   items: { title: string; icon: React.ReactNode; href: string }[]; // Items to display
   className?: string; // Optional class name
@@ -141,10 +141,7 @@ const SmallDock = ({
       <AnimatePresence>
         {/* Render menu items when open */}
         {isOpen && (
-          <motion.div
-            layoutId="nav"
-            className="absolute inset-x-0 bottom-full mb-2 flex flex-col gap-2"
-          >
+          <motion.div layoutId="nav" className="absolute inset-x-0 bottom-full mb-2 flex flex-col gap-2">
             {items.map((item, index) => (
               <motion.div
                 key={item.title}
@@ -153,7 +150,7 @@ const SmallDock = ({
                 exit={{
                   opacity: 0,
                   y: 10,
-                  transition: { delay: index * 0.05 }, // Delay based on index
+                  transition: { delay: index * 0.05 } // Delay based on index
                 }}
                 transition={{ delay: (items.length - 1 - index) * 0.05 }} // Delay for exit animations
               >

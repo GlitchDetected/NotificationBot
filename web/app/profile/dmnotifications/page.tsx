@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 
 export default function UserRankConfigPage() {
-  const [bgColor, setBgColor] = useState('#000000');
-  const [barColor, setBarColor] = useState('#FFFFFF');
+  const [bgColor, setBgColor] = useState("#000000");
+  const [barColor, setBarColor] = useState("#FFFFFF");
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchUser() {
       try {
         const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, {
-          credentials: 'include',
+          credentials: "include"
         });
 
-        if (!res.ok) throw new Error('Not authenticated');
+        if (!res.ok) throw new Error("Not authenticated");
 
         const userResponse = await res.json();
         const user = userResponse.dataValues;
         setUserId(user.id);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     }
 
@@ -37,18 +37,17 @@ export default function UserRankConfigPage() {
       if (!userId) return;
 
       try {
-        const res = await fetch(
-          `${NEXT_PUBLIC_BACKEND_SITE}/dashboard/userrankconfig?userId=${userId}`,
-          { credentials: 'include' }
-        );
+        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/userrankconfig?userId=${userId}`, {
+          credentials: "include"
+        });
 
         if (res.ok) {
           const data = await res.json();
-          setBgColor(data.bgColor || '#000000');
-          setBarColor(data.barColor || '#FFFFFF');
+          setBgColor(data.bgColor || "#000000");
+          setBarColor(data.barColor || "#FFFFFF");
         }
       } catch (error) {
-        console.error('Error fetching user rank configuration', error);
+        console.error("Error fetching user rank configuration", error);
       } finally {
         setLoading(false);
       }
@@ -60,33 +59,33 @@ export default function UserRankConfigPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     if (!userId) {
-      setMessage('User not authenticated.');
+      setMessage("User not authenticated.");
       setLoading(false);
       return;
     }
 
     try {
       const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/userrankconfig`, {
-        method: 'POST',
-        credentials: 'include',
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ userId, bgColor, barColor }),
+        body: JSON.stringify({ userId, bgColor, barColor })
       });
 
       if (res.ok) {
-        setMessage('Configuration saved successfully!');
+        setMessage("Configuration saved successfully!");
       } else {
         const data = await res.json();
-        setMessage(data.message || 'Failed to save configuration.');
+        setMessage(data.message || "Failed to save configuration.");
       }
     } catch (error) {
-      console.error('Error saving configuration', error);
-      setMessage('Error saving configuration.');
+      console.error("Error saving configuration", error);
+      setMessage("Error saving configuration.");
     } finally {
       setLoading(false);
     }
@@ -103,7 +102,9 @@ export default function UserRankConfigPage() {
   return (
     <div className="pt-10 px-4">
       <h2 className="text-2xl font-semibold mb-4 text-white">Setup DM Notifications</h2>
-      <h2 className="text-2 mb-4 text-gray-400">DM Notifications notify you about new uploads. Refer to /docs for help</h2>
+      <h2 className="text-2 mb-4 text-gray-400">
+        DM Notifications notify you about new uploads. Refer to /docs for help
+      </h2>
 
       <form onSubmit={handleSubmit} className="bg-gray-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2 mb-4">
@@ -126,8 +127,12 @@ export default function UserRankConfigPage() {
           />
           <span className="text-white">{barColor}</span>
         </div>
-        <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-          {loading ? 'Saving...' : 'Save Configuration'}
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          {loading ? "Saving..." : "Save Configuration"}
         </button>
         {message && <p className="mt-4 text-white">{message}</p>}
       </form>

@@ -6,47 +6,47 @@ const content = [
   {
     icon: RocketIcon,
     title: "Growing bot",
-    text: "NotificationBot is constantly growing",
+    text: "NotificationBot is constantly growing"
   },
   {
     icon: EraserIcon,
     title: "Purge",
-    text: "Use /purge to delete those spams",
+    text: "Use /purge to delete those spams"
   },
   {
     icon: CodeIcon,
     title: "Rolling out new features",
-    text: "If you see any bugs, just use /support and we will fix the bug immediately",
+    text: "If you see any bugs, just use /support and we will fix the bug immediately"
   },
   {
     icon: SpeakerLoudIcon,
     title: "TTS translations",
-    text: "Use tts translates",
+    text: "Use tts translates"
   },
   {
     icon: GearIcon,
     title: "Configure automod automatically",
-    text: "With /automodesetup you can configure automod automatically",
+    text: "With /automodesetup you can configure automod automatically"
   },
   {
     icon: GlobeIcon,
     title: "Global",
-    text: "Used globally by many users",
-  },
+    text: "Used globally by many users"
+  }
 ];
 
 export const MoreFeatures = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start end", "end start"],
+    offset: ["start end", "end start"]
   });
 
   const opacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
   const y = useTransform(scrollYProgress, [0.8, 1], ["0vh", "50vh"]);
 
   const numberOfIcons = content.length;
-  const angle = 180 / ( numberOfIcons - 1 );
+  const angle = 180 / (numberOfIcons - 1);
 
   return (
     <motion.section
@@ -62,7 +62,7 @@ export const MoreFeatures = () => {
               key={index}
               className="absolute"
               style={{
-                transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`,
+                transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
               }}
             >
               <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
@@ -89,7 +89,7 @@ export const MoreFeatures = () => {
             key={title}
             className="text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-zinc-700 to-zinc-900 rounded-4xl shadow-lg relative"
             style={{
-              background: "radial-gradient(circle, #333333, #151515)",
+              background: "radial-gradient(circle, #333333, #151515)"
             }}
           >
             <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#151515]">

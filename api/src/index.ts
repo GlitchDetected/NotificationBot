@@ -10,20 +10,20 @@ import "dotenv/config";
 const app: Application = express();
 app.use(express.json());
 
-app.set('trust proxy', [
-  'loopback', // Trust local (localhost, 127.0.0.1)
-  '::1',      // Trust local IPv6
-  '198.41.128.0/17', // Cloudflare IPv4 range
-  '199.27.128.0/21', // Cloudflare IPv4 range
-  '103.21.244.0/22', // Cloudflare IPv4 range
-  '103.22.200.0/22', // Cloudflare IPv4 range
-  '103.31.4.0/22',   // Cloudflare IPv4 range
-  '141.101.64.0/18', // Cloudflare IPv4 range
-  '108.162.192.0/18', // Cloudflare IPv4 range
-  '190.93.240.0/20', // Cloudflare IPv4 range
-  '188.114.96.0/22', // Cloudflare IPv4 range
-  '197.234.240.0/22', // Cloudflare IPv4 range
-  '198.41.192.0/22'  // Cloudflare IPv4 range
+app.set("trust proxy", [
+  "loopback", // Trust local (localhost, 127.0.0.1)
+  "::1", // Trust local IPv6
+  "198.41.128.0/17", // Cloudflare IPv4 range
+  "199.27.128.0/21", // Cloudflare IPv4 range
+  "103.21.244.0/22", // Cloudflare IPv4 range
+  "103.22.200.0/22", // Cloudflare IPv4 range
+  "103.31.4.0/22", // Cloudflare IPv4 range
+  "141.101.64.0/18", // Cloudflare IPv4 range
+  "108.162.192.0/18", // Cloudflare IPv4 range
+  "190.93.240.0/20", // Cloudflare IPv4 range
+  "188.114.96.0/22", // Cloudflare IPv4 range
+  "197.234.240.0/22", // Cloudflare IPv4 range
+  "198.41.192.0/22" // Cloudflare IPv4 range
 ]);
 
 app.use(cors({ credentials: true, origin: process.env.FRONTEND_SITE, exposedHeaders: ["Set-Cookie"] }));

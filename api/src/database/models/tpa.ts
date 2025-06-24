@@ -23,42 +23,42 @@ Tpa.init(
     guildId: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     tpaEnabled: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     youtubeDiscordChannelId: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     youtubeChannelUrl: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     tiktokDiscordChannelId: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     tiktokChannelUrl: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     twitchDiscordChannelId: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     twitchChannelUrl: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
+      allowNull: true
+    }
   },
   {
     sequelize,
     modelName: "Tpa",
     tableName: "Tpa",
-    timestamps: true,
+    timestamps: true
   }
 );
 

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  tts:
+    container_name: notificationbot-web
+    image: notificationbot-web
+    restart: unless-stopped
+    ports:
+      - "7000:3000"

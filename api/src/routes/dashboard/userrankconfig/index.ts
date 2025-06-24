@@ -22,20 +22,20 @@ const UserRankConfig = db.define<IUserRankConfigInstance>(
     userId: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     bgColor: {
       type: DataTypes.STRING,
-      defaultValue: "#000000",
+      defaultValue: "#000000"
     },
     barColor: {
       type: DataTypes.STRING,
-      defaultValue: "#FFFFFF",
-    },
+      defaultValue: "#FFFFFF"
+    }
   },
   {
     tableName: "Rank",
-    timestamps: true,
+    timestamps: true
   }
 );
 
@@ -65,13 +65,11 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
 
     return res.status(200).json({
       bgColor: config.bgColor,
-      barColor: config.barColor,
+      barColor: config.barColor
     });
   } catch (error) {
     console.error("Error fetching user rank configuration:", error);
-    return res
-      .status(500)
-      .json({ message: "Error fetching user rank configuration", error });
+    return res.status(500).json({ message: "Error fetching user rank configuration", error });
   }
 });
 
@@ -106,19 +104,17 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
       config = await UserRankConfig.create({
         userId,
         bgColor: bgColor || "#000000",
-        barColor: barColor || "#FFFFFF",
+        barColor: barColor || "#FFFFFF"
       });
     }
 
     return res.status(200).json({
       bgColor: config.bgColor,
-      barColor: config.barColor,
+      barColor: config.barColor
     });
   } catch (error) {
     console.error("Error creating/updating user rank configuration:", error);
-    return res
-      .status(500)
-      .json({ message: "Error creating/updating user rank configuration", error });
+    return res.status(500).json({ message: "Error creating/updating user rank configuration", error });
   }
 });
 
@@ -141,9 +137,7 @@ router.delete("/", async (req: Request, res: Response): Promise<any> => {
     return res.status(200).json({ message: "User rank configuration deleted successfully." });
   } catch (error) {
     console.error("Error deleting user rank configuration:", error);
-    return res
-      .status(500)
-      .json({ message: "Error deleting user rank configuration", error });
+    return res.status(500).json({ message: "Error deleting user rank configuration", error });
   }
 });
 

@@ -28,7 +28,7 @@ const Tab = ({ text, selected, setSelected }: TabProps) => {
       onClick={() => setSelected(text)}
       className={cn(
         "relative rounded-md p-2 text-sm transition-all",
-        selected ? "text-white" : "text-slate-300 hover:font-black",
+        selected ? "text-white" : "text-slate-300 hover:font-black"
       )}
     >
       <p className="relative z-50 min-w-20">{text}</p>

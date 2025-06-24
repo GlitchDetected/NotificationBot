@@ -109,28 +109,28 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
         secure: true,
         // secure: process.env.NODE_ENV === "production",
         maxAge: 6.048e8,
-        sameSite: "none",
+        sameSite: "none"
         // expires: new Date(Date.now() + 6.048e8),
         // sameSite: ''
       })
       .redirect(DASHBOARD_URL);
-    } catch (error) {
-      console.error("Error during callback:", error);
-      return res.status(500).send("Internal server error");
-    }
+  } catch (error) {
+    console.error("Error during callback:", error);
+    return res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/signout", (req: Request, res: Response) => {
   res
-  // forcefully fuck up the cookie
-  .clearCookie("token", {
-    domain: process.env.cookieDomain,
-    path: '/',
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  })
-  .sendStatus(200);
+    // forcefully fuck up the cookie
+    .clearCookie("token", {
+      domain: process.env.cookieDomain,
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "none"
+    })
+    .sendStatus(200);
 });
 
 export default router;

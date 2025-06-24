@@ -1,0 +1,203 @@
+<a id="readme-top"></a>
+
+## NotificationBot
+> Notify your Discord Server from a variety of sources, YouTube, Twitch, etc.
+
+---
+
+## Core Philosophy
+- **Responsiveness**  
+  The system reacts to external updates (e.g. YouTube uploads, Twitch goes live) in real time
+
+- **Minimal Configuration**  
+  NotificationBot favors dashboard configurations over manually executing slash commands to configure the bot
+
+- **Extendable by Default**  
+  The bot supports a growing set of third-party sources
+
+| Path                    | Description        |
+| ----------------------- | ------------------ |
+| `./api`             | API for the NotificationBot dashboard |
+| `./bot`                 | Codebase for the Discord bot |
+| `./web`                 | Notification bot dashboard |
+
+  <a href="https://github.com/GlitchDetected/notificationbot">
+    <img src="images/notificationbot.png" alt="Logo" width="1000" height="200">
+  </a>
+
+---
+
+**Fill in the environment variables before running gateway and web. All data is stored in a Postgresql database and synchronised w/ `./gateway`.**
+
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#NotificationBot">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#setup">Setup</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#updating">Updating</a>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
+
+### Built With
+
+* [![Typescript][Typescript]][Typescript-url]
+* [![Next.js][Next.js]][Next-url]
+* [![React.js][React.js]][React-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## setup
+prerequisites: 
+- Node.js @ https://nodejs.org/en/download
+
+`./api`
+- cd api
+- create a .env file
+```env
+NODE_ENV=development
+DISCORD_CLIENT_ID=""
+DISCORD_CLIENT_SECRET=""
+DISCORD_REDIRECT_URI="http://localhost:3001/auth/callback" # add to your discord bot redirects in your developer portal 
+FRONTEND_SITE="http://localhost:3000"
+PORT="3001"
+JWT_SECRET="" # openssl rand -base64 32
+pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot # example string, setup postgresql on your own
+FORCE_DB_RESET="false"
+REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
+OAUTH_URI="https://discord.com/oauth2/authorize?client_id={botid}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Fcallback&scope=identify+guilds"
+BOT_TOKEN=""
+cookieDomain="localhost" # change to match your domain (e.x notification.bot)
+```
+- npm i
+- npm run start
+
+`./bot`
+- cd bot
+- create a .env file
+```env
+TOKEN=""
+GUILD_ID="" 
+SUPPORT_CHANNEL_ID=""
+
+testServer=""
+clientId=""
+devs=""
+owner=""
+
+pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot"
+FORCE_DB_RESET="false"
+
+backenduri="http://localhost:3001"
+
+prefix=";"
+```
+- npm i
+- npm run start
+
+`./web`
+- cd web
+- create a .env
+```env
+NEXT_PUBLIC_BACKEND_SITE="http://localhost:3001"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+CLIENT_ID=""
+```
+- npm i
+- npm run start
+
+See the [open issues](https://github.com/GlitchDetected/Synchronize/issues) for a full list of proposed features and known issues.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Deploy
+```
+cd api
+docker build -t synchronize-api .
+docker compose up -d
+```
+```
+cd bot
+docker build -t notificationbot .
+docker compose up -d
+```
+```
+cd web
+docker build -t notificationbot-web .
+docker compose up -d
+```
+
+## Updating
+```
+docker compose down
+sudo git pull
+
+docker build -t synchronize-api .
+docker build -t notificationbot .
+docker build -t notificationbot-web .
+
+docker compose up -d
+```
+
+## Contributing
+
+Contributions is what makes the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
+
+To contribute, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Top contributors:
+
+<a href="https://github.com/GlitchDetected/notificationbot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=GlitchDetected/notificationbot" alt="contrib.rocks image" />
+</a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the Unlicense License. See `LICENSE` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Resources
+- https://www.postgresql.org/download/macosx/
+- https://postgresapp.com/
+- https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-mac-os/
+- https://nodejs.org/en/download
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+[contributors-shield]: https://img.shields.io/github/contributors/GlitchDetected/Synchronize.svg?style=for-the-badge
+[contributors-url]: https://github.com/GlitchDetected/Synchronize/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/GlitchDetected/Synchronize.svg?style=for-the-badge
+[forks-url]: https://github.com/GlitchDetected/Synchronize/network/members
+[stars-shield]: https://img.shields.io/github/stars/GlitchDetected/Synchronize.svg?style=for-the-badge
+[stars-url]: https://github.com/GlitchDetected/Synchronize/stargazers
+[issues-shield]: https://img.shields.io/github/issues/GlitchDetected/Synchronize.svg?style=for-the-badge
+[issues-url]: https://github.com/GlitchDetected/Synchronize/issues
+[license-shield]: https://img.shields.io/github/license/GlitchDetected/Synchronize.svg?style=for-the-badge
+[license-url]: https://github.com/GlitchDetected/Synchronize/blob/master/LICENSE.txt
+[product-screenshot]: images/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Typescript]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript&logoColor=61DAFB
+[Typescript-url]: https://www.typescriptlang.org/

@@ -20,5 +20,5 @@ export const links = [
   {
     name: "Docs",
     hash: "/docs"
-  },
+  }
 ];

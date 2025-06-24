@@ -1,24 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { ListTab } from "@/components/list";
 import { Button, Skeleton } from "@nextui-org/react";
 import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
 import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick, HiRss } from "react-icons/hi";
-import Image from 'next/image';
+import Image from "next/image";
 import { CopyToClipboardButton } from "@/components/ctc";
 import Fallbacklogo from "@/public/images/fallbacklogo.png";
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
 
-export default function RootLayout({
-  children
-}: {
-    children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const { guildId } = useParams();
@@ -30,21 +26,21 @@ export default function RootLayout({
       setLoading(true);
       try {
         // Fetch user data
-        const userRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, { credentials: 'include' });
+        const userRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, { credentials: "include" });
         if (!userRes.ok) {
           if (userRes.status === 401) window.location.href = SIGNIN_URL;
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const userData = await userRes.json();
         setUser(userData.dataValues);
 
         // Fetch guild data
         const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds`, {
-          credentials: 'include',
+          credentials: "include"
         });
 
         if (!res.ok) {
-          throw new Error('An error occurred');
+          throw new Error("An error occurred");
         }
 
         const guilds = await res.json();
@@ -65,7 +61,6 @@ export default function RootLayout({
 
   return (
     <div className="flex flex-col w-full pt-20 px-4">
-    
       <title>{`${guild?.name}'s Dashboard`}</title>
 
       <div className="flex flex-col gap-5 mb-3">
@@ -76,26 +71,34 @@ export default function RootLayout({
           <CopyToClipboardButton
             text={getCanonicalUrl("leaderboard", guildId.toString())}
             items={[
-              { icon: <HiShare />, name: "Copy page URL", description: "Creates a link to this page", text: getCanonicalUrl(...path.split("/").slice(1)) },
-              { icon: <HiCursorClick />, name: "Copy dash-to URL", description: "Creates a dash-to link to the current tab", text: getCanonicalUrl(`dashboard?to=${path.split("/dashboard/")[1]?.split("/")[1] || "/"}`) }
+              {
+                icon: <HiShare />,
+                name: "Copy page URL",
+                description: "Creates a link to this page",
+                text: getCanonicalUrl(...path.split("/").slice(1))
+              },
+              {
+                icon: <HiCursorClick />,
+                name: "Copy dash-to URL",
+                description: "Creates a dash-to link to the current tab",
+                text: getCanonicalUrl(`dashboard?to=${path.split("/dashboard/")[1]?.split("/")[1] || "/"}`)
+              }
             ]}
             icon={<HiShare />}
           />
         </div>
 
-     <div className="flex items-center space-x-4">
-  <Image
-      src={
-        guild?.icon
-          ? `https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}.webp?size=128`
-          : Fallbacklogo
-      }
-    alt={guild?.name || "Guild Icon"}
-    className="w-14 h-14 rounded-full"
-    width={128}
-    height={128}
-    priority
-  />
+        <div className="flex items-center space-x-4">
+          <Image
+            src={
+              guild?.icon ? `https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}.webp?size=128` : Fallbacklogo
+            }
+            alt={guild?.name || "Guild Icon"}
+            className="w-14 h-14 rounded-full"
+            width={128}
+            height={128}
+            priority
+          />
           {loading ? (
             <div className="mt-1.5">
               <Skeleton className="rounded-xl w-32 h-6 mb-2" />
@@ -103,9 +106,7 @@ export default function RootLayout({
             </div>
           ) : (
             <div className="flex flex-col gap-1">
-              <div className="text-3xl font-semibold">
-                {guild?.name || "Unknown Server"}
-              </div>
+              <div className="text-3xl font-semibold">{guild?.name || "Unknown Server"}</div>
             </div>
           )}
         </div>
@@ -117,16 +118,14 @@ export default function RootLayout({
             { name: "Overview", value: "/", icon: <HiHome /> },
             { name: "Third Party Notifications", value: "/tpa", icon: <HiChartBar /> },
             { name: "Custom Announcement", value: "/webhook", icon: <HiUserAdd /> },
-            { name: "Feed Notifications", value: "/webhook", icon: <HiRss /> },
+            { name: "Feed Notifications", value: "/feednotifications", icon: <HiRss /> }
           ]}
           url={`/dashboard/${guildId}`}
           disabled={!guild}
         />
       </Suspense>
 
-      <div className="mt-4">
-        {guild && !loading ? children : <></>}
-      </div>
+      <div className="mt-4">{guild && !loading ? children : <></>}</div>
     </div>
   );
 }

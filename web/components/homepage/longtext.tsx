@@ -6,22 +6,14 @@ export const StreamlinedExperience = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start end", "end end"],
+    offset: ["start end", "end end"]
   });
   const textX = useTransform(scrollYProgress, [0.1, 0.7], ["100%", "-100%"]);
   const opacitySection = useTransform(scrollYProgress, [0.1, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.1, 0.7], [1, 0.7]);
 
-  const opacityBorder = useTransform(
-    scrollYProgress,
-    [0.7, 0.71, 0.72],
-    [1, 1, 0]
-  );
-  const finalTextOpacity = useTransform(
-    scrollYProgress,
-    [0.7, 0.71, 0.72, 0.8, 0.9],
-    [0, 0, 1, 1, 0]
-  );
+  const opacityBorder = useTransform(scrollYProgress, [0.7, 0.71, 0.72], [1, 1, 0]);
+  const finalTextOpacity = useTransform(scrollYProgress, [0.7, 0.71, 0.72, 0.8, 0.9], [0, 0, 1, 1, 0]);
 
   const finalTextScale = useTransform(scrollYProgress, [0.8, 0.9], [1, 0.7]);
 
@@ -30,7 +22,7 @@ export const StreamlinedExperience = () => {
       style={stylesWithCssVar({
         opacity: opacitySection,
         "--scale": scale,
-        "--opacity-border": opacityBorder,
+        "--opacity-border": opacityBorder
       })}
       ref={targetRef}
       className="mt-[50vh] flex h-[500vh] items-start justify-start"
@@ -52,14 +44,14 @@ export const StreamlinedExperience = () => {
         </motion.p>
 
         <motion.p
-  style={{
-    opacity: finalTextOpacity,
-    scale: finalTextScale,
-  }}
-  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[8.8rem] leading-tight text-white text-center w-full"
->
-Security is the key
-</motion.p>
+          style={{
+            opacity: finalTextOpacity,
+            scale: finalTextScale
+          }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[8.8rem] leading-tight text-white text-center w-full"
+        >
+          Security is the key
+        </motion.p>
 
         <span className="absolute left-[calc(50%*var(--scale)+50%)] top-0 z-10 h-full w-[50vw] origin-left scale-[var(--scale)] bg-background opacity-[var(--opacity-border)]" />
         <span className="absolute left-[calc(50%*var(--scale)+50%-(2.5rem*var(--scale)))] top-0 z-[12] h-full w-[50vw] origin-left scale-[var(--scale)] border-l-[2.5rem] border-[#212121] opacity-[var(--opacity-border)]" />

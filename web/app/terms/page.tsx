@@ -1,4 +1,4 @@
-import Terms from '@/public/legal/terms.mdx'
+import Terms from "@/public/legal/terms.mdx";
 
 export default function tos() {
   return (

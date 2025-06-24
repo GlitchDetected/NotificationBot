@@ -13,16 +13,16 @@ const Prefix = db.define(
     guildId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     prefix: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
     tableName: "Prefix",
-    timestamps: false,
+    timestamps: false
   }
 );
 
@@ -83,47 +83,59 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
 
   const botGuilds = await botGuildsRes.json();
 
-  const guildsWithBot = await Promise.all(filteredGuilds.map(async (guild: any) => {
-    const botInGuild = botGuilds.some((botGuild: any) => botGuild.id === guild.id);
+  const guildsWithBot = await Promise.all(
+    filteredGuilds.map(async (guild: any) => {
+      const botInGuild = botGuilds.some((botGuild: any) => botGuild.id === guild.id);
 
-    let channels = [];
-if (botInGuild) { // if bot is in the guild, fetch channels
-  const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/channels`, {
-    headers: {
-      Authorization: `Bot ${process.env.BOT_TOKEN}`
-    }
-  });
+      let channels = [];
+      let roles = [];
+      if (botInGuild) {
+        // if bot is in the guild, fetch channels and roles
 
-  if (channelsRes.ok) {
-    const rawChannels = await channelsRes.json();
-    channels = rawChannels.filter(
-      (channel: { type: number }) => channel.type !== 4 && channel.type !== 2
-    );
-  } else {
-    console.warn(`Bot is in guild ${guild.id} but failed to fetch channels`);
-  }
-}
+        const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/channels`, {
+          headers: {
+            Authorization: `Bot ${process.env.BOT_TOKEN}`
+          }
+        });
 
-    // console.log("Filtered Guilds:", filteredGuilds);
+        if (channelsRes.ok) {
+          const rawChannels = await channelsRes.json();
+          channels = rawChannels.filter((channel: { type: number }) => channel.type !== 4 && channel.type !== 2);
+        } else {
+          console.warn(`Bot is in guild ${guild.id} but failed to fetch channels`);
+        }
 
-    let botPrefix = ";";
-    const prefixEntry = await Prefix.findOne({ where: { guildId: guild.id } });
-    if (prefixEntry) botPrefix = prefixEntry.getDataValue("prefix");
+        const rolesRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/roles`, {
+          headers: {
+            Authorization: `Bot ${process.env.BOT_TOKEN}`
+          }
+        });
 
-    return {
-      ...guild,
-      botInGuild,
-      botPrefix,
-      channels
-    };
-  }));
+        if (rolesRes.ok) {
+          const rawRoles = await rolesRes.json();
+          roles = rawRoles;
+        } else {
+          console.warn(`Bot is in guild ${guild.id} but failed to fetch roles`);
+        }
+      }
 
-  await redis.set(
-    `user-guilds:${req.user.id}`, 
-    JSON.stringify(guildsWithBot), 
-    "EX", 
-    600
+      // console.log(filteredGuilds);
+
+      let botPrefix = ";";
+      const prefixEntry = await Prefix.findOne({ where: { guildId: guild.id } });
+      if (prefixEntry) botPrefix = prefixEntry.getDataValue("prefix");
+
+      return {
+        ...guild,
+        botInGuild,
+        botPrefix: ";",
+        channels,
+        roles
+      };
+    })
   );
+
+  await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
 
   res.status(200).json(guildsWithBot);
 });
@@ -159,9 +171,7 @@ router.post("/guilds", async (req: Request, res: Response): Promise<any> => {
     const cachedGuilds = await redis.get(`user-guilds:${req.user.id}`);
     if (cachedGuilds) {
       const guilds = JSON.parse(cachedGuilds);
-      const updatedGuilds = guilds.map((g: any) =>
-        g.id === guildId ? { ...g, botPrefix: prefix } : g
-      );
+      const updatedGuilds = guilds.map((g: any) => (g.id === guildId ? { ...g, botPrefix: prefix } : g));
       await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(updatedGuilds), "EX", 600);
     }
 

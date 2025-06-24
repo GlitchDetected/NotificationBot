@@ -41,15 +41,18 @@ export default function CommandsPage() {
   }, []);
 
   const handleCopyId = (id: string) => {
-    navigator.clipboard.writeText(id).then(() => {
-      setShowPopup(true);
+    navigator.clipboard
+      .writeText(id)
+      .then(() => {
+        setShowPopup(true);
 
-      setTimeout(() => {
-        setShowPopup(false);
-      }, 3000); // 3 seconds instead of 10 seconds
-    }).catch((err) => {
-      alert("Failed to copy ID: " + err);
-    });
+        setTimeout(() => {
+          setShowPopup(false);
+        }, 3000); // 3 seconds instead of 10 seconds
+      })
+      .catch((err) => {
+        alert("Failed to copy ID: " + err);
+      });
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,9 +60,7 @@ export default function CommandsPage() {
     setSearchTerm(value);
 
     const filtered = commands.filter(
-      (command) =>
-        command.name.toLowerCase().includes(value) ||
-        command.description.toLowerCase().includes(value)
+      (command) => command.name.toLowerCase().includes(value) || command.description.toLowerCase().includes(value)
     );
     setFilteredCommands(filtered);
   };
@@ -96,10 +97,7 @@ export default function CommandsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCommands.length > 0 ? (
           filteredCommands.map((command) => (
-            <div
-              key={command.id}
-              className="bg-stone-900 p-4 rounded-4xl shadow-md border border-stone-950"
-            >
+            <div key={command.id} className="bg-stone-900 p-4 rounded-4xl shadow-md border border-stone-950">
               <h2 className="text-xl font-semibold">{command.name}</h2>
               <p className="text-stone-400 text-sm">{command.description}</p>
               <button

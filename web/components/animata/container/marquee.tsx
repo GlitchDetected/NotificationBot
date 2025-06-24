@@ -49,9 +49,9 @@ export default function Marquee({
         "group relative flex h-full w-full p-2 [--duration:10s] [--gap:12px] [gap:var(--gap)]",
         {
           "flex-col": vertical,
-          "flex-row": !vertical,
+          "flex-row": !vertical
         },
-        className,
+        className
       )}
     >
       {Array.from({ length: repeat }).map((_, index) => (
@@ -61,7 +61,7 @@ export default function Marquee({
             "group-hover:[animation-play-state:paused]": pauseOnHover,
             "[animation-direction:reverse]": reverse,
             "animate-marquee-horizontal flex-row": !vertical,
-            "animate-marquee-vertical flex-col": vertical,
+            "animate-marquee-vertical flex-col": vertical
           })}
         >
           {children}
@@ -73,8 +73,8 @@ export default function Marquee({
             "pointer-events-none absolute inset-0 z-10 h-full w-full from-white/50 from-5% via-transparent via-50% to-white/50 to-95% dark:from-gray-800/50 dark:via-transparent dark:to-gray-800/50",
             {
               "bg-gradient-to-b": vertical,
-              "bg-gradient-to-r": !vertical,
-            },
+              "bg-gradient-to-r": !vertical
+            }
           )}
         />
       )}

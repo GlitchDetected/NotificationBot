@@ -16,7 +16,7 @@ function useGridLayout() {
       }
       setLayout({
         vertical: Math.floor(rect.height),
-        horizontal: Math.floor(rect.width),
+        horizontal: Math.floor(rect.width)
       });
     };
 
@@ -29,7 +29,7 @@ function useGridLayout() {
 
   return {
     layout,
-    containerRef,
+    containerRef
   };
 }
 
@@ -59,13 +59,12 @@ function plotSquares(width: number, height: number, size: number): { x: number; 
 }
 
 const size = 24; // h-6
-const boxClassName =
-  "absolute h-6 w-6 rounded-md bg-transparent p-px border border-gray-400/30 border-box group ";
+const boxClassName = "absolute h-6 w-6 rounded-md bg-transparent p-px border border-gray-400/30 border-box group ";
 
 function Grid() {
   const {
     layout: { vertical, horizontal },
-    containerRef,
+    containerRef
   } = useGridLayout();
 
   const squares = useMemo(() => {
@@ -73,7 +72,7 @@ function Grid() {
       return plotSquares(horizontal, vertical, size);
     }
     return []; // Empty array in case values aren't ready yet
-  }, [horizontal, vertical]);  
+  }, [horizontal, vertical]);
   const [active, setActive] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
@@ -116,7 +115,7 @@ function Grid() {
         <div
           key={`${x}-${y}`}
           style={{
-            transform: `translate(${xPos}px, ${y}px)`,
+            transform: `translate(${xPos}px, ${y}px)`
           }}
           onMouseEnter={onMouseEnter}
           onClick={onMouseEnter}
@@ -124,15 +123,12 @@ function Grid() {
         >
           <div
             style={{
-              transitionDelay: active ? `${x + y}ms` : "0ms",
+              transitionDelay: active ? `${x + y}ms` : "0ms"
             }}
-            className={cn(
-              "h-full w-full scale-90 rounded bg-gray-400/30 opacity-0 transition-all duration-700",
-              {
-                "scale-100 opacity-100": shouldHighlight,
-                "group-hover:scale-100 group-hover:opacity-100": !shouldHighlight,
-              },
-            )}
+            className={cn("h-full w-full scale-90 rounded bg-gray-400/30 opacity-0 transition-all duration-700", {
+              "scale-100 opacity-100": shouldHighlight,
+              "group-hover:scale-100 group-hover:opacity-100": !shouldHighlight
+            })}
           />
         </div>
       );
@@ -144,7 +140,7 @@ function Grid() {
       ref={containerRef}
       onClick={onMouseEnter}
       className={cn("absolute inset-0 h-full max-h-96 w-full", {
-        "top-1/4": vertical > 96 * 4, // 96 * 4 is the height of the grid
+        "top-1/4": vertical > 96 * 4 // 96 * 4 is the height of the grid
       })}
     >
       {cells}
@@ -155,7 +151,7 @@ function Grid() {
 export default function InteractiveGrid({
   children,
   className,
-  contentClassName,
+  contentClassName
 }: {
   children: React.ReactNode;
   className?: string;
@@ -166,7 +162,7 @@ export default function InteractiveGrid({
       className={cn("storybook-fix relative h-full w-full overflow-hidden rounded-3xl", className)}
       style={{
         backgroundImage:
-          "linear-gradient(123deg, transparent 0%, transparent 36%,rgba(17, 17, 57,0.02) 36%, rgba(17, 17, 87,0.02) 56%,transparent 56%, transparent 100%),linear-gradient(251deg, transparent 0%, transparent 68%,rgba(3, 3, 3,0.02) 68%, rgba(3, 3, 93,0.02) 99%,transparent 99%, transparent 100%),linear-gradient(135deg, rgb(200,215,255),rgb(205,215,255))",
+          "linear-gradient(123deg, transparent 0%, transparent 36%,rgba(17, 17, 57,0.02) 36%, rgba(17, 17, 87,0.02) 56%,transparent 56%, transparent 100%),linear-gradient(251deg, transparent 0%, transparent 68%,rgba(3, 3, 3,0.02) 68%, rgba(3, 3, 93,0.02) 99%,transparent 99%, transparent 100%),linear-gradient(135deg, rgb(200,215,255),rgb(205,215,255))"
       }}
     >
       <Grid />

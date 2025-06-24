@@ -16,7 +16,7 @@ interface AnimatedTrailProps extends React.HTMLAttributes<HTMLDivElement> {
 const sizes = {
   sm: 5,
   md: 10,
-  lg: 20,
+  lg: 20
 };
 
 export default function AnimatedBorderTrail({
@@ -29,26 +29,18 @@ export default function AnimatedBorderTrail({
   ...props
 }: AnimatedTrailProps) {
   return (
-    <div
-      {...props}
-      className={cn("relative h-fit w-fit overflow-hidden rounded-2xl bg-gray-200 p-px", className)}
-    >
+    <div {...props} className={cn("relative h-fit w-fit overflow-hidden rounded-2xl bg-gray-200 p-px", className)}>
       <div
         className="absolute inset-0 h-full w-full animate-trail"
         style={
           {
             "--duration": duration,
             "--angle": "0deg",
-            background: `conic-gradient(from var(--angle) at 50% 50%, transparent ${100 - sizes[trailSize]}%, ${trailColor})`,
+            background: `conic-gradient(from var(--angle) at 50% 50%, transparent ${100 - sizes[trailSize]}%, ${trailColor})`
           } as React.CSSProperties // Type assertion
         }
       />
-      <div
-        className={cn(
-          "relative h-full w-full overflow-hidden rounded-[15px] bg-white",
-          contentClassName,
-        )}
-      >
+      <div className={cn("relative h-full w-full overflow-hidden rounded-[15px] bg-white", contentClassName)}>
         {children}
       </div>
     </div>

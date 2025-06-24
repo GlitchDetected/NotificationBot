@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 import { RocketIcon } from "@radix-ui/react-icons";
 
 export default function Footer() {

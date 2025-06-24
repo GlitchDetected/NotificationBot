@@ -44,16 +44,16 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
  * }
  */
 router.post("/", async (req: Request, res: Response): Promise<any> => {
-      const {
-      guildId,
-      tpaEnabled,
-      youtubeDiscordChannelId,
-      youtubeChannelUrl,
-      tiktokDiscordChannelId,
-      tiktokChannelUrl,
-      twitchDiscordChannelId,
-      twitchChannelUrl,
-    } = req.body;
+  const {
+    guildId,
+    tpaEnabled,
+    youtubeDiscordChannelId,
+    youtubeChannelUrl,
+    tiktokDiscordChannelId,
+    tiktokChannelUrl,
+    twitchDiscordChannelId,
+    twitchChannelUrl
+  } = req.body;
 
   if (!guildId) {
     return res.status(400).json({ message: "guildId is required" });
@@ -90,15 +90,15 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
     } else {
       // Create a new record
       config = await Tpa.create({
-      guildId,
-      tpaEnabled,
-      youtubeDiscordChannelId,
-      youtubeChannelUrl,
-      tiktokDiscordChannelId,
-      tiktokChannelUrl,
-      twitchDiscordChannelId,
-      twitchChannelUrl
-       });
+        guildId,
+        tpaEnabled,
+        youtubeDiscordChannelId,
+        youtubeChannelUrl,
+        tiktokDiscordChannelId,
+        tiktokChannelUrl,
+        twitchDiscordChannelId,
+        twitchChannelUrl
+      });
     }
 
     return res.status(200).json({ config });

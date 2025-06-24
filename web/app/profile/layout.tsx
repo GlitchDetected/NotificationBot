@@ -1,23 +1,19 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { ListTab } from "@/components/list";
 import { Button, Skeleton } from "@nextui-org/react";
 import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
-import { HiSpeakerphone, HiHome} from "react-icons/hi";
-import Image from 'next/image';
-import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from 'lucide-react';
+import { HiSpeakerphone, HiHome } from "react-icons/hi";
+import Image from "next/image";
+import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from "lucide-react";
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
 
-export default function RootLayout({
-  children
-}: {
-    children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const path = usePathname();
@@ -27,16 +23,16 @@ export default function RootLayout({
       setLoading(true);
       try {
         // Fetch user data
-        const userRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, { credentials: 'include' });
+        const userRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, { credentials: "include" });
         if (!userRes.ok) {
           if (userRes.status === 401) window.location.href = SIGNIN_URL;
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const userData = await userRes.json();
         setUser(userData.dataValues);
-              } catch (error) {
-                console.error(error);
-              }   
+      } catch (error) {
+        console.error(error);
+      }
       setLoading(false);
     })();
   }, []);
@@ -61,18 +57,18 @@ export default function RootLayout({
             <CircleUser className="w-10 h-10" />
           )}
           <div>
-          <div className="text-xs text-gray-400">{user.displayName || "No Display Name"}</div>
+            <div className="text-xs text-gray-400">{user.displayName || "No Display Name"}</div>
             <div className="font-semibold text-sm">{user.username}</div>
           </div>
         </div>
       )}
 
       {/* Tabs Section */}
-      <Suspense fallback={<Skeleton />} >
+      <Suspense fallback={<Skeleton />}>
         <ListTab
           tabs={[
             { name: "Overview", value: "/", icon: <HiHome /> },
-            { name: "DM Notifications", value: "/dmnotifications", icon: <HiSpeakerphone /> },
+            { name: "DM Notifications", value: "/dmnotifications", icon: <HiSpeakerphone /> }
           ]}
           url={`/profile`}
           disabled={!user?.id}
@@ -80,9 +76,7 @@ export default function RootLayout({
       </Suspense>
 
       {/* Children (Content) */}
-      <div>
-        {!loading && user ? children : <Skeleton />}
-      </div>
+      <div>{!loading && user ? children : <Skeleton />}</div>
     </div>
   );
 }

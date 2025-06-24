@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 
 export default function Webhook() {
-  const [webhookUrl, setWebhookUrl] = useState('');
-  const [message, setMessage] = useState('');
-  const [webhookAvatar, setWebhookAvatar] = useState('');
-  const [username, setUsername] = useState('');
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [message, setMessage] = useState("");
+  const [webhookAvatar, setWebhookAvatar] = useState("");
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
 
@@ -17,19 +17,19 @@ export default function Webhook() {
     const fetchWebhookData = async () => {
       try {
         const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/webhook`, {
-          method: 'GET',
-          credentials: 'include',
+          method: "GET",
+          credentials: "include"
         });
 
-        if (!res.ok) throw new Error('Failed to fetch webhook data');
+        if (!res.ok) throw new Error("Failed to fetch webhook data");
 
         const data = await res.json();
-        setWebhookUrl(data.webhookUrl || '');
-        setMessage(data.message || '');
-        setWebhookAvatar(data.webhookavatar || '');
-        setUsername(data.username || '');
+        setWebhookUrl(data.webhookUrl || "");
+        setMessage(data.message || "");
+        setWebhookAvatar(data.webhookavatar || "");
+        setUsername(data.username || "");
       } catch (error) {
-        console.error('Error fetching webhook data:', error);
+        console.error("Error fetching webhook data:", error);
       } finally {
         setFetching(false);
       }
@@ -40,32 +40,32 @@ export default function Webhook() {
 
   const sendWebhook = async () => {
     if (!webhookUrl || !message) {
-      alert('Webhook url and message is required! Avatar and username is optional!');
+      alert("Webhook url and message is required! Avatar and username is optional!");
       return;
     }
 
     setLoading(true);
     try {
       const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/webhook`, {
-        method: 'POST',
-        credentials: 'include',
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           webhookUrl,
           message,
-          webhookavatar: webhookAvatar || '',
-          username: username || '',
-        }),
+          webhookavatar: webhookAvatar || "",
+          username: username || ""
+        })
       });
 
-      if (!res.ok) throw new Error('Failed to send webhook');
+      if (!res.ok) throw new Error("Failed to send webhook");
 
-      alert('Webhook sent successfully!');
+      alert("Webhook sent successfully!");
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error sending webhook');
+      console.error("Error:", error);
+      alert("Error sending webhook");
     } finally {
       setLoading(false);
     }
@@ -79,13 +79,13 @@ export default function Webhook() {
     );
   }
 
-  const formattedTime = new Date().toLocaleString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-    year: '2-digit',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
+  const formattedTime = new Date().toLocaleString("en-US", {
+    month: "numeric",
+    day: "numeric",
+    year: "2-digit",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
   });
 
   return (
@@ -93,7 +93,7 @@ export default function Webhook() {
       {/* Left Side - Input Fields */}
       <div className="w-full md:w-1/2">
         <h2 className="text-lg font-semibold text-white">Send Webhook</h2>
-        
+
         <div className="mt-2">
           <label className="block text-gray-300">Webhook URL:</label>
           <input
@@ -142,7 +142,7 @@ export default function Webhook() {
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? 'Sending...' : 'Send Webhook'}
+          {loading ? "Sending..." : "Send Webhook"}
         </button>
       </div>
 
@@ -154,25 +154,21 @@ export default function Webhook() {
           {webhookAvatar ? (
             <img src={webhookAvatar} alt="Avatar" className="w-12 h-12 rounded-full" />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-gray-300">
-              ?
-            </div>
+            <div className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-gray-300">?</div>
           )}
           <div>
             <div className="flex items-center space-x-2">
-              <p className="text-white font-bold">{username || 'Webhook'}</p>
-              
+              <p className="text-white font-bold">{username || "Webhook"}</p>
+
               {/* APP Tag */}
-              <span className="bg-[#1447E6] text-white text-xs font-semibold px-2 py-1 rounded-md">
-                APP
-              </span>
+              <span className="bg-[#1447E6] text-white text-xs font-semibold px-2 py-1 rounded-md">APP</span>
 
               <span className="text-gray-400 text-xs">{formattedTime}</span>
             </div>
-            <p className="text-gray-300">{message || 'Your message will appear here...'}</p>
+            <p className="text-gray-300">{message || "Your message will appear here..."}</p>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

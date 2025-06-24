@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useSectionInView } from "@/lib/hooks";
 
 const Uptime = () => {
@@ -15,11 +15,11 @@ const Uptime = () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/uptime`);
 
         if (!response.ok) {
-          throw new Error('Failed to fetch uptime data');
+          throw new Error("Failed to fetch uptime data");
         }
 
         const data = await response.json();
-        setUptime(data.uptime); 
+        setUptime(data.uptime);
       } catch (err) {
         setError(err.message);
       }

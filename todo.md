@@ -7,6 +7,7 @@
 ### In Progress
 
 - [ ] add rss notificaitons
+- [ ] Work on readme
 
 ### Done ✓
 
