@@ -8,7 +8,6 @@ import type { Metadata, Viewport } from "next";
 import { getBaseUrl } from "@/lib/urls";
 import Notice, { NoticeType } from "@/components/notice";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 
 const outfit = Outfit({ subsets: ["latin", "latin-ext"], variable: "--font-outfit" });
 const notosansJP = Noto_Sans_JP({ subsets: ["cyrillic", "vietnamese"], variable: "--font-noto-sans-jp" });
@@ -71,6 +70,7 @@ export const generateMetadata = (): Metadata => {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html
       suppressHydrationWarning
@@ -93,38 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </body>
     </html>
   );
-}
-
-// function Noise() {
-//   return (
-//       <svg
-//           className="absolute top-0 left-0 w-screen h-full -z-40 blur-[1px] saturate-0"
-//           viewBox='0 0 142 158'
-//           xmlns='http://www.w3.org/2000/svg'
-//       >
-//           <filter id='noiseFilter'>
-//               <feTurbulence
-//                   type="fractalNoise"
-//                   baseFrequency="9"
-//                   numOctaves="1"
-//                   stitchTiles="stitch"
-//                   result="turbulence"
-
-//               />
-//               <feComponentTransfer>
-//                   <feFuncR type="table" tableValues="-1 0.2" />
-//                   <feFuncG type="table" tableValues="-1 0.2" />
-//                   <feFuncB type="table" tableValues="-1 0.2" />
-//               </feComponentTransfer>
-//           </filter>
-
-//           <rect
-//               className="w-screen h-screen"
-//               filter='url(#noiseFilter)'
-//           />
-//       </svg>
-//   );
-// }
+};
 
 function NoScript() {
   return (
