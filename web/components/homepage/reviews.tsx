@@ -7,7 +7,7 @@ import {
   GlobeIcon,
   HeartIcon
 } from "@radix-ui/react-icons";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 const content = [
@@ -45,19 +45,21 @@ const content = [
 
 export const Reviews = () => {
   const targetRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"]
-  });
 
-  const opacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
-  const y = useTransform(scrollYProgress, [0.8, 1], ["0vh", "50vh"]);
+  const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1.0 } }
+};
+
+const isInView = useInView(targetRef, { once: true, margin: "-100px" });
 
   return (
     <motion.section
       ref={targetRef}
-      style={{ opacity, y }}
       className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20"
+      variants={fadeIn}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
     >
       <div className="flex justify-center items-center mb-16 bg-zinc-700 rounded-full h-16 w-16">
         <HeartIcon className="h-8 w-8" />
@@ -75,7 +77,7 @@ export const Reviews = () => {
           <div
             key={title}
             className={`text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-zinc-700 to-zinc-900 rounded-4xl shadow-lg relative ${
-              index === 0 || index === 5 ? "h-[400px]" : "h-[300px]" // Boxes 1 and 6 (index 0 and 5) are taller
+              index === 0 || index === 5 ? "h-[400px]" : "h-[300px]"
             }`}
             style={{
               background: "radial-gradient(circle, #333333, #151515)"

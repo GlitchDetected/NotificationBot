@@ -8,8 +8,6 @@ import { motion } from "framer-motion";
 import AnimatedBorderTrail from "@/components/animata/container/animated-border-trail";
 import { useSectionInView } from "@/lib/hooks";
 import ScrollToTopButton from "@/components/buttons/ScrollToTopButton";
-import { Features } from "@/components/homepage/features";
-import { StreamlinedExperience } from "@/components/homepage/longtext";
 import { MoreFeatures } from "@/components/homepage/evenmore";
 import { Faq } from "@/components/homepage/faq";
 import ArrowPic from "@/public/icons/arrow.webp";
@@ -18,7 +16,6 @@ import { Content, Montserrat, Patrick_Hand } from "next/font/google";
 import Image from "next/image";
 import { Getstarted } from "@/components/homepage/getstarted";
 import { Reviews } from "@/components/homepage/reviews";
-import Marquee from "react-fast-marquee";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 const handwritten = Patrick_Hand({ subsets: ["latin"], weight: "400" });
@@ -44,22 +41,21 @@ export default function Home() {
       id="home"
       ref={ref}
     >
-      {/* Hero Section */}
       <motion.div
-        className="flex w-full items-center gap-1 mb-16 mt-12"
+        className="flex w-full items-center gap-3 mb-20 mt-19"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
         <div className="w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
           <h1 className="text-5xl font-semibold">
-            <span className="bg-gradient-to-r from-zinc-800 to-zinc-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-red-900 to-red-500 bg-clip-text text-transparent">
               The Next generation
             </span>
             {" of "}
             <span className="inline-flex items-center">notifications</span>
           </h1>
-          <p className="text-lg mb-4">Secure your server with commands like /purge and /lockdown!</p>
+          <p className="text-lg mb-4">Notify your community more easily!</p>
 
           <div className="space-y-4">
             <Link href="/dashboard" className="flex items-center text-zinc-600 hover:underline">
@@ -139,7 +135,7 @@ export default function Home() {
 
       <div className="button-link">
         <AnimatedBorderTrail
-          className="rounded-full bg-zinc-600 hover:bg-zinc-500"
+          className="rounded-full bg-red-950 hover:bg-red-300"
           contentClassName="rounded-full bg-zinc-800"
           trailColor="white"
         >
@@ -155,8 +151,6 @@ export default function Home() {
         </div>
         <span className="hidden md:block text-lg font-medium mt-2 text-neutral-500/50">Keep scrolling</span>
       </div>
-      <StreamlinedExperience />
-      <Features />
       <MoreFeatures />
       <Reviews />
       <Faq />

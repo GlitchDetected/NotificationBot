@@ -61,8 +61,8 @@ export default function Navbar() {
 
   return (
     <header className="z-[999] relative">
-      <nav className="sticky top-0 left-0 w-full h-[4.5rem] flex items-center px-10 md:px-15 lg:px-20 justify-between bg-white shadow-md dark:bg-[#212121] dark:shadow-black/90 z-[999]">
-        {/* Logo */}
+      <nav className="fixed top-0 left-1/2 transform -translate-x-1/2 h-[4.5rem] w-full rounded-none border-opacity-40 sm:rounded-lg flex items-center px-10 md:px-15 lg:px-20 justify-between bg-white shadow-md dark:bg-red-950 dark:shadow-black/90 z-[999] sm:top-6 sm:h-[4rem] sm:w-[55rem]">
+
         <div className="flex items-center gap-4">
           {loading ? (
             // Skeleton loader for the logo and text

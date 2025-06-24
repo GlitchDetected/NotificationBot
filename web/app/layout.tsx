@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 };
 
 export const generateMetadata = (): Metadata => {
-  const title = "NotificationBot: Engage with your server";
+  const title = "NotificationBot - notifications for everything";
   const description =
     "Engage with leaderboards, levels, and more! Have fun with commands like /rank, /leaderboard and protect your server with /lockdown!";
 
