@@ -115,14 +115,14 @@ CLIENT_ID=""
 - npm i
 - npm run start
 
-See the [open issues](https://github.com/GlitchDetected/Synchronize/issues) for a full list of proposed features and known issues.
+See the [open issues](https://github.com/GlitchDetected/notificationbot/issues) for a full list of proposed features and known issues.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Deploy
 ```
 cd api
-docker build -t synchronize-api .
+docker build -t notificationbot-api .
 docker compose up -d
 ```
 ```
@@ -141,7 +141,7 @@ docker compose up -d
 docker compose down
 sudo git pull
 
-docker build -t synchronize-api .
+docker build -t notificationbot-api .
 docker build -t notificationbot .
 docker build -t notificationbot-web .
 
@@ -184,16 +184,16 @@ Distributed under the Unlicense License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[contributors-shield]: https://img.shields.io/github/contributors/GlitchDetected/Synchronize.svg?style=for-the-badge
-[contributors-url]: https://github.com/GlitchDetected/Synchronize/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/GlitchDetected/Synchronize.svg?style=for-the-badge
-[forks-url]: https://github.com/GlitchDetected/Synchronize/network/members
-[stars-shield]: https://img.shields.io/github/stars/GlitchDetected/Synchronize.svg?style=for-the-badge
-[stars-url]: https://github.com/GlitchDetected/Synchronize/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GlitchDetected/Synchronize.svg?style=for-the-badge
-[issues-url]: https://github.com/GlitchDetected/Synchronize/issues
-[license-shield]: https://img.shields.io/github/license/GlitchDetected/Synchronize.svg?style=for-the-badge
-[license-url]: https://github.com/GlitchDetected/Synchronize/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/GlitchDetected/notificationbot.svg?style=for-the-badge
+[contributors-url]: https://github.com/GlitchDetected/notificationbot/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/GlitchDetected/notificationbot.svg?style=for-the-badge
+[forks-url]: https://github.com/GlitchDetected/notificationbot/network/members
+[stars-shield]: https://img.shields.io/github/stars/GlitchDetected/notificationbot.svg?style=for-the-badge
+[stars-url]: https://github.com/GlitchDetected/notificationbot/stargazers
+[issues-shield]: https://img.shields.io/github/issues/GlitchDetected/notificationbot.svg?style=for-the-badge
+[issues-url]: https://github.com/GlitchDetected/notificationbot/issues
+[license-shield]: https://img.shields.io/github/license/GlitchDetected/notificationbot.svg?style=for-the-badge
+[license-url]: https://github.com/GlitchDetected/notificationbot/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
