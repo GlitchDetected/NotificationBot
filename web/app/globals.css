@@ -196,6 +196,55 @@ body {
   flex-wrap: wrap;
 }
 
+.roundedlgbutton {
+  background-color: #E50A13; 
+  padding: 0.75rem 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  disabled: opacity(0.5);
+}
+
+.roundedlgbutton:hover {
+  background-color: #212121;
+}
+
+.roundedlgbutton-link {
+  margin-bottom: 4rem;
+}
+
+.roundedlgbutton-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rounded4xlbutton {
+  background-color: #470809; 
+  padding: 2.75rem 2rem;
+  border-radius: 32px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  disabled: opacity(0.5);
+}
+
+.rounded4xlbutton:hover {
+  background-color: #212121;
+}
+
+.rounded4xlbutton-link {
+  margin-bottom: 4rem;
+}
+
+.rounded4xlbutton-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
 @layer components {
   .container {
     padding: 1rem;

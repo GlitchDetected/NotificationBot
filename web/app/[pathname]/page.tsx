@@ -14,9 +14,9 @@ export default async function Home({ params }: Props) {
     case "support":
       return redirect("https://discord.com/invite/DNyyA2HFM9");
     case "vote":
-      return redirect("https://top.gg/bot/1237878380838523001#vote" + utm);
+      return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
     case "add":
-      return redirect("https://discord.com/oauth2/authorize?client_id=1237878380838523001");
+      return redirect("https://discord.com/oauth2/authorize?client_id=1366507117044957276");
     case "get":
       return redirect("/login?invite=true");
     case "logout":

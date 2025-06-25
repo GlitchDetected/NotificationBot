@@ -1,9 +1,9 @@
-import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 
 export default {
   name: "currentconfigs",
   description: "Shows the current bot configurations for the server",
-  callback: async (client: Client, interaction: CommandInteraction) => {
+  callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
     try {
       // Ensure the interaction is a command and has a guild
       if (!interaction.isCommand() || !interaction.guild) {

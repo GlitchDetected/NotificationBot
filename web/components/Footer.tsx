@@ -29,7 +29,7 @@ export default function Footer(props: HTMLProps<HTMLDivElement>) {
                                 <span className="flex gap-1 items-center">
                             <BiCopyright />
                             <span>
-                                <Link href="/" className="hover:underline">NotificationBot {new Date(1635609600000).getFullYear()} - {new Date().getFullYear()}</Link>,
+                                <Link href="/" className="hover:underline">NotificationBot {new Date(1745854252).getFullYear()} - {new Date().getFullYear()}</Link>,
                             </span>
                         </span>
 
@@ -54,10 +54,10 @@ export default function Footer(props: HTMLProps<HTMLDivElement>) {
 function FooterSocials() {
     return (
         <div className="ml-auto svg-max flex flex-wrap items-center gap-2 mt-2 md:mt-0">
-            <Link href="https://github.com/glitchdetected" className="text-white/75 hover:text-white duration-200 size-6" aria-label="Wamellow's developers on GitHub">
+            <Link href="https://github.com/glitchdetected" className="text-white/75 hover:text-white duration-200 size-6" aria-label="GlitchDetected GitHub">
                 <BiLogoGithub />
             </Link>
-            <Link href="mailto:example.com" className="text-white/75 hover:text-white duration-200 size-6" aria-label="Contact Wamellow via email">
+            <Link href="mailto:example.com" className="text-white/75 hover:text-white duration-200 size-6" aria-label="via email">
                 <BiLogoGmail />
             </Link>
             <Link href="/vote" className="text-[#ff3366] duration-200 size-6" aria-label="Vote for NotificationBot on top.gg">

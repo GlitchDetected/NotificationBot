@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSectionInView } from "@/lib/hooks";
+import Searchbar from "@/components/ui/searchbar";
 
 interface Command {
   name: string;
@@ -17,7 +18,7 @@ export default function CommandsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchCommands = async () => {
@@ -57,7 +58,7 @@ export default function CommandsPage() {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
-    setSearchTerm(value);
+    setSearch(value);
 
     const filtered = commands.filter(
       (command) => command.name.toLowerCase().includes(value) || command.description.toLowerCase().includes(value)
@@ -74,17 +75,17 @@ export default function CommandsPage() {
   }
 
   return (
-    <div className="p-6 px-4" id="commands" ref={ref}>
+    <div className="p-25 px-4" id="commands" ref={ref}>
       <h1 className="text-3xl font-bold mb-6">Commands</h1>
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Click here to start searching..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="w-full p-3 mb-6 rounded-lg border border-stone-950 bg-stone-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-      />
+                <div className="relative w-full max-w-md">
+                  <Searchbar
+                  value={search}
+                  setValue={setSearch}
+                  placeholder="Search by name"
+                  thin
+                  />
+                </div>
 
       {/* Copied Popup (fixed position) */}
       {showPopup && (
@@ -97,12 +98,12 @@ export default function CommandsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCommands.length > 0 ? (
           filteredCommands.map((command) => (
-            <div key={command.id} className="bg-stone-900 p-4 rounded-4xl shadow-md border border-stone-950">
+            <div key={command.id} className="rounded4xlbutton">
               <h2 className="text-xl font-semibold">{command.name}</h2>
               <p className="text-stone-400 text-sm">{command.description}</p>
               <button
                 onClick={() => handleCopyId(command.id)}
-                className="mt-4 bg-stone-800 hover:bg-stone-950 text-white py-2 px-4 rounded-4xl cursor-pointer"
+                className="mt-4 button"
               >
                 Copy ID
               </button>

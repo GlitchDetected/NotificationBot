@@ -7,14 +7,16 @@ import { FaDiscord } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 
+import Searchbar from "@/components/ui/searchbar";
+
 const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
 const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
-const ADD_BOT_URL = `${NEXT_PUBLIC_BACKEND_SITE}/add`;
+const ADD_BOT_URL = `/add`;
 
 export default function GuildsList() {
   const [guilds, setGuilds] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState<string>("");
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -84,16 +86,13 @@ export default function GuildsList() {
   return (
     <div>
       <>
-        <div className="flex items-center justify-center gap-3 mb-5">
-          {/* Search Bar */}
+        <div className="flex items-center justify-center gap-3 p-5">
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Click here to start searching🧐!"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-900 placeholder-gray-500"
+            <Searchbar
+            value={search}
+            setValue={setSearch}
+            placeholder="Search by name"
+            thin
             />
           </div>
 
@@ -101,7 +100,7 @@ export default function GuildsList() {
           <div className="flex items-center gap-3">
             <Link
               href={ADD_BOT_URL}
-              className="flex items-center gap-x-2 px-4 py-2 rounded-md bg-gray-900 hover:bg-gray-950"
+              className="roundedlgbutton flex items-center gap-x-2"
             >
               <FaDiscord className="w-5 h-5" />
               <span>Add Bot</span>
@@ -110,7 +109,7 @@ export default function GuildsList() {
             <motion.button
               disabled={loading}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-x-2 px-4 py-2 rounded-md bg-gray-900 hover:bg-gray-950 disabled:opacity-50"
+              className="roundedlgbutton flex items-center gap-x-2 px-4 py-2"
               onClick={handleRefresh}
             >
               <RefreshCcw className={`w-5 h-5 ${loading && "animate-spin"}`} />
@@ -128,7 +127,7 @@ export default function GuildsList() {
           ) : (
             <>
               {!filteredGuilds.length ? (
-                <p className="text-white text-center">No servers found! Create a new server or add bot to get start!</p>
+                <p className="text-white text-center">No servers found! Create a new server or click add bot to get start!</p>
               ) : (
                 filteredGuilds.map((guild) => (
                   <motion.div
@@ -137,7 +136,7 @@ export default function GuildsList() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     whileHover={{ scale: 1.05 }}
-                    className={`flex flex-col p-4 bg-gray-800 border border-gray-700 rounded-md mb-2 justify-center items-center relative overflow-hidden w-full max-w-[320px] sm:w-52 shadow-lg ${
+                    className={`flex flex-col p-4 bg-red-950 border border-red-500 rounded-md mb-2 justify-center items-center relative overflow-hidden w-full max-w-[320px] sm:w-52 shadow-lg ${
                       !guild.botInGuild ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
@@ -175,7 +174,7 @@ export default function GuildsList() {
                     {guild.botInGuild ? (
                       <Link
                         href={`/dashboard/${guild.id}`}
-                        className="flex items-center space-x-2 px-4 py-2 rounded-md bg-neutral-800 hover:bg-neutral-900"
+                        className=" roundedlgbutton flex items-center space-x-2 px-4 py-2"
                       >
                         <LayoutDashboard className="w-5 h-5" />
                         Manage
@@ -183,7 +182,7 @@ export default function GuildsList() {
                     ) : (
                       <Link
                         href={`/add`}
-                        className="flex items-center space-x-2 px-4 py-2 rounded-md bg-neutral-800 hover:bg-neutral-900
+                        className="roundedlgbutton flex items-center space-x-2 px-4 py-2
                               text-base sm:text-sm md:text-md lg:text-lg whitespace-nowrap"
                       >
                         <FaDiscord className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />

@@ -1,5 +1,6 @@
 import { Client, Message } from "discord.js";
 import { save } from "../../utils/saveCommands";
+import { postStatus } from "../../utils/postStatus";
 import prefixHandler from "../../handlers/prefixHandler";
 
 export default (client: Client) => {
@@ -18,7 +19,13 @@ export default (client: Client) => {
   if (client.user) {
     console.log(`${client.user.tag} is online`);
     save(client);
+    postStatus(client);
     prefixHandler(client);
+
+    // every 5 minutes
+      setInterval(() => {
+    postStatus(client);
+  }, 5 * 60 * 1000);
 
     let currentIndex = 0;
 

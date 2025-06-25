@@ -38,12 +38,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <div className="flex flex-col w-full pt-20 px-4">
+    <div className="flex flex-col w-full p-25">
       <title>Your Profile</title>
 
       {/* User Info Section */}
       {user && (
-        <div className="flex items-center mb-6 gap-4">
+        <div className="flex items-center mb-1 gap-4">
           {user.avatarHash ? (
             <Image
               src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatarHash}.webp?size=128`}

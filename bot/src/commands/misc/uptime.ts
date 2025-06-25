@@ -1,10 +1,10 @@
-import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
+import { Client, ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import Uptime from "../../database/models/Uptime";
 
 export default {
   name: "uptime",
   description: "Replies with how long the bot has been online!",
-  callback: async (client: Client, interaction: CommandInteraction) => {
+  callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
     const uptime = client.uptime;
 
     if (uptime === null) {
