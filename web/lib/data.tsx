@@ -10,8 +10,8 @@ type links = {
 
 export const links = [
   {
-    name: "Uptime",
-    hash: "/uptime"
+    name: "Status",
+    hash: "/status"
   },
   {
     name: "Commands",

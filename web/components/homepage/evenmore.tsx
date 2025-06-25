@@ -5,28 +5,28 @@ import { useRef } from "react";
 const content = [
   {
     icon: RocketIcon,
-    title: "Growing bot",
-    text: "NotificationBot is constantly growing"
+    title: "Growing support for third-party platforms",
+    text: "We currently support notifications from YouTube, Twitch, and Twitch but that will change"
   },
   {
     icon: EraserIcon,
     title: "Purge",
-    text: "Use /purge to delete those spams"
+    text: "Use /purge to delete old notifications from the bot"
   },
   {
     icon: CodeIcon,
     title: "Rolling out new features",
-    text: "If you see any bugs, just use /support and we will fix the bug immediately"
+    text: "We are constantly working on the bot"
   },
   {
     icon: SpeakerLoudIcon,
-    title: "TTS translations",
-    text: "Use tts translates"
+    title: "Great support",
+    text: "If you see any bugs, just use /support and we will fix the bug immediately"
   },
   {
     icon: GearIcon,
-    title: "Configure automod automatically",
-    text: "With /automodesetup you can configure automod automatically"
+    title: "Github notifications",
+    text: "coming soon"
   },
   {
     icon: GlobeIcon,
@@ -74,11 +74,11 @@ export const MoreFeatures = () => {
       </div>
 
       <div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-100">
+        <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
           Countless more Features
         </h2>
         <p className="mt-4 text-sm sm:text-md text-gray-400">
-          Never worry about needing another bot for anything else, we’ve got all your needs covered.
+          Never worry manually sending announcements for everything. NotificationBot has got you covered for that!
         </p>
       </div>
 

@@ -1,7 +1,20 @@
 <a id="readme-top"></a>
 
+<br/>
+<br/>
+
+  <p align="center">
+    <img src="images/notificationbot.png" alt="Logo" width="192">
+    </p>
+
 ## NotificationBot
 > Notify your Discord Server from a variety of sources, YouTube, Twitch, etc.
+
+<br/>
+<p align="center">
+<a href="https://notification.bot/">Website</a> -
+<a href="https://docs.notification.bot">Documentation</a>
+</p>
 
 ---
 
@@ -15,15 +28,12 @@
 - **Extendable by Default**  
   The bot supports a growing set of third-party sources
 
+## Structure
 | Path                    | Description        |
 | ----------------------- | ------------------ |
 | `./api`             | API for the NotificationBot dashboard |
 | `./bot`                 | Codebase for the Discord bot |
 | `./web`                 | Notification bot dashboard |
-
-  <a href="https://github.com/GlitchDetected/notificationbot">
-    <img src="images/notificationbot.png" alt="Logo" width="1000" height="200">
-  </a>
 
 ---
 

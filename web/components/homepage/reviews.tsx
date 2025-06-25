@@ -48,7 +48,7 @@ export const Reviews = () => {
 
   const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1.0 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 5.0 } }
 };
 
 const isInView = useInView(targetRef, { once: true, margin: "-100px" });
@@ -56,20 +56,25 @@ const isInView = useInView(targetRef, { once: true, margin: "-100px" });
   return (
     <motion.section
       ref={targetRef}
-      className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20"
+      className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20 mb-20"
       variants={fadeIn}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
     >
-      <div className="flex justify-center items-center mb-16 bg-zinc-700 rounded-full h-16 w-16">
+
+      <div className="w-full flex justify-center mb-16">
+  <div className="bg-red-600 rounded-full h-16 w-16 flex items-center justify-center">
         <HeartIcon className="h-8 w-8" />
+      </div>
       </div>
 
       <div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-100">
+        <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
           Highly trusted by server owners & staff
         </h2>
-        <p className="mt-4 text-sm sm:text-md text-gray-400">We appreciate every feedback you give us!</p>
+        <p className="mt-4 text-sm sm:text-md text-gray-400">
+          We appreciate every feedback you give us!
+        </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">

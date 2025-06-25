@@ -34,7 +34,7 @@ export function Herosection () {
             {" of "}
             <span className="inline-flex items-center">notifications</span>
           </h1>
-          <p className="text-lg mb-4">Notify your community more easily!</p>
+          <p className="text-lg mb-4">It has never been easier to notify your community until now...</p>
 
           <div className="space-y-4">
             <Link href="/dashboard" className="flex items-center text-zinc-600 hover:underline">
@@ -43,7 +43,7 @@ export function Herosection () {
 
             <div className="button-row">
               <div className="button-link">
-                <Link href="https://discord.com/oauth2/authorize?client_id=1237878380838523001">
+                <Link href="https://discord.com/oauth2/authorize?client_id=1366507117044957276">
                   <button className="button flex items-center gap-2">
                     <Sparkles className="w-5 h-5" />
                     Invite NotificationBot

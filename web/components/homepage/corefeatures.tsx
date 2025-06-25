@@ -16,33 +16,32 @@ export function Corefeatures() {
         variants={fadeIn}
       >
         <div className="card">
-          <h3>Filters</h3>
-          <p>Keep any chat clean with our many automated filtering options.</p>
+          <h3>Third Party Posts</h3>
+          <p>With NotificationBot, you can easily setup notifications for your favorite sites like YouTube, TikTok, and Twitch just from the dashboard. No slash commands needed!</p>
         </div>
 
         <div className="card">
-          <h3>Fake Permissions</h3>
-          <p>Remove all dangerous Discord permissions that can be used for malicious reasons through API.</p>
+          <h3>RSS Notifications</h3>
+          <p>RSS and content feed updates</p>
         </div>
 
         <div className="card">
-          <h3>Anti-nuke</h3>
+          <h3>Custom announcements</h3>
           <p>
-            Easily prevent your server from malicious attacks and griefing, with a customizable threshold set by you.
+            Easily send custom announcements from your server's NotificationBot dashboard
           </p>
         </div>
 
         <div className="card">
-          <h3>Anti-raid</h3>
+          <h3>/Purge</h3>
           <p>
-            Protect against targeted bot raids on your server, with our mass join, avatar and account age anti-raid
-            filters.
+            Delete old announcements with /purge or use the dashboard instead!
           </p>
         </div>
 
-      <div className="button-link">
+      <div className="col-span-full flex justify-center button-link">
         <AnimatedBorderTrail
-          className=" rounded-full bg-red-950 hover:bg-red-300"
+          className=" rounded-full bg-gray-500 hover:bg-red-300"
           contentClassName="rounded-full bg-zinc-800"
           trailColor="white"
         >
@@ -54,4 +53,4 @@ export function Corefeatures() {
 
       </motion.div>
         );
-}
+};

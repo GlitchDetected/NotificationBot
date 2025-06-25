@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSectionInView } from "@/lib/hooks";
 
 const Uptime = () => {
-  const { ref } = useSectionInView("Uptime");
+  const { ref } = useSectionInView("Status");
 
   const [uptime, setUptime] = useState(null);
   const [error, setError] = useState(null);
@@ -12,10 +12,10 @@ const Uptime = () => {
   useEffect(() => {
     const fetchUptime = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/uptime`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/status`);
 
         if (!response.ok) {
-          throw new Error("Failed to fetch uptime data");
+          throw new Error("Failed to fetch status data");
         }
 
         const data = await response.json();

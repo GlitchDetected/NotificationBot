@@ -35,40 +35,39 @@ const data = [
   },
   {
     startContent: <HiCash />,
-    title: "Is the rank system free to use?",
+    title: "Is the notification system free to use?",
     content: (
       <div>
-        Yes, the ranking system will be free forever $0 total! But there is a catch, you will need to{" "}
+        It is free but there are limitations for how many notification channels you can have{" "}
         <LinkTag href="/vote">vote for NotificationBot on top.gg</LinkTag> if you start using it a lot.
       </div>
     )
   },
   {
     startContent: <HiChat />,
-    title: "How do I set up the ranking system?",
+    title: "How do I set up the Notifications system?",
     content: (
       <div itemProp="text">
         <ol className="list-decimal list-inside marker:text-neutral-500 mb-4">
           <li>
-            <LinkTag href="/add">Invite NotificationBot</LinkTag> to your Server. If you do not own it, ask the server
-            Administrators to add NotificationBot.
+            <LinkTag href="/add">Invite NotificationBot</LinkTag> to your server
           </li>
           <li>
-            Go to the <LinkTag href="/dashboard">Dashboard</LinkTag>, find your server and click {'"'}manage{'"'}.
+            Go to the <LinkTag href="/profile">Dashboard</LinkTag>, find your server and click {'"'}manage{'"'}.
           </li>
           <li>
-            Go to the tab that says {'"'}Rank{'"'}
+            Go to the tab that says {'"'}Third Party Notifications{'"'}
           </li>
           <li>
-            <span className="font-semibold">Click the toggle and your done!!!</span> 🎉
+            <span className="font-semibold">Fill in the placeholders and you it will start notifying you🎉</span>
           </li>
         </ol>
         You can also watch the video tutorial below or{" "}
-        <LinkTag href="https://youtu.be/WLPlb1_OTfQ?si=nX8j5zjTKCLMNKyM">watch it on YouTube</LinkTag>.
+        <LinkTag href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">watch it on YouTube</LinkTag>.
         <iframe
           className="mt-2 aspect-video rounded-lg"
           width="100%"
-          src="https://www.youtube.com/embed/WLPlb1_OTfQ?si=nX8j5zjTKCLMNKyM"
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
           title="NotificationBot Ranking system"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
         />
@@ -77,7 +76,7 @@ const data = [
   },
   {
     startContent: <HiBell />,
-    title: "Mod notification/log system coming soon?",
+    title: "log system coming soon?",
     content: <div itemProp="text">yes. i promise</div>
   }
 ];
