@@ -12,7 +12,7 @@ export default async function Home({ params }: Props) {
 
   switch (pathname) {
     case "support":
-      return redirect("https://discord.com/invite/DNyyA2HFM9");
+      return redirect("https://top.gg/bot/1366507117044957276#vote");
     case "vote":
       return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
     case "add":
@@ -21,13 +21,15 @@ export default async function Home({ params }: Props) {
       return redirect("/login?invite=true");
     case "logout":
       return redirect("/login?logout=true");
+    case "docs":
+    case "guides": return redirect("/docs/home");
     case "invite":
     case "youtube": {
-      const res = (await fetch("https://www.youtube.com/@RandomDevelopment0", fetchOptions)
+      const res = (await fetch("https://discord.gg/GNdJMJCBdu", fetchOptions)
         .then((res) => res.json())
         .catch(() => null)) as { videoUrl: string } | null;
 
-      return redirect(res?.videoUrl || "https://www.youtube.com/@RandomDevelopment0");
+      return redirect(res?.videoUrl || "https://discord.gg/GNdJMJCBdu");
     }
   }
 

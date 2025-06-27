@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 interface Tpa {
   guildId: string;
@@ -51,7 +51,7 @@ export default function TpaPage() {
     (async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/thirdpartyannouncements?guildId=${guildId}`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/thirdpartyannouncements?guildId=${guildId}`, {
           credentials: "include"
         });
         if (res.ok) {
@@ -67,7 +67,7 @@ export default function TpaPage() {
         }
 
         // Fetch guild data from localhost:3001/dashboard/@me/guilds/
-        const guildsRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds/`, { credentials: "include" });
+        const guildsRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds/`, { credentials: "include" });
         if (guildsRes.ok) {
           const guildsData = await guildsRes.json();
           // Find the guild that matches the guildId and set its channels
@@ -102,7 +102,7 @@ export default function TpaPage() {
     setEnabled(newEnabledState);
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/thirdpartyannouncements`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/thirdpartyannouncements`, {
         method: "POST",
         credentials: "include",
         headers: {

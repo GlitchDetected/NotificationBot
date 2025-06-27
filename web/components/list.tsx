@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
@@ -106,7 +106,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
       {/* Left Scroll Button */}
       {tabs.length > 4 && position > 0 && (
         <button
-          className="absolute xl:hidden top-1 left-0 bg-greyishoyo backdrop-blur-lg rounded-xl p-2"
+          className="absolute xl:hidden top-1 left-0 bg-flame backdrop-blur-lg rounded-xl p-2"
           onClick={() => scroll("left")}
         >
           <HiChevronLeft className="size-5" />
@@ -116,7 +116,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
       {/* Right Scroll Button */}
       {tabs.length > 4 && position < (ref.current?.clientWidth || 0) && (
         <button
-          className="absolute xl:hidden top-1 right-0 bg-greyishoyo backdrop-blur-lg rounded-xl p-2"
+          className="absolute xl:hidden top-1 right-0 bg-flame backdrop-blur-lg rounded-xl p-2"
           onClick={() => scroll("right")}
         >
           <HiChevronRight className="size-5" />

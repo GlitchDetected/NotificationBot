@@ -86,7 +86,7 @@ FORCE_DB_RESET="false"
 REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
 OAUTH_URI="https://discord.com/oauth2/authorize?client_id={botid}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Fcallback&scope=identify+guilds"
 BOT_TOKEN=""
-cookieDomain="localhost" # change to match your domain (e.x notification.bot)
+cookieDomain="localhost" # change to match your base url (e.x notification.bot)
 ```
 - npm i
 - npm run start
@@ -107,7 +107,7 @@ owner=""
 pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot"
 FORCE_DB_RESET="false"
 
-backenduri="http://localhost:3001"
+API_URL="http://localhost:3001"
 
 prefix=";"
 ```
@@ -118,8 +118,15 @@ prefix=";"
 - cd web
 - create a .env
 ```env
-NEXT_PUBLIC_BACKEND_SITE="http://localhost:3001"
+# API url and a random secret key you want for the API
+NEXT_PUBLIC_API="http://localhost:3001"
+API_SECRET=""
+
+# base url for the website
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+
+# discord bot id and token
+DISCORD_TOKEN=""
 CLIENT_ID=""
 ```
 - npm i

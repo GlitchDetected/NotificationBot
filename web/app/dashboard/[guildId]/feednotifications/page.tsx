@@ -4,10 +4,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
-import { Accordion, AccordionItem, Code } from "@nextui-org/react";
+import { Accordion, AccordionItem, Code } from "@heroui/react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 type feedNotificationEntry = {
   guildId: string;
@@ -50,7 +50,7 @@ export default function feednotificationpage () {
       setLoading(true);
       try {
         const res = await fetch(
-          `${NEXT_PUBLIC_BACKEND_SITE}/dashboard/feednotifications?guildId=${guildId}`,
+          `${NEXT_PUBLIC_API}/dashboard/feednotifications?guildId=${guildId}`,
           { credentials: 'include' }
         );
         if (res.ok) {
@@ -68,7 +68,7 @@ export default function feednotificationpage () {
 
         // Fetch guild data from localhost:3001/dashboard/@me/guilds/
         const guildsRes = await fetch(
-          `${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds/`,
+          `${NEXT_PUBLIC_API}/dashboard/@me/guilds/`,
           { credentials: 'include' }
         );
         if (guildsRes.ok) {
@@ -145,7 +145,7 @@ const saveconfig = async () => {
   });
 
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/feednotifications`, {
+    const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/feednotifications`, {
       method: 'POST',
       credentials: 'include',
       headers: {

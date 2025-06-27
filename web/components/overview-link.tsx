@@ -13,7 +13,7 @@ export function OverviewLink({ title, message, url, className, icon }: Props) {
   return (
     <div className={className}>
       <Link href={url}>
-        <div className="w-full dark:text-neutral-100 text-neutral-900 dark:bg-greyishoyo bg-greyishoyo-100 py-4 px-5 mb-6 rounded-xl outline-violet-500 hover:outline flex gap-2 group/item duration-100">
+        <div className="w-full dark:text-neutral-100 text-neutral-900 dark:bg-flame bg-flame-100 py-4 px-5 mb-6 rounded-xl outline-red-500 hover:outline flex gap-2 group/item duration-100">
           <div>
             <div className="flex gap-2 items-center">
               <div className="text-xl font-semibold">{title}</div>
@@ -23,7 +23,7 @@ export function OverviewLink({ title, message, url, className, icon }: Props) {
             <div className="text-sm">{message}</div>
           </div>
 
-          <div className="svg-max h-12 w-12 ml-auto text-violet-400 group-hover/item:text-violet-500 duration-300">
+          <div className="svg-max h-12 w-12 ml-auto text-red-400 group-hover/item:text-red-500 duration-300">
             {icon}
           </div>
         </div>

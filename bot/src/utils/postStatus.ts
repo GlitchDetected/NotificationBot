@@ -63,20 +63,29 @@ export async function postStatus(client: Client) {
   data_source: "external_service",
 };
 
-fetch(`${process.env.backenduri}/status`, {
+/**
+ * curl -X POST http://localhost:3001/status \
+  -H "Content-Type: application/json" \
+  -H "apikey: apikey" \
+*/
+
+fetch(`${process.env.API_URL}/status`, {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
+  headers: { 
+    "Content-Type": "application/json",
+    apikey: process.env.API_KEY as string
+   },
   body: JSON.stringify(payload),
 })
   .then(async (res) => {
     const data = await res.json();
-    console.log("POST success:", data);
+    console.log("Status successfully posted to API");
   })
   .catch((err) => {
-    console.error("POST error:", err);
+    console.error("error with posting status to API:", err);
   });
 
   } catch (error) {
-    console.error("Error fetching status data:", error);
+    console.error("Error fetching status data from API:", error);
   }
 }

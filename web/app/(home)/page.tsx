@@ -9,7 +9,7 @@ import { MoreFeatures } from "@/components/homepage/evenmore";
 import { Reviews } from "@/components/homepage/reviews";
 import { Faq } from "@/components/homepage/faq";
 import { Getstarted } from "@/components/homepage/getstarted";
-import ScrollToTopButton from "@/components/buttons/ScrollToTopButton";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 
 export default function Home() {
   const { ref } = useSectionInView("Home");

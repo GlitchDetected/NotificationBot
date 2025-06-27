@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { ListTab } from "@/components/list";
-import { Button, Skeleton } from "@nextui-org/react";
+import { Button, Skeleton } from "@heroui/react";
 import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
 import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick, HiRss } from "react-icons/hi";
@@ -11,8 +11,8 @@ import Image from "next/image";
 import { CopyToClipboardButton } from "@/components/ctc";
 import Fallbacklogo from "@/public/images/fallbacklogo.png";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
-const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
+const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       setLoading(true);
       try {
         // Fetch user data
-        const userRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, { credentials: "include" });
+        const userRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, { credentials: "include" });
         if (!userRes.ok) {
           if (userRes.status === 401) window.location.href = SIGNIN_URL;
           throw new Error("Failed to fetch user data");
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         setUser(userData.dataValues);
 
         // Fetch guild data
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
           credentials: "include"
         });
 

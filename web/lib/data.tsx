@@ -1,6 +1,6 @@
 "use client";
 
-export const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+export const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 type links = {
   name: string;
@@ -18,7 +18,7 @@ export const links = [
     hash: "/commands"
   },
   {
-    name: "Docs",
-    hash: "/docs"
+    name: "Documentation",
+    hash: "/docs/home"
   }
 ];

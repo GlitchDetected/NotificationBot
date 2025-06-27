@@ -1,6 +1,6 @@
 "use client";
 
-import { Accordion, AccordionItem, Code } from "@nextui-org/react";
+import { Accordion, AccordionItem, Code } from "@heroui/react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
 import LinkTag from "./link-tag";
@@ -18,7 +18,7 @@ const data = [
           <LinkTag href="/add">invite NotificationBot</LinkTag> into.
         </li>
         <li>
-          Open Discord{"'"}s add-app flow at <LinkTag href="/add">notificationbot.com/add</LinkTag>.
+          Open Discord{"'"}s add-app flow at <LinkTag href="/add">notification.bot/add</LinkTag>.
         </li>
         <li>
           Select a server and click on {'"'}Continue{'"'}.
@@ -28,7 +28,7 @@ const data = [
           on {'"'}Authorize{'"'}.
         </li>
         <li>
-          <span className="font-semibold">Done!</span> 🎉 You should now find yourself on the Dashboard for your server!
+          <span className="font-semibold">Done!</span> You should now find yourself on the Dashboard for your server!
         </li>
       </ol>
     )

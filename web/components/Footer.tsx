@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export default function Footer(props: HTMLProps<HTMLDivElement>) {
   return (
-    <footer className="w-full h-px bg-gray-700 mb-6">
+    <footer className="h-px bg-gray-700 mb-60 m-6">
 
         <div
             className={cn("text-primary/75 w-full mt-10 text-left", props.className)}
@@ -98,7 +98,7 @@ function FooterLinks() {
                 </Link>
                 <Link
                     className="text-primary/75 hover:text-primary/65 duration-200 flex items-center gap-2"
-                    href="/docs"
+                    href="/docs/home"
                 >
                     <HiBookOpen />
                     Documentation

@@ -15,26 +15,26 @@ const defaultCookieOptions = {
 } as const;
 
 const permissions = [
-  PermissionFlagsBits.AddReactions, // greetings
-  PermissionFlagsBits.AttachFiles, // /image, /tts, leaderboards
-  PermissionFlagsBits.BanMembers, // passport
-  PermissionFlagsBits.Connect, // /tts
-  PermissionFlagsBits.CreatePublicThreads, // nsfw moderation
-  PermissionFlagsBits.EmbedLinks, // everything
-  PermissionFlagsBits.KickMembers, // passport
-  PermissionFlagsBits.ManageChannels, // nsfw stuff, /tts, invite tracking
-  PermissionFlagsBits.ManageGuild, // invite tracking
-  PermissionFlagsBits.ManageMessages, // nsfw moderation
-  PermissionFlagsBits.ManageRoles, // greetings
-  PermissionFlagsBits.ManageWebhooks, // greetings
-  PermissionFlagsBits.MentionEveryone, // notifications
-  PermissionFlagsBits.ModerateMembers, // passport
-  PermissionFlagsBits.ReadMessageHistory, // leaderboards, text commands
-  PermissionFlagsBits.SendMessages, // leaderboards, text commands, nsfw moderation, passport
-  PermissionFlagsBits.SendMessagesInThreads, // text commands, nsfw moderation
-  PermissionFlagsBits.Speak, // /tts
-  PermissionFlagsBits.UseExternalEmojis, // everything
-  PermissionFlagsBits.ViewChannel // leaderboards, text commands, nsfw moderation, passport, activity tracking
+  PermissionFlagsBits.AddReactions,
+  PermissionFlagsBits.AttachFiles,
+  PermissionFlagsBits.BanMembers, 
+  PermissionFlagsBits.Connect,
+  PermissionFlagsBits.CreatePublicThreads, 
+  PermissionFlagsBits.EmbedLinks, 
+  PermissionFlagsBits.KickMembers,
+  PermissionFlagsBits.ManageChannels, 
+  PermissionFlagsBits.ManageGuild,
+  PermissionFlagsBits.ManageMessages, 
+  PermissionFlagsBits.ManageRoles,
+  PermissionFlagsBits.ManageWebhooks,
+  PermissionFlagsBits.MentionEveryone,
+  PermissionFlagsBits.ModerateMembers,
+  PermissionFlagsBits.ReadMessageHistory,
+  PermissionFlagsBits.SendMessages,
+  PermissionFlagsBits.SendMessagesInThreads,
+  PermissionFlagsBits.Speak, 
+  PermissionFlagsBits.UseExternalEmojis, 
+  PermissionFlagsBits.ViewChannel 
 ];
 
 export async function GET(request: Request) {

@@ -21,7 +21,7 @@ export function Herosection () {
 
     return (
               <motion.div
-        className="flex w-full items-center gap-3 mb-20 mt-19"
+        className="flex w-full items-center gap-3"
         initial="hidden"
         animate="visible"
         variants={fadeIn}

@@ -12,12 +12,12 @@ let latestStatus: any = null; // in memory storage
 router.post("/", async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    console.log("Received POST /status:", data);
+    console.log("Received POST /status:"); //, data
   
     // save to resource / in memory
     latestStatus = data;
 
-    res.status(200).json({ message: "Status data updated", data });
+    res.status(200).json({ message: "Status data updated"}); //, data
   } catch (err) {
     console.error("Error processing status data:", err);
     res.status(500).json({ error: "Internal server error" });

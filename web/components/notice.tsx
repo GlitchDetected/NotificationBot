@@ -21,7 +21,7 @@ export default function Notice({ className, message, type, location = "side", ch
       className={cn(
         "w-full text-neutral-100 py-2 px-4 mb-6 rounded-md flex gap-2",
         location === "side" ? "flex-row items-center" : "flex-col",
-        type === NoticeType.Info ? "bg-violet-400/40" : "bg-red-400/40",
+        type === NoticeType.Info ? "bg-red-400/40" : "bg-red-400/40",
         className
       )}
     >

@@ -5,16 +5,6 @@ export interface ApiError {
   message: string;
 }
 
-export interface ApiV1TopguildsGetResponse {
-  id: string;
-  name: string;
-  icon: string | null;
-  memberCount: number;
-
-  verified: boolean;
-  partnered: boolean;
-}
-
 export interface ApiV1UsersMeGuildsGetResponse {
   id: string;
   name: string;
@@ -177,79 +167,9 @@ export interface ApiV1GuildsModulesByeGetResponse {
   };
 }
 
-export interface ApiV1GuildsModulesStarboardGetResponse {
-  enabled: boolean;
-  channelId?: string;
-  emoji: string;
-  requiredEmojis: number;
-  embedColor: number;
-  style: number;
-
-  allowNSFW: boolean;
-  allowBots: boolean;
-  allowEdits: boolean;
-  allowSelfReact: boolean;
-  displayReference: boolean;
-
-  blacklistRoleIds: string[];
-  blacklistChannelIds: string[];
-  delete: boolean;
-}
-
-export interface ApiV1GuildsModulesLeaderboardUpdatingPostResponse {
-  leaderboardId: string;
-  guildId: string;
-
-  channelId: string;
-  messageId: string;
-
-  type: "messages" | "voiceminutes" | "invites";
-
-  /**
-   * 0 - text based
-   * 1 - image grid
-   * 2 - image list
-   */
-  structure: number;
-  styles: {
-    useQuotes: boolean;
-    rank: "**" | "__" | "*" | "`" | null;
-    number: "**" | "__" | "*" | "`" | null;
-    user: "**" | "__" | "*" | "`" | null;
-  };
-
-  range: "daily" | "weekly" | "monthly" | "alltime";
-  display: "tag" | "username" | "nickname" | "id";
-
-  background: string | null;
-  emoji: string | null;
-
-  updatedAt: string;
-  createdAt: string;
-}
-
-export interface ApiV1GuildsModulesLeaderboardGetResponse {
-  bannerUrl: string | null;
-
-  blacklistChannelIds: string[];
-
-  roles:
-    | {
-        messages: string[];
-        voiceminutes: string[];
-      }
-    | undefined;
-
-  updating: ApiV1GuildsModulesLeaderboardUpdatingPostResponse[];
-}
-
 export interface ApiV1GuildsModulesPassportGetResponse {
   enabled: boolean;
   channelId?: string;
-  /**
-   * We're currently on free tier
-   */
-  captchaType: "slide" | "word" | "icon" | "match" | "winlinze" | "nine" | "random";
   /**
    * 0 - Ban
    * 1 - Kick
@@ -317,23 +237,6 @@ export interface ApiV1GuildsModulesTagsGetResponse {
   authorId: string;
 
   createdAt: Date;
-}
-
-export interface ApiV1GuildsModulesNsfwModerationGetResponse {
-  enabled: boolean;
-  logChannelId: string | null;
-  /**
-   * @example
-   * 0 - Nothing
-   * 1 - Ban
-   * 2 - Kick
-   * 3 - Delete message
-   */
-  punishment: 0 | 1 | 2 | 3;
-  threshold: number;
-
-  whitelistChannelIds: string[];
-  whitelistRoleIds: string[];
 }
 
 export interface Upload {
@@ -424,9 +327,8 @@ export interface ApiV1GuildsModulesNotificationsGetResponse {
 }
 
 export enum DailypostType {
-  Anime = 1,
-  Blahaj = 2,
-  NekosBest = 3
+  CNN = 1,
+  REDDIT = 2,
 }
 
 export interface ApiV1GuildsModulesDailypostsGetResponse {
@@ -439,29 +341,6 @@ export interface ApiV1GuildsModulesDailypostsGetResponse {
 
   type: DailypostType;
   query: string | null;
-}
-
-export interface ApiV1UsersMeRankEmojiPutResponse {
-  id: string;
-  url: string;
-}
-
-export interface ApiV1UsersMeRankEmojiDeleteResponse {
-  id: null;
-  url: null;
-}
-
-export interface PronounsResponse {
-  status: number;
-  content: string[];
-}
-
-export interface NekosticResponse {
-  event: string;
-  name: string;
-  uses: number;
-  users: number;
-  snapshot: string;
 }
 
 export enum PermissionFlagsBits {

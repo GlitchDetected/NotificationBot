@@ -23,7 +23,7 @@ export default function CommandsPage() {
   useEffect(() => {
     const fetchCommands = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/commands`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/commands`);
         if (!response.ok) {
           throw new Error(`Failed to fetch commands: ${response.statusText}`);
         }

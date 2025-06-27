@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { useRef, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 

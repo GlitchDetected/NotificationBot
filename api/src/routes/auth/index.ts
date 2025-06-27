@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 const router: Router = express.Router();
 
-// GET: api.notificationbot.com/auth/signin
-// GET: api.notificationbot.com/auth/callback
+// GET: api.notification.bot/auth/signin
+// GET: api.notification.bot/auth/callback
 
 const FRONTEND_SITE = process.env.FRONTEND_SITE || "http://localhost:3000";
 const DASHBOARD_URL = `${FRONTEND_SITE}/profile`;

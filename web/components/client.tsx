@@ -1,6 +1,6 @@
 "use client";
 
-import { AvatarGroup, Badge, Button, Chip, CircularProgress, Image, Skeleton } from "@nextui-org/react";
+import { AvatarGroup, Badge, Button, Chip, CircularProgress, Image, Skeleton } from "@heroui/react";
 
 export function ClientButton(props: React.ComponentProps<typeof Button>) {
   return <Button {...props}>{props.children}</Button>;

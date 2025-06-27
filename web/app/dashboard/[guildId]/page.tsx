@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
-const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
+const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
 
 const PERMISSIONS_MAP = {
   1: "Create Instant Invite",
@@ -56,7 +56,7 @@ export default function GuildConfigure() {
       setLoading(true);
 
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
           credentials: "include"
         });
 
@@ -97,7 +97,7 @@ export default function GuildConfigure() {
     setSaving(true);
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

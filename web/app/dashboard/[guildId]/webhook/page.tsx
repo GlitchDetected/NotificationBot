@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 export default function Webhook() {
   const [webhookUrl, setWebhookUrl] = useState("");
@@ -16,7 +16,7 @@ export default function Webhook() {
   useEffect(() => {
     const fetchWebhookData = async () => {
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/webhook`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/webhook`, {
           method: "GET",
           credentials: "include"
         });
@@ -46,7 +46,7 @@ export default function Webhook() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/webhook`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/webhook`, {
         method: "POST",
         credentials: "include",
         headers: {

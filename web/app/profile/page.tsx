@@ -9,8 +9,8 @@ import Image from "next/image";
 
 import Searchbar from "@/components/ui/searchbar";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
-const SIGNIN_URL = `${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
+const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
 const ADD_BOT_URL = `/add`;
 
 export default function GuildsList() {
@@ -25,7 +25,7 @@ export default function GuildsList() {
       setLoading(true);
 
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, {
           credentials: "include"
         });
 
@@ -42,7 +42,7 @@ export default function GuildsList() {
 
         setUser(user);
 
-        const guildsRes = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds`, {
+        const guildsRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
           credentials: "include"
         });
 
@@ -64,7 +64,7 @@ export default function GuildsList() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me/guilds?skipcache=true`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds?skipcache=true`, {
         credentials: "include"
       });
 

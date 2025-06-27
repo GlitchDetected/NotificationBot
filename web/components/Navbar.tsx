@@ -10,7 +10,9 @@ import { BsDiscord } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@heroui/react";
 
-export const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+import { defaultFetchOptions } from "@/lib/api"; 
+
+export const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 export default function Navbar() {
   const router = useRouter();
@@ -22,7 +24,8 @@ export default function Navbar() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, {
+          ...defaultFetchOptions,
           credentials: "include"
         });
 
@@ -44,7 +47,7 @@ export default function Navbar() {
 
   async function handleLogout() {
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/auth/signout`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/auth/signout`, {
         method: "GET",
         credentials: "include"
       });
@@ -72,7 +75,7 @@ export default function Navbar() {
             </div>
           ) : (
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/images/notificationbot.png" alt="Logo" width={30} height={30} />
+              <Image src="/images/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
               <span className="text-lg font-semibold">NotificationBot</span>
             </Link>
           )}
@@ -168,7 +171,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link
-                href={`${NEXT_PUBLIC_BACKEND_SITE}/auth/signin`}
+                href={`${NEXT_PUBLIC_API}/auth/signin`}
                 className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#5865F2] text-white hover:bg-[#4c58d4] transition duration-200"
               >
                 <BsDiscord className="w-5 h-5" />

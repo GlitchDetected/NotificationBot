@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response } from "express";
 import baseRouter from "./routes/base-router";
 import baseMiddleware from "./middlewares/base-middleware";
 import cookieParser from "cookie-parser";
@@ -6,9 +6,12 @@ import cors from "cors";
 import db from "./database/index";
 import models from "./database/models";
 import "dotenv/config";
+import apiKeyMiddleware from "./middlewares/verify-requests";
 
 const app: Application = express();
 app.use(express.json());
+
+// app.use(apiKeyMiddleware); 
 
 app.set("trust proxy", [
   "loopback", // Trust local (localhost, 127.0.0.1)
@@ -28,6 +31,7 @@ app.set("trust proxy", [
 
 app.use(cors({ credentials: true, origin: process.env.FRONTEND_SITE, exposedHeaders: ["Set-Cookie"] }));
 app.use(cookieParser());
+
 app.use("/", baseMiddleware);
 app.use("/", baseRouter);
 

@@ -73,7 +73,6 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
         return res.status(400).json({ message: "guildId is required" });
       }
 
-      // Find an existing configuration for the guild, if any.
       let config = await feednotifications.findOne({ where: { guildId } });
 
       if (config) {
@@ -83,7 +82,6 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
         config.set("rssPingRoleId", rssPingRoleId);
         await config.save();
       } else {
-        // Create a new record
         config = await feednotifications.create({
           guildId,
           feedCountKey: key,

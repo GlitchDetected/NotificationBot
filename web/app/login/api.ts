@@ -7,18 +7,19 @@ interface UserSessionCreate extends User {
 
 export async function createSession(code: string): Promise<UserSessionCreate | ApiError | undefined> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/auth/callback?code=${encodeURIComponent(code)}`, {
-      method: "GET", // Fix: Express expects GET, not POST
-      credentials: "include", // Ensure cookies are included if your backend sets them
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/callback?code=${encodeURIComponent(code)}`, {
+      method: "GET",
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "apikey": process.env.API_SECRET as string
       }
     });
 
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Failed to create session:", errorText);
-      return undefined; // or return an error object
+      return undefined;
     }
 
     return await res.json();

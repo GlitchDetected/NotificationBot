@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
-const NEXT_PUBLIC_BACKEND_SITE = process.env.NEXT_PUBLIC_BACKEND_SITE;
+const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 export default function UserRankConfigPage() {
-  const [bgColor, setBgColor] = useState("#000000");
-  const [barColor, setBarColor] = useState("#FFFFFF");
+  const [embedColor, setEmbedColor] = useState("#FF0000");
+  const [source, setSource] = useState("");
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
@@ -15,7 +15,7 @@ export default function UserRankConfigPage() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/@me`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, {
           credentials: "include"
         });
 
@@ -37,14 +37,14 @@ export default function UserRankConfigPage() {
       if (!userId) return;
 
       try {
-        const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/userrankconfig?userId=${userId}`, {
+        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/dmnotifications?userId=${userId}`, {
           credentials: "include"
         });
 
         if (res.ok) {
           const data = await res.json();
-          setBgColor(data.bgColor || "#000000");
-          setBarColor(data.barColor || "#FFFFFF");
+          setEmbedColor(data.embedColor || "#FF0000");
+          setSource(data.source);
         }
       } catch (error) {
         console.error("Error fetching user rank configuration", error);
@@ -54,7 +54,7 @@ export default function UserRankConfigPage() {
     }
 
     if (userId) fetchConfig();
-  }, [userId]); // Runs only when userId is available
+  }, [userId]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -67,14 +67,20 @@ export default function UserRankConfigPage() {
       return;
     }
 
+    if (!source) {
+    setMessage("Please complete all required fields.");
+    setLoading(false);
+    return;
+    }
+
     try {
-      const res = await fetch(`${NEXT_PUBLIC_BACKEND_SITE}/dashboard/userrankconfig`, {
+      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/dmnotifications`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ userId, bgColor, barColor })
+        body: JSON.stringify({ userId, embedColor, source })
       });
 
       if (res.ok) {
@@ -108,33 +114,34 @@ export default function UserRankConfigPage() {
 
       <form onSubmit={handleSubmit} className="bg-gray-700 p-4 rounded-lg shadow-md">
         <div className="flex items-center gap-2 mb-4">
-          <label className="text-white">Background Color:</label>
+          <label className="text-white">Embed color:</label>
           <input
             type="color"
-            value={bgColor}
-            onChange={(e) => setBgColor(e.target.value)}
+            value={embedColor}
+            onChange={(e) => setEmbedColor(e.target.value)}
             className="w-12 h-12 border-0"
           />
-          <span className="text-white">{bgColor}</span>
+          <span className="text-white">{embedColor}</span>
         </div>
-        <div className="flex items-center gap-2 mb-4">
-          <label className="text-white">Bar Color:</label>
+          <div className="flex flex-col space-y-2">
+          <label className="text-sm font-semibold text-white">Source</label>
           <input
-            type="color"
-            value={barColor}
-            onChange={(e) => setBarColor(e.target.value)}
-            className="w-12 h-12 border-0"
+            type="text"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            placeholder="example.com/feeds/rss.xml"
+            className="p-2 rounded bg-[#222] text-white border border-gray-600"
           />
-          <span className="text-white">{barColor}</span>
         </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 p-15"
         >
           {loading ? "Saving..." : "Save Configuration"}
         </button>
-        {message && <p className="mt-4 text-white">{message}</p>}
+        {message && <p className="mt-4 text-red cursor-pointer">{message}</p>}
       </form>
     </div>
   );

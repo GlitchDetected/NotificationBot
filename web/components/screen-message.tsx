@@ -1,4 +1,4 @@
-import type { Button } from "@nextui-org/react";
+import type { Button } from "@heroui/react";
 import Link from "next/link";
 import { BsDiscord } from "react-icons/bs";
 import { HiHome } from "react-icons/hi";

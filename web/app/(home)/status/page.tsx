@@ -6,6 +6,8 @@ import { Loader2 } from "lucide-react";
 import { HiServer } from "react-icons/hi";
 import { FaDiscord } from "react-icons/fa";
 
+import { defaultFetchOptions } from "@/lib/api"; 
+
 type StatusData = {
   presence: string;
   discord_bot: string;
@@ -40,13 +42,18 @@ const Status = () => {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SITE}/status`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API}/status`,
+          {
+           ...defaultFetchOptions
+          }
+          );
 
-        if (!response.ok) {
+        if (!res.ok) {
           throw new Error("Failed to fetch status data");
         }
 
-        const data = await response.json();
+        const data = await res.json();
         setStatus(data);
       } catch (err) {
         setError(err.message);
@@ -72,7 +79,7 @@ const Status = () => {
     <div 
     id="status" 
     ref={ref} 
-    className="flex flex-col items-center gap-6 mt-16 p-25"
+    className="flex flex-col items-center gap-6"
     >
       <h1 className="text-2xl font-bold from-red-900 to-red-400">NotificationBot Status</h1>
 

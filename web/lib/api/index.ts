@@ -11,7 +11,7 @@ export const cacheOptions = {
 };
 
 export const defaultFetchOptions = {
-  headers: { Authorization: process.env.API_SECRET as string },
+  headers: { apikey: process.env.API_SECRET as string },
   next: { revalidate: 60 * 60 }
 };
 
@@ -30,7 +30,7 @@ export async function getGuild(
   if (!guildId) return;
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API}/guilds/${guildId}`, {
-    headers: { Authorization: process.env.API_SECRET as string },
+    headers: { apikey: process.env.API_SECRET as string },
     next: options?.force ? { revalidate: 0 } : { revalidate: 60 * 60 }
   });
 
