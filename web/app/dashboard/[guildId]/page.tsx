@@ -3,7 +3,12 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import Image from "next/image";
+import { HiBookOpen } from "react-icons/hi";
+
+import { OverviewLink } from "@/components/overview-link";
+import { Section } from "@/components/section";
+
+import { Button } from "@/components/ui/button";
 
 const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
@@ -137,9 +142,17 @@ export default function GuildConfigure() {
       .map(([, name]) => name);
   };
 
-  return (
-    <div>
-      <div className="bg-gray-700 p-4 rounded-lg shadow-md">
+  return (<>
+        <OverviewLink
+            title="Documentation"
+            message="Refer to the documentation any time!"
+            url={`/docs/home`}
+            icon={<HiBookOpen />}
+        />
+
+        <Section
+        title="Basic guild information"
+        >
         <p>
           <strong>Guild ID:</strong> {guild.id}
         </p>
@@ -149,8 +162,23 @@ export default function GuildConfigure() {
         <p>
           <strong>Features:</strong> {guild.features.join(", ")}
         </p>
+        </Section>
 
-        <div className="mt-4">
+        <Section
+        title="Bot Permissions"
+        >
+          <ul className="grid grid-cols-3 gap-x-3 gap-y-3">
+            {getPermissions(guild.permissions).map((perm, idx) => (
+              <li key={idx} className="text-red-400">
+                - {perm}
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section
+        title="Miscellaneous"
+        >
           <h2 className="text-lg font-semibold">Bot Prefix Configuration</h2>
           <div className="mt-2 flex items-center space-x-2">
             <input
@@ -160,28 +188,15 @@ export default function GuildConfigure() {
               maxLength={3}
               className="p-2 text-gray-900 bg-gray-200 rounded-md"
             />
-            <button
+            <Button
               onClick={savePrefix}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               disabled={saving}
             >
               {saving ? "Saving..." : "Save"}
-            </button>
+            </Button>
           </div>
-          <p className="text-sm text-gray-400 mt-1">Max 3 characters</p>
-        </div>
-
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold">Bot Permissions</h2>
-          <ul className="mt-2 bg-black p-4 rounded-lg shadow">
-            {getPermissions(guild.permissions).map((perm, idx) => (
-              <li key={idx} className="py-1 text-gray-600">
-                - {perm}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
+          <p className="text-sm text-red-400 mt-1">Max 3 characters</p>
+        </Section>
+  </>);
 }

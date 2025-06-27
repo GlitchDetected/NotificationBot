@@ -61,7 +61,7 @@ export default async function RootLayout({ params, children }: Props) {
         : meta?.name;
 
     return (
-        <div className="w-full mb-20 mt-30">
+        <div className="w-full mb-13 mt-20 pt-20 px-4">
 
             <h1 className="text-2xl font-medium text-neutral-100 mb-1">
                 {title} Documentation

@@ -85,7 +85,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
           searchParamName ? params.get(searchParamName) || "" : path.split(url)[1].split("/").slice(0, 2).join("/")
         }
         onSelectionChange={handleChange}
-        variant="underlined" // This automatically applies underline for selected tab
+        variant="underlined"
         color="danger"
         isDisabled={disabled}
       >
@@ -98,7 +98,6 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
                 <span>{tab.name}</span>
               </div>
             }
-            className="px-4 py-2" // You can add custom padding here
           />
         ))}
       </Tabs>

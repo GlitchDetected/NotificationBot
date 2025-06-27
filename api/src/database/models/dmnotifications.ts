@@ -7,6 +7,8 @@ class dmnotifications extends Model {
   declare embedcolor: string | null;
   declare source: string | null;
 
+  declare message: string | null;
+
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -26,6 +28,11 @@ dmnotifications.init(
     source: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "You got a new notifications from"
     }
   },
   {

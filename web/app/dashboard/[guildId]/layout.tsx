@@ -8,7 +8,6 @@ import { useParams, usePathname } from "next/navigation";
 import { getCanonicalUrl } from "@/lib/urls";
 import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick, HiRss } from "react-icons/hi";
 import Image from "next/image";
-import { CopyToClipboardButton } from "@/components/ctc";
 import Fallbacklogo from "@/public/images/fallbacklogo.png";
 
 const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
@@ -60,32 +59,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [guildId]);
 
   return (
-    <div className="flex flex-col w-full pt-20 px-4">
+    <div className="flex flex-col w-full mb-20 mt-30 pt-20 px-4">
       <title>{`${guild?.name}'s Dashboard`}</title>
 
-      <div className="flex flex-col gap-5 mb-3">
+      <div className="flex flex-col gap-5 mb-6">
         <div className="flex gap-2">
-          <Button as={Link} className="w-fit" href="/profile" startContent={<HiArrowNarrowLeft />}>
-            Profile
-          </Button>
-          <CopyToClipboardButton
-            text={getCanonicalUrl("leaderboard", guildId.toString())}
-            items={[
-              {
-                icon: <HiShare />,
-                name: "Copy page URL",
-                description: "Creates a link to this page",
-                text: getCanonicalUrl(...path.split("/").slice(1))
-              },
-              {
-                icon: <HiCursorClick />,
-                name: "Copy dash-to URL",
-                description: "Creates a dash-to link to the current tab",
-                text: getCanonicalUrl(`dashboard?to=${path.split("/dashboard/")[1]?.split("/")[1] || "/"}`)
-              }
-            ]}
-            icon={<HiShare />}
-          />
+                          <Button
+                    as={Link}
+                    className="w-fit"
+                    href="/profile"
+                    startContent={<HiArrowNarrowLeft />}
+                >
+                    Profile
+                </Button>
         </div>
 
         <div className="flex items-center space-x-4">

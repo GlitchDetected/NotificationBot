@@ -30,7 +30,8 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
 
     return res.status(200).json({
       embedcolor: config.embedcolor,
-      source: config.source
+      source: config.source,
+      message: config.message
     });
   } catch (error) {
     console.error("Error fetching user dmnotifications configuration:", error);
@@ -50,7 +51,7 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
  * }
  */
 router.post("/", async (req: Request, res: Response): Promise<any> => {
-  const { userId, embedcolor, source } = req.body;
+  const { userId, embedcolor, source, message } = req.body;
 
   if (!userId || typeof userId !== "string") {
     return res.status(400).json({ message: "userId is required and must be a string" });
@@ -63,19 +64,22 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
       // Update
       if (embedcolor) config.embedcolor = embedcolor;
       if (source) config.source = source;
+      if (message) config.message = message;
       await config.save();
     } else {
       // Create
       config = await dmnotifications.create({
         userId,
         embedcolor: embedcolor || "#FF0000",
-        source: source
+        source: source,
+        message: message || "You got a new notifications from"
       });
     }
 
     return res.status(200).json({
       embedcolor: config.embedcolor,
-      source: config.source
+      source: config.source,
+      message: config.message
     });
   } catch (error) {
     console.error("Error creating/updating user dmnotifications configuration:", error);

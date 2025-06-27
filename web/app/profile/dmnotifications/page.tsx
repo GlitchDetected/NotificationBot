@@ -9,6 +9,7 @@ export default function UserRankConfigPage() {
   const [embedColor, setEmbedColor] = useState("#FF0000");
   const [source, setSource] = useState("");
   const [loading, setLoading] = useState(true);
+  const [warning, setWarning] = useState("");
   const [message, setMessage] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -45,6 +46,7 @@ export default function UserRankConfigPage() {
           const data = await res.json();
           setEmbedColor(data.embedColor || "#FF0000");
           setSource(data.source);
+          setMessage(data.message || "You got a new notifications from")
         }
       } catch (error) {
         console.error("Error fetching user rank configuration", error);
@@ -59,16 +61,16 @@ export default function UserRankConfigPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setWarning("");
 
     if (!userId) {
-      setMessage("User not authenticated.");
+      setWarning("User not authenticated.");
       setLoading(false);
       return;
     }
 
     if (!source) {
-    setMessage("Please complete all required fields.");
+    setWarning("Please complete all required fields.");
     setLoading(false);
     return;
     }
@@ -80,18 +82,18 @@ export default function UserRankConfigPage() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ userId, embedColor, source })
+        body: JSON.stringify({ userId, embedColor, source, message })
       });
 
       if (res.ok) {
-        setMessage("Configuration saved successfully!");
+        setWarning("Configuration saved successfully!");
       } else {
         const data = await res.json();
-        setMessage(data.message || "Failed to save configuration.");
+        setWarning(data.warning || "Failed to save configuration.");
       }
     } catch (error) {
       console.error("Error saving configuration", error);
-      setMessage("Error saving configuration.");
+      setWarning("Error saving configuration.");
     } finally {
       setLoading(false);
     }
@@ -132,6 +134,16 @@ export default function UserRankConfigPage() {
             placeholder="example.com/feeds/rss.xml"
             className="p-2 rounded bg-[#222] text-white border border-gray-600"
           />
+                  </div>
+          <div className="flex flex-col space-y-2">
+          <label className="text-sm font-semibold text-white">Message (optional)</label>
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="You got a new notifications from..."
+            className="p-2 rounded bg-[#222] text-white border border-gray-600"
+          />
         </div>
 
         <button
@@ -141,7 +153,7 @@ export default function UserRankConfigPage() {
         >
           {loading ? "Saving..." : "Save Configuration"}
         </button>
-        {message && <p className="mt-4 text-red cursor-pointer">{message}</p>}
+        {warning && <p className="mt-4 text-red cursor-pointer">{warning}</p>}
       </form>
     </div>
   );
