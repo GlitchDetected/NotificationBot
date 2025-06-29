@@ -1,13 +1,20 @@
 import "./globals.css";
 
 import { ActiveSectionContextProvider } from "@/lib/active-section-context";
-import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 import { Lexend, Noto_Sans_JP, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { getBaseUrl } from "@/lib/urls";
 import Notice, { NoticeType } from "@/components/notice";
+import { CookiesProvider } from "next-client-cookies/server";
+import { Provider } from "./provider";
+
 import Link from "next/link";
+import Image from "next/image";
+import { links } from "@/lib/data";
+import { cookies } from "next/headers";
+import { LoginButton } from "@/components/ui/loginbutton";
+import { LoginHeader } from "@/components/ui/loginheader"
 
 const outfit = Outfit({ subsets: ["latin", "latin-ext"], variable: "--font-outfit" });
 const notosansJP = Noto_Sans_JP({ subsets: ["cyrillic", "vietnamese"], variable: "--font-noto-sans-jp" });
@@ -72,6 +79,7 @@ export const generateMetadata = (): Metadata => {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
+    <CookiesProvider>
     <html
       suppressHydrationWarning
       data-theme="dark"
@@ -87,11 +95,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* <Noise /> */}
         <NoScript />
         <ActiveSectionContextProvider>
-          <Navbar />
+          <NavBar />
+          <Provider>
           {children}
+          </Provider>
         </ActiveSectionContextProvider>
       </body>
     </html>
+    </CookiesProvider>
   );
 };
 
@@ -104,5 +115,38 @@ function NoScript() {
         type={NoticeType.Info}
       />
     </noscript>
+  );
+}
+
+async function NavBar() {
+  const jar = await cookies();
+
+  return (
+      <nav className="fixed top-0 left-1/2 transform -translate-x-1/2 h-[4.5rem] 
+      w-full rounded-none border-opacity-40 sm:rounded-lg flex items-center px-10 
+      md:px-15 lg:px-20 justify-between bg-white shadow-md dark:bg-red-950 dark:shadow-black/90 
+      z-[999] sm:top-6 sm:h-[4rem] sm:w-[55rem]"
+      >
+
+        <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/images/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
+              <span className="text-lg font-semibold">NotificationBot</span>
+            </Link>
+        </div>
+
+        <ul className="hidden md:flex flex-1 items-center justify-center gap-8 text-[0.9rem] font-medium text-gray-500 dark:text-gray-400">
+          {links.map((link) => (
+              <Link className="px-3 py-2 hover:text-gray-950 dark:hover:text-gray-300 transition" href={link.hash}>
+                {link.name}
+              </Link>
+          ))}
+        </ul>
+
+            {jar.get("sessiontoken")?.value
+                ? <LoginHeader />
+                : <LoginButton className="ml-auto" />
+            }
+      </nav>
   );
 }

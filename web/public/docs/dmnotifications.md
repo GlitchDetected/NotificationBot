@@ -8,8 +8,8 @@
 </iframe>
 
 ## Setup
-1. Add NotificationBot to your server by going to [notification.bot/add](https://notification.bot/add).
-2. Head to the dashboard by going to [notification.bot/dashboard](https://notification.bot/dashboard).
+1. Add NotificationBot to your server by going to [notificationbot.xyz/add](https://notificationbot.xyz/add).
+2. Head to the dashboard by going to [notificationbot.xyz/dashboard](https://notificationbot.xyz/dashboard).
 3. Select the **DM notification tab**.
 4. Enter your desired customization and click save
 

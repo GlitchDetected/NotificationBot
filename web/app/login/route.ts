@@ -7,8 +7,8 @@ import { getBaseUrl, getCanonicalUrl } from "@/lib/urls";
 import { createSession } from "./api";
 
 const defaultCookieOptions = {
-  secure: getBaseUrl().startsWith("https://"),
-  httpOnly: false,
+  secure: getBaseUrl().startsWith("http://"),
+  httpOnly: true,
   sameSite: "none",
   domain: getBaseUrl().split("://")[1],
   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 28)
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
   const logout = searchParams.get("logout");
 
   if (logout) {
-    jar.set("session", "", {
+    jar.set("sessiontoken", "", {
       expires: new Date(0),
       domain: getBaseUrl().split("://")[1]
     });
@@ -69,7 +69,7 @@ export async function GET(request: Request) {
   const res = await createSession(code);
   let redirectUrl = getRedirectUrl(searchParams);
 
-  if (!res || "statusCode" in res) {
+  if (!res || "code" in res) {
     const data = { statusCode: 500, message: "Failed to authenticate with Discord." };
     console.log(data);
 
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     redirect(redirectUrl);
   }
 
-  jar.set("session", res.session, defaultCookieOptions);
+  jar.set("sessiontoken", res.sessiontoken, defaultCookieOptions);
 
   redirect(redirectUrl);
 }

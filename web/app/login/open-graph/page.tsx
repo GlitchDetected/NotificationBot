@@ -6,7 +6,7 @@ import { getCanonicalUrl } from "@/lib/urls";
 
 export const generateMetadata = (): Metadata => {
   const title = "Login with Discord";
-  const description = "Start customising your profile and managing servers.";
+  const description = "Start customizing your profile and managing servers.";
   const url = getCanonicalUrl("login");
 
   return {

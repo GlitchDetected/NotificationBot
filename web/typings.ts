@@ -1,7 +1,7 @@
 import { ChannelType } from "discord-api-types/v10";
 
 export interface ApiError {
-  statusCode: number;
+  code: number;
   message: string;
 }
 
@@ -188,22 +188,9 @@ export interface ApiV1GuildsModulesPassportGetResponse {
 export interface ApiV1UsersMeGetResponse {
   voteCount?: number;
 
-  rank?: {
-    background?: string | null;
-    emoji?: string | null;
-    textColor?: number;
-    barColor?: number;
-    useLeaderboardList?: boolean;
-    subText?: {
-      type: 0 | 1 | 2 | 3; // 0: off, 1: date, 2: relative, 3: custom
-      content?: string;
-    };
-  };
   activity?: {
     messages: number;
-    voiceminutes: number;
     invites: number;
-    formattedVoicetime: string;
   };
 }
 

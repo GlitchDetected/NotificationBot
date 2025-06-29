@@ -8,9 +8,8 @@ export interface User {
   email?: string | null;
   id: string;
   username: string;
-  globalName?: string | null;
-  avatar: string | null;
-  isPremium?: number | null;
+  displayName?: string | null;
+  avatarHash: string | null;
 
   __fetched: boolean;
 
@@ -18,11 +17,11 @@ export interface User {
 }
 
 export const userStore = create<User | undefined>(() => ({
-  session: "",
+  sessiontoken: "",
 
   id: "",
   username: "",
-  avatar: "null",
+  avatarHash: "null",
 
   __fetched: false,
   extended: undefined

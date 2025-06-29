@@ -3,43 +3,66 @@
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { ListTab } from "@/components/list";
-import { Button, Skeleton } from "@heroui/react";
-import { useParams, usePathname } from "next/navigation";
-import { getCanonicalUrl } from "@/lib/urls";
+import { Skeleton } from "@heroui/react";
 import { HiSpeakerphone, HiHome } from "react-icons/hi";
 import Image from "next/image";
-import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from "lucide-react";
+import { CircleUser } from "lucide-react";
 
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
-const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
+import { userStore } from "@/common/userStore";
+import { useQuery } from "@tanstack/react-query";
+import { cacheOptions, getData } from "@/lib/api";
+import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import { useCookies } from "next-client-cookies";
+import { redirect } from "next/navigation";
+import type { ApiV1UsersMeGetResponse } from "@/typings";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const path = usePathname();
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        // Fetch user data
-        const userRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, { credentials: "include" });
-        if (!userRes.ok) {
-          if (userRes.status === 401) window.location.href = SIGNIN_URL;
-          throw new Error("Failed to fetch user data");
+  const cookies = useCookies();
+  const session = cookies.get("sessiontoken");
+
+  if (!session) redirect("/login?callback=/profile");
+
+    const user = userStore((u) => u);
+
+    const url = "/dashboard/@me" as const;
+
+    const { data, error } = useQuery({
+        queryKey: [url],
+        queryFn: () => getData<ApiV1UsersMeGetResponse>(url),
+        enabled: !!user?.id,
+        ...cacheOptions
+    });
+
+    useEffect(() => {
+        if (data && !("message" in data)) {
+            userStore.setState({
+                ...user,
+                extended: "status" in data ? {} : data
+            });
         }
-        const userData = await userRes.json();
-        setUser(userData.dataValues);
-      } catch (error) {
-        console.error(error);
-      }
-      setLoading(false);
-    })();
-  }, []);
+    }, [data, user]);
+
+    if (error || (data && "message" in data)) {
+        return (
+            <ScreenMessage
+                title="Something went wrong on this page.."
+                description={
+                    (data && "message" in data ? data.message : `${error}`)
+                    || "An unknown error occurred."}
+                buttons={<>
+                    <HomeButton />
+                    <SupportButton />
+                </>}
+            >
+            </ScreenMessage>
+        );
+    }
 
   return (
     <div className="flex flex-col w-full p-25">
-      <title>Your Profile</title>
+      <title>NotificationBot Profile</title>
 
       {/* User Info Section */}
       {user && (

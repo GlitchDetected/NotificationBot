@@ -2,7 +2,7 @@
 **last modified 6/26/25 (MM/DD/YYYY)**
 ___
 
-These Terms of Service apply to the website "notification.bot," all its associated subdomains, and our Discord bot application(s) with the user ID(s) "1125449347451068437".
+These Terms of Service apply to the website "notificationbot.xyz," all its associated subdomains, and our Discord bot application(s) with the user ID(s) "1125449347451068437".
 "we", "us", and "our" refer to the online service NOTIFICATIONBOT.
 
 ## General

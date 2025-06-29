@@ -151,7 +151,7 @@ export default function GuildConfigure() {
         />
 
         <Section
-        title="Basic guild information"
+        title="Server Information"
         >
         <p>
           <strong>Guild ID:</strong> {guild.id}
@@ -167,7 +167,7 @@ export default function GuildConfigure() {
         <Section
         title="Bot Permissions"
         >
-          <ul className="grid grid-cols-3 gap-x-3 gap-y-3">
+          <ul className="grid grid-cols-4 gap-x-2 gap-y-4">
             {getPermissions(guild.permissions).map((perm, idx) => (
               <li key={idx} className="text-red-400">
                 - {perm}

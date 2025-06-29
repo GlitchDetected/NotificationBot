@@ -9,7 +9,7 @@ interface DecodedToken {
 export default async function setReqUser(req: Request, res: Response, next: NextFunction) {
   try {
     const cookies = req.cookies;
-    const token = cookies?.token;
+    const token = cookies?.sessiontoken; //sessiontoken to access data
 
     if (!token) return next();
 

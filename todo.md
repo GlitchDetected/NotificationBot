@@ -3,6 +3,7 @@
 - [ ] Work on the dashboard UI  
 - [ ] Connect to database from API  
   - [ ] Sequelize
+- [ ] OpaqueResponseBlocking
 
 ### In Progress
 

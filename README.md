@@ -12,8 +12,8 @@
 
 <br/>
 <p align="center">
-<a href="https://notification.bot/">Website</a> -
-<a href="https://docs.notification.bot">Documentation</a>
+<a href="https://notificationbot.xyz/">Website</a> -
+<a href="https://docs.notificationbot.xyz">Documentation</a>
 </p>
 
 ---
@@ -86,7 +86,7 @@ FORCE_DB_RESET="false"
 REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
 OAUTH_URI="https://discord.com/oauth2/authorize?client_id={botid}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Fcallback&scope=identify+guilds"
 BOT_TOKEN=""
-cookieDomain="localhost" # change to match your base url (e.x notification.bot)
+cookieDomain="localhost" # change to match your base url (e.x notificationbot.xyz)
 ```
 - npm i
 - npm run start

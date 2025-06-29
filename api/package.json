@@ -4,7 +4,6 @@
   "license": "ISC",
   "scripts": {
     "start": "npm run build && node .",
-    "dev": "npm run build && node --watch .",
     "build": "tsc",
     "format": "npx prettier --write '**/*.{ts,json}' --config .prettierrc",
     "lint": "eslint . --max-warnings=0",

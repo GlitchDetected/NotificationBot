@@ -1,14 +1,9 @@
-"use client";
-
-export const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
-
-type links = {
+type linktypes = {
   name: string;
   hash: string;
-  isSignIn?: boolean;
 };
 
-export const links = [
+export const links: linktypes[] = [
   {
     name: "Status",
     hash: "/status"

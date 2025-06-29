@@ -1,41 +1,38 @@
-import express, { Request, Response, Router } from "express";
+import express, { Router, Request, Response } from "express";
 import User from "../../database/models/User";
 import jwt from "jsonwebtoken";
 
 const router: Router = express.Router();
 
-// GET: api.notification.bot/auth/signin
-// GET: api.notification.bot/auth/callback
+router.use(express.json());
 
-const FRONTEND_SITE = process.env.FRONTEND_SITE || "http://localhost:3000";
-const DASHBOARD_URL = `${FRONTEND_SITE}/profile`;
+// localhost:3001/sessions/
+// api.notificationbot.xyz/sessions/
 
-router.get("/signin", (req: Request, res: Response) => {
-  res.redirect(`${process.env.OAUTH_URI}`);
-});
-
-router.get("/callback", async (req: Request, res: Response): Promise<any> => {
-  const DISCORD_ENDPOINT = "https://discord.com/api/v10";
+router.post("/", async (req: Request, res: Response): Promise<any> => {
+    const DISCORD_ENDPOINT = "https://discord.com/api/v10";
   const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
   const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
-  const REDIRECT_URI = process.env.DISCORD_REDIRECT_URI;
 
-  const { code } = req.query;
+  try {
+    const { code, redirecturi } = req.body;
+    const data = req.body;
+    console.log("Received POST /sessions:", data);
 
-  if (!code) {
+      if (!code || !redirecturi) {
     return res.status(400).json({
       error: 'A "code" query parameter must be present in the URL.'
     });
   }
 
-  try {
-    const oauthRes = await fetch(`${DISCORD_ENDPOINT}/oauth2/token`, {
+    // store sessiontoken in cookies
+        const oauthRes = await fetch(`${DISCORD_ENDPOINT}/oauth2/token`, {
       method: "POST",
       body: new URLSearchParams({
         client_id: CLIENT_ID || "",
         client_secret: CLIENT_SECRET || "",
-        grant_type: "authorization_code",
-        redirect_uri: REDIRECT_URI || "",
+        grant_type: code,
+        redirect_uri: redirecturi || "",
         code: typeof code === "string" ? code : ""
       }).toString(),
       headers: {
@@ -50,7 +47,6 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
     }
 
     const oauthResJson = await oauthRes.json();
-
     const userRes = await fetch(`${DISCORD_ENDPOINT}/users/@me`, {
       method: "GET",
       headers: {
@@ -114,23 +110,12 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
         // expires: new Date(Date.now() + 6.048e8),
         // sameSite: ''
       })
-      .redirect(DASHBOARD_URL);
-  } catch (error) {
-    console.error("Error during callback:", error);
-    return res.status(500).send("Internal server error");
+      .redirect(redirecturi);
+    res.status(200).json({ message: "sessions data updated"});
+  } catch (err) {
+    console.error("Error processing sessions data:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
-});
-
-router.get("/signout", (req: Request, res: Response) => {
-  res
-    .clearCookie("token", {
-      domain: process.env.cookieDomain,
-      path: "/",
-      httpOnly: true,
-      secure: true,
-      sameSite: "none"
-    })
-    .sendStatus(200);
 });
 
 export default router;

@@ -16,6 +16,6 @@ GlitchDetected, the one and only developer of NotificationBot, develops and main
 - DDoS attacks
 - publicly accessible login panels
 - reports from scanners and automated tools
-- reports on the subdomain r2.notification.bot
+- reports on the subdomain r2.notificationbot.xyz
 - self-exploitation
 - social engineering
