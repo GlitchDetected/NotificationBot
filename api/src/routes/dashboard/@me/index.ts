@@ -32,7 +32,7 @@ const Prefix = db.define(
 );
 
 router.get("/", async (c) => {
-  const user = (c.req as any).user;
+  const user = c.get('user');
 
   if (user) {
     const { accessToken, refreshToken, ...userWithoutTokens } = user;
@@ -43,7 +43,7 @@ router.get("/", async (c) => {
 });
 
 router.get("/guilds", async (c) => {
-  const user = (c.req as any).user;
+  const user = c.get('user');
   if (!user?.accessToken) {
      return httpError(HttpErrorMessage.MissingAccess)
   }
@@ -96,6 +96,7 @@ router.get("/guilds", async (c) => {
 
       let channels = [];
       let roles = [];
+      let emojis = [];
       if (botInGuild) {
         // if bot is in the guild, fetch channels and roles
 
@@ -124,6 +125,19 @@ router.get("/guilds", async (c) => {
         } else {
           console.warn(`Bot is in guild ${guild.id} but failed to fetch roles`);
         }
+
+        const emojisRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}/emojis`, {
+          headers: {
+            Authorization: `Bot ${process.env.BOT_TOKEN}`
+          }
+        });
+
+        if (emojisRes.ok) {
+          const rawEmojis = await emojisRes.json();
+          emojis = rawEmojis;
+        } else {
+          console.warn(`Bot is in guild ${guild.id} but failed to fetch emojis`);
+        }
       }
 
       // console.log(filteredGuilds);
@@ -137,14 +151,15 @@ router.get("/guilds", async (c) => {
         botInGuild,
         botPrefix: ";",
         channels,
-        roles
+        roles,
+        emojis,
       };
     })
   );
 
   await redis.set(`user-guilds:${user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
-
   return c.json(guildsWithBot);
+  });
   
 router.post("/guilds", async (c) => {
   const user = (c.req as any).user;
@@ -189,6 +204,5 @@ router.post("/guilds", async (c) => {
     return c.json({ message: "Internal server error" });
   }
 });
-  });
 
 export default router;

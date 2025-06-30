@@ -3,5 +3,5 @@ import { Hono } from "hono";
 
 const router = new Hono();
 
-router.use('*', setReqUser);
+router.use("*", setReqUser);
 export default router;

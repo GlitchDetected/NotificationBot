@@ -20,7 +20,7 @@ export const setReqUser: MiddlewareHandler = async (c, next) => {
       const targetUser = await User.findOne({ where: { id: decodedToken.id } });
 
       if (targetUser) {
-        c.set('user', targetUser)
+        c.set('user', targetUser) // use c.get instead of c.req(user) - hono's way to pass data between middlewares and handlers
       }
     }
   } catch (error) {

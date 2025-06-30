@@ -19,10 +19,10 @@ import type { ApiV1UsersMeGetResponse } from "@/typings";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
-  // const cookies = useCookies();
-  // const session = cookies.get("sessiontoken");
+  const cookies = useCookies();
+  const session = cookies.get("sessiontoken");
 
-  // if (!session) redirect("/login?callback=/profile");
+  if (!session) redirect("/login?callback=/profile");
 
     const user = userStore((u) => u);
 
@@ -98,8 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </Suspense>
 
-      {/* Children (Content) */}
-      <div>{!loading && user ? children : <Skeleton />}</div>
+      {user?.id ? children : <></>}
     </div>
   );
 }
