@@ -9,7 +9,7 @@ export interface ApiV1UsersMeGuildsGetResponse {
   id: string;
   name: string;
   icon: string | null;
-  bot: boolean;
+  botInGuild: boolean;
 }
 
 export interface ApiV1GuildsGetResponse {

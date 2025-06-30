@@ -75,23 +75,24 @@ export default function profilePage() {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/add"
-              className="roundedlgbutton flex items-center gap-x-2"
+                <Button
+                    as={Link}
+                    className="w-1/2 md:w-min"
+                    href="/login?invite=true"
+                    prefetch={false}
+                    startContent={<HiUserAdd />}
+                >
+                    Add to Server
+                </Button>
+            <Button
+                    as={Link}
+                    className="button-primary w-1/2 md:w-min"
+                    href="/login"
+                    prefetch={false}
+                    startContent={<HiRefresh />}
             >
-              <FaDiscord className="w-5 h-5" />
-              <span>Add Bot</span>
-            </Link>
-
-            <motion.button
-              disabled={isLoading}
-              whileTap={{ scale: 0.95 }}
-              className="roundedlgbutton flex items-center gap-x-2 px-4 py-2"
-              onClick={handleRefresh}
-            >
-              <RefreshCcw className={`w-5 h-5 ${isLoading && "animate-spin"}`} />
               <span>Refresh</span>
-            </motion.button>
+            </Button>
           </div>
         </div>
 
@@ -137,9 +138,9 @@ export default function profilePage() {
   }
 
 function sort(a: ApiV1UsersMeGuildsGetResponse, b: ApiV1UsersMeGuildsGetResponse) {
-    return a.bot === b.bot
+    return a.botInGuild === b.botInGuild
         ? 0
-        : (a.bot ? -1 : 1);
+        : (a.botInGuild ? -1 : 1);
 }
 
 function filter(guild: ApiV1UsersMeGuildsGetResponse, search: string) {
@@ -154,7 +155,7 @@ function filter(guild: ApiV1UsersMeGuildsGetResponse, search: string) {
     return false;
 }
 
-function Guild({ id, name, icon, bot: botInGuild }: ApiV1UsersMeGuildsGetResponse) {
+function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
     return (
         <motion.li
             className={cn(
