@@ -2,92 +2,69 @@
 
 import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { FaDiscord } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
-
+import { useCookies } from "next-client-cookies";
 import Searchbar from "@/components/ui/searchbar";
+import { useApi } from "@/lib/api/hooks";
+import type { ApiV1UsersMeGuildsGetResponse } from "@/typings";
+import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import { HiChartBar, HiRefresh, HiUserAdd, HiViewGridAdd } from "react-icons/hi";
+import { cn } from "@/lib/utils";
+import { Button } from "@heroui/react";
+import ImageReduceMotion from "@/components/ui/reducemotion";
+import { useSearchParams } from "next/navigation";
 
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
-const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
-const ADD_BOT_URL = `/add`;
+const MAX_GUILDS = 100 as const;
 
-export default function GuildsList() {
-  const [guilds, setGuilds] = useState([]);
-  const [loading, setLoading] = useState(true);
+const springAnimation = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: "spring",
+            bounce: 0.4,
+            duration: 0.7
+        }
+    }
+} as const;
+
+export default function profilePage() {
   const [search, setSearch] = useState<string>("");
-  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    // Fetch user data and guilds
-    (async () => {
-      setLoading(true);
+  const cookies = useCookies();
 
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, {
-          credentials: "include"
-        });
+  const { isLoading, data, error } = useApi<ApiV1UsersMeGuildsGetResponse[]>("/dashboard/@me/guilds");
 
-        if (!res.ok) {
-          if (res.status === 401) {
-            window.location.href = SIGNIN_URL;
-            throw new Error("Not authenticated");
-          }
-          throw new Error("An error occurred");
-        }
+      const guilds = useMemo(
+        () => Array.isArray(data) ? data.sort(sort).filter((guild) => filter(guild, search)).slice(0, MAX_GUILDS) : [],
+        [data, search]
+    );
 
-        const userResponse = await res.json();
-        const user = userResponse.dataValues;
-
-        setUser(user);
-
-        const guildsRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
-          credentials: "include"
-        });
-
-        if (!guildsRes.ok) {
-          throw new Error("An error occurred");
-        }
-
-        const guilds = await guildsRes.json();
-        setGuilds(guilds);
-      } catch (error) {
-        console.error(error);
-      }
-
-      setLoading(false);
-    })();
-  }, []);
-
-  async function handleRefresh() {
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds?skipcache=true`, {
-        credentials: "include"
-      });
-
-      if (!res.ok) {
-        throw new Error("An error occurred");
-      }
-
-      const guilds = await res.json();
-      setGuilds(guilds);
-    } catch (error) {
-      console.error(error);
+        if (error) {
+        return (
+            <ScreenMessage
+                top="10rem"
+                title="Something went wrong on this page.."
+                description={`${error}`}
+                buttons={<>
+                    <HomeButton />
+                    <SupportButton />
+                </>}
+            >
+            </ScreenMessage>
+        );
     }
 
-    setLoading(false);
-  }
-
-  const filteredGuilds = guilds.filter((guild) => guild.name.toLowerCase().includes(search.toLowerCase()));
+    if (isLoading || !data) return <></>;
 
   return (
-    <div>
-      <>
-        <div className="flex items-center justify-center gap-3 p-5">
-          <div className="relative w-full max-w-md">
+    <div className="flex flex-col w-full">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="relative top-2 w-full">
             <Searchbar
             value={search}
             setValue={setSearch}
@@ -99,7 +76,7 @@ export default function GuildsList() {
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <Link
-              href={ADD_BOT_URL}
+              href="/add"
               className="roundedlgbutton flex items-center gap-x-2"
             >
               <FaDiscord className="w-5 h-5" />
@@ -107,95 +84,142 @@ export default function GuildsList() {
             </Link>
 
             <motion.button
-              disabled={loading}
+              disabled={isLoading}
               whileTap={{ scale: 0.95 }}
               className="roundedlgbutton flex items-center gap-x-2 px-4 py-2"
               onClick={handleRefresh}
             >
-              <RefreshCcw className={`w-5 h-5 ${loading && "animate-spin"}`} />
+              <RefreshCcw className={`w-5 h-5 ${isLoading && "animate-spin"}`} />
               <span>Refresh</span>
             </motion.button>
           </div>
         </div>
 
-        {/* Server List */}
-        <div className="flex flex-wrap items-center justify-center gap-5 w-fit mx-auto">
-          {loading ? (
-            <div className="flex items-center justify-center h-40">
-              <Loader2 className="w-12 h-12 animate-spin" />
-            </div>
-          ) : (
-            <>
-              {!filteredGuilds.length ? (
-                <p className="text-white text-center">No servers found! Create a new server or click add bot to get start!</p>
-              ) : (
-                filteredGuilds.map((guild) => (
-                  <motion.div
-                    key={guild.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    whileHover={{ scale: 1.05 }}
-                    className={`flex flex-col p-4 bg-red-950 border border-red-500 rounded-md mb-2 justify-center items-center relative overflow-hidden w-full max-w-[320px] sm:w-52 shadow-lg ${
-                      !guild.botInGuild ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {guild.icon ? (
-                      <>
-                        <Image
-                          src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=256`}
-                          alt={guild.name}
-                          className="absolute inset-0 blur-sm w-full h-1/2 -z-20 object-cover brightness-[20%]"
-                          aria-hidden
-                          width={256}
-                          height={256}
-                          priority
-                        />
-                        <Image
-                          src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=128`}
-                          alt={guild.name}
-                          className="w-14 h-14 rounded-full mb-2"
-                          width={128}
-                          height={128}
-                          priority
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 bg-gray-600 blur-sm w-full h-1/2 -z-20 object-cover brightness-[20%]" />
-                        <div className="w-14 h-14 rounded-full mb-2 bg-blue-600 flex items-center justify-center">
-                          <FaDiscord className="w-8 h-8 text-white" />
-                        </div>
-                      </>
-                    )}
-                    <h3 className="mb-4 font-semibold text-center text-white truncate">{guild.name}</h3>
+        {!isLoading &&
+            <motion.ul
+                variants={{
+                    hidden: { opacity: 1, scale: 0 },
+                    visible: {
+                        opacity: 1,
+                        scale: 1,
+                        transition: {
+                            delayChildren: data.length > 20 ? 0.2 : 0.3,
+                            staggerChildren: data.length > 20 ? 0.1 : 0.2
+                        }
+                    }
+                }}
+                initial={cookies.get("reduceMotions") === "true" ? "visible" : "hidden"}
+                animate="visible"
+                className="grid grid-cols-1 gap-3.5 w-full mt-3 lg:grid-cols-3 md:grid-cols-2"
+            >
+                {guilds.map((guild) => <Guild key={"guild-" + guild.id} {...guild} />)}
+            </motion.ul>
+        }
 
-                    {/* Conditional Button */}
-                    {guild.botInGuild ? (
-                      <Link
-                        href={`/dashboard/${guild.id}`}
-                        className=" roundedlgbutton flex items-center space-x-2 px-4 py-2"
-                      >
-                        <LayoutDashboard className="w-5 h-5" />
-                        Manage
-                      </Link>
-                    ) : (
-                      <Link
-                        href={`/add`}
-                        className="roundedlgbutton flex items-center space-x-2 px-4 py-2
-                              text-base sm:text-sm md:text-md lg:text-lg whitespace-nowrap"
-                      >
-                        <FaDiscord className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-                        <span>Add Bot</span>
-                      </Link>
-                    )}
-                  </motion.div>
-                ))
-              )}
-            </>
-          )}
-        </div>
-      </>
-    </div>
-  );
+        {guilds.length > MAX_GUILDS &&
+            <ScreenMessage
+                title="There are too many servers.."
+                description={`To save some performance, use the search to find a guild. Showing ${MAX_GUILDS} out of ~${guilds.length < 1000 ? length : Math.round(length / 1000) * 1000}.`}
+            >
+            </ScreenMessage>
+        }
+
+    </div>);
+}
+
+  async function handleRefresh() {
+    try {
+      useApi<ApiV1UsersMeGuildsGetResponse[]>("/dashboard/@me/guilds?skipcache=true");
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+function sort(a: ApiV1UsersMeGuildsGetResponse, b: ApiV1UsersMeGuildsGetResponse) {
+    return a.bot === b.bot
+        ? 0
+        : (a.bot ? -1 : 1);
+}
+
+function filter(guild: ApiV1UsersMeGuildsGetResponse, search: string) {
+    if (!search) return true;
+
+    if (guild.name?.toLowerCase().includes(search.toLowerCase())) return true;
+    if (search.toLowerCase().includes(guild.name?.toLowerCase())) return true;
+
+    if (guild.id.includes(search)) return true;
+    if (search.includes(guild.id)) return true;
+
+    return false;
+}
+
+function Guild({ id, name, icon, bot: botInGuild }: ApiV1UsersMeGuildsGetResponse) {
+    return (
+        <motion.li
+            className={cn(
+                "dark:bg-flame bg-flame-100 p-3.5 flex items-center rounded-xl drop-shadow-md overflow-hidden relative duration-100 outline-flame-500 hover:outline group/card",
+                !botInGuild && "saturate-50 brightness-50"
+            )}
+            variants={springAnimation}
+        >
+            <ImageReduceMotion
+                alt=""
+                className="absolute top-[-48px] left-0 w-full z-0 blur-xl opacity-30 pointer-events-none"
+                size={16}
+                url={`https://cdn.discordapp.com/icons/${id}/${icon}`}
+                forceStatic={true}
+            />
+
+            <ImageReduceMotion
+                alt={`Server icon of @${name}`}
+                className="rounded-lg size-15 z-1 relative drop-shadow-md"
+                size={56}
+                url={`https://cdn.discordapp.com/icons/${id}/${icon}`}
+            />
+
+            <div className="ml-3 text-sm relative bottom-0.5">
+                <span className="text-lg dark:text-neutral-200 font-medium text-neutral-800 mb-1 sm:max-w-64 lg:max-w-56 truncate">
+                    {name}
+                </span>
+                <div className="flex gap-1">
+                    {botInGuild
+                        ? <ManageButton guildId={id} />
+                        : <InviteButton guildId={id} />
+                    }
+                    {botInGuild}
+                </div>
+            </div>
+
+        </motion.li>
+    );
+}
+
+function InviteButton({ guildId }: { guildId: string; }) {
+    return (
+        <Button
+            as={Link}
+            className="default dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20 bg-neutral-400/40 hover:bg-neutral-400/20 text-sm h-9"
+            href={`/login?invite=true&guild_id=${guildId}`}
+            prefetch={false}
+            startContent={<HiUserAdd />}
+        >
+            Add NotificationBot
+        </Button>
+    );
+}
+
+function ManageButton({ guildId }: { guildId: string; }) {
+    const searchParams = useSearchParams();
+
+    return (
+        <Button
+            as={Link}
+            className="default dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20 bg-neutral-400/40 hover:bg-neutral-400/20 text-sm h-9"
+            href={`/dashboard/${guildId}${searchParams.get("to") ? `/${searchParams.get("to")}` : ""}`}
+            startContent={<HiViewGridAdd />}
+        >
+            Manage
+        </Button>
+    );
 }
