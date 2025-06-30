@@ -5,7 +5,7 @@ import Link from "next/link";
 import { BsDiscord } from "react-icons/bs";
 import { HiExclamation } from "react-icons/hi";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 import { Button } from "./button";
 

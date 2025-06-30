@@ -9,10 +9,13 @@ const router = new Hono();
 
 router.get("/", async (c) => {
   try {
-    const user = c.get('user');
+    
+  const user = c.get('user');
+
   if (!user?.accessToken) {
      return httpError(HttpErrorMessage.MissingAccess)
   }
+
   return c.json({
       id: user.id,
       email: user.email,

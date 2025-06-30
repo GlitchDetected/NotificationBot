@@ -1,18 +1,15 @@
 "use client";
 
-import { Loader2, RefreshCcw, Search, LayoutDashboard, CircleUser } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { FaDiscord } from "react-icons/fa";
 import Link from "next/link";
-import Image from "next/image";
 import { useCookies } from "next-client-cookies";
-import Searchbar from "@/components/ui/searchbar";
+import Searchbar from "@/components/input/searchbar";
 import { useApi } from "@/lib/api/hooks";
 import type { ApiV1UsersMeGuildsGetResponse } from "@/typings";
 import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
 import { HiChartBar, HiRefresh, HiUserAdd, HiViewGridAdd } from "react-icons/hi";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import { Button } from "@heroui/react";
 import ImageReduceMotion from "@/components/ui/reducemotion";
 import { useSearchParams } from "next/navigation";
@@ -32,7 +29,7 @@ const springAnimation = {
     }
 } as const;
 
-export default function profilePage() {
+export default function Home() {
   const [search, setSearch] = useState<string>("");
 
   const cookies = useCookies();

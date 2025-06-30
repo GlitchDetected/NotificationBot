@@ -188,9 +188,11 @@ export interface ApiV1GuildsModulesPassportGetResponse {
 export interface ApiV1UsersMeGetResponse {
   voteCount?: number;
 
-  activity?: {
-    messages: number;
-    invites: number;
+  dmnotifications?: {
+  embedcolor?: number;
+  source?: string;
+  thumbnail?: string | null;
+  message?: string | null;
   };
 }
 

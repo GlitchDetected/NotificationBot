@@ -4,7 +4,7 @@ import { BiCopyright, BiLogoGithub, BiLogoGmail, BiLogoReddit, BiLogoTiktok, BiL
 import { BsDiscord } from "react-icons/bs";
 import TopggIcon from "@/components/icons/topgg";
 import type { HTMLProps } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 export default function Footer(props: HTMLProps<HTMLDivElement>) {
   return (

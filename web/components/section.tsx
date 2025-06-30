@@ -1,6 +1,6 @@
 import { Divider } from "@heroui/react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 export function Section({
   title,

@@ -1,160 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { type User, userStore } from "@/common/userStore";
+import TextInput from "@/components/input/textinput";
+import { deepMerge } from "@/utils/merge";
+import ImageUrlInput from "@/components/input/imageurlinput";
 
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
+export default function Home() {
 
-export default function UserRankConfigPage() {
-  const [embedColor, setEmbedColor] = useState("#FF0000");
-  const [source, setSource] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [warning, setWarning] = useState("");
-  const [message, setMessage] = useState("");
-  const [userId, setUserId] = useState<string | null>(null);
+      const user = userStore((s) => s);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, {
-          credentials: "include"
-        });
+    if (user?.id && !user.extended) return <></>;
 
-        if (!res.ok) throw new Error("Not authenticated");
-
-        const userResponse = await res.json();
-        const user = userResponse.dataValues;
-        setUserId(user.id);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    }
-
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    async function fetchConfig() {
-      if (!userId) return;
-
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/dmnotifications?userId=${userId}`, {
-          credentials: "include"
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setEmbedColor(data.embedColor || "#FF0000");
-          setSource(data.source);
-          setMessage(data.message || "You got a new notifications from")
-        }
-      } catch (error) {
-        console.error("Error fetching user rank configuration", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (userId) fetchConfig();
-  }, [userId]);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setWarning("");
-
-    if (!userId) {
-      setWarning("User not authenticated.");
-      setLoading(false);
-      return;
-    }
-
-    if (!source) {
-    setWarning("Please complete all required fields.");
-    setLoading(false);
-    return;
-    }
-
-    try {
-      const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/dmnotifications`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ userId, embedColor, source, message })
-      });
-
-      if (res.ok) {
-        setWarning("Configuration saved successfully!");
-      } else {
-        const data = await res.json();
-        setWarning(data.warning || "Failed to save configuration.");
-      }
-    } catch (error) {
-      console.error("Error saving configuration", error);
-      setWarning("Error saving configuration.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-40">
-        <Loader2 className="w-12 h-12 animate-spin" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="pt-10 px-4">
-      <h2 className="text-2xl font-semibold mb-4 text-white">Setup DM Notifications</h2>
-      <h2 className="text-2 mb-4 text-gray-400">
-        DM Notifications notify you about new uploads. Refer to /docs for help
-      </h2>
-
-      <form onSubmit={handleSubmit} className="bg-gray-700 p-4 rounded-lg shadow-md">
-        <div className="flex items-center gap-2 mb-4">
-          <label className="text-white">Embed color:</label>
-          <input
-            type="color"
-            value={embedColor}
-            onChange={(e) => setEmbedColor(e.target.value)}
-            className="w-12 h-12 border-0"
+  return (<>
+    <div className="lg:flex gap-3">
+        <div className="lg:w-1/2">
+          <TextInput
+                         name="Embed Color"
+                        url="/dashboard/dmnotifications"
+                        dataName="embedcolor"
+                        description="Color of your notification embed"
+                        type="color"
+                        defaultState={user?.extended?.dmnotifications?.embedcolor ?? 0}
+                        onSave={(value) => {
+                            userStore.setState(deepMerge<User>(user, 
+                              { extended: { dmnotifications: { 
+                                embedcolor: Number(value), 
+                              } } }));
+                        }}
           />
-          <span className="text-white">{embedColor}</span>
-        </div>
-          <div className="flex flex-col space-y-2">
-          <label className="text-sm font-semibold text-white">Source</label>
-          <input
-            type="text"
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            placeholder="example.com/feeds/rss.xml"
-            className="p-2 rounded bg-[#222] text-white border border-gray-600"
-          />
-                  </div>
-          <div className="flex flex-col space-y-2">
-          <label className="text-sm font-semibold text-white">Message (optional)</label>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="You got a new notifications from..."
-            className="p-2 rounded bg-[#222] text-white border border-gray-600"
+          </div>
+                <div className="w-1/2">
+                    <TextInput
+                        name="Source"
+                        url="/dashboard/dmnotifications"
+                        dataName="source"
+                        description="Where your notification is coming from"
+                        type="text"
+                        defaultState={user?.extended?.dmnotifications?.source ?? "https://example.com/videos.rss"}
+                        onSave={(value) => {
+                            userStore.setState(deepMerge<User>(user, 
+                              { extended: { dmnotifications: { 
+                                source: String(value) 
+                              } } }));
+                        }}
+                    />
+                </div>
+          </div>
+          <div className="w-1/2">
+          <TextInput
+                        name="Message"
+                        url="/dashboard/dmnotifications"
+                        dataName="message"
+                        description="Custom message (optional)"
+                        type="text"
+                        defaultState={user?.extended?.dmnotifications?.message ?? "You got a new notifications from"}
+                        onSave={(value) => {
+                             userStore.setState(deepMerge<User>(user, 
+                              { extended: { dmnotifications: { 
+                                message: String(value), 
+                              } } }));
+                        }}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 p-15"
-        >
-          {loading ? "Saving..." : "Save Configuration"}
-        </button>
-        {warning && <p className="mt-4 text-red cursor-pointer">{warning}</p>}
-      </form>
-    </div>
-  );
+                    <ImageUrlInput
+            name="Thumbnail"
+            url="/dashboard/dmnotifications"
+            ratio="aspect-[4/1]"
+            dataName="thumbnail"
+            description="Enter the url for your thumbnail. The recomended image ration is 4:1 and recommended resolution 1024x256px."
+            defaultState={user?.extended?.dmnotifications?.thumbnail || ""}
+            onSave={(value) => {
+              userStore.setState(deepMerge<User>(user, 
+                              { extended: { dmnotifications: { 
+                                thumbnail: value,
+                              } } }));
+                        }}
+          />
+  </>);
 }

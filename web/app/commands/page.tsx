@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSectionInView } from "@/lib/hooks";
-import Searchbar from "@/components/ui/searchbar";
+import Searchbar from "@/components/input/searchbar";
 
 interface Command {
   name: string;

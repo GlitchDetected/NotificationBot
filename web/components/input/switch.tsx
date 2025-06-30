@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { TailSpin } from "react-loading-icons";
 
 import type { ApiError } from "@/typings";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 enum State {
     Idle = 0,

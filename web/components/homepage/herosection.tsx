@@ -2,7 +2,7 @@ import { BsDiscord } from "react-icons/bs";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { Sparkles } from "lucide-react";
 import ArrowPic from "@/public/icons/arrow.webp";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import Image from "next/image";
 import Link from "next/link";
 

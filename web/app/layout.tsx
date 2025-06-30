@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import { ActiveSectionContextProvider } from "@/lib/active-section-context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import { Lexend, Noto_Sans_JP, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { getBaseUrl } from "@/lib/urls";

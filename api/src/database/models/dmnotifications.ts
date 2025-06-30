@@ -4,9 +4,9 @@ import sequelize from "../index";
 class dmnotifications extends Model {
   declare userId: string;
 
-  declare embedcolor: string | null;
-  declare source: string | null;
-
+  declare embedcolor: number | null;
+  declare source: string;
+  declare thumbnail: string | null;
   declare message: string | null;
 
   declare readonly createdAt: Date;
@@ -21,7 +21,7 @@ dmnotifications.init(
       primaryKey: true
     },
     embedcolor: {
-      type: DataTypes.STRING,
+      type: DataTypes.NUMBER,
       allowNull: false,
       defaultValue: "#FF0000"
     },
@@ -29,9 +29,13 @@ dmnotifications.init(
       type: DataTypes.STRING,
       allowNull: false
     },
+    thumbnail: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     message: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: "You got a new notifications from"
     }
   },

@@ -12,7 +12,7 @@ import { userStore } from "@/common/userStore";
 import { webStore } from "@/common/webStore";
 import { LoginButton } from "./loginbutton";
 import { authorize } from "@/lib/authorizeuser";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 import ReduceMotion from "./reducemotion";
 

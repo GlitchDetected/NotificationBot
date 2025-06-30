@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"; // Import utility for conditional class names
+import { cn } from "@/utils/cn"; // Import utility for conditional class names
 import {
   AnimatePresence, // Enables animation presence detection
   MotionValue, // Type for motion values

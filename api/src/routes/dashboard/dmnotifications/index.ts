@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
-import { DataTypes, Model } from "sequelize";
 import dmnotifications from "../../../database/models/dmnotifications";
+import { httpError } from '../../../utils/httperror';
+import { HttpErrorMessage } from '../../../utils/httpjson';
 
 const router = new Hono();
 
@@ -9,14 +10,14 @@ const router = new Hono();
  * Fetch the user dmnotifications configuration for a specific user.
  */
 router.get("/", async (c) => {
-  const userId = c.req.query('userId');
-
-  if (!userId) {
-    return c.json({ message: "userId is required" });
-  }
-
   try {
-    const config = await dmnotifications.findOne({ where: { userId } });
+      const user = c.get('user');
+    
+      if (!user?.accessToken) {
+         return httpError(HttpErrorMessage.MissingAccess)
+      }
+
+    const config = await dmnotifications.findOne({ where: { userId: user.id } });
     if (!config) {
        return c.json({ message: "No user dmnotifications configuration found." });
     }
@@ -24,6 +25,7 @@ router.get("/", async (c) => {
      return c.json({
       embedcolor: config.embedcolor,
       source: config.source,
+      thumbnail: config.thumbnail,
       message: config.message
     });
   } catch (error) {
@@ -32,46 +34,42 @@ router.get("/", async (c) => {
   }
 });
 
-/**
- * POST /dashboard/dmnotifications
- * Create or update a user's dmnotifications configuration
- *
- * Expected JSON payload:
- * {
- *   userId: string,
- *   bgColor?: string, // Optional (defaults to "#000000")
- *   barColor?: string // Optional (defaults to "#FFFFFF")
- * }
- */
-router.post("/", async (c) => {
-  const { userId, embedcolor, source, message } = await c.req.json();
-
-  if (!userId || typeof userId !== "string") {
-     return c.json({ message: "userId is required and must be a string" });
+router.patch("/", async (c) => {
+    const user = c.get("user");
+  if (!user?.id) {
+    return httpError(HttpErrorMessage.MissingAccess);
   }
 
+  const body = await c.req.json();
+
   try {
-    let config = await dmnotifications.findOne({ where: { userId } });
+    let config = await dmnotifications.findOne({ where: { userId: user.id } });
 
     if (config) {
-      // Update
-      if (embedcolor) config.embedcolor = embedcolor;
-      if (source) config.source = source;
-      if (message) config.message = message;
+      const keys: Array<"embedcolor" | "source" | "thumbnail" | "message"> = 
+      ["embedcolor", "source", "thumbnail", "message"];
+      
+      for (const key of keys) {
+        if (key in body) {
+          (config as any)[key] = body[key];
+        }
+      }
       await config.save();
     } else {
       // Create
       config = await dmnotifications.create({
-        userId,
-        embedcolor: embedcolor || "#FF0000",
-        source: source,
-        message: message || "You got a new notifications from"
+        userId: user.id,
+        embedcolor: body.embedcolor || "#FF0000",
+        source: body.source,
+        thumbnail: body.thumbnail,
+        message: body.message || "You got a new notifications from"
       });
     }
 
      return c.json({
       embedcolor: config.embedcolor,
       source: config.source,
+      thumbnail: config.thumbnail,
       message: config.message
     });
   } catch (error) {
@@ -85,14 +83,14 @@ router.post("/", async (c) => {
  * Delete a user's dmnotifications configuration.
  */
 router.delete("/", async (c) => {
-  const userId = c.req.query('userId');
-
-  if (!userId) {
-     return c.json({ message: "userId is required" });
-  }
+      const user = c.get('user');
+    
+      if (!user?.accessToken) {
+         return httpError(HttpErrorMessage.MissingAccess)
+      }
 
   try {
-    const deletedCount = await dmnotifications.destroy({ where: { userId } });
+    const deletedCount = await dmnotifications.destroy({ where: { userId: user.id } });
     if (!deletedCount) {
        return c.json({ message: "No configuration found to delete." });
     }

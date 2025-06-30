@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface TabProps {
   text: string;
@@ -14,7 +14,7 @@ export default function NavTabs({ tabs }: { tabs: string[] }) {
   const [selected, setSelected] = useState<string>(tabs[0]);
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4 rounded-md bg-violet-950 p-6">
+    <div className="flex flex-wrap items-center justify-center gap-4 rounded-md bg-flame-950 p-6">
       {tabs.map((tab) => (
         <Tab text={tab} selected={selected === tab} setSelected={setSelected} key={tab} />
       ))}
