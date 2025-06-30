@@ -1,42 +1,43 @@
-import express, { Application, Request, Response } from "express";
 import baseRouter from "./routes/base-router";
 import baseMiddleware from "./middlewares/base-middleware";
-import cookieParser from "cookie-parser";
-import cors from "cors";
 import db from "./database/index";
 import models from "./database/models";
 import "dotenv/config";
 import apiKeyMiddleware from "./middlewares/verify-requests";
+import { HttpErrorCode, HttpErrorMessage } from "./utils/httpjson";
+import { httpError } from "./utils/httperror";
 
-const app: Application = express();
-app.use(express.json());
+import { serve } from '@hono/node-server'
+import { Hono } from 'hono'
+
+import { cors } from 'hono/cors';
+
+const app = new Hono()
+export default app
 
 // app.use(apiKeyMiddleware); 
 
-app.set("trust proxy", [
-  "loopback", // Trust local (localhost, 127.0.0.1)
-  "::1", // Trust local IPv6
-  "198.41.128.0/17", // Cloudflare IPv4 range
-  "199.27.128.0/21", // Cloudflare IPv4 range
-  "103.21.244.0/22", // Cloudflare IPv4 range
-  "103.22.200.0/22", // Cloudflare IPv4 range
-  "103.31.4.0/22", // Cloudflare IPv4 range
-  "141.101.64.0/18", // Cloudflare IPv4 range
-  "108.162.192.0/18", // Cloudflare IPv4 range
-  "190.93.240.0/20", // Cloudflare IPv4 range
-  "188.114.96.0/22", // Cloudflare IPv4 range
-  "197.234.240.0/22", // Cloudflare IPv4 range
-  "198.41.192.0/22" // Cloudflare IPv4 range
-]);
+app.use(
+  cors({
+    origin: process.env.FRONTEND_SITE || 'http://localhost:3000',
+    credentials: true,
+    exposeHeaders: ['Set-Cookie']
+  })
+);
 
-app.use(cors({ credentials: true, origin: process.env.FRONTEND_SITE, exposedHeaders: ["Set-Cookie"] }));
-app.use(cookieParser());
+app.route("/", baseMiddleware);
+app.route("/", baseRouter);
 
-app.use("/", baseMiddleware);
-app.use("/", baseRouter);
-
-app.get("/", async (req: Request, res: Response): Promise<any> => {
-  return res.status(404).json({ message: "Resource not found" });
+app.all("/*", () => {
+    return Response.json(
+        {
+            code: HttpErrorCode.NotFound,
+            message: HttpErrorMessage.NotFound
+        },
+        {
+            status: HttpErrorCode.NotFound
+        }
+    );
 });
 
 const PORT = Number(process.env.PORT) || 3001;
@@ -56,6 +57,9 @@ db.sync({
 });
 console.log(`Completed database connection`);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Listening on port http://localhost:${PORT}/`);
+serve({
+  fetch: app.fetch,
+  port: PORT
+}, (info) => {
+  console.log(`Server is running on http://localhost:${info.port}`);
 });

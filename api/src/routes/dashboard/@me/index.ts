@@ -1,10 +1,12 @@
-import express, { Request, Response, Router } from "express";
+import { Hono } from 'hono';
+
 import { hasPermissions } from "../../../lib/utils";
 import redis from "../../../lib/redis";
 import db from "../../../database/index";
 import { DataTypes } from "sequelize";
 
-const router: Router = express.Router();
+const router = new Hono();
+
 const DISCORD_ENDPOINT = "https://discord.com/api/v10";
 
 const Prefix = db.define(
@@ -26,41 +28,43 @@ const Prefix = db.define(
   }
 );
 
-router.use(express.json());
+router.get("/", async (c) => {
+  const user = (c.req as any).user;
 
-router.get("/", (req: Request, res: Response) => {
-  if (req.user) {
-    const { accessToken, refreshToken, ...user } = req.user;
-    res.status(200).json(user);
+  if (user) {
+    const { accessToken, refreshToken, ...userWithoutTokens } = user;
+    return c.json(userWithoutTokens);
   } else {
-    res.status(401).json({ message: "Not logged in" });
+    return c.json({ message: "Not logged in" });
   }
 });
 
-router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
-  if (!req.user?.accessToken) {
-    return res.status(401).json({ message: "Not logged in" });
+router.get("/guilds", async (c) => {
+  const user = (c.req as any).user;
+  if (!user?.accessToken) {
+     return c.json({ message: "Not logged in" });
   }
 
-  const skipCache = req.query.skipcache;
+  const url = new URL(c.req.url, "http://localhost");
+  const skipCache = url.searchParams.get("skipcache");
 
   if (!skipCache) {
-    const redisCacheRes = await redis.get(`user-guilds:${req.user.id}`);
+    const redisCacheRes = await redis.get(`user-guilds:${user.id}`);
 
     if (redisCacheRes) {
-      return res.status(200).json(JSON.parse(redisCacheRes));
+       return c.json(JSON.parse(redisCacheRes));
     }
   }
 
   // Fetch the user's guilds
   const guildsRes = await fetch(`${DISCORD_ENDPOINT}/users/@me/guilds`, {
     headers: {
-      Authorization: `Bearer ${req.user.accessToken}`
+      Authorization: `Bearer ${user.accessToken}`
     }
   });
 
   if (!guildsRes.ok) {
-    return res.status(500).json({ message: "Failed to fetch guilds" });
+    return c.json({ message: "Failed to fetch guilds" });
   }
 
   const guilds = await guildsRes.json();
@@ -78,7 +82,7 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
   });
 
   if (!botGuildsRes.ok) {
-    return res.status(500).json({ message: "Failed to fetch bot's guilds" });
+    return c.json({ message: "Failed to fetch bot's guilds" });
   }
 
   const botGuilds = await botGuildsRes.json();
@@ -135,24 +139,25 @@ router.get("/guilds", async (req: Request, res: Response): Promise<any> => {
     })
   );
 
-  await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
+  await redis.set(`user-guilds:${user.id}`, JSON.stringify(guildsWithBot), "EX", 600);
 
-  res.status(200).json(guildsWithBot);
-});
-
-router.post("/guilds", async (req: Request, res: Response): Promise<any> => {
-  if (!req.user?.accessToken) {
-    return res.status(401).json({ message: "Not logged in" });
+  return c.json(guildsWithBot);
+  
+router.post("/guilds", async (c) => {
+  const user = (c.req as any).user;
+  if (!user?.accessToken) {
+    return c.json({ message: "Not logged in" });
   }
 
-  const { guildId, prefix } = req.body;
+  const body = await c.req.json();
+  const { guildId, prefix } = body;
 
   if (!guildId || !prefix) {
-    return res.status(400).json({ message: "Missing guildId or prefix" });
+    return c.json({ message: "Missing guildId or prefix" });
   }
 
   if (prefix.length > 3) {
-    return res.status(400).json({ message: "Invalid prefix (max 3 characters)" });
+    return c.json({ message: "Invalid prefix (max 3 characters)" });
   }
 
   try {
@@ -168,18 +173,19 @@ router.post("/guilds", async (req: Request, res: Response): Promise<any> => {
     }
 
     // Update Redis cache
-    const cachedGuilds = await redis.get(`user-guilds:${req.user.id}`);
+    const cachedGuilds = await redis.get(`user-guilds:${user.id}`);
     if (cachedGuilds) {
       const guilds = JSON.parse(cachedGuilds);
       const updatedGuilds = guilds.map((g: any) => (g.id === guildId ? { ...g, botPrefix: prefix } : g));
-      await redis.set(`user-guilds:${req.user.id}`, JSON.stringify(updatedGuilds), "EX", 600);
+      await redis.set(`user-guilds:${user.id}`, JSON.stringify(updatedGuilds), "EX", 600);
     }
 
-    res.status(200).json({ success: true, botPrefix: prefix });
+    return c.json({ success: true, botPrefix: prefix });
   } catch (error) {
     console.error("Error updating prefix:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return c.json({ message: "Internal server error" });
   }
 });
+  });
 
 export default router;

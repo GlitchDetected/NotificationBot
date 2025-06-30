@@ -1,29 +1,28 @@
-import express, { Request, Response, Router } from "express";
+import { Hono } from 'hono';
 
 import Tpa from "../../../database/models/tpa";
 
-const router: Router = express.Router();
-router.use(express.json());
+const router = new Hono();
 
 /**
  * GET /dashboard/thirdpartyannouncements?guildId=GUILD_ID
  * Fetch the tpa configuration for a specific guild.
  */
-router.get("/", async (req: Request, res: Response): Promise<any> => {
-  const { guildId } = req.query;
+router.get("/", async (c) => {
+  const guildId = c.req.query;
   if (!guildId) {
-    return res.status(400).json({ message: "guildId is required" });
+    return c.json({ message: "guildId is required" });
   }
 
   try {
     const config = await Tpa.findOne({ where: { guildId } });
     if (!config) {
-      return res.status(404).json({ message: "No configuration found for this guild." });
+      return c.json({ message: "No configuration found for this guild." });
     }
-    return res.status(200).json({ config });
+    return c.json({ config });
   } catch (error) {
     console.error("Error fetching tpa configuration:", error);
-    return res.status(500).json({ message: "Error fetching tpa configuration", error });
+    return c.json({ message: "Error fetching tpa configuration", error });
   }
 });
 
@@ -43,7 +42,7 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
  *   twitchChannelUrl?: string
  * }
  */
-router.post("/", async (req: Request, res: Response): Promise<any> => {
+router.post("/", async (c) => {
   const {
     guildId,
     tpaEnabled,
@@ -53,10 +52,10 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
     tiktokChannelUrl,
     twitchDiscordChannelId,
     twitchChannelUrl
-  } = req.body;
+  } = await c.req.json();
 
   if (!guildId) {
-    return res.status(400).json({ message: "guildId is required" });
+    return c.json({ message: "guildId is required" });
   }
 
   try {
@@ -101,10 +100,10 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
       });
     }
 
-    return res.status(200).json({ config });
+    return c.json({ config });
   } catch (error) {
     console.error("Error creating/updating rank configuration:", error);
-    return res.status(500).json({ message: "Error creating/updating rank configuration", error });
+    return c.json({ message: "Error creating/updating rank configuration", error });
   }
 });
 
@@ -112,21 +111,21 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
  * DELETE /dashboard/thirdpartyannouncements?guildId=GUILD_ID
  * Delete a guild's rank configuration.
  */
-router.delete("/", async (req: Request, res: Response): Promise<any> => {
-  const { guildId } = req.query;
+router.delete("/", async (c) => {
+  const guildId = c.req.query;
   if (!guildId) {
-    return res.status(400).json({ message: "guildId is required" });
+    return c.json({ message: "guildId is required" });
   }
 
   try {
     const deletedCount = await Tpa.destroy({ where: { guildId } });
     if (!deletedCount) {
-      return res.status(404).json({ message: "No configuration found for this guild to delete." });
+      return c.json({ message: "No configuration found for this guild to delete." });
     }
-    return res.status(200).json({ message: "Configuration deleted successfully." });
+    return c.json({ message: "Configuration deleted successfully." });
   } catch (error) {
     console.error("Error deleting TPA configuration:", error);
-    return res.status(500).json({ message: "Error deleting TPA configuration", error });
+    return c.json({ message: "Error deleting TPA configuration", error });
   }
 });
 

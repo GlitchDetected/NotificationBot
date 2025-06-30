@@ -1,7 +1,7 @@
-import setReqUser from "./set-req-user";
-import express, { Router } from "express";
+import { setReqUser } from "./set-req-user";
+import { Hono } from "hono";
 
-const router: Router = express.Router();
+const router = new Hono();
 
-router.use(setReqUser);
+router.use('*', setReqUser);
 export default router;

@@ -1,15 +1,17 @@
-import { Request, Response, NextFunction } from "express";
+import { MiddlewareHandler } from "hono";
 import User from "../database/models/User";
 import jwt from "jsonwebtoken";
+import { parse } from "cookie"
 
 interface DecodedToken {
   id?: string;
 }
 
-export default async function setReqUser(req: Request, res: Response, next: NextFunction) {
+export const setReqUser: MiddlewareHandler = async (c, next) => {
   try {
-    const cookies = req.cookies;
-    const token = cookies?.sessiontoken; //sessiontoken to access data
+    const cookieHeader = c.req.header('Cookie') || '';
+    const cookies = parse(cookieHeader);
+    const token = cookies?.sessiontoken;
 
     if (!token) return next();
 
@@ -18,11 +20,13 @@ export default async function setReqUser(req: Request, res: Response, next: Next
     if (decodedToken?.id) {
       const targetUser = await User.findOne({ where: { id: decodedToken.id } });
 
-      if (targetUser) req.user = targetUser;
+      if (targetUser) {
+        c.set('user', targetUser)
+      }
     }
   } catch (error) {
     console.error(error);
   }
 
-  next();
+  await next();
 }

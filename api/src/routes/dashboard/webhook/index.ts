@@ -1,20 +1,20 @@
-import express, { Request, Response, Router } from "express";
+import { Hono } from 'hono';
 import { WebhookClient } from "discord.js";
 
-const router: Router = express.Router();
+const router = new Hono();
 
-router.post("/", async (req: Request, res: Response): Promise<any> => {
+router.post("/", async (c) => {
   try {
-    const { webhookUrl, message, webhookavatar, username } = req.body;
+    const { webhookUrl, message, webhookavatar, username } = await c.req.json();
 
     if (!webhookUrl || !message) {
-      return res.status(400).json({ error: "webhookUrl and message are required." });
+      return c.json({ error: "webhookUrl and message are required." });
     }
 
     // Extract webhook ID and token from the URL
     const match = webhookUrl.match(/\/webhooks\/(\d+)\/([\w-]+)/);
     if (!match) {
-      return res.status(400).json({ error: "Invalid webhook URL." });
+      return c.json({ error: "Invalid webhook URL." });
     }
     const [, webhookId, webhookToken] = match;
 
@@ -28,14 +28,14 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
       avatarURL: webhookavatar || "https://notificationbot.up.railway.app/images/notificationbot.png"
     });
 
-    res.json({
+    return c.json({
       success: true,
       message: "Message sent successfully.",
       response
     });
   } catch (error: any) {
     console.error("Error sending webhook to Discord:", error.message);
-    res.status(500).json({ error: "Failed to send webhook to Discord", details: error.message });
+    return c.json({ error: "Failed to send webhook to Discord", details: error.message });
   }
 });
 

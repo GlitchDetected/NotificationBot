@@ -1,31 +1,38 @@
-import express, { Request, Response, Router } from "express";
+import { Hono } from 'hono'
+import {
+  getCookie,
+  getSignedCookie,
+  setCookie,
+  setSignedCookie,
+  deleteCookie,
+} from 'hono/cookie'
 import User from "../../database/models/User";
 import jwt from "jsonwebtoken";
+import { httpError } from '../../utils/httperror';
+import { HttpErrorMessage } from '../../utils/httpjson';
 
-const router: Router = express.Router();
+const router = new Hono();
 
-// GET: api.notification.bot/auth/signin
-// GET: api.notification.bot/auth/callback
+// GET: api.notificationbot.xyz/auth/signin
+// GET: api.notificationbot.xyz/auth/callback
 
 const FRONTEND_SITE = process.env.FRONTEND_SITE || "http://localhost:3000";
 const DASHBOARD_URL = `${FRONTEND_SITE}/profile`;
 
-router.get("/signin", (req: Request, res: Response) => {
-  res.redirect(`${process.env.OAUTH_URI}`);
+router.get("/signin", async (c) => {
+  return c.redirect(`${process.env.OAUTH_URI}`);
 });
 
-router.get("/callback", async (req: Request, res: Response): Promise<any> => {
+router.get("/callback", async (c) => {
   const DISCORD_ENDPOINT = "https://discord.com/api/v10";
   const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
   const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
   const REDIRECT_URI = process.env.DISCORD_REDIRECT_URI;
 
-  const { code } = req.query;
+  const code = c.req.query('code');
 
   if (!code) {
-    return res.status(400).json({
-      error: 'A "code" query parameter must be present in the URL.'
-    });
+      return httpError(HttpErrorMessage.coderequired);
   }
 
   try {
@@ -46,7 +53,7 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
     if (!oauthRes.ok) {
       const oauthError = await oauthRes.text();
       console.error("OAuth Error:", oauthError);
-      return res.status(400).send("OAuth error: " + oauthError);
+      return c.text("OAuth error: " + oauthError);
     }
 
     const oauthResJson = await oauthRes.json();
@@ -62,7 +69,7 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
     if (!userRes.ok) {
       const userError = await userRes.text();
       console.error("User Fetch Error:", userError);
-      return res.status(400).send("User fetch error: " + userError);
+      return c.text("User fetch error: " + userError);
     }
 
     const userResJson = await userRes.json();
@@ -102,35 +109,32 @@ router.get("/callback", async (req: Request, res: Response): Promise<any> => {
       { expiresIn: "7d" }
     );
 
-    res
-      .status(200)
-      .cookie("sessiontoken", token, {
+      setCookie(c, 'sessiontoken', token, {
         domain: process.env.cookieDomain,
         httpOnly: true,
         secure: true,
         // secure: process.env.NODE_ENV === "production",
-        maxAge: 6.048e8,
+        maxAge: 604800,
+        expires: new Date(Date.UTC(2000, 11, 24, 10, 30, 59, 900)),
         sameSite: "none"
-        // expires: new Date(Date.now() + 6.048e8),
         // sameSite: ''
       })
-      .redirect(DASHBOARD_URL);
+      return c.redirect(DASHBOARD_URL);
   } catch (error) {
     console.error("Error during callback:", error);
-    return res.status(500).send("Internal server error");
+    return c.text("Internal server error");
   }
 });
 
-router.get("/signout", (req: Request, res: Response) => {
-  res
-    .clearCookie("token", {
+router.get("/signout", async (c) => {
+  deleteCookie(c, 'sessiontoken', {
       domain: process.env.cookieDomain,
       path: "/",
       httpOnly: true,
       secure: true,
       sameSite: "none"
     })
-    .sendStatus(200);
+    return c.json({ message: "Signed out successfully" }, 200);
 });
 
 export default router;

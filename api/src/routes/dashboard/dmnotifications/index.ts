@@ -1,41 +1,34 @@
-import express, { Request, Response, Router } from "express";
+import { Hono } from 'hono';
 import { DataTypes, Model } from "sequelize";
 import dmnotifications from "../../../database/models/dmnotifications";
 
-const router: Router = express.Router();
-router.use(express.json());
-
-function getQueryParam(param: unknown): string | undefined {
-  if (typeof param === "string") return param;
-  if (Array.isArray(param) && param.length > 0) return param[0] as string;
-  return undefined;
-}
+const router = new Hono();
 
 /**
  * GET /dashboard/dmnotifications?userId=USER_ID
  * Fetch the user dmnotifications configuration for a specific user.
  */
-router.get("/", async (req: Request, res: Response): Promise<any> => {
-  const userId = getQueryParam(req.query.userId);
+router.get("/", async (c) => {
+  const userId = c.req.query('userId');
 
   if (!userId) {
-    return res.status(400).json({ message: "userId is required" });
+    return c.json({ message: "userId is required" });
   }
 
   try {
     const config = await dmnotifications.findOne({ where: { userId } });
     if (!config) {
-      return res.status(404).json({ message: "No user dmnotifications configuration found." });
+       return c.json({ message: "No user dmnotifications configuration found." });
     }
 
-    return res.status(200).json({
+     return c.json({
       embedcolor: config.embedcolor,
       source: config.source,
       message: config.message
     });
   } catch (error) {
     console.error("Error fetching user dmnotifications configuration:", error);
-    return res.status(500).json({ message: "Error fetching user dmnotifications configuration", error });
+     return c.json({ message: "Error fetching user dmnotifications configuration", error });
   }
 });
 
@@ -50,11 +43,11 @@ router.get("/", async (req: Request, res: Response): Promise<any> => {
  *   barColor?: string // Optional (defaults to "#FFFFFF")
  * }
  */
-router.post("/", async (req: Request, res: Response): Promise<any> => {
-  const { userId, embedcolor, source, message } = req.body;
+router.post("/", async (c) => {
+  const { userId, embedcolor, source, message } = await c.req.json();
 
   if (!userId || typeof userId !== "string") {
-    return res.status(400).json({ message: "userId is required and must be a string" });
+     return c.json({ message: "userId is required and must be a string" });
   }
 
   try {
@@ -76,14 +69,14 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
       });
     }
 
-    return res.status(200).json({
+     return c.json({
       embedcolor: config.embedcolor,
       source: config.source,
       message: config.message
     });
   } catch (error) {
     console.error("Error creating/updating user dmnotifications configuration:", error);
-    return res.status(500).json({ message: "Error creating/updating dmnotifications configuration", error });
+     return c.json({ message: "Error creating/updating dmnotifications configuration", error });
   }
 });
 
@@ -91,22 +84,22 @@ router.post("/", async (req: Request, res: Response): Promise<any> => {
  * DELETE /dashboard/dmnotifications?userId=USER_ID
  * Delete a user's dmnotifications configuration.
  */
-router.delete("/", async (req: Request, res: Response): Promise<any> => {
-  const userId = getQueryParam(req.query.userId);
+router.delete("/", async (c) => {
+  const userId = c.req.query('userId');
 
   if (!userId) {
-    return res.status(400).json({ message: "userId is required" });
+     return c.json({ message: "userId is required" });
   }
 
   try {
     const deletedCount = await dmnotifications.destroy({ where: { userId } });
     if (!deletedCount) {
-      return res.status(404).json({ message: "No configuration found to delete." });
+       return c.json({ message: "No configuration found to delete." });
     }
-    return res.status(200).json({ message: "dmnotifications configuration deleted successfully." });
+     return c.json({ message: "dmnotifications configuration deleted successfully." });
   } catch (error) {
     console.error("Error deleting dmnotifications configuration:", error);
-    return res.status(500).json({ message: "Error deleting dmnotifications configuration", error });
+     return c.json({ message: "Error deleting dmnotifications configuration", error });
   }
 });
 

@@ -32,7 +32,7 @@ User.init(
     },
     displayName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     avatarHash: {
       type: DataTypes.STRING,

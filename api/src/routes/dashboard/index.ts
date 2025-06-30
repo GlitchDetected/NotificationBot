@@ -1,16 +1,17 @@
-import express, { Router } from "express";
+import { Hono } from 'hono';
+
 import dashboardRouter from "./@me";
 import tpaRouter from "./tpa";
 import dmnotificationsRouter from "./dmnotifications";
 import webhookRouter from "./webhook";
 import feednotificationRouter from "./feednotifications";
 
-const router: Router = express.Router();
+const router = new Hono();
 
-router.use("/@me", dashboardRouter);
-router.use("/thirdpartyannouncements", tpaRouter);
-router.use("/dmnotifications", dmnotificationsRouter);
-router.use("/webhook", webhookRouter);
-router.use("/feednotifications", feednotificationRouter);
+router.route("/@me", dashboardRouter);
+router.route("/thirdpartyannouncements", tpaRouter);
+router.route("/dmnotifications", dmnotificationsRouter);
+router.route("/webhook", webhookRouter);
+router.route("/feednotifications", feednotificationRouter);
 
 export default router;
