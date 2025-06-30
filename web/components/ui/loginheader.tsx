@@ -169,7 +169,7 @@ export function LoginHeader() {
                 <button
                     className="ml-auto text-red-500 m-4"
                     onClick={() => {
-                        window.location.href = "/login?logout=true";
+                        window.location.href = "/logout";
                         userStore.setState({ __fetched: true });
                         setMenu(false);
                     }}

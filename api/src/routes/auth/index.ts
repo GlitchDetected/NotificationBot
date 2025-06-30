@@ -134,7 +134,7 @@ router.get("/signout", async (c) => {
       secure: true,
       sameSite: "none"
     })
-    return c.json({ message: "Signed out successfully" }, 200);
+    return c.redirect(FRONTEND_SITE);
 });
 
 export default router;

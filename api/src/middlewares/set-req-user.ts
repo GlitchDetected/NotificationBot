@@ -1,4 +1,5 @@
 import { MiddlewareHandler } from "hono";
+import { getCookie } from "hono/cookie";
 import User from "../database/models/User";
 import jwt from "jsonwebtoken";
 import { parse } from "cookie"
@@ -9,9 +10,7 @@ interface DecodedToken {
 
 export const setReqUser: MiddlewareHandler = async (c, next) => {
   try {
-    const cookieHeader = c.req.header('Cookie') || '';
-    const cookies = parse(cookieHeader);
-    const token = cookies?.sessiontoken;
+    const token = getCookie(c, 'sessiontoken');
 
     if (!token) return next();
 

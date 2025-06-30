@@ -15,6 +15,7 @@ export const HttpErrorCode = {
     UnknownAccount: 10_001,
 
     // validation issue - 50xxx
+    InvalidSessionToken: 50_001,
     MissingAccess: 50_001
 } as const;
 
@@ -35,7 +36,8 @@ export const HttpErrorMessage = {
     UnknownAccount: "Unknown account",
 
     // validation issue - 50xxx
-    MissingAccess: "Missing access"
+    InvalidSessionToken: "invalid or missing session token",
+    MissingAccess: "Missing access or not logged in"
 } satisfies Record<keyof typeof HttpErrorCode, string>;
 
 export type HttpErrorEntry = typeof HttpErrorMessage[keyof typeof HttpErrorMessage];

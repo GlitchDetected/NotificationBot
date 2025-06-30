@@ -5,6 +5,9 @@ import redis from "../../../lib/redis";
 import db from "../../../database/index";
 import { DataTypes } from "sequelize";
 
+import { httpError } from '../../../utils/httperror';
+import { HttpErrorMessage } from '../../../utils/httpjson';
+
 const router = new Hono();
 
 const DISCORD_ENDPOINT = "https://discord.com/api/v10";
@@ -35,14 +38,14 @@ router.get("/", async (c) => {
     const { accessToken, refreshToken, ...userWithoutTokens } = user;
     return c.json(userWithoutTokens);
   } else {
-    return c.json({ message: "Not logged in" });
+    return httpError(HttpErrorMessage.MissingAccess)
   }
 });
 
 router.get("/guilds", async (c) => {
   const user = (c.req as any).user;
   if (!user?.accessToken) {
-     return c.json({ message: "Not logged in" });
+     return httpError(HttpErrorMessage.MissingAccess)
   }
 
   const url = new URL(c.req.url, "http://localhost");
