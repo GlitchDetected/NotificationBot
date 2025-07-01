@@ -5,7 +5,7 @@ class dmnotifications extends Model {
   declare userId: string;
 
   declare embedcolor: number | null;
-  declare source: string;
+  declare source: string | null;
   declare thumbnail: string | null;
   declare message: string | null;
 
@@ -21,13 +21,12 @@ dmnotifications.init(
       primaryKey: true
     },
     embedcolor: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
-      defaultValue: "#FF0000"
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     source: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     thumbnail: {
       type: DataTypes.STRING,

@@ -59,10 +59,10 @@ router.patch("/", async (c) => {
       // Create
       config = await dmnotifications.create({
         userId: user.id,
-        embedcolor: body.embedcolor || "#FF0000",
+        embedcolor: body.embedcolor,
         source: body.source,
         thumbnail: body.thumbnail,
-        message: body.message || "You got a new notifications from"
+        message: body.message,
       });
     }
 

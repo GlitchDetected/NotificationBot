@@ -190,7 +190,7 @@ export interface ApiV1UsersMeGetResponse {
 
   dmnotifications?: {
   embedcolor?: number;
-  source?: string;
+  source?: string | null;
   thumbnail?: string | null;
   message?: string | null;
   };

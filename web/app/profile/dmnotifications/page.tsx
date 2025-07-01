@@ -4,12 +4,15 @@ import { type User, userStore } from "@/common/userStore";
 import TextInput from "@/components/input/textinput";
 import { deepMerge } from "@/utils/merge";
 import ImageUrlInput from "@/components/input/imageurlinput";
+import { Section } from "@/components/section";
 
 export default function Home() {
 
       const user = userStore((s) => s);
 
     if (user?.id && !user.extended) return <></>;
+
+    // todo: zustand store state not saving
 
   return (<>
     <div className="lg:flex gap-3">
@@ -22,9 +25,10 @@ export default function Home() {
                         type="color"
                         defaultState={user?.extended?.dmnotifications?.embedcolor ?? 0}
                         onSave={(value) => {
-                            userStore.setState(deepMerge<User>(user, 
-                              { extended: { dmnotifications: { 
-                                embedcolor: Number(value), 
+                            userStore.setState(deepMerge<User>(user, { 
+                              extended: { 
+                                dmnotifications: {
+                                  embedcolor: Number(value),
                               } } }));
                         }}
           />
@@ -36,7 +40,7 @@ export default function Home() {
                         dataName="source"
                         description="Where your notification is coming from"
                         type="text"
-                        defaultState={user?.extended?.dmnotifications?.source ?? "https://example.com/videos.rss"}
+                        defaultState={user?.extended?.dmnotifications?.source || ""}
                         onSave={(value) => {
                             userStore.setState(deepMerge<User>(user, 
                               { extended: { dmnotifications: { 
@@ -51,19 +55,23 @@ export default function Home() {
                         name="Message"
                         url="/dashboard/dmnotifications"
                         dataName="message"
-                        description="Custom message (optional)"
+                        description="Custom message"
                         type="text"
-                        defaultState={user?.extended?.dmnotifications?.message ?? "You got a new notifications from"}
+                        defaultState={user?.extended?.dmnotifications?.message || "You got a new notifications from"}
                         onSave={(value) => {
                              userStore.setState(deepMerge<User>(user, 
                               { extended: { dmnotifications: { 
-                                message: String(value), 
+                                message: String(value),
                               } } }));
                         }}
           />
-        </div>
 
-                    <ImageUrlInput
+        <Section
+        title="Optional thumbnail"
+        >
+        </Section>
+
+      <ImageUrlInput
             name="Thumbnail"
             url="/dashboard/dmnotifications"
             ratio="aspect-[4/1]"
@@ -73,9 +81,11 @@ export default function Home() {
             onSave={(value) => {
               userStore.setState(deepMerge<User>(user, 
                               { extended: { dmnotifications: { 
-                                thumbnail: value,
+                                thumbnail: String(value),
                               } } }));
-                        }}
-          />
-  </>);
+         }}
+        />
+      </div>
+    </>
+  );
 }
