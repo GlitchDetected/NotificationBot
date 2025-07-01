@@ -18,22 +18,13 @@ export interface ApiV1GuildsGetResponse {
   icon: string | null;
   banner: string | null;
   memberCount: number;
-  premiumTier: number;
   inviteUrl: string | undefined;
   description: string | null;
+  botPrefix: string | null;
   follownewsChannel?: {
     id: string;
     name: string;
   };
-  tts: {
-    channelId: string | null;
-    announceUser: boolean;
-    logChannelId: string | null;
-    priorityRoleId: string | null;
-    maxLength?: number | null;
-    queue: boolean | null;
-  };
-  embedLinks: boolean;
 }
 
 export interface ApiV1GuildsTopmembersGetResponse {

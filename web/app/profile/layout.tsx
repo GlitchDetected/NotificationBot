@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
-import { ListTab } from "@/components/list";
+import { Suspense, useEffect, useState, useMemo } from "react";
+import { ListTab } from "@/components/list-tab";
 import { Skeleton } from "@heroui/react";
 import { HiSpeakerphone, HiHome } from "react-icons/hi";
 import Image from "next/image";
@@ -17,10 +17,8 @@ import { redirect } from "next/navigation";
 import type { ApiV1UsersMeGetResponse } from "@/typings";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [loading, setLoading] = useState(true);
-
   // const cookies = useCookies();
-  // const session = cookies.get("sessiontoken");
+  // const session = useMemo(() => cookies.get("sessiontoken"), [cookies]);
 
   // if (!session) redirect("/login?callback=/profile");
 
@@ -62,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="flex flex-col w-full p-25">
-      <title>NotificationBot Profile</title>
+      <title>Your Profile</title>
 
       {/* User Info Section */}
       {user && (
@@ -80,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CircleUser className="w-10 h-10" />
           )}
           <div>
-            <div className="text-xs text-gray-400">{user.displayName || "No Display Name"}</div>
+            <div className="text-xs text-gray-400">{user.displayName || user.username}</div>
             <div className="font-semibold text-sm">{user.username}</div>
           </div>
         </div>

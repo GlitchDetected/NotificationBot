@@ -13,7 +13,7 @@ export function ClickOutside({
     useEffect(() => {
         const handleDocumentClick = (event: MouseEvent): void => {
 
-            // @ts-expect-error -- It think's closest doesn't exist, but it does
+            // @ts-expect-error
             if (!event.target?.closest(".modal")) {
                 onClose();
             }

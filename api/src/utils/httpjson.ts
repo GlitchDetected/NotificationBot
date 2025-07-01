@@ -7,6 +7,7 @@ export const HttpErrorCode = {
 
     // 5xx
     ServerError: 500,
+    guildFetchError: 500,
 
     // custom using 4xx
     InvalidCaptcha: 403,
@@ -28,6 +29,7 @@ export const HttpErrorMessage = {
 
     // 5xx
     ServerError: "Something went wrong, try again later",
+    guildFetchError: "Failed to fetch guild details",
 
     // custom using 4xx
     InvalidCaptcha: "Complete the CAPTCHA and try again",

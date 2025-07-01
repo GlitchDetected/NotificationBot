@@ -1,69 +1,116 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
-import { ListTab } from "@/components/list";
+import { Suspense, useEffect, useState, useMemo } from "react";
+import { ListTab } from "@/components/list-tab";
 import { Button, Skeleton } from "@heroui/react";
-import { useParams, usePathname } from "next/navigation";
-import { getCanonicalUrl } from "@/lib/urls";
-import { HiArrowNarrowLeft, HiChartBar, HiHome, HiShare, HiUserAdd, HiCursorClick, HiRss } from "react-icons/hi";
 import Image from "next/image";
 import Fallbacklogo from "@/public/images/fallbacklogo.png";
+import { guildStore } from "@/common/guildStore";
+import { useQuery } from "@tanstack/react-query";
+import { cacheOptions, getData } from "@/lib/api";
+import { useCookies } from "next-client-cookies";
+import { redirect, useParams } from "next/navigation";
+import type { ApiV1GuildsChannelsGetResponse, ApiV1GuildsEmojisGetResponse, ApiV1GuildsGetResponse, ApiV1GuildsRolesGetResponse } from "@/typings";
+import Head from "next/head";
+import { intl } from "@/utils/intl";
+import ImageReduceMotion from "@/components/ui/reducemotion";
+import { ScreenMessage, SupportButton } from "@/components/screen-message";
+import { ClientButton } from "@/components/clientfunc";
+import { 
+  HiArrowNarrowLeft, HiBell, HiPaperAirplane, 
+  HiUsers, HiViewGridAdd, HiRss, HiHome
+} 
+from "react-icons/hi";
 
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
-const SIGNIN_URL = `${NEXT_PUBLIC_API}/auth/signin`;
+function useGuildData<T extends unknown[]>(
+    url: string,
+    onLoad: (data: T, error: boolean) => void
+) {
+const query = useQuery({
+    queryKey: [url],
+    queryFn: () => getData<T>(url),
+    enabled: !!guildStore((g) => g)?.id,
+    ...cacheOptions
+  });
+
+const { data } = query;
+
+useEffect(() => {
+  if (data) {
+    const isError = !data || "message" in data;
+    onLoad(isError ? ([] as unknown as T) : data, isError);
+  }
+}, [data]);
+
+return query;
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const { guildId } = useParams();
-  const [guild, setGuild] = useState<any>(null);
-  const path = usePathname();
+   const cookies = useCookies();
+    const params = useParams();
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        // Fetch user data
-        const userRes = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me`, { credentials: "include" });
-        if (!userRes.ok) {
-          if (userRes.status === 401) window.location.href = SIGNIN_URL;
-          throw new Error("Failed to fetch user data");
-        }
-        const userData = await userRes.json();
-        setUser(userData.dataValues);
+    const [error, setError] = useState<string>();
+    const [loaded, setLoaded] = useState<string[]>([]);
 
-        // Fetch guild data
-        const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/@me/guilds`, {
-          credentials: "include"
+    const guild = guildStore((g) => g);
+
+    const session = useMemo(() => cookies.get("session"), [cookies]);
+
+    // if (!session) redirect(`/login?callback=/dashboard/${params.guildId}`);
+
+    const url = `/guilds/${params.guildId}` as const;
+
+    const { data, isLoading } = useQuery({
+        queryKey: [url],
+        queryFn: () => getData<ApiV1GuildsGetResponse>(url),
+        enabled: !!params.guildId,
+            ...cacheOptions,
+            refetchOnMount: true
         });
 
-        if (!res.ok) {
-          throw new Error("An error occurred");
+    useGuildData<ApiV1GuildsChannelsGetResponse[]>(
+        `${url}/channels`,
+        (data) => {
+            guildStore.setState({ ...guild, channels: data });
+            setLoaded((loaded) => [...loaded, "channels"]);
+        }
+    );
+
+    useGuildData<ApiV1GuildsRolesGetResponse[]>(
+        `${url}/roles`,
+        (data) => {
+            guildStore.setState({ ...guild, roles: data });
+            setLoaded((loaded) => [...loaded, "roles"]);
+        }
+    );
+
+    useGuildData<ApiV1GuildsEmojisGetResponse[]>(
+        `${url}/emojis`,
+        (data) => {
+            guildStore.setState({ ...guild, emojis: data });
+            setLoaded((loaded) => [...loaded, "emojis"]);
+        }
+    );
+
+    useEffect(() => {
+        if (data && "message" in data) {
+            setError(data?.message);
+            return;
         }
 
-        const guilds = await res.json();
-        const selectedGuild = guilds.find((guild) => guild.id === guildId);
-
-        if (selectedGuild) {
-          setGuild(selectedGuild);
-        } else {
-          console.error("Guild not found");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-
-      setLoading(false);
-    })();
-  }, [guildId]);
+        guildStore.setState(data);
+    }, [data]);
 
   return (
-    <div className="flex flex-col w-full mb-20 mt-30 pt-20 px-4">
-      <title>{`${guild?.name}'s Dashboard`}</title>
+    <div className="flex flex-col w-full">
+                  {guild?.name && (
+                <Head>
+                    <title>{`${guild?.name}'s Dashboard`}</title>
+                </Head>
+            )}
 
       <div className="flex flex-col gap-5 mb-6">
-        <div className="flex gap-2">
                           <Button
                     as={Link}
                     className="w-fit"
@@ -72,46 +119,82 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
                     Profile
                 </Button>
-        </div>
 
-        <div className="flex items-center space-x-4">
-          <Image
-            src={
-              guild?.icon ? `https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}.webp?size=128` : Fallbacklogo
-            }
-            alt={guild?.name || "Guild Icon"}
-            className="w-14 h-14 rounded-full"
-            width={128}
-            height={128}
-            priority
-          />
-          {loading ? (
-            <div className="mt-1.5">
-              <Skeleton className="rounded-xl w-32 h-6 mb-2" />
-              <Skeleton className="rounded-xl w-10 h-3.5" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-1">
-              <div className="text-3xl font-semibold">{guild?.name || "Unknown Server"}</div>
-            </div>
-          )}
-        </div>
+                <div className="text-lg flex gap-5">
+                    <Skeleton isLoaded={!isLoading} className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0">
+                        <ImageReduceMotion
+                            alt="this server"
+                            className="rounded-full"
+                            url={`https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}`}
+                            size={128}
+                        />
+                    </Skeleton>
+
+                    {isLoading ?
+                        <div className="mt-1.5">
+                            <Skeleton className="rounded-xl w-32 h-6 mb-2" />
+                            <Skeleton className="rounded-xl w-10 h-3.5" />
+                        </div>
+                        :
+                        <div className="flex flex-col gap-1">
+                            <div className="text-2xl dark:text-neutral-200 text-neutral-800 font-medium">{guild?.name || "Unknown Server"}</div>
+                            <div className="text-sm font-semibold flex items-center gap-1"> <HiUsers /> {intl.format(guild?.memberCount || 0)}</div>
+                        </div>
+                    }
+
+                </div>
       </div>
+                  <Suspense>
+                <ListTab
+                    tabs={[
+                        {
+                            name: "Overview",
+                            value: "/",
+                            icon: <HiHome />
+                        },
+                        {
+                            name: "Third Party Notifications",
+                            value: "/tpa",
+                            icon: <HiBell />
+                        },
+                        {
+                            name: "Webhook",
+                            value: "/webhook",
+                            icon: <HiPaperAirplane className="rotate-45" />
+                        },
+                        {
+                            name: "Feed Notifications",
+                            value: "/feednotifications",
+                            icon: <HiRss />
+                        }
+                    ]}
+                    url={`/dashboard/${params.guildId}`}
+                    disabled={!guild || !!error}
+                />
+            </Suspense>
 
-      <Suspense>
-        <ListTab
-          tabs={[
-            { name: "Overview", value: "/", icon: <HiHome /> },
-            { name: "Third Party Notifications", value: "/tpa", icon: <HiChartBar /> },
-            { name: "Custom Announcement", value: "/webhook", icon: <HiUserAdd /> },
-            { name: "Feed Notifications", value: "/feednotifications", icon: <HiRss /> }
-          ]}
-          url={`/dashboard/${guildId}`}
-          disabled={!guild}
-        />
-      </Suspense>
-
-      <div className="mt-4">{guild && !loading ? children : <></>}</div>
+                  {error ?
+                <ScreenMessage
+                    title={error.includes("permssions")
+                        ? "You cannot access this page.."
+                        : "Something went wrong on this page.."
+                    }
+                    description={error}
+                    buttons={<>
+                        <ClientButton
+                            as={Link}
+                            href="/profile"
+                            startContent={<HiViewGridAdd />}
+                        >
+                            Go back to Dashboard
+                        </ClientButton>
+                        <SupportButton />
+                    </>}
+                >
+                </ScreenMessage>
+                :
+                (guild && loaded.length === 3) ? children : <></>
+            }
     </div>
   );
 }
