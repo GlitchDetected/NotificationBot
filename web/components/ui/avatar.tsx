@@ -11,10 +11,7 @@ const Avatar = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Root
         ref={ref}
-        className={cn(
-            "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-            className
-        )}
+        className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
         {...props}
     />
 ));
@@ -24,11 +21,7 @@ const AvatarImage = React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Image>,
     React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
 >(({ className, ...props }, ref) => (
-    <AvatarPrimitive.Image
-        ref={ref}
-        className={cn("aspect-square h-full w-full", className)}
-        {...props}
-    />
+    <AvatarPrimitive.Image ref={ref} className={cn("aspect-square h-full w-full", className)} {...props} />
 ));
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
@@ -38,10 +31,7 @@ const AvatarFallback = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Fallback
         ref={ref}
-        className={cn(
-            "flex h-full w-full items-center justify-center rounded-full bg-muted",
-            className
-        )}
+        className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className)}
         {...props}
     />
 ));
@@ -59,10 +49,7 @@ function UserAvatar({
     alt: string;
 } & React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>) {
     return (
-        <Avatar
-            className={cn("rounded-full", className)}
-            {...props}
-        >
+        <Avatar className={cn("rounded-full", className)} {...props}>
             <AvatarImage alt={alt} src={src} />
             <AvatarFallback>{(username || "Notificationbot").toLowerCase().slice(0, 2)}</AvatarFallback>
         </Avatar>
@@ -77,10 +64,7 @@ function AvatarGroup({
     children: ReturnType<typeof UserAvatar>[];
 } & React.ComponentPropsWithoutRef<"div">) {
     return (
-        <div
-            className={cn("flex", className)}
-            {...props}
-        >
+        <div className={cn("flex", className)} {...props}>
             {children}
         </div>
     );

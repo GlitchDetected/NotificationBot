@@ -1,26 +1,19 @@
 {
-    "pages": [
-        {
-            "name": "🏠 Home",
-            "file": "home.md",
-            "description": "Main page of the NotificationBot documentation!"
-        },
-        {
-            "name": "🔔 DM Notifications",
-            "file": "dmnotifications.md",
-            "image": "/docs-assets/open-graph/greetings.webp",
-            "description": "Create a warm and inviting atmosphere for new members in your community!",
-            "permissions": {
-                "bot": [
-                    "View Channel",
-                    "Send Messages",
-                    "Embed Links",
-                    "Attach Files"
-                ],
-                "user": [
-                    "Manage Server"
-                ]
-            }
-        }
-     ]
+  "pages": [
+    {
+      "name": "🏠 Home",
+      "file": "home.md",
+      "description": "Main page of the NotificationBot documentation!"
+    },
+    {
+      "name": "🔔 DM Notifications",
+      "file": "dmnotifications.md",
+      "image": "/docs-assets/open-graph/greetings.webp",
+      "description": "Create a warm and inviting atmosphere for new members in your community!",
+      "permissions": {
+        "bot": ["View Channel", "Send Messages", "Embed Links", "Attach Files"],
+        "user": ["Manage Server"]
+      }
+    }
+  ]
 }

@@ -1,6 +1,6 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { cacheOptions, getData } from "@/lib/api";
 
@@ -21,7 +21,7 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         queryFn: () => getData<T[]>(url),
         enabled: !!params.guildId,
         ...cacheOptions
-        });
+    });
 
     const itemId = search.get("id") as string;
     const item = (Array.isArray(data) ? data : []).find((i) => i.id === itemId);
@@ -36,10 +36,7 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         [search]
     );
 
-    const setItemId = useCallback(
-        (id: string) => router.push(`${pathname}?${createQueryString("id", id)}`),
-        [router]
-    );
+    const setItemId = useCallback((id: string) => router.push(`${pathname}?${createQueryString("id", id)}`), [router]);
 
     const editItem = useCallback(
         <K extends keyof T>(key: K, value: T[K]) => {
@@ -57,10 +54,7 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         (newItem: T) => {
             if (!Array.isArray(data)) return;
 
-            queryClient.setQueryData<T[]>([url], () => [
-                ...(data || []),
-                newItem
-            ]);
+            queryClient.setQueryData<T[]>([url], () => [...(data || []), newItem]);
         },
         [data, url, queryClient]
     );
@@ -69,9 +63,7 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         (id: string) => {
             if (!Array.isArray(data)) return;
 
-            queryClient.setQueryData<T[]>([url], () =>
-                data?.filter((t) => t.id !== id) || []
-            );
+            queryClient.setQueryData<T[]>([url], () => data?.filter((t) => t.id !== id) || []);
         },
         [data, url, queryClient]
     );
@@ -84,6 +76,8 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         addItem,
         removeItem,
         isLoading,
-        error: error as unknown as string || (data && "message" in data ? JSON.stringify(data.message) : (error ? `${error}` : null))
+        error:
+      (error as unknown as string) ||
+      (data && "message" in data ? JSON.stringify(data.message) : error ? `${error}` : null)
     };
 }

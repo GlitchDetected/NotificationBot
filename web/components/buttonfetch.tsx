@@ -68,30 +68,19 @@ export default function Fetch({
     };
 
     return (
-        <div className={className} >
+        <div className={className}>
             <Button
                 className="w-full"
                 onClick={handle}
-                variant={
-                    state === State.Success
-                        ? "success"
-                        : "flat"
-                }
+                variant={state === State.Success ? "success" : "flat"}
                 disabled={state !== State.Idle}
                 size={size}
             >
-                {state === State.Loading
-                    ? <LoaderCircleIcon className="animate-spin" />
-                    : icon
-                }
+                {state === State.Loading ? <LoaderCircleIcon className="animate-spin" /> : icon}
                 {label}
             </Button>
 
-            {error &&
-                <div className="text-red-500 text-sm mt-1">
-                    {error}
-                </div>
-            }
+            {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
         </div>
     );
 }

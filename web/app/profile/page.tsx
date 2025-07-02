@@ -1,18 +1,19 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useCookies } from "next-client-cookies";
-import Searchbar from "@/components/input/searchbar";
+import { useMemo, useState } from "react";
+import { HiRefresh, HiUserAdd, HiViewGridAdd } from "react-icons/hi";
+
+import Smartinput from "@/components/input/smart-input";
+import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import ImageReduceMotion from "@/components/ui/reducemotion";
 import { useApi } from "@/lib/api/hooks";
 import type { ApiV1UsersMeGuildsGetResponse } from "@/typings";
-import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
-import { HiChartBar, HiRefresh, HiUserAdd, HiViewGridAdd } from "react-icons/hi";
 import { cn } from "@/utils/cn";
-import { Button } from "@heroui/react";
-import ImageReduceMotion from "@/components/ui/reducemotion";
-import { useSearchParams } from "next/navigation";
 
 const MAX_GUILDS = 100 as const;
 
@@ -30,114 +31,106 @@ const springAnimation = {
 } as const;
 
 export default function Home() {
-  const [search, setSearch] = useState<string>("");
+    const [search, setSearch] = useState<string>("");
 
-  const cookies = useCookies();
+    const cookies = useCookies();
 
-  const { isLoading, data, error } = useApi<ApiV1UsersMeGuildsGetResponse[]>("/dashboard/@me/guilds");
+    const { isLoading, data, error } = useApi<ApiV1UsersMeGuildsGetResponse[]>("/dashboard/@me/guilds");
 
-      const guilds = useMemo(
-        () => Array.isArray(data) ? data.sort(sort).filter((guild) => filter(guild, search)).slice(0, MAX_GUILDS) : [],
+    const guilds = useMemo(
+        () =>
+            Array.isArray(data)
+                ? data
+                    .sort(sort)
+                    .filter((guild) => filter(guild, search))
+                    .slice(0, MAX_GUILDS)
+                : [],
         [data, search]
     );
 
-        if (error) {
+    if (error) {
         return (
             <ScreenMessage
                 top="10rem"
                 title="Something went wrong on this page.."
                 description={`${error}`}
-                buttons={<>
-                    <HomeButton />
-                    <SupportButton />
-                </>}
-            >
-            </ScreenMessage>
+                buttons={
+                    <>
+                        <HomeButton />
+                        <SupportButton />
+                    </>
+                }
+            ></ScreenMessage>
         );
     }
 
     if (isLoading || !data) return <></>;
 
-  return (
-    <div className="flex flex-col w-full">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="relative top-2 w-full">
-            <Searchbar
-            value={search}
-            setValue={setSearch}
-            placeholder="Search by name"
-            thin
-            />
-          </div>
+    return (
+        <div className="flex flex-col w-full">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div className="relative top-2 w-full">
+                    <Smartinput value={search} setValue={setSearch} placeholder="Search by name" thin />
+                </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-                <Button
-                    as={Link}
-                    className="w-1/2 md:w-min"
-                    href="/login?invite=true"
-                    prefetch={false}
-                    startContent={<HiUserAdd />}
-                >
-                    Add to Server
-                </Button>
-            <Button
-                    as={Link}
-                    className="button-primary w-1/2 md:w-min"
-                    href="/login"
-                    prefetch={false}
-                    startContent={<HiRefresh />}
-            >
-              <span>Refresh</span>
-            </Button>
-          </div>
-        </div>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3">
+                    <Button
+                        as={Link}
+                        className="w-1/2 md:w-min"
+                        href="/login?invite=true"
+                        prefetch={false}
+                        startContent={<HiUserAdd />}
+                    >
+                        Add to Server
+                    </Button>
+                    <Button
+                        as={Link}
+                        className="button-primary w-1/2 md:w-min"
+                        href="/login"
+                        prefetch={false}
+                        startContent={<HiRefresh />}
+                    >
+                        <span>Refresh</span>
+                    </Button>
+                </div>
+            </div>
 
-        {!isLoading &&
-            <motion.ul
-                variants={{
-                    hidden: { opacity: 1, scale: 0 },
-                    visible: {
-                        opacity: 1,
-                        scale: 1,
-                        transition: {
-                            delayChildren: data.length > 20 ? 0.2 : 0.3,
-                            staggerChildren: data.length > 20 ? 0.1 : 0.2
+            {!isLoading && (
+                <motion.ul
+                    variants={{
+                        hidden: { opacity: 1, scale: 0 },
+                        visible: {
+                            opacity: 1,
+                            scale: 1,
+                            transition: {
+                                delayChildren: data.length > 20 ? 0.2 : 0.3,
+                                staggerChildren: data.length > 20 ? 0.1 : 0.2
+                            }
                         }
-                    }
-                }}
-                initial={cookies.get("reduceMotions") === "true" ? "visible" : "hidden"}
-                animate="visible"
-                className="grid grid-cols-1 gap-3.5 w-full mt-3 lg:grid-cols-3 md:grid-cols-2"
-            >
-                {guilds.map((guild) => <Guild key={"guild-" + guild.id} {...guild} />)}
-            </motion.ul>
-        }
+                    }}
+                    initial={cookies.get("reduceMotions") === "true" ? "visible" : "hidden"}
+                    animate="visible"
+                    className="grid grid-cols-1 gap-3.5 w-full mt-3 lg:grid-cols-3 md:grid-cols-2"
+                >
+                    {guilds.map((guild) => (
+                        <Guild key={"guild-" + guild.id} {...guild} />
+                    ))}
+                </motion.ul>
+            )}
 
-        {guilds.length > MAX_GUILDS &&
-            <ScreenMessage
-                title="There are too many servers.."
-                description={`To save some performance, use the search to find a guild. Showing ${MAX_GUILDS} out of ~${guilds.length < 1000 ? length : Math.round(length / 1000) * 1000}.`}
-            >
-            </ScreenMessage>
-        }
-
-    </div>);
+            {guilds.length > MAX_GUILDS && (
+                <ScreenMessage
+                    title="There are too many servers.."
+                    description={`To save some performance, use the search to find a guild. Showing ${MAX_GUILDS} out of ~${guilds.length < 1000 ? length : Math.round(length / 1000) * 1000}.`}
+                ></ScreenMessage>
+            )}
+        </div>
+    );
 }
 
-  async function handleRefresh() {
-    try {
-      useApi<ApiV1UsersMeGuildsGetResponse[]>("/dashboard/@me/guilds?skipcache=true");
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
 function sort(a: ApiV1UsersMeGuildsGetResponse, b: ApiV1UsersMeGuildsGetResponse) {
-    return a.botInGuild === b.botInGuild
-        ? 0
-        : (a.botInGuild ? -1 : 1);
+    return a.botInGuild === b.botInGuild ? 0 : a.botInGuild ? -1 : 1;
 }
 
 function filter(guild: ApiV1UsersMeGuildsGetResponse, search: string) {
@@ -181,14 +174,10 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
                     {name}
                 </span>
                 <div className="flex gap-1">
-                    {botInGuild
-                        ? <ManageButton guildId={id} />
-                        : <InviteButton guildId={id} />
-                    }
+                    {botInGuild ? <ManageButton guildId={id} /> : <InviteButton guildId={id} />}
                     {botInGuild}
                 </div>
             </div>
-
         </motion.li>
     );
 }

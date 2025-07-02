@@ -13,9 +13,7 @@ export function DiscordMarkdown({
     mode: "DARK" | "LIGHT";
     embed?: boolean;
 }) {
-    const sanitizedHtml = text
-        .replaceAll("\\n", "\n")
-        .trim();
+    const sanitizedHtml = text.replaceAll("\\n", "\n").trim();
 
     return (
         <div

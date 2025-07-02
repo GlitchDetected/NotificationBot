@@ -85,10 +85,10 @@ export default function SelectMenu({
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataName.includes(".") ?
-                { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: value.value } }
-                :
-                { [dataName]: value.value }
+            body: JSON.stringify(
+                dataName.includes(".")
+                    ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: value.value } }
+                    : { [dataName]: value.value }
             )
         })
             .then(async (res) => {
@@ -108,20 +108,20 @@ export default function SelectMenu({
                         break;
                     }
                 }
-
             })
             .catch(() => {
                 setState(State.Idle);
                 setError("Error while updating");
             });
-
     }, [value]);
 
     return (
         <div className={cn("select-none w-full max-w-full mb-2 relative", className)}>
             <div className="flex items-center gap-2">
                 <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">{name}</span>
-                {state === State.Loading && <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />}
+                {state === State.Loading && (
+                    <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />
+                )}
             </div>
 
             <button
@@ -146,12 +146,12 @@ export default function SelectMenu({
                     {value?.name || "Select.."}
                 </div>
                 <div className="ml-auto flex items-center gap-2">
-                    {value?.error &&
+                    {value?.error && (
                         <div className="text-sm flex items-center gap-1 text-red-500">
                             <HiExclamationCircle /> {value.error}
                         </div>
-                    }
-                    {value?.name && showClear &&
+                    )}
+                    {value?.name && showClear && (
                         <button
                             onClick={() => {
                                 setOpen(false);
@@ -160,14 +160,14 @@ export default function SelectMenu({
                         >
                             <HiX />
                         </button>
-                    }
+                    )}
                     <HiChevronDown />
                 </div>
             </button>
 
-            {open &&
+            {open && (
                 <div className="absolute mt-2 w-full bg-flame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
-                    <ClickOutside onClose={(() => setOpen(false))} />
+                    <ClickOutside onClose={() => setOpen(false)} />
                     {items.map((item) => (
                         <button
                             key={"select-" + item.value}
@@ -183,44 +183,27 @@ export default function SelectMenu({
                                 setValue(item);
                             }}
                         >
-                            {item?.icon &&
-                                <span className="mr-2">
-                                    {item?.icon}
-                                </span>
-                            }
+                            {item?.icon && <span className="mr-2">{item?.icon}</span>}
 
-                            <span className={cn("truncate", item.error && "max-w-[calc(100%-13rem)]")}>
-                                {item.name}
-                            </span>
+                            <span className={cn("truncate", item.error && "max-w-[calc(100%-13rem)]")}>{item.name}</span>
 
-                            {value?.value === item.value &&
-                                <HiCheck className="ml-1" />
-                            }
+                            {value?.value === item.value && <HiCheck className="ml-1" />}
 
-                            {item.error &&
+                            {item.error && (
                                 <div className="ml-auto text-sm flex items-center gap-1 text-red-500">
                                     <HiExclamationCircle /> {item.error}
                                 </div>
-                            }
+                            )}
                         </button>
                     ))}
                 </div>
-            }
+            )}
 
             <div className={cn("mt-1 flex md:block", open && "opacity-0")}>
-                {description &&
-                    <div className="dark:text-neutral-500 text-neutral-400 text-sm">
-                        {description}
-                    </div>
-                }
+                {description && <div className="dark:text-neutral-500 text-neutral-400 text-sm">{description}</div>}
 
-                {error &&
-                    <div className="ml-auto text-red-500 text-sm">
-                        {error}
-                    </div>
-                }
+                {error && <div className="ml-auto text-red-500 text-sm">{error}</div>}
             </div>
-
         </div>
     );
 }

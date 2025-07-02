@@ -6,9 +6,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "format": "npx prettier --write '**/*.{ts,json,tsx}' --config .prettierrc"
   },
   "dependencies": {
+    "@discordjs/collection": "^2.1.1",
     "@discordjs/rest": "^2.5.1",
     "@heroui/react": "^2.8.0-beta.10",
     "@odiffey/discord-markdown": "^3.3.0",
@@ -40,17 +42,26 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@next/eslint-plugin-next": "^15.3.4",
+    "@stylistic/eslint-plugin": "^5.1.0",
     "@types/node": "^24.0.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.35.1",
+    "@typescript-eslint/parser": "^8.35.1",
     "autoprefixer": "^10.4.19",
-    "eslint": "^9.19.0",
+    "eslint": "^9.30.1",
     "eslint-config-next": "^15.1.6",
     "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "postcss": "^8.5.1",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.1"
   }
 }

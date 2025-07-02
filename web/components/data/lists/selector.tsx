@@ -30,21 +30,21 @@ interface Props<T extends TBase> {
     docs: `/${string}`;
 
     /**
-     * Item create button.
-     */
+   * Item create button.
+   */
     createButton: (options: ButtonCreateOptions) => React.ReactNode;
     /**
-     * Item delete button.
-     */
+   * Item delete button.
+   */
     deleteButton: (options: ButtonDeleteOptions) => React.ReactNode;
     /**
-     * The induvidual item.
-     */
+   * The induvidual item.
+   */
     item: (item: T, guild: Guild) => React.ReactNode;
 
     /**
-     * Displayed whenever the list is empty.
-     */
+   * Displayed whenever the list is empty.
+   */
     children: React.ReactNode;
 }
 
@@ -67,71 +67,52 @@ export function ItemSelector<T extends TBase>({
 
     if (!guild) return <></>;
 
-    return (<>
-        <div className="space-y-2">
-            {items
-                .sort(sort)
-                .map((i) => (
+    return (
+        <>
+            <div className="space-y-2">
+                {items.sort(sort).map((i) => (
                     <Item
                         key={i.id}
-                        buttons={<>
-                            <Button
-                                variant="secondary"
-                                className="bg-secondary/30 text-secondary-800"
-                                onClick={() => set(i.id)}
-                            >
-                                <HiPencil />
-                                Edit
-                            </Button>
-                            {deleteButton({
-                                id: i.id,
-                                name: name(i)
-                            })}
-                        </>}
+                        buttons={
+                            <>
+                                <Button variant="secondary" className="bg-secondary/30 text-secondary-800" onClick={() => set(i.id)}>
+                                    <HiPencil />
+                                    Edit
+                                </Button>
+                                {deleteButton({
+                                    id: i.id,
+                                    name: name(i)
+                                })}
+                            </>
+                        }
                     >
                         {item(i, guild)}
                     </Item>
-                ))
-            }
-        </div>
+                ))}
+            </div>
 
-        <div className={cn("flex items-start justify-between gap-2 w-full", items.length && "mt-3")}>
-            {createButton({ style: 1 })}
+            <div className={cn("flex items-start justify-between gap-2 w-full", items.length && "mt-3")}>
+                {createButton({ style: 1 })}
 
-            <Button
-                asChild
-                className="w-full md:w-[unset]"
-            >
-                <Link
-                    href={`/docs/${docs}`}
-                    target="_blank"
-                >
-                    Read docs & view placeholders
-                    <HiExternalLink />
-                </Link>
-            </Button>
-        </div>
+                <Button asChild className="w-full md:w-[unset]">
+                    <Link href={`/docs/${docs}`} target="_blank">
+                        Read docs & view placeholders
+                        <HiExternalLink />
+                    </Link>
+                </Button>
+            </div>
 
-        {!items.length && children}
-    </>);
+            {!items.length && children}
+        </>
+    );
 }
 
-function Item({
-    buttons,
-    children
-}: {
-    buttons: React.ReactNode;
-    children: React.ReactNode;
-}) {
+function Item({ buttons, children }: { buttons: React.ReactNode; children: React.ReactNode; }) {
     return (
         <div className="flex justify-between p-4 bg-flame rounded-xl w-full duration-100">
-            <div className="flex gap-3 items-center">
-                {children}
-            </div>
+            <div className="flex gap-3 items-center">{children}</div>
 
-            <div className="space-x-2">
-                {buttons}
-            </div>
+            <div className="space-x-2">{buttons}</div>
         </div>
     );
 }

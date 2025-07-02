@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import Codeblock from "./codeblock";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { HiExternalLink } from "react-icons/hi";
@@ -9,26 +6,20 @@ import rehypeRaw from "rehype-raw";
 
 import { getUser } from "@/lib/discord/user";
 import { cn } from "@/utils/cn";
-import { filterDuplicates } from "@/lib/filterduplicates";
+import { filterDuplicates } from "@/utils/filterduplicates";
 import { getBaseUrl } from "@/utils/urls";
 
 import Notice, { NoticeType } from "../notice";
 import { Separator } from "../ui/separator";
 import Channel from "./channel";
+import Codeblock from "./codeblock";
 import Emoji from "./emoji";
 import Timestamp from "./timestamp";
 import User from "./user";
 
-const ALLOWED_IFRAMES = [
-    "https://www.youtube.com/embed/",
-    getBaseUrl()
-] as const;
+const ALLOWED_IFRAMES = ["https://www.youtube.com/embed/", getBaseUrl()] as const;
 
-export default async function CustomMarkdown({
-    markdown
-}: {
-    markdown: string;
-}) {
+export default async function CustomMarkdown({ markdown }: { markdown: string; }) {
     const { renderToString } = await import("react-dom/server");
 
     async function parseDiscordMarkdown(content: string) {
@@ -61,45 +52,41 @@ export default async function CustomMarkdown({
                 const timestamp = match.match(/\d{1,10}/)?.[0] as string;
                 const format = match.match(/:\w*?>/)?.[0] || "f";
 
-                return renderToString(
-                    <Timestamp
-                        unix={parseInt(timestamp)}
-                        format={format.slice(1, -1)}
-                    />
-                );
+                return renderToString(<Timestamp unix={parseInt(timestamp)} format={format.slice(1, -1)} />);
             });
     }
 
     function createHId(text: ReactNode) {
-        return text
-            ?.toString()
-            .toLowerCase()
-            .replace(/ +/g, "-");
+        return text?.toString().toLowerCase().replace(/ +/g, "-");
     }
 
     return (
         <ReactMarkdown
             rehypePlugins={[rehypeRaw]}
             components={{
-                h1: (props) => (<>
-                    <Link
-                        href={`#${createHId(props.children)}`}
-                        className="flex mt-10 mb-3 cursor-pointer dark:text-neutral-100 text-neutral-900 hover:underline w-fit"
-                    >
-                        <h2 id={createHId(props.children)} className="text-3xl font-semibold" {...props} />
-                    </Link>
-                    <Separator className="mb-3" />
-                </>),
+                h1: (props) => (
+                    <>
+                        <Link
+                            href={`#${createHId(props.children)}`}
+                            className="flex mt-10 mb-3 cursor-pointer dark:text-neutral-100 text-neutral-900 hover:underline w-fit"
+                        >
+                            <h2 id={createHId(props.children)} className="text-3xl font-semibold" {...props} />
+                        </Link>
+                        <Separator className="mb-3" />
+                    </>
+                ),
 
-                h2: (props) => (<>
-                    <Link
-                        href={`#${createHId(props.children)}`}
-                        className="flex mt-6 mb-2 cursor-pointer dark:text-neutral-100 text-neutral-900 hover:underline w-fit"
-                    >
-                        <h1 id={createHId(props.children)} className="text-2xl font-semibold" {...props} />
-                    </Link>
-                    <Separator className="mb-3" />
-                </>),
+                h2: (props) => (
+                    <>
+                        <Link
+                            href={`#${createHId(props.children)}`}
+                            className="flex mt-6 mb-2 cursor-pointer dark:text-neutral-100 text-neutral-900 hover:underline w-fit"
+                        >
+                            <h1 id={createHId(props.children)} className="text-2xl font-semibold" {...props} />
+                        </Link>
+                        <Separator className="mb-3" />
+                    </>
+                ),
 
                 h3: (props) => (
                     <Link
@@ -115,9 +102,9 @@ export default async function CustomMarkdown({
                 del: (props) => <span className="line-through" {...props} />,
                 ins: (props) => <span className="underline" {...props} />,
 
-                // eslint-disable-next-line unused-imports/no-unused-vars
+
                 code: ({ children, ...props }) => {
-                    return <Codeblock {...props} children={children} />;
+                    return <Codeblock {...props}>{children}</Codeblock>;
                 },
                 img: ({ alt = "image", ...props }) => {
                     const isFullWidth = typeof props.src === "string" && props.src?.includes("fullwidth=true");
@@ -132,23 +119,26 @@ export default async function CustomMarkdown({
                         >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img alt={alt} className="rounded-md" loading="lazy" {...props} />
-                            {alt && alt !== "emoji" && <span aria-hidden="true" className="text-neutral-500 font-medium text-sm text-center">{alt}</span>}
+                            {alt && alt !== "emoji" && (
+                                <span aria-hidden="true" className="text-neutral-500 font-medium text-sm text-center">
+                                    {alt}
+                                </span>
+                            )}
                         </span>
                     );
                 },
                 a: ({ href, children, ...props }) => (
-                    <Link
-                        href={href || "#"}
-                        target="_blank"
-                        className="text-red-400 hover:underline"
-                        {...props}
-                    >
+                    <Link href={href || "#"} target="_blank" className="text-red-400 hover:underline" {...props}>
                         {children} <HiExternalLink className="inline" />
                     </Link>
                 ),
 
-                table: (props) => <table className="mt-4 table-auto w-full divide-y-1 divide-accent overflow-scroll" {...props} />,
-                th: (props) => <th className=" px-2 pb-2 font-medium text-neutral-800 dark:text-neutral-200 text-left" {...props} />,
+                table: (props) => (
+                    <table className="mt-4 table-auto w-full divide-y-1 divide-accent overflow-scroll" {...props} />
+                ),
+                th: (props) => (
+                    <th className=" px-2 pb-2 font-medium text-neutral-800 dark:text-neutral-200 text-left" {...props} />
+                ),
                 tbody: (props) => <tbody className="[&>*:nth-child(odd)]:bg-neutral-800/15" {...props} />,
                 tr: (props) => <tr className="divide-x-1 divide-accent" {...props} />,
                 td: (props) => <td className="px-2 py-1 divide-x-8 divide-accent break-all" {...props} />,
@@ -158,10 +148,7 @@ export default async function CustomMarkdown({
                         return (
                             <iframe
                                 allow="clipboard-write; fullscreen"
-                                className={cn(
-                                    "w-full rounded-lg mt-4",
-                                    className
-                                )}
+                                className={cn("w-full rounded-lg mt-4", className)}
                                 {...props}
                             />
                         );
@@ -169,10 +156,7 @@ export default async function CustomMarkdown({
 
                     return (
                         <div className="mt-4">
-                            <Notice
-                                type={NoticeType.Error}
-                                message={`Iframe from "${props.src?.split("/")[2]}" is not allowed`}
-                            />
+                            <Notice type={NoticeType.Error} message={`Iframe from "${props.src?.split("/")[2]}" is not allowed`} />
                         </div>
                     );
                 },
@@ -181,12 +165,12 @@ export default async function CustomMarkdown({
                 ul: (props) => <ul className="list-disc list-inside space-y-1 marker:text-neutral-300/40 my-1" {...props} />,
                 p: (props) => <span {...props} />,
 
-                mark: ({ children }) => <Notice type={NoticeType.Info} message={children?.toString() || ""} className="mt-2 mb-0" />
-
+                mark: ({ children }) => (
+                    <Notice type={NoticeType.Info} message={children?.toString() || ""} className="mt-2 mb-0" />
+                )
             }}
         >
             {await parseDiscordMarkdown(markdown)}
         </ReactMarkdown>
     );
-
 }

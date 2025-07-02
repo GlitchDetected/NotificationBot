@@ -9,7 +9,6 @@ export function deepMerge<T>(target: T | undefined, source: Partial<T>): T | und
             const sourceValue = source[key];
 
             if (typeof targetValue === "object" && typeof sourceValue === "object") {
-                // @ts-expect-error Some exteractor error
                 target[key] = deepMerge(targetValue, sourceValue);
             } else {
                 // @ts-expect-error Some exteractor error

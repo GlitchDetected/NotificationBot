@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
 interface Props {
-  params: Promise<{ pathname: string }>;
+    params: Promise<{ pathname: string; }>;
 }
 
 const fetchOptions = { next: { revalidate: 60 * 60 } };
@@ -9,30 +9,31 @@ const utm = "?utm_source=notificationbot.up.railway.app&utm_medium=redirect";
 const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 export default async function Home({ params }: Props) {
-  const { pathname } = await params;
+    const { pathname } = await params;
 
-  switch (pathname) {
-    case "support":
-      return redirect("https://top.gg/bot/1366507117044957276#vote");
-    case "vote":
-      return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
-    case "add":
-      return redirect("https://discord.com/oauth2/authorize?client_id=1366507117044957276");
-case "login":
-  return redirect(`${NEXT_PUBLIC_API}/auth/signin`);
-case "logout":
-  return redirect(`${NEXT_PUBLIC_API}/auth/signout`);
-    case "docs":
-    case "guides": return redirect("/docs/home");
-    case "invite":
-    case "youtube": {
-      const res = (await fetch("https://discord.gg/GNdJMJCBdu", fetchOptions)
-        .then((res) => res.json())
-        .catch(() => null)) as { videoUrl: string } | null;
+    switch (pathname) {
+        case "support":
+            return redirect("https://top.gg/bot/1366507117044957276#vote");
+        case "vote":
+            return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
+        case "add":
+            return redirect("https://discord.com/oauth2/authorize?client_id=1366507117044957276");
+        case "login":
+            return redirect(`${NEXT_PUBLIC_API}/auth/signin`);
+        case "logout":
+            return redirect(`${NEXT_PUBLIC_API}/auth/signout`);
+        case "docs":
+        case "guides":
+            return redirect("/docs/home");
+        case "invite":
+        case "youtube": {
+            const res = (await fetch("https://discord.gg/GNdJMJCBdu", fetchOptions)
+                .then((res) => res.json())
+                .catch(() => null)) as { videoUrl: string; } | null;
 
-      return redirect(res?.videoUrl || "https://discord.gg/GNdJMJCBdu");
+            return redirect(res?.videoUrl || "https://discord.gg/GNdJMJCBdu");
+        }
     }
-  }
 
-  notFound();
+    notFound();
 }

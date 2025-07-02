@@ -5,4 +5,4 @@ services:
     image: notificationbot-api
     restart: unless-stopped
     ports:
-      - "7001:3001"
+      - "9001:3001"

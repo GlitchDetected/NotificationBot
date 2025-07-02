@@ -1,51 +1,43 @@
 "use client";
 
-import Link from "next/link";
-import { Suspense, useEffect, useState, useMemo } from "react";
-import { ListTab } from "@/components/list-tab";
 import { Button, Skeleton } from "@heroui/react";
-import { guildStore } from "@/common/guildStore";
 import { useQuery } from "@tanstack/react-query";
-import { cacheOptions, getData } from "@/lib/api";
-import { useCookies } from "next-client-cookies";
-import { redirect, useParams } from "next/navigation";
-import type { ApiV1GuildsChannelsGetResponse, ApiV1GuildsEmojisGetResponse, ApiV1GuildsGetResponse, ApiV1GuildsRolesGetResponse } from "@/typings";
 import Head from "next/head";
-import { intl } from "@/utils/intl";
-import ImageReduceMotion from "@/components/ui/reducemotion";
-import { ScreenMessage, SupportButton } from "@/components/screen-message";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { HiArrowNarrowLeft, HiBell, HiHome, HiPaperAirplane, HiRss, HiUsers, HiViewGridAdd } from "react-icons/hi";
+
+import { guildStore } from "@/common/guildStore";
 import { ClientButton } from "@/components/clientfunc";
-import { 
-  HiArrowNarrowLeft, HiBell, HiPaperAirplane, 
-  HiUsers, HiViewGridAdd, HiRss, HiHome
-} 
-from "react-icons/hi";
+import { ListTab } from "@/components/list-tab";
+import { ScreenMessage, SupportButton } from "@/components/screen-message";
+import ImageReduceMotion from "@/components/ui/reducemotion";
+import { cacheOptions, getData } from "@/lib/api";
+import type {
+    ApiV1GuildsChannelsGetResponse,
+    ApiV1GuildsEmojisGetResponse,
+    ApiV1GuildsGetResponse,
+    ApiV1GuildsRolesGetResponse
+} from "@/typings";
+import { intl } from "@/utils/intl";
 
 function useGuildData<T extends unknown[]>(
     url: string,
-    onLoad: (data: T, error: boolean) => void
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
+    onLoad: (data: T, error: boolean)
+    => void
 ) {
-const query = useQuery({
-    queryKey: [url],
-    queryFn: () => getData<T>(url),
-    enabled: !!guildStore((g) => g)?.id,
-    ...cacheOptions
-  });
-
-const { data } = query;
-
-useEffect(() => {
-  if (data) {
-    const isError = !data || "message" in data;
-    onLoad(isError ? ([] as unknown as T) : data, isError);
-  }
-}, [data]);
-
-return query;
+    return useQuery({
+        queryKey: [url],
+        queryFn: () => getData<T>(url),
+        enabled: !!guildStore((g) => g)?.id,
+        ...cacheOptions
+    });
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-   const cookies = useCookies();
+export default function RootLayout({ children }: { children: React.ReactNode; }) {
     const params = useParams();
 
     const [error, setError] = useState<string>();
@@ -53,8 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     const guild = guildStore((g) => g);
 
-    const session = useMemo(() => cookies.get("session"), [cookies]);
-
+    // const cookies = useCookies();
+    // const session = useMemo(() => cookies.get("session"), [cookies]);
     // if (!session) redirect(`/login?callback=/dashboard/${params.guildId}`);
 
     const url = `/guilds/${params.guildId}` as const;
@@ -63,36 +55,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         queryKey: [url],
         queryFn: () => getData<ApiV1GuildsGetResponse>(url),
         enabled: !!params.guildId,
-            ...cacheOptions,
-            refetchOnMount: true
-        });
+        ...cacheOptions,
+        refetchOnMount: true
+    });
 
-    useGuildData<ApiV1GuildsChannelsGetResponse[]>(
-        `${url}/channels`,
-        (data) => {
-            guildStore.setState({ ...guild, channels: data });
-            setLoaded((loaded) => [...loaded, "channels"]);
-        }
-    );
+    useGuildData<ApiV1GuildsChannelsGetResponse[]>(`${url}/channels`, (data) => {
+        guildStore.setState({ ...guild, channels: data });
+        setLoaded((loaded) => [...loaded, "channels"]);
+    });
 
-    useGuildData<ApiV1GuildsRolesGetResponse[]>(
-        `${url}/roles`,
-        (data) => {
-            guildStore.setState({ ...guild, roles: data });
-            setLoaded((loaded) => [...loaded, "roles"]);
-        }
-    );
+    useGuildData<ApiV1GuildsRolesGetResponse[]>(`${url}/roles`, (data) => {
+        guildStore.setState({ ...guild, roles: data });
+        setLoaded((loaded) => [...loaded, "roles"]);
+    });
 
-    useGuildData<ApiV1GuildsEmojisGetResponse[]>(
-        `${url}/emojis`,
-        (data) => {
-            guildStore.setState({ ...guild, emojis: data });
-            setLoaded((loaded) => [...loaded, "emojis"]);
-        }
-    );
+    useGuildData<ApiV1GuildsEmojisGetResponse[]>(`${url}/emojis`, (data) => {
+        guildStore.setState({ ...guild, emojis: data });
+        setLoaded((loaded) => [...loaded, "emojis"]);
+    });
 
     useEffect(() => {
-        if (data && "message" in data) {
+        if (!data) return;
+
+        if ("message" in data) {
             setError(data?.message);
             return;
         }
@@ -100,26 +85,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         guildStore.setState(data);
     }, [data]);
 
-  return (
-    <div className="flex flex-col w-full">
-                  {guild?.name && (
+    return (
+        <div className="flex flex-col w-full">
+            {guild?.name && (
                 <Head>
                     <title>{`${guild?.name}'s Dashboard`}</title>
                 </Head>
             )}
 
-      <div className="flex flex-col gap-5 mb-6">
-                          <Button
-                    as={Link}
-                    className="w-fit"
-                    href="/profile"
-                    startContent={<HiArrowNarrowLeft />}
-                >
+            <div className="flex flex-col gap-5 mb-6">
+                <Button as={Link} className="w-fit" href="/profile" startContent={<HiArrowNarrowLeft />}>
                     Profile
                 </Button>
 
                 <div className="text-lg flex gap-5">
-                    <Skeleton isLoaded={!isLoading} className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0">
+                    <Skeleton
+                        isLoaded={!isLoading}
+                        className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0"
+                    >
                         <ImageReduceMotion
                             alt="this server"
                             className="rounded-full"
@@ -128,21 +111,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         />
                     </Skeleton>
 
-                    {isLoading ?
+                    {isLoading ? (
                         <div className="mt-1.5">
                             <Skeleton className="rounded-xl w-32 h-6 mb-2" />
                             <Skeleton className="rounded-xl w-10 h-3.5" />
                         </div>
-                        :
+                    ) : (
                         <div className="flex flex-col gap-1">
-                            <div className="text-2xl dark:text-neutral-200 text-neutral-800 font-medium">{guild?.name || "Unknown Server"}</div>
-                            <div className="text-sm font-semibold flex items-center gap-1"> <HiUsers /> {intl.format(guild?.memberCount || 0)}</div>
+                            <div className="text-2xl dark:text-neutral-200 text-neutral-800 font-medium">
+                                {guild?.name || "Unknown Server"}
+                            </div>
+                            <div className="text-sm font-semibold flex items-center gap-1">
+                                {" "}
+                                <HiUsers /> {intl.format(guild?.memberCount || 0)}
+                            </div>
                         </div>
-                    }
-
+                    )}
                 </div>
-      </div>
-                  <Suspense>
+            </div>
+            <Suspense>
                 <ListTab
                     tabs={[
                         {
@@ -171,28 +158,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 />
             </Suspense>
 
-                  {error ?
+            {error ? (
                 <ScreenMessage
-                    title={error.includes("permssions")
-                        ? "You cannot access this page.."
-                        : "Something went wrong on this page.."
-                    }
+                    title={error.includes("permssions") ? "You cannot access this page.." : "Something went wrong on this page.."}
                     description={error}
-                    buttons={<>
-                        <ClientButton
-                            as={Link}
-                            href="/profile"
-                            startContent={<HiViewGridAdd />}
-                        >
-                            Go back to Dashboard
-                        </ClientButton>
-                        <SupportButton />
-                    </>}
-                >
-                </ScreenMessage>
-                :
-                (guild && loaded.length === 3) ? children : <></>
-            }
-    </div>
-  );
+                    buttons={
+                        <>
+                            <ClientButton as={Link} href="/profile" startContent={<HiViewGridAdd />}>
+                                Go back to Dashboard
+                            </ClientButton>
+                            <SupportButton />
+                        </>
+                    }
+                ></ScreenMessage>
+            ) : guild && loaded.length === 3 ? (
+                children
+            ) : (
+                <></>
+            )}
+        </div>
+    );
 }

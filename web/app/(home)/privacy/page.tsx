@@ -7,7 +7,6 @@ import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 export const revalidate = false;
 
 export const generateMetadata = (): Metadata => {
-
     const title = "Privacy";
     const description = "Read about NotificationBot's privacy policy";
     const url = getCanonicalUrl("terms");

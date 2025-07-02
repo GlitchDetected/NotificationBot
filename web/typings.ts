@@ -34,7 +34,7 @@ export interface ApiV1GuildsTopmembersGetResponse {
   avatar: string | null;
   bot: true;
   emoji: string | null;
-  activity: ApiV1UsersMeGetResponse["activity"] & { formattedVoicetime: string };
+  // activity: ApiV1UsersMeGetResponse["activity"] & { formattedVoicetime: string };
 }
 
 export interface ApiV1GuildsTopmembersPaginationGetResponse {
@@ -180,10 +180,10 @@ export interface ApiV1UsersMeGetResponse {
   voteCount?: number;
 
   dmnotifications?: {
-  embedcolor?: number;
-  source?: string | null;
-  thumbnail?: string | null;
-  message?: string | null;
+    embedcolor?: number;
+    source?: string | null;
+    thumbnail?: string | null;
+    message?: string | null;
   };
 }
 
@@ -261,11 +261,11 @@ export interface ApiV1UsersGetResponse {
   voteCount: number;
   likeCount: number;
 
-  activity: Required<ApiV1UsersMeGetResponse>["activity"];
-  guilds: {
-    guildId: string;
-    activity: Required<ApiV1UsersMeGetResponse>["activity"];
-  }[];
+  // activity: Required<ApiV1UsersMeGetResponse>["activity"];
+  // guilds: {
+  //   guildId: string;
+  //   activity: Required<ApiV1UsersMeGetResponse>["activity"];
+  // }[];
 }
 
 export enum NotificationType {
@@ -291,7 +291,7 @@ export interface ApiV1GuildsModulesNotificationsGetResponse {
   type: NotificationType;
   flags: number;
   regex: string | null;
-  
+
   creatorId: string;
 
   message: {
@@ -311,7 +311,7 @@ export interface ApiV1GuildsModulesNotificationsGetResponse {
 
 export enum DailypostType {
   CNN = 1,
-  REDDIT = 2,
+  REDDIT = 2
 }
 
 export interface ApiV1GuildsModulesDailypostsGetResponse {

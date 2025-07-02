@@ -7,13 +7,13 @@ interface Sitemap {
 
 export const revalidate = 691200; // 8 days
 
-const fetchOptions = {
-    headers: {
-        apikey: process.env.API_SECRET as string
-    }
-};
+// const fetchOptions = {
+//     headers: {
+//         apikey: process.env.API_SECRET as string
+//     }
+// };
 
-export async function GET() {
+export function GET() {
     // const guildIds = await fetch(`${process.env.NEXT_PUBLIC_API}/guilds`, fetchOptions).then((res) => res.json()) as string[];
 
     const sitemap = [
@@ -45,20 +45,24 @@ export async function GET() {
 
     // for (const guildId of guildIds) sitemap.push({ url: getCanonicalUrl("notifications", guildId), priority: 0.5 });
 
-    return new Response(`
+    return new Response(
+        `
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-            ${sitemap.map((site) => `
+            ${sitemap.map(
+                (site) => `
             <url>
                 <loc>${site.url}</loc>
                 <lastmod>${new Date().toISOString()}</lastmod>
                 <changefreq>daily</changefreq>
                 <priority>${site.priority}</priority>
             </url>
-            `)}
-        </urlset>`
-        .replaceAll(",", ""), {
-        headers: {
-            "Content-Type": "text/xml"
+            `
+            )}
+        </urlset>`.replaceAll(",", ""),
+        {
+            headers: {
+                "Content-Type": "text/xml"
+            }
         }
-    });
+    );
 }

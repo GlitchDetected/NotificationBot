@@ -23,36 +23,25 @@ interface Props {
     className?: string;
 }
 
-export function LoginButton({
-    state,
-    message,
-    className
-}: Props) {
+export function LoginButton({ state, message, className }: Props) {
     if (state === State.Loading) return <></>;
 
     return (
-        <Button
-            asChild
-            className={className}
-            variant={state === State.Failure ? "destructive" : "default"}
-        >
-            <Link
-                href="/login"
-                prefetch={false}
-            >
+        <Button asChild className={className} variant={state === State.Failure ? "destructive" : "default"}>
+            <Link href="/login" prefetch={false}>
                 <Icon state={state} />
-                {!state ?
+                {!state ? (
                     <span className={cn(lexend.className, "font-semibold")}>
-                        {message ||
-                                <>
-                                    <span className="hidden md:block">Login with Discord</span>
-                                    <span className="md:hidden">Discord login</span>
-                                </>
-                        }
+                        {message || (
+                            <>
+                                <span className="hidden md:block">Login with Discord</span>
+                                <span className="md:hidden">Discord login</span>
+                            </>
+                        )}
                     </span>
-                    :
+                ) : (
                     <span>Authorization failed</span>
-                }
+                )}
             </Link>
         </Button>
     );

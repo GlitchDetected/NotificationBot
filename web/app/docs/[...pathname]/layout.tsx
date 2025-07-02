@@ -18,9 +18,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
     const { pathname } = await params;
     const meta = metadata.pages.find((page) => page.file === `${pathname.join("/").toLowerCase()}.md`);
 
-    const title = meta?.file === "home.md"
-        ? "Documentation"
-        : `${meta?.name} docs`;
+    const title = meta?.file === "home.md" ? "Documentation" : `${meta?.name} docs`;
 
     const url = getCanonicalUrl("docs", ...pathname);
     const images = {
@@ -56,55 +54,30 @@ export default async function RootLayout({ params, children }: Props) {
     const { pathname } = await params;
     const meta = metadata.pages.find((page) => page.file === `${pathname.join("/").toLowerCase()}.md`);
 
-    const title = meta?.file === "home.md"
-        ? "NotificationBot"
-        : meta?.name;
+    const title = meta?.file === "home.md" ? "NotificationBot" : meta?.name;
 
     return (
         <div className="w-full mb-13 mt-20 pt-20 px-4">
-
-            <h1 className="text-2xl font-medium text-neutral-100 mb-1">
-                {title} Documentation
-            </h1>
-            <div>
-                {meta?.description}
-            </div>
+            <h1 className="text-2xl font-medium text-neutral-100 mb-1">{title} Documentation</h1>
+            <div>{meta?.description}</div>
 
             <div className="flex flex-col lg:flex-row gap-6 mt-5 min-h-[63vh]">
                 <nav className="w-full lg:w-1/4 space-y-2">
-
                     <ul className="space-y-1 mb-4 bg-red p-2 rounded-md border border-red-600">
-                        {metadata.pages.map((page, i) =>
-                            <NavButton
-                                key={"nav-" + page.file + i}
-                                page={page}
-                            />
-                        )}
+                        {metadata.pages.map((page, i) => (
+                            <NavButton key={"nav-" + page.file + i} page={page} />
+                        ))}
                     </ul>
 
-                    <LinkButton
-                        className="w-full !justify-start"
-                        href="/support"
-                        target="_blank"
-                        variant="blurple"
-                    >
+                    <LinkButton className="w-full !justify-start" href="/support" target="_blank" variant="blurple">
                         <BsDiscord />
                         Join Support
                     </LinkButton>
-                    <LinkButton
-                        className="w-full !justify-start"
-                        href="/invite"
-                        target="_blank"
-                        variant="secondary"
-                    >
+                    <LinkButton className="w-full !justify-start" href="/invite" target="_blank" variant="secondary">
                         <HiUserAdd />
                         Invite NotificationBot
                     </LinkButton>
-                    <LinkButton
-                        className="w-full !justify-start"
-                        href="/profile"
-                        target="_blank"
-                    >
+                    <LinkButton className="w-full !justify-start" href="/profile" target="_blank">
                         <HiViewGridAdd />
                         Dashboard
                     </LinkButton>
@@ -127,25 +100,15 @@ export default async function RootLayout({ params, children }: Props) {
     );
 }
 
-function NavButton({
-    page
-}: {
-    page: typeof metadata.pages[0];
-}) {
+function NavButton({ page }: { page: (typeof metadata.pages)[0]; }) {
     const file = page.file.replace(/\.md$/, "");
     const icon = page.name.split(" ").shift() || "";
     const name = page.name.replace(icon, "");
 
     return (
         <li>
-            <LinkButton
-                className="w-full !justify-start bg-transparent h-[30px]"
-                href={`/docs/${file}`}
-                size="sm"
-            >
-                <span className="mr-[2px]">
-                    {icon}
-                </span>
+            <LinkButton className="w-full !justify-start bg-transparent h-[30px]" href={`/docs/${file}`} size="sm">
+                <span className="mr-[2px]">{icon}</span>
                 {name}
             </LinkButton>
         </li>

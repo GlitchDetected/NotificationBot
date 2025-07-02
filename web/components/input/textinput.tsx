@@ -5,9 +5,9 @@ import { TailSpin } from "react-loading-icons";
 
 import type { ApiError } from "@/typings";
 import { cn } from "@/utils/cn";
-
 import { useStateDebounced } from "@/utils/debounce";
-import Searchbar from "./searchbar";
+
+import Smartinput from "./smart-input";
 
 enum State {
     Idle = 0,
@@ -75,9 +75,7 @@ export default function TextInput({
 
         setState(State.Loading);
 
-        const def = type === "color"
-            ? 0
-            : null;
+        const def = type === "color" ? 0 : null;
 
         fetch(`${process.env.NEXT_PUBLIC_API}${url}`, {
             method: "PATCH",
@@ -107,23 +105,22 @@ export default function TextInput({
                         break;
                     }
                 }
-
             })
             .catch(() => {
                 setState(State.Idle);
                 setError("Error while updating");
             });
-
     }, [valuedebounced]);
 
     return (
         <div className={cn("relative w-full", className)}>
-
             <div className="flex items-center gap-2">
                 <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">{name}</span>
-                {state === State.Loading && <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />}
+                {state === State.Loading && (
+                    <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />
+                )}
 
-                {(resetState && resetState !== value) &&
+                {resetState && resetState !== value && (
                     <button
                         className="text-sm ml-auto text-flame-400/60 hover:text-flame-400/90 duration-200"
                         onClick={() => {
@@ -135,10 +132,10 @@ export default function TextInput({
                     >
                         reset
                     </button>
-                }
+                )}
             </div>
 
-            <Searchbar
+            <Smartinput
                 value={value}
                 setValue={(v) => {
                     setValue(v);
@@ -152,15 +149,9 @@ export default function TextInput({
                 description={description}
             />
 
-
             <div className="flex absolute right-0 bottom-0">
-                {error &&
-                    <div className="ml-auto text-red-500 text-sm">
-                        {error}
-                    </div>
-                }
+                {error && <div className="ml-auto text-red-500 text-sm">{error}</div>}
             </div>
-
         </div>
     );
 }

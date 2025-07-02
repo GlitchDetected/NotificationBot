@@ -7,11 +7,11 @@ import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import type { GuildEmbed } from "@/typings";
 import { cn } from "@/utils/cn";
 
+import ColorInput from "../input/colorinput";
+import Smartinput from "../input/smart-input";
 import { DiscordMarkdown } from "./disc-markdown";
 import DiscordMessage from "./msg";
 import DiscordMessageEmbed from "./msg-embed";
-import ColorInput from "../input/colorinput";
-import Searchbar from "../input/searchbar";
 
 enum State {
     Idle = 0,
@@ -71,19 +71,13 @@ export default function MessageCreatorEmbed({
         >
             <button
                 onClick={() => setMode("DARK")}
-                className={cn(
-                    "py-2 px-3 rounded-md",
-                    mode === "DARK" ? "bg-flame" : "hover:bg-flame-100-alpha"
-                )}
+                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-flame" : "hover:bg-flame-100-alpha")}
             >
                 <BiMoon className="h-5 w-5" />
             </button>
             <button
                 onClick={() => setMode("LIGHT")}
-                className={cn(
-                    "py-2 px-3 rounded-md",
-                    mode === "LIGHT" ? "bg-flame-100" : "hover:bg--alpha"
-                )}
+                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-flame-100" : "hover:bg--alpha")}
             >
                 <BiSun className="h-5 w-5" />
             </button>
@@ -96,12 +90,7 @@ export default function MessageCreatorEmbed({
 
         const body = {
             content,
-            embed: Object.assign(
-                JSON.parse(embed),
-                embedfooter.length
-                    ? { footer: JSON.parse(embedfooter) }
-                    : undefined
-            )
+            embed: Object.assign(JSON.parse(embed), embedfooter.length ? { footer: JSON.parse(embedfooter) } : undefined)
         };
 
         if (!body.embed.footer.text) body.embed.footer = { text: null };
@@ -112,9 +101,8 @@ export default function MessageCreatorEmbed({
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataName.includes(".")
-                ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: body } }
-                : { [dataName]: body }
+            body: JSON.stringify(
+                dataName.includes(".") ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: body } } : { [dataName]: body }
             )
         })
             .then((r) => r.json())
@@ -122,11 +110,7 @@ export default function MessageCreatorEmbed({
 
         if (!res || "status" in res) {
             setState(State.Idle);
-            setError(
-                "message" in res
-                    ? res.message
-                    : "Something went wrong while saving.."
-            );
+            setError("message" in res ? res.message : "Something went wrong while saving..");
 
             return;
         }
@@ -146,58 +130,102 @@ export default function MessageCreatorEmbed({
             >
                 <div className="text-lg py-2 dark:text-neutral-700 text-neutral-300 font-medium px-2">{name}</div>
 
-                {isCollapseable &&
+                {isCollapseable && (
                     <div className={cn("md:mx-2 mx-1", open ? "lg:mb-0 mb-2" : "mb-2")}>
                         <button
                             className="dark:bg-flame hover:dark:bg-flame-light bg-flame-100 hover:bg-flame-100-light duration-200 cursor-pointer rounded-md dark:text-neutral-400 text-neutral-600 flex items-center h-12 px-3 w-full"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ?
+                            {open ? (
                                 <>
                                     <span>Collaps</span>
                                     <HiChevronUp className="ml-auto h-4 w-4" />
                                 </>
-                                :
+                            ) : (
                                 <>
                                     <span>Expand</span>
                                     <HiChevronDown className="ml-auto h-4 w-4" />
                                 </>
-                            }
+                            )}
                         </button>
                     </div>
-                }
+                )}
 
-                {open &&
+                {open && (
                     <div className="md:m-1 relative">
-
-                        {children &&
-                            <div className={cn("mx-1", isCollapseable && "mt-6")}>
-                                {children}
-                            </div>
-                        }
+                        {children && <div className={cn("mx-1", isCollapseable && "mt-6")}>{children}</div>}
 
                         <div className="lg:flex gap-1">
-
                             <div className="lg:w-3/6 m-1">
-
-                                <Searchbar placeholder="Content" value={content} setValue={setContent} max={2000} disabled={disabled} />
-                                <Searchbar placeholder="Embed Title" value={embed} setValue={setEmbed} max={256} dataName="title" disabled={disabled} />
-                                <Searchbar placeholder="Embed Description" value={embed} setValue={setEmbed} max={4096} dataName="description" disabled={disabled} />
+                                <Smartinput
+                                    placeholder="Content"
+                                    value={content}
+                                    setValue={setContent}
+                                    max={2000}
+                                    disabled={disabled}
+                                />
+                                <Smartinput
+                                    placeholder="Embed Title"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={256}
+                                    dataName="title"
+                                    disabled={disabled}
+                                />
+                                <Smartinput
+                                    placeholder="Embed Description"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={4096}
+                                    dataName="description"
+                                    disabled={disabled}
+                                />
                                 <div className="flex gap-2">
-                                    <ColorInput placeholder="Embed Color" value={embed} setValue={setEmbed} dataName="color" disabled={disabled} />
-                                    <Searchbar placeholder="Embed Thumbnail" value={embed} setValue={setEmbed} max={256} dataName="thumbnail" disabled={disabled} />
+                                    <ColorInput
+                                        placeholder="Embed Color"
+                                        value={embed}
+                                        setValue={setEmbed}
+                                        dataName="color"
+                                        disabled={disabled}
+                                    />
+                                    <Smartinput
+                                        placeholder="Embed Thumbnail"
+                                        value={embed}
+                                        setValue={setEmbed}
+                                        max={256}
+                                        dataName="thumbnail"
+                                        disabled={disabled}
+                                    />
                                 </div>
-                                <Searchbar placeholder="Embed Image" value={embed} setValue={setEmbed} max={256} dataName="image" disabled={disabled} />
+                                <Smartinput
+                                    placeholder="Embed Image"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={256}
+                                    dataName="image"
+                                    disabled={disabled}
+                                />
                                 <div className="flex gap-2">
-                                    <Searchbar placeholder="Embed Footer Icon" value={embedfooter} setValue={setEmbedfooter} max={256} dataName="icon_url" disabled={disabled} />
-                                    <Searchbar placeholder="Embed Footer" value={embedfooter} setValue={setEmbedfooter} max={256} dataName="text" disabled={disabled} />
+                                    <Smartinput
+                                        placeholder="Embed Footer Icon"
+                                        value={embedfooter}
+                                        setValue={setEmbedfooter}
+                                        max={256}
+                                        dataName="icon_url"
+                                        disabled={disabled}
+                                    />
+                                    <Smartinput
+                                        placeholder="Embed Footer"
+                                        value={embedfooter}
+                                        setValue={setEmbedfooter}
+                                        max={256}
+                                        dataName="text"
+                                        disabled={disabled}
+                                    />
                                 </div>
 
                                 <Button
-                                    className={cn(
-                                        "mt-1 w-full",
-                                        disabled && "cursor-not-allowed opacity-50"
-                                    )}
+                                    className={cn("mt-1 w-full", disabled && "cursor-not-allowed opacity-50")}
                                     color="secondary"
                                     isDisabled={disabled}
                                     isLoading={state === State.Loading}
@@ -206,19 +234,14 @@ export default function MessageCreatorEmbed({
                                 >
                                     Save Changes
                                 </Button>
-
                             </div>
 
                             <div className="md:hidden flex m-2 mt-4">
-
                                 <div className="flex items-center w-full">
                                     <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">Color Theme</span>
 
-                                    <div className="ml-auto flex items-center">
-                                        {modeToggle}
-                                    </div>
+                                    <div className="ml-auto flex items-center">{modeToggle}</div>
                                 </div>
-
                             </div>
 
                             <div
@@ -227,10 +250,7 @@ export default function MessageCreatorEmbed({
                                     mode === "DARK" ? "bg-discord-gray" : "bg-white"
                                 )}
                             >
-
-                                <div className="absolute z-10 top-2 right-2 hidden md:block">
-                                    {modeToggle}
-                                </div>
+                                <div className="absolute z-10 top-2 right-2 hidden md:block">{modeToggle}</div>
 
                                 <DiscordMessage
                                     mode={mode}
@@ -240,10 +260,7 @@ export default function MessageCreatorEmbed({
                                         bot: true
                                     }}
                                 >
-                                    <DiscordMarkdown
-                                        mode={mode}
-                                        text={content || ""}
-                                    />
+                                    <DiscordMarkdown mode={mode} text={content || ""} />
 
                                     <DiscordMessageEmbed
                                         mode={mode}
@@ -253,23 +270,19 @@ export default function MessageCreatorEmbed({
                                         image={JSON.parse(embed).image}
                                         footer={JSON.parse(embedfooter)}
                                     >
-                                        {JSON.parse(embed).description && <DiscordMarkdown mode={mode} text={JSON.parse(embed).description} />}
+                                        {JSON.parse(embed).description && (
+                                            <DiscordMarkdown mode={mode} text={JSON.parse(embed).description} />
+                                        )}
                                         {showMessageAttachmentComponentInEmbed && messageAttachmentComponent}
                                     </DiscordMessageEmbed>
 
                                     {!showMessageAttachmentComponentInEmbed && messageAttachmentComponent}
-
                                 </DiscordMessage>
-
                             </div>
-
                         </div>
-                        <div className="text-sm m-1 text-neutral-500">
-                            The preview might display things wrong*
-                        </div>
-
-                    </div>}
-
+                        <div className="text-sm m-1 text-neutral-500">The preview might display things wrong*</div>
+                    </div>
+                )}
             </div>
 
             <div className="flex relative bottom-3">
@@ -278,7 +291,6 @@ export default function MessageCreatorEmbed({
                     {state === State.Success && <div className="ml-auto text-green-500 text-sm">Saved</div>}
                 </div>
             </div>
-
         </div>
     );
 }

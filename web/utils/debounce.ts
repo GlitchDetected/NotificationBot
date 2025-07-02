@@ -13,9 +13,7 @@ const debounce = <T>(fn: (...args: T[]) => void, delay: number) => {
 export function useStateDebounced<T>(initialValue: T, delay: number) {
     const [, _setInputValue] = useState<T>(initialValue);
 
-    const [debouncedInputValue, setDebouncedInputValue] = useState<T>(
-        initialValue
-    );
+    const [debouncedInputValue, setDebouncedInputValue] = useState<T>(initialValue);
 
     const memoizedDebounce = useMemo(
         () =>

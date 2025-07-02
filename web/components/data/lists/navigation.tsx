@@ -28,10 +28,7 @@ export function Navigation({
     return (
         <div className="flex items-start justify-between gap-2 relative bottom-2 mb-5 md:mb-3">
             <div className="flex flex-col md:flex-row gap-3">
-                <Button
-                    asChild
-                    size="sm"
-                >
+                <Button asChild size="sm">
                     <Link href={`/dashboard/${guildId}${href}`}>
                         <HiArrowLeft />
                         Back to channels
@@ -42,23 +39,16 @@ export function Navigation({
                     {avatar}
 
                     <div className="flex flex-col">
-                        <span className="text-xxs -mb-1">
-                            Editing:
-                        </span>
+                        <span className="text-xxs -mb-1">Editing:</span>
                         <span className="text-neutral-100 font-medium flex items-center gap-1">
                             {name}
-                            {icon &&
-                                <span className="relative top-0.5">{icon}</span>
-                            }
+                            {icon && <span className="relative top-0.5">{icon}</span>}
                         </span>
                     </div>
                 </div>
             </div>
 
-            <Button
-                asChild
-                size="sm"
-            >
+            <Button asChild size="sm">
                 <Link href={`/docs${docs}`}>
                     Read the docs & view placeholders
                     <HiExternalLink />

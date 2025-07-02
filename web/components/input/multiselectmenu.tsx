@@ -71,13 +71,15 @@ export default function MultiSelectMenu({
         }
 
         if (!url) {
-            if (!onSave) throw new Error("Warning: <MultiSelectMenu.onSave> must be defined when not using <MultiSelectMenu.url>.");
+            if (!onSave)
+                throw new Error("Warning: <MultiSelectMenu.onSave> must be defined when not using <MultiSelectMenu.url>.");
             onSave(values);
             setState(State.Idle);
             return;
         }
 
-        if (!dataName) throw new Error("Warning: <MultiSelectMenu.dataName> must be defined when using <MultiSelectMenu.url>.");
+        if (!dataName)
+            throw new Error("Warning: <MultiSelectMenu.dataName> must be defined when using <MultiSelectMenu.url>.");
 
         setState(State.Loading);
 
@@ -87,10 +89,10 @@ export default function MultiSelectMenu({
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataName.includes(".") ?
-                { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: values.map((v) => v.value) } }
-                :
-                { [dataName]: values.map((v) => v.value) }
+            body: JSON.stringify(
+                dataName.includes(".")
+                    ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: values.map((v) => v.value) } }
+                    : { [dataName]: values.map((v) => v.value) }
             )
         })
             .then(async (res) => {
@@ -109,20 +111,20 @@ export default function MultiSelectMenu({
                         break;
                     }
                 }
-
             })
             .catch(() => {
                 setState(State.Idle);
                 setError("Error while updating");
             });
-
     }, [open]);
 
     return (
         <div className={cn("select-none w-full max-w-full mb-3 relative", className)}>
             <div className="flex items-center gap-2">
                 <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">{name}</span>
-                {state === State.Loading && <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />}
+                {state === State.Loading && (
+                    <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />
+                )}
             </div>
 
             <button
@@ -168,23 +170,23 @@ export default function MultiSelectMenu({
                     ))}
                 </div>
                 <div className="ml-auto flex items-center gap-2">
-                    {values.find((v) => !!v.error) &&
+                    {values.find((v) => !!v.error) && (
                         <div className="text-sm flex items-center gap-1 text-red-500">
                             <HiExclamationCircle /> {values.find((v) => v.error)?.error}
                         </div>
-                    }
-                    {max !== Infinity &&
+                    )}
+                    {max !== Infinity && (
                         <span className="dark:text-neutral-600 text-neutral-400">
                             {values.length}/{max}
                         </span>
-                    }
+                    )}
                     <HiChevronDown />
                 </div>
             </button>
 
-            {open &&
+            {open && (
                 <div className="absolute mt-2 w-full bg-flame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
-                    <ClickOutside onClose={(() => setOpen(false))} />
+                    <ClickOutside onClose={() => setOpen(false)} />
                     {items.map((item) => (
                         <button
                             className={cn(
@@ -196,49 +198,33 @@ export default function MultiSelectMenu({
                             onClick={() => {
                                 setState(State.Idle);
                                 setValues((v) => {
-                                    if (v.length >= max || v.find((i) => i.value === item.value)) return v.filter((i) => i.value !== item.value);
+                                    if (v.length >= max || v.find((i) => i.value === item.value))
+                                        return v.filter((i) => i.value !== item.value);
                                     return [...v, item];
                                 });
                             }}
                         >
-                            {item?.icon &&
-                                <span className="mr-2">
-                                    {item?.icon}
-                                </span>
-                            }
+                            {item?.icon && <span className="mr-2">{item?.icon}</span>}
 
-                            <span className="max-w-[calc(100%-1rem)] truncate">
-                                {item.name}
-                            </span>
+                            <span className="max-w-[calc(100%-1rem)] truncate">{item.name}</span>
 
-                            {values.find((v) => v.value === item.value) &&
-                                <HiCheck className="relative left-1 top-[1px]" />
-                            }
+                            {values.find((v) => v.value === item.value) && <HiCheck className="relative left-1 top-[1px]" />}
 
-                            {item.error &&
+                            {item.error && (
                                 <div className="ml-auto text-sm flex items-center gap-1 text-red-500">
                                     <HiExclamationCircle /> {item.error}
                                 </div>
-                            }
+                            )}
                         </button>
                     ))}
                 </div>
-            }
+            )}
 
             <div className={cn("mt-1 flex md:block", open && "opacity-0")}>
-                {description &&
-                    <div className="dark:text-neutral-500 text-neutral-400 text-sm">
-                        {description}
-                    </div>
-                }
+                {description && <div className="dark:text-neutral-500 text-neutral-400 text-sm">{description}</div>}
 
-                {error &&
-                    <div className="ml-auto text-red-500 text-sm">
-                        {error}
-                    </div>
-                }
+                {error && <div className="ml-auto text-red-500 text-sm">{error}</div>}
             </div>
-
         </div>
     );
 }

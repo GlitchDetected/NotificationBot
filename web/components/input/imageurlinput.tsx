@@ -4,7 +4,7 @@ import { TailSpin } from "react-loading-icons";
 import type { ApiError } from "@/typings";
 import { cn } from "@/utils/cn";
 
-import Searchbar from "./searchbar";
+import Smartinput from "./smart-input";
 
 enum State {
     Idle = 0,
@@ -48,7 +48,7 @@ export default function ImageUrlInput({
 
     useEffect(() => {
         if (!value?.length) setImagestate("SUCCESS");
-        // else setImagestate(undefind);
+    // else setImagestate(undefind);
     }, [value]);
 
     useEffect(() => {
@@ -62,10 +62,10 @@ export default function ImageUrlInput({
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataName.includes(".") ?
-                { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: value || null } }
-                :
-                { [dataName]: value || null }
+            body: JSON.stringify(
+                dataName.includes(".")
+                    ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: value || null } }
+                    : { [dataName]: value || null }
             )
         })
             .then(async (res) => {
@@ -88,26 +88,24 @@ export default function ImageUrlInput({
                         break;
                     }
                 }
-
             })
             .catch(() => {
                 setState(State.Idle);
                 setError("Error while updatung");
             });
-
     }, [imagestate]);
 
     return (
         <div className="relative">
-
             <div className="flex items-center gap-2">
                 <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">{name}</span>
-                {state === State.Success && <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />}
+                {state === State.Success && (
+                    <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />
+                )}
             </div>
 
             <div className="lg:flex mt-1 w-full gap-4">
-
-                <Searchbar
+                <Smartinput
                     value={value}
                     setValue={(v) => {
                         setValue(v);
@@ -121,9 +119,8 @@ export default function ImageUrlInput({
                 />
 
                 <div className="max-w-1/2 w-full">
-
-                    {value && imagestate !== "ERRORED" ?
-                        /* eslint-disable-next-line @next/next/no-img-element */
+                    {value && imagestate !== "ERRORED" ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                             src={value}
                             alt="upload"
@@ -131,45 +128,35 @@ export default function ImageUrlInput({
                             onError={() => setImagestate("ERRORED")}
                             onLoad={() => setImagestate("SUCCESS")}
                         />
-                        :
-                        <div className={cn(
-                            "w-full border-2 rounded-md flex items-center justify-center dark:border-flame border-flame-100",
-                            imagestate === "ERRORED" && "dark:border-red-500 border-red-300",
-                            ratio
-                        )}>
-                            {imagestate === "ERRORED" ?
+                    ) : (
+                        <div
+                            className={cn(
+                                "w-full border-2 rounded-md flex items-center justify-center dark:border-flame border-flame-100",
+                                imagestate === "ERRORED" && "dark:border-red-500 border-red-300",
+                                ratio
+                            )}
+                        >
+                            {imagestate === "ERRORED" ? (
                                 <div className="text-red-400 m-4">
-                                    <div className="font-medium">Enter a <span className="underline underline-red-400">valid</span> image url!</div>
+                                    <div className="font-medium">
+                                        Enter a <span className="underline underline-red-400">valid</span> image url!
+                                    </div>
                                     <div className="text-xs">
                                         <div>Recommended resolution: 1024x256</div>
                                         <div>Recommended type: .png</div>
                                     </div>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={value}
-                                        alt="upload"
-                                        className="w-0 h-0"
-                                        onLoad={() => setImagestate("SUCCESS")}
-                                    />
+                                    <img src={value} alt="upload" className="w-0 h-0" onLoad={() => setImagestate("SUCCESS")} />
                                 </div>
-                                :
+                            ) : (
                                 <span className="text-neutral-400">Enter a image url to preview</span>
-                            }
+                            )}
                         </div>
-                    }
-
+                    )}
                 </div>
-
             </div>
 
-            <div className="flex">
-                {error &&
-                    <div className="ml-auto text-red-500 text-sm">
-                        {error}
-                    </div>
-                }
-            </div>
-
+            <div className="flex">{error && <div className="ml-auto text-red-500 text-sm">{error}</div>}</div>
         </div>
     );
 }

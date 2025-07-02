@@ -27,46 +27,58 @@ const Platform = {
 } as const;
 
 interface Props {
-    style: typeof Style[keyof typeof Style];
+    style: (typeof Style)[keyof typeof Style];
     add: (notification: ApiV1GuildsModulesNotificationsGetResponse) => void;
     set: (id: string) => void;
 }
 
-export function CreateNotificationSelect({
-    style,
-    add,
-    set
-}: Props) {
-    const [platform, setPlatform] = useState<typeof Platform[keyof typeof Platform] | null>(null);
+export function CreateNotificationSelect({ style, add, set }: Props) {
+    const [platform, setPlatform] = useState<(typeof Platform)[keyof typeof Platform] | null>(null);
 
-    return (<>
-        <PopoverWrapper
-            button={
-                <Button
-                    className={style === Style.Compact ? cn(badgeVariants(), "h-6") : ""}
-                    variant="secondary"
-                >
-                    Create new Notification
-                </Button>
-            }
-            style={style}
-        >
-            {(platform) => (
-                <Button
-                    className="w-full"
-                    onClick={() => setPlatform(platform)}
-                >
-                    <Icon type={platform} className="text-white" />
-                    {Object.keys(Platform)[platform]}
-                </Button>
-            )}
-        </PopoverWrapper>
+    return (
+        <>
+            <PopoverWrapper
+                button={
+                    <Button className={style === Style.Compact ? cn(badgeVariants(), "h-6") : ""} variant="secondary">
+                        Create new Notification
+                    </Button>
+                }
+                style={style}
+            >
+                {(platform) => (
+                    <Button className="w-full" onClick={() => setPlatform(platform)}>
+                        <Icon type={platform} className="text-white" />
+                        {Object.keys(Platform)[platform]}
+                    </Button>
+                )}
+            </PopoverWrapper>
 
-        <YoutubeNotificationModal add={add} set={set} isOpen={platform === Platform.YouTube} onClose={() => setPlatform(null)} />
-        <TwitchNotificationModal add={add} set={set} isOpen={platform === Platform.Twitch} onClose={() => setPlatform(null)} />
-        <BlueskyNotificationModal add={add} set={set} isOpen={platform === Platform.Bluesky} onClose={() => setPlatform(null)} />
-        <RedditNotificationModal add={add} set={set} isOpen={platform === Platform.Reddit} onClose={() => setPlatform(null)} />
-    </>);
+            <YoutubeNotificationModal
+                add={add}
+                set={set}
+                isOpen={platform === Platform.YouTube}
+                onClose={() => setPlatform(null)}
+            />
+            <TwitchNotificationModal
+                add={add}
+                set={set}
+                isOpen={platform === Platform.Twitch}
+                onClose={() => setPlatform(null)}
+            />
+            <BlueskyNotificationModal
+                add={add}
+                set={set}
+                isOpen={platform === Platform.Bluesky}
+                onClose={() => setPlatform(null)}
+            />
+            <RedditNotificationModal
+                add={add}
+                set={set}
+                isOpen={platform === Platform.Reddit}
+                onClose={() => setPlatform(null)}
+            />
+        </>
+    );
 }
 
 function PopoverWrapper({
@@ -74,24 +86,17 @@ function PopoverWrapper({
     button,
     style
 }: {
-    children: (platform: typeof Platform[keyof typeof Platform]) => React.ReactNode;
+    children: (platform: (typeof Platform)[keyof typeof Platform]) => React.ReactNode;
     button: React.ReactNode;
-    style: typeof Style[keyof typeof Style];
+    style: (typeof Style)[keyof typeof Style];
 }) {
     return (
         <Popover>
-            <PopoverTrigger asChild>
-                {button}
-            </PopoverTrigger>
-            <PopoverContent
-                className="space-y-2 suspicious-modal"
-                align={style === Style.Compact ? "start" : "center"}
-            >
+            <PopoverTrigger asChild>{button}</PopoverTrigger>
+            <PopoverContent className="space-y-2 suspicious-modal" align={style === Style.Compact ? "start" : "center"}>
                 <div className="space-y-2 mb-2">
                     <h4 className="font-medium leading-none">Platform</h4>
-                    <p className="text-sm text-muted-foreground">
-                        Select a social to create a notify for.
-                    </p>
+                    <p className="text-sm text-muted-foreground">Select a social to create a notify for.</p>
                 </div>
 
                 {Object.values(Platform).map((platform) => (
@@ -104,17 +109,15 @@ function PopoverWrapper({
     );
 }
 
-export function Icon({
-    type,
-    className
-}: {
-    type: NotificationType;
-    className?: string;
-}) {
+export function Icon({ type, className }: { type: NotificationType; className?: string; }) {
     switch (type) {
-        case NotificationType.YouTube: return <BsYoutube className={cn("text-red-500", className)} />;
-        case NotificationType.Twitch: return <BsTwitch className={cn("text-violet-500", className)} />;
-        case NotificationType.Bluesky: return <FaBluesky className={cn("text-blue-500", className)} />;
-        case NotificationType.Reddit: return <BsReddit className={cn("text-orange-500", className)} />;
+        case NotificationType.YouTube:
+            return <BsYoutube className={cn("text-red-500", className)} />;
+        case NotificationType.Twitch:
+            return <BsTwitch className={cn("text-violet-500", className)} />;
+        case NotificationType.Bluesky:
+            return <FaBluesky className={cn("text-blue-500", className)} />;
+        case NotificationType.Reddit:
+            return <BsReddit className={cn("text-orange-500", className)} />;
     }
 }

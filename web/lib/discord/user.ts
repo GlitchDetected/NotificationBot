@@ -11,7 +11,9 @@ export default class User {
         this.username = data.username;
         this.globalName = data.global_name || null;
         this.avatar = data.avatar;
-        this.avatarUrl = data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.startsWith("a_") ? "gif" : "webp"}` : null;
+        this.avatarUrl = data.avatar
+            ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.${data.avatar.startsWith("a_") ? "gif" : "webp"}`
+            : null;
         this.bot = data.bot || false;
     }
 
@@ -27,7 +29,7 @@ export async function getUser(userId: string) {
     const user = cache.get(userId);
     if (user) return user;
 
-    const data = await rest.get(Routes.user(userId)) as RESTGetAPIUserResult | RESTError;
+    const data = (await rest.get(Routes.user(userId))) as RESTGetAPIUserResult | RESTError;
     if (!data || "message" in data) return null;
 
     const newUser = new User(data);

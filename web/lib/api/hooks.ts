@@ -8,7 +8,6 @@ interface ApiError {
 }
 
 export function useApi<T>(url: string, enabled?: boolean) {
-
     const { data, isLoading, error } = useQuery({
         queryKey: [url],
         queryFn: () => getData<T | ApiError>(url),

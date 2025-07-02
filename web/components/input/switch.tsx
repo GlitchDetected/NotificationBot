@@ -79,10 +79,8 @@ export default function Switch({
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataName.includes(".") ?
-                { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: now } }
-                :
-                { [dataName]: now }
+            body: JSON.stringify(
+                dataName.includes(".") ? { [dataName.split(".")[0]]: { [dataName.split(".")[1]]: now } } : { [dataName]: now }
             )
         })
             .then(async (res) => {
@@ -105,7 +103,6 @@ export default function Switch({
                         break;
                     }
                 }
-
             })
             .catch(() => {
                 setValue(!now);
@@ -113,12 +110,10 @@ export default function Switch({
                 setState(State.Idle);
                 setError("Error while saving");
             });
-
     }
 
     return (
         <div className={cn("relative", description && "mb-2", className)}>
-
             <div className={cn("flex items-center gap-2", !isTickbox && "mb-6")}>
                 <div className="flex items-center gap-2">
                     <span
@@ -130,22 +125,18 @@ export default function Switch({
                         {name}
                     </span>
 
-                    {badge &&
-                        <Chip
-                            variant="flat"
-                            color="secondary"
-                            size="sm"
-                        >
+                    {badge && (
+                        <Chip variant="flat" color="secondary" size="sm">
                             {badge}
                         </Chip>
-                    }
+                    )}
 
-                    {state === State.Loading &&
+                    {state === State.Loading && (
                         <TailSpin stroke="#d4d4d4" strokeWidth={8} className="relative h-3 w-3 overflow-visible" />
-                    }
+                    )}
                 </div>
 
-                {isTickbox ?
+                {isTickbox ? (
                     <Checkbox
                         className="ml-auto"
                         isSelected={value}
@@ -154,7 +145,7 @@ export default function Switch({
                         color="secondary"
                         isDisabled={disabled}
                     />
-                    :
+                ) : (
                     <UiSwitch
                         className="ml-auto"
                         isSelected={value}
@@ -163,24 +154,14 @@ export default function Switch({
                         color="secondary"
                         isDisabled={disabled}
                     />
-                }
+                )}
             </div>
-
 
             <div className="absolute top-6 mt-0.5">
-                {description &&
-                    <div className="text-neutral-500 text-sm">
-                        {description}
-                    </div>
-                }
+                {description && <div className="text-neutral-500 text-sm">{description}</div>}
 
-                {error &&
-                    <div className="ml-auto text-red-500 text-sm">
-                        {error}
-                    </div>
-                }
+                {error && <div className="ml-auto text-red-500 text-sm">{error}</div>}
             </div>
-
         </div>
     );
 }

@@ -9,20 +9,18 @@ enum State {
     Failure = 2
 }
 
-export async function authorize({
-    setState
-}: {
-    setState: React.Dispatch<React.SetStateAction<State>>;
-}) {
+export async function authorize({ setState }: { setState: React.Dispatch<React.SetStateAction<State>>; }) {
     setState(State.Idle);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/sessions`, { // must return exact structure as User in order to authorize
+    const res = (await fetch(`${process.env.NEXT_PUBLIC_API}/sessions`, {
+    // must return exact structure as User in order to authorize
         credentials: "include"
     })
         .then((res) => res.json())
-        .catch(() => null) as User | ApiError | null;
+        .catch(() => null)) as User | ApiError | null;
 
-    if (res && "status" in res && res.status.toString().startsWith("4")) { // if it is a 4xx error, redirect to login
+    if (res && "status" in res && res.status.toString().startsWith("4")) {
+    // if it is a 4xx error, redirect to login
         window.location.href = "/login";
         return null;
     }
