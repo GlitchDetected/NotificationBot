@@ -7,8 +7,6 @@ import type {
 } from "@/typings";
 
 export interface Guild extends ApiV1GuildsGetResponse {
-  ownerName: string;
-  memberCount: number;
   channels?: ApiV1GuildsChannelsGetResponse[];
   roles?: ApiV1GuildsRolesGetResponse[];
   emojis?: ApiV1GuildsEmojisGetResponse[];

@@ -126,7 +126,7 @@ export default function SelectMenu({
 
             <button
                 className={cn(
-                    "mt-1 h-12 w-full bg-flame rounded-lg flex items-center px-3 modal",
+                    "mt-1 h-12 w-full bg-flame rounded-lg flex items-center px-3 suspicious-modal",
                     open && "outline outline-flame-400 outline-offset-2 outline-2",
                     (value?.error || error) && !open && "outline outline-red-500 outline-1",
                     state === State.Success && !open && "outline outline-green-500 outline-1",
@@ -166,7 +166,7 @@ export default function SelectMenu({
             </button>
 
             {open &&
-                <div className="absolute mt-2 w-full bg-flame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 flame-modal">
+                <div className="absolute mt-2 w-full bg-flame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
                     <ClickOutside onClose={(() => setOpen(false))} />
                     {items.map((item) => (
                         <button

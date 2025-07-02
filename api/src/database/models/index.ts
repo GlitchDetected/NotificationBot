@@ -1,7 +1,8 @@
 import User from "./User";
-import Tpa from "./tpa";
+import Notifications from "./notifications";
 import feednotifications from "./feednotifications";
 import dmnotifications from "./dmnotifications";
 import Prefix from "./Prefix";
+import FollowUpdates from "./followupdates";
 
-export default { User, Tpa, feednotifications, dmnotifications, Prefix };
+export default { User, Notifications, feednotifications, dmnotifications, Prefix, FollowUpdates };

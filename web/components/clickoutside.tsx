@@ -14,7 +14,7 @@ export function ClickOutside({
         const handleDocumentClick = (event: MouseEvent): void => {
 
             // @ts-expect-error
-            if (!event.target?.closest(".modal")) {
+            if (!event.target?.closest(".suspicious-modal")) {
                 onClose();
             }
         };

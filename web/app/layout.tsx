@@ -4,7 +4,7 @@ import { ActiveSectionContextProvider } from "@/lib/active-section-context";
 import { cn } from "@/utils/cn";
 import { Lexend, Noto_Sans_JP, Outfit } from "next/font/google";
 import type { Metadata, Viewport } from "next";
-import { getBaseUrl } from "@/lib/urls";
+import { getBaseUrl } from "@/utils/urls";
 import Notice, { NoticeType } from "@/components/notice";
 import { CookiesProvider } from "next-client-cookies/server";
 import { Provider } from "./provider";

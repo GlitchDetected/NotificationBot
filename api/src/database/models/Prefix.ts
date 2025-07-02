@@ -11,12 +11,11 @@ Prefix.init(
     guildId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      primaryKey: true
     },
     prefix: {
       type: DataTypes.STRING,
-      defaultValue: ";",
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

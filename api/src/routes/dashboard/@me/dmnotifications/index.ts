@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import dmnotifications from "../../../database/models/dmnotifications";
-import { httpError } from '../../../utils/httperror';
-import { HttpErrorMessage } from '../../../utils/httpjson';
+import dmnotifications from "@/database/models/dmnotifications";
+import { httpError } from '@/utils/httperror';
+import { HttpErrorMessage } from '@/utils/httpjson';
 
 const router = new Hono();
 

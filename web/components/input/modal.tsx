@@ -187,7 +187,7 @@ export default function Modal<T>({
                             }
                         }}
                         className="
-                            md:relative fixed bottom-0 min-h-[333px] md:min-h-fit mb-2 modal
+                            md:relative fixed bottom-0 min-h-[333px] md:min-h-fit mb-2 suspicious-modal
                             w-[97%] md:w-[480px] bg-popover rounded-xl shadow-md
                             max-sm:[--y-closed:28px] [--opacity-closed:0%] sm:[--scale-closed:90%]
                             max-sm:[--y-open:0px] [--opacity-open:100%] sm:[--scale-open:100%]

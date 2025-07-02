@@ -10,7 +10,7 @@ import rehypeRaw from "rehype-raw";
 import { getUser } from "@/lib/discord/user";
 import { cn } from "@/utils/cn";
 import { filterDuplicates } from "@/lib/filterduplicates";
-import { getBaseUrl } from "@/lib/urls";
+import { getBaseUrl } from "@/utils/urls";
 
 import Notice, { NoticeType } from "../notice";
 import { Separator } from "../ui/separator";

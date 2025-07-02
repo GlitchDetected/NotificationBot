@@ -1,13 +1,9 @@
 import { Hono } from 'hono';
 
-import feednotifications from "../../../database/models/feednotifications";
+import feednotifications from "@/database/models/feednotifications";
 
 const router = new Hono();
 
-/**
- * GET /dashboard/thirdpartyannouncements?guildId=GUILD_ID
- * Fetch the tpa configuration for a specific guild.
- */
 router.get("/", async (c) => {
   const { guildId } = await c.req.json();
   if (!guildId) {
@@ -26,27 +22,6 @@ router.get("/", async (c) => {
   }
 });
 
-/**
- * POST locahost:3001/dashboard/thirdpartyannouncements
- * Create or update the tpa configuration.
- *
- *  Expected JSON payload:
- * {
- *   "feed 1": {
- *     guildId: string,
- *     rssChannelId: string,
- *     rssLink: string,
- *     rssPingRoleId: string
- *   },
- *   "feed 2": {
- *     guildId: string,
- *     rssChannelId: string,
- *     rssLink: string,
- *     rssPingRoleId: string
- *   },
- *   ... and so on
- * }
- */
 router.post("/", async (c) => {
   const body = await c.req.json();
 
@@ -102,10 +77,6 @@ router.post("/", async (c) => {
   }
 });
 
-/**
- * DELETE /dashboard/feednotifications?guildId=GUILD_ID
- * Delete a guild's feednotifications configuration.
- */
 router.delete("/", async (c) => {
   const { guildId } = await c.req.json();
   if (!guildId) {

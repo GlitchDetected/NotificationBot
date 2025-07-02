@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { LinkButton } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import metadata from "@/public/docs/meta.json";
-import { getBaseUrl, getCanonicalUrl } from "@/lib/urls";
+import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 
 interface Props {
     params: Promise<{ pathname: string[]; }>;

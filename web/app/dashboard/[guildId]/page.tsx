@@ -33,17 +33,16 @@ export default function Home() {
 
           <TextInput
                          name="Bot Prefix"
-                        url={`/guilds/${params.guildId}`}
+                        url={`/guilds/${params.guildId}/prefix`}
                         dataName="botPrefix"
                         description="Custom prefix (3)"
                         type="text"
-                        defaultState={guild?.botPrefix ?? ";"}
+                        defaultState={guild?.botPrefix || ";"}
                         onSave={(value) => {
                             guildStore.setState(deepMerge<Guild>(guild, { 
                               botPrefix: String(value),
-                             })
-    );
-  }}
+                             }));
+                             }}
 />
   </>);
 }

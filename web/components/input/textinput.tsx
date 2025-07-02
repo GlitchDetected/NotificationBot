@@ -111,7 +111,7 @@ export default function TextInput({
             })
             .catch(() => {
                 setState(State.Idle);
-                setError("Error while updatung");
+                setError("Error while updating");
             });
 
     }, [valuedebounced]);

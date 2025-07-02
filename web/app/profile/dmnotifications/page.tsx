@@ -19,7 +19,7 @@ export default function Home() {
         <div className="lg:w-1/2">
           <TextInput
                          name="Embed Color"
-                        url="/dashboard/dmnotifications"
+                        url="/dashboard/@me/dmnotifications"
                         dataName="embedcolor"
                         description="Color of your notification embed"
                         type="color"
@@ -36,7 +36,7 @@ export default function Home() {
                 <div className="w-1/2">
                     <TextInput
                         name="Source"
-                        url="/dashboard/dmnotifications"
+                        url="/dashboard/@me/dmnotifications"
                         dataName="source"
                         description="Where your notification is coming from"
                         type="text"
@@ -53,7 +53,7 @@ export default function Home() {
           <div className="w-1/2">
           <TextInput
                         name="Message"
-                        url="/dashboard/dmnotifications"
+                        url="/dashboard/@me/dmnotifications"
                         dataName="message"
                         description="Custom message"
                         type="text"
@@ -73,7 +73,7 @@ export default function Home() {
 
       <ImageUrlInput
             name="Thumbnail"
-            url="/dashboard/dmnotifications"
+            url="/dashboard/@me/dmnotifications"
             ratio="aspect-[4/1]"
             dataName="thumbnail"
             description="Enter the url for your thumbnail. The recomended image ration is 4:1 and recommended resolution 1024x256px."

@@ -29,7 +29,7 @@ export const HttpErrorMessage = {
 
     // 5xx
     ServerError: "Something went wrong, try again later",
-    guildFetchError: "Failed to fetch guild details",
+    guildFetchError: "Failed to fetch guild details, guildId required",
 
     // custom using 4xx
     InvalidCaptcha: "Complete the CAPTCHA and try again",

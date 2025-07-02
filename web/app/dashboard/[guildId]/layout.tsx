@@ -4,8 +4,6 @@ import Link from "next/link";
 import { Suspense, useEffect, useState, useMemo } from "react";
 import { ListTab } from "@/components/list-tab";
 import { Button, Skeleton } from "@heroui/react";
-import Image from "next/image";
-import Fallbacklogo from "@/public/images/fallbacklogo.png";
 import { guildStore } from "@/common/guildStore";
 import { useQuery } from "@tanstack/react-query";
 import { cacheOptions, getData } from "@/lib/api";
@@ -153,8 +151,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             icon: <HiHome />
                         },
                         {
-                            name: "Third Party Notifications",
-                            value: "/tpa",
+                            name: "Notifications",
+                            value: "/notifications",
                             icon: <HiBell />
                         },
                         {

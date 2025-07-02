@@ -43,8 +43,7 @@ export function createSelectableItems<T extends Item>(
 
 export function createSelectableEmojiItems(emojis: ApiV1GuildsEmojisGetResponse[] = []) {
     return [
-        { icon: "👋", name: "Wave", value: "👋" },
-        { icon: "☕", name: "Coffee", value: "☕" },
+        { icon: "👋", name: "Hello", value: "👋" },
         ...emojis
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((c) => ({

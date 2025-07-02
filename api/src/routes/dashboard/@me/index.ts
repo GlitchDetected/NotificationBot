@@ -1,12 +1,13 @@
 import { Hono } from 'hono';
-import { hasPermissions } from "../../../lib/checkPerms";
-import redis from "../../../lib/redis";
-import { httpError } from '../../../utils/httperror';
-import { HttpErrorMessage } from '../../../utils/httpjson';
-
+import { hasPermissions } from "@/lib/checkPerms";
+import redis from "@/lib/redis";
+import { httpError } from '@/utils/httperror';
+import { HttpErrorMessage } from '@/utils/httpjson';
 const router = new Hono();
-
 const DISCORD_ENDPOINT = "https://discord.com/api/v10";
+
+import dmnRouter from "./dmnotifications";
+router.route("/dmnotifications", dmnRouter);
 
 router.get("/", async (c) => {
   const user = c.get('user');

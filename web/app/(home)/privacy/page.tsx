@@ -2,7 +2,7 @@ import { readFile } from "fs/promises";
 import type { Metadata } from "next";
 
 import CustomMarkdown from "@/components/markdown";
-import { getBaseUrl, getCanonicalUrl } from "@/lib/urls";
+import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 
 export const revalidate = false;
 

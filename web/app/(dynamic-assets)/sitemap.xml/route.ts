@@ -1,4 +1,4 @@
-import { getCanonicalUrl } from "@/lib/urls";
+import { getCanonicalUrl } from "@/utils/urls";
 
 interface Sitemap {
     url: string;

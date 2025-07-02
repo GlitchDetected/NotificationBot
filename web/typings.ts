@@ -271,7 +271,8 @@ export interface ApiV1UsersGetResponse {
 export enum NotificationType {
   YouTube = 0,
   Twitch = 1,
-  Bluesky = 2
+  Bluesky = 2,
+  Reddit = 3
 }
 
 export enum NotificationFlags {
@@ -289,6 +290,8 @@ export interface ApiV1GuildsModulesNotificationsGetResponse {
 
   type: NotificationType;
   flags: number;
+  regex: string | null;
+  
   creatorId: string;
 
   message: {
