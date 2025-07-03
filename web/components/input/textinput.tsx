@@ -122,7 +122,7 @@ export default function TextInput({
 
                 {resetState && resetState !== value && (
                     <button
-                        className="text-sm ml-auto text-flame-400/60 hover:text-flame-400/90 duration-200"
+                        className="text-sm ml-auto text-darkflame-400/60 hover:text-darkflame-400/90 duration-200"
                         onClick={() => {
                             setValue(resetState);
                             setValueDebounced(resetState);

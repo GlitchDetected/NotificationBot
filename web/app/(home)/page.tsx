@@ -7,7 +7,7 @@ import { Getstarted } from "@/components/homepage/getstarted";
 import { Herosection } from "@/components/homepage/herosection";
 import { Reviews } from "@/components/homepage/reviews";
 import { Scrollwheel } from "@/components/homepage/scrollwheel";
-import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
+import ScrollToTopButton from "@/components/ui/scroll-top";
 import { useSectionInView } from "@/lib/hooks";
 
 export default function Home() {

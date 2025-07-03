@@ -129,7 +129,7 @@ export default function MultiSelectMenu({
 
             <button
                 className={cn(
-                    "mt-1 min-h-12 w-full bg-flame rounded-lg flex items-center px-3 duration-100 suspicious-modal",
+                    "mt-1 min-h-12 w-full bg-darkflame rounded-lg flex items-center px-3 duration-100 suspicious-modal",
                     open && "outline outline-red-400 outline-2",
                     (values.find((v) => !!v.error) || error) && !open && "outline outline-red-500 outline-1",
                     state === State.Success && !open && "outline outline-green-500 outline-1",
@@ -152,7 +152,7 @@ export default function MultiSelectMenu({
                         <button
                             key={"multiselected-" + v.value}
                             className={cn(
-                                "relative px-2 bg-flame rounded-md flex items-center gap-1 suspicious-modal",
+                                "relative px-2 bg-darkflame rounded-md flex items-center gap-1 suspicious-modal",
                                 open && "hover:!bg-red-500/50 text-neutral-100 duration-200"
                             )}
                             onClick={(e) => {
@@ -185,12 +185,12 @@ export default function MultiSelectMenu({
             </button>
 
             {open && (
-                <div className="absolute mt-2 w-full bg-flame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
+                <div className="absolute mt-2 w-full bg-darkflame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
                     <ClickOutside onClose={() => setOpen(false)} />
                     {items.map((item) => (
                         <button
                             className={cn(
-                                "p-4 py-2 w-full text-left duration-200 flex items-center hover:bg-flame",
+                                "p-4 py-2 w-full text-left duration-200 flex items-center hover:bg-darkflame",
                                 item.error && "dark:bg-red-500/10 hover:dark:bg-red-500/25 bg-red-500/30 hover:bg-red-500/40"
                             )}
                             style={item.color ? { color: `#${item.color.toString(16)}` } : {}}

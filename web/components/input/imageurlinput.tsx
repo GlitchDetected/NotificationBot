@@ -131,7 +131,7 @@ export default function ImageUrlInput({
                     ) : (
                         <div
                             className={cn(
-                                "w-full border-2 rounded-md flex items-center justify-center dark:border-flame border-flame-100",
+                                "w-full border-2 rounded-md flex items-center justify-center dark:border-darkflame border-darkflame-100",
                                 imagestate === "ERRORED" && "dark:border-red-500 border-red-300",
                                 ratio
                             )}

@@ -109,8 +109,8 @@ export function LoginHeader() {
         () => (
             <button
                 className={cn(
-                    "ml-auto truncate flex hover:bg-flame py-2 px-4 rounded-lg duration-200 items-center",
-                    menu && "bg-flame"
+                    "ml-auto truncate flex hover:bg-darkflame py-2 px-4 rounded-lg duration-200 items-center",
+                    menu && "bg-darkflame"
                 )}
                 onClick={() => setMenu(!menu)}
             >
@@ -178,7 +178,7 @@ export function LoginHeader() {
                     <button
                         className="ml-auto text-red-500 m-4"
                         onClick={() => {
-                            window.location.href = "/logout";
+                            window.location.href = "/login?logout=true";
                             userStore.setState({ __fetched: true });
                             setMenu(false);
                         }}
@@ -190,7 +190,7 @@ export function LoginHeader() {
                 {buttons.map((button, i) => {
                     if ("type" in button && button.type === "split")
                         return (
-                            <hr key={"headerButton-" + button.type + i} className="my-1 mx-2 dark:border-flame border-flame-100" />
+                            <hr key={"headerButton-" + button.type + i} className="my-1 mx-2 dark:border-darkflame border-darkflame-100" />
                         );
 
                     if ("url" in button)
@@ -198,7 +198,7 @@ export function LoginHeader() {
                             <Button
                                 key={"headerButton-" + button.name + button.url}
                                 asChild
-                                className="w-full font-medium justify-start text-xl my-1 sm:my-0 sm:text-medium bg-transparent hover:bg-flame rounded-sm"
+                                className="w-full font-medium justify-start text-xl my-1 sm:my-0 sm:text-medium bg-transparent hover:bg-darkflame rounded-sm"
                                 onClick={() => setMenu(false)}
                             >
                                 <Link href={button.url!}>

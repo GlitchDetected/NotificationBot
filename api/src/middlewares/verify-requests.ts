@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Hono } from "hono";
 
 export default function apiKeyMiddleware(req: Request, res: Response, next: NextFunction): void {
   try {

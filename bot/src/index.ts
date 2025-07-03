@@ -39,7 +39,7 @@ const client = new Client({
 
     eventHandler(client);
 
-    client.login(process.env.TOKEN);
+    client.login(process.env.DISCORD_TOKEN);
     
   } catch (error) {
     console.log(`Error: ${error}`);

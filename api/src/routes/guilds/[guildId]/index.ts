@@ -11,7 +11,7 @@ import Prefix from '@/database/models/Prefix';
 import FollowUpdates from '@/database/models/followupdates';
 import redis from '@/lib/redis';
 const router = new Hono()
-const DISCORD_ENDPOINT = "https://discord.com/api/v10";
+const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT
 
 import modulesRouter from "./modules";
 router.route("/modules", modulesRouter);
@@ -27,7 +27,7 @@ router.get('/', async (c) => {
 
       const guildRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}`, {
     headers: {
-      Authorization: `Bot ${process.env.BOT_TOKEN}`,
+      Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
     },
   });
 
@@ -68,7 +68,7 @@ router.get('/channels', async (c) => {
 
             const channelsRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}/channels`, {
           headers: {
-            Authorization: `Bot ${process.env.BOT_TOKEN}`
+            Authorization: `Bot ${process.env.DISCORD_TOKEN}`
           }
         });
 
@@ -92,7 +92,7 @@ router.get('/roles', async (c) => {
 
           const rolesRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}/roles`, {
           headers: {
-            Authorization: `Bot ${process.env.BOT_TOKEN}`
+            Authorization: `Bot ${process.env.DISCORD_TOKEN}`
           }
         });
 
@@ -116,7 +116,7 @@ router.get('/emojis', async (c) => {
 
           const emojisRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}/emojis`, {
           headers: {
-            Authorization: `Bot ${process.env.BOT_TOKEN}`
+            Authorization: `Bot ${process.env.DISCORD_TOKEN}`
           }
         });
 

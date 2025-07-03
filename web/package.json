@@ -7,12 +7,15 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "format": "npx prettier --write '**/*.{ts,json,tsx}' --config .prettierrc"
+    "format": "npx prettier --write '**/*.{ts,json,tsx}' --config .prettierrc",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@discordjs/collection": "^2.1.1",
     "@discordjs/rest": "^2.5.1",
     "@heroui/react": "^2.8.0-beta.10",
+    "@octokit/types": "^14.1.0",
     "@odiffey/discord-markdown": "^3.3.0",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-icons": "^1.3.2",

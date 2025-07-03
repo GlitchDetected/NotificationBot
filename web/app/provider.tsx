@@ -20,7 +20,7 @@ export function Provider({ children }: Props) {
 
     useEffect(() => {
         cookies.set("lastpage", path, {
-            secure: process.env.NEXT_PUBLIC_BASE_URL?.startsWith("https://"),
+            secure: process.env.NEXT_PUBLIC_BASE_URL?.startsWith("https://"), // https for production only
             sameSite: "none",
             domain: process.env.NEXT_PUBLIC_BASE_URL?.split("://")[1],
             expires: 28

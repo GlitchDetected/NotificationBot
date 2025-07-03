@@ -7,7 +7,7 @@
 }
 
 @theme {
-  --color-flame: #9A0E22; 
+  --color-darkflame: #20070A; 
   --color-blurple: #7289DA;
   --color-accent: #CB4154;
   --color-destructive: #FF0000;
@@ -186,7 +186,7 @@ body {
 }
 
 .button {
-  background-color: #E50A13; 
+  background-color: #9A0E22; 
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   transition: background-color 0.3s ease;
@@ -209,7 +209,7 @@ body {
 }
 
 .roundedlgbutton {
-  background-color: #E50A13; 
+  background-color: #9A0E22; 
   padding: 0.75rem 0.5rem;
   border-radius: 8px;
   transition: background-color 0.3s ease;
@@ -233,7 +233,7 @@ body {
 }
 
 .rounded4xlbutton {
-  background-color: #470809; 
+  background-color: #9A0E22; 
   padding: 2.75rem 2rem;
   border-radius: 32px;
   transition: background-color 0.3s ease;

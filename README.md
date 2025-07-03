@@ -69,68 +69,77 @@
 ## setup
 prerequisites: 
 - Node.js @ https://nodejs.org/en/download
+- npm install -g pnpm
 
 `./api`
 - cd api
-- create a .env file
+- create .env
 ```env
-NODE_ENV=development
+# Discord stuff
 DISCORD_CLIENT_ID=""
 DISCORD_CLIENT_SECRET=""
-DISCORD_REDIRECT_URI="http://localhost:3001/auth/callback" # add to your discord bot redirects in your developer portal 
+DISCORD_TOKEN=""
+DISCORD_ENDPOINT = "https://discord.com/api/v10";
+
+# Database variables
+pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot # example string, setup postgresql on your own
+REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
+FORCE_DB_RESET="false"
+
+# variables to help the api and dashboard communicate
+JWT_SECRET="" # openssl rand -base64 32
 FRONTEND_SITE="http://localhost:3000"
 PORT="3001"
-JWT_SECRET="" # openssl rand -base64 32
-pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot # example string, setup postgresql on your own
-FORCE_DB_RESET="false"
-REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
-OAUTH_URI="https://discord.com/oauth2/authorize?client_id={botid}&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Fcallback&scope=identify+guilds"
-BOT_TOKEN=""
-cookieDomain="localhost" # change to match your base url (e.x notificationbot.xyz)
+API_SECRET=""
 ```
-- npm i
-- npm run start
+- pnpm install
+- pnpm dev
 
 `./bot`
 - cd bot
-- create a .env file
+- create .env
 ```env
-TOKEN=""
+# Discord stuff
+DISCORD_TOKEN=""
 GUILD_ID="" 
 SUPPORT_CHANNEL_ID=""
-
 testServer=""
 clientId=""
 devs=""
 owner=""
 
+# Database variables
 pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot"
 FORCE_DB_RESET="false"
 
+# variables to send http requests
 API_URL="http://localhost:3001"
-
-prefix=";"
+API_SECRET=""
 ```
-- npm i
-- npm run start
+- pnpm install
+- pnpm dev
 
 `./web`
 - cd web
-- create a .env
+- create .env
 ```env
-# API url and a random secret key you want for the API
-NEXT_PUBLIC_API="http://localhost:3001"
-API_SECRET=""
-
-# base url for the website
-NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-
-# discord bot id and token
+# Discord stuff
 DISCORD_TOKEN=""
 CLIENT_ID=""
+
+# cookie domain: use base url such as example.com
+NEXT_PUBLIC_COOKIE_DOMAIN="localhost"
+
+# variables to help the api and dashboard communicate
+NEXT_PUBLIC_API="http://localhost:3001"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+API_SECRET=""
+
+# github token for fetching repositories
+GITHUB_TOKEN=""
 ```
-- npm i
-- npm run start
+- pnpm install
+- pnpm dev
 
 See the [open issues](https://github.com/GlitchDetected/notificationbot/issues) for a full list of proposed features and known issues.
 

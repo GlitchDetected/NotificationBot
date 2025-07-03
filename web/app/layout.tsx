@@ -98,7 +98,9 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     <NoScript />
                     <ActiveSectionContextProvider>
                         <NavBar />
-                        <Provider>{children}</Provider>
+                        <Provider>
+                            {children}
+                        </Provider>
                     </ActiveSectionContextProvider>
                 </body>
             </html>
@@ -123,19 +125,23 @@ async function NavBar() {
 
     return (
         <nav
-            className="fixed top-0 left-1/2 transform -translate-x-1/2 h-[4.5rem]
-      w-full rounded-none border-opacity-40 sm:rounded-lg flex items-center px-10
-      md:px-15 lg:px-20 justify-between bg-white shadow-md dark:bg-red-950 dark:shadow-black/90
-      z-[999] sm:top-6 sm:h-[4rem] sm:w-[55rem]"
+            className="fixed top-0 left-1/2 transform -translate-x-1/2
+                w-full sm:w-[55rem] h-[4.5rem] sm:h-[4rem]
+                sm:top-6 z-[999]
+                flex items-center justify-between
+                px-6 sm:px-10 lg:px-20
+                rounded-none sm:rounded-xl
+                shadow-xl shadow-black/90
+                bg-red-950/40 backdrop-blur-xs backdrop-brightness-75"
         >
-            <div className="flex items-center gap-4">
-                <Link href="/" className="flex items-center gap-2">
+            <div className="flex gap-4 items-center">
+                <Link href="/" className="flex items-center gap-1">
                     <Image src="/images/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
                     <span className="text-lg font-semibold">NotificationBot</span>
                 </Link>
             </div>
 
-            <ul className="hidden md:flex flex-1 items-center justify-center gap-8 text-[0.9rem] font-medium text-gray-500 dark:text-gray-400">
+            <ul className="flex-5 gap-8 text-[0.9rem] font-medium text-gray-500 dark:text-gray-400">
                 {links.map((link) => (
                     <Link
                         key={link.hash}
@@ -147,7 +153,10 @@ async function NavBar() {
                 ))}
             </ul>
 
-            {jar.get("sessiontoken")?.value ? <LoginHeader /> : <LoginButton className="ml-auto" />}
+            {jar.get("sessiontoken")?.value
+                ? <LoginHeader />
+                : <LoginButton
+                    className="ml-auto" />}
         </nav>
     );
 }

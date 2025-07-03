@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { HTMLProps } from "react";
 import { BiCopyright, BiLogoGithub, BiLogoGmail } from "react-icons/bi";
@@ -5,9 +6,14 @@ import { BsDiscord } from "react-icons/bs";
 import { HiBookOpen, HiCloud, HiCube, HiHand, HiLibrary, HiUserAdd } from "react-icons/hi";
 
 import TopggIcon from "@/components/icons/topgg";
+import { getUser } from "@/lib/discord/user";
 import { cn } from "@/utils/cn";
 
-export default function Footer(props: HTMLProps<HTMLDivElement>) {
+import { Badge } from "./ui/badge";
+
+export async function Footer(props: HTMLProps<HTMLDivElement>) {
+    const dev = await getUser("920487197046607872");
+
     return (
         <footer className="h-px bg-gray-700 mb-60 m-6">
             <div className={cn("text-primary/75 w-full mt-10 text-left", props.className)} {...props}>
@@ -38,7 +44,23 @@ export default function Footer(props: HTMLProps<HTMLDivElement>) {
                             <span className="flex gap-1 items-center">
                                 <HiCube />
                                 <span className="flex items-center">
-                                    <span>Made by GlitchDetected</span>
+                                    <span>Made by
+                                        <Link href="/team">
+                                            <Badge
+                                                className="relative top-[3px] ml-0.5"
+                                                radius="rounded"
+                                            >
+                                                <Image
+                                                    src={dev?.avatarUrl as string}
+                                                    alt="avatar"
+                                                    width={18}
+                                                    height={18}
+                                                    className="rounded-full relative right-1.5 px-[1px]"
+                                                />
+                                                {dev?.username}
+                                            </Badge>
+                                        </Link>
+                                    </span>
                                 </span>
                             </span>
                         </div>

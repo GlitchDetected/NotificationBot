@@ -1,10 +1,16 @@
 import { cn } from "@/utils/cn";
 
-export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SkeletonProps
+    extends React.HTMLAttributes<HTMLDivElement> {
     isLoading?: boolean;
 }
 
-function Skeleton({ className, children, isLoading, ...props }: SkeletonProps) {
+function Skeleton({
+    className,
+    children,
+    isLoading,
+    ...props
+}: SkeletonProps) {
     if (!isLoading && isLoading !== undefined) {
         return (
             <div className={className} {...props}>
@@ -13,7 +19,12 @@ function Skeleton({ className, children, isLoading, ...props }: SkeletonProps) {
         );
     }
 
-    return <div className={cn("animate-pulse rounded-md bg-primary/10", className)} {...props} />;
+    return (
+        <div
+            className={cn("animate-pulse rounded-md bg-primary/10", className)}
+            {...props}
+        />
+    );
 }
 
 export { Skeleton };

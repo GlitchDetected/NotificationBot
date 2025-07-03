@@ -104,8 +104,8 @@ export default function Home() {
                             opacity: 1,
                             scale: 1,
                             transition: {
-                                delayChildren: data.length > 20 ? 0.2 : 0.3,
-                                staggerChildren: data.length > 20 ? 0.1 : 0.2
+                                delayChildren: guilds.length > 20 ? 0.2 : 0.3,
+                                staggerChildren: guilds.length > 20 ? 0.1 : 0.2
                             }
                         }
                     }}
@@ -149,7 +149,7 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
     return (
         <motion.li
             className={cn(
-                "dark:bg-flame bg-flame-100 p-3.5 flex items-center rounded-xl drop-shadow-md overflow-hidden relative duration-100 outline-flame-500 hover:outline group/card",
+                "dark:bg-darkflame bg-darkflame-100 p-3.5 flex items-center rounded-xl drop-shadow-md overflow-hidden relative duration-100 outline-darkflame-500 hover:outline group/card",
                 !botInGuild && "saturate-50 brightness-50"
             )}
             variants={springAnimation}

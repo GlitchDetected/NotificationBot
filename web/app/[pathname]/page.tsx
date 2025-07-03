@@ -6,7 +6,6 @@ interface Props {
 
 const fetchOptions = { next: { revalidate: 60 * 60 } };
 const utm = "?utm_source=notificationbot.up.railway.app&utm_medium=redirect";
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
 
 export default async function Home({ params }: Props) {
     const { pathname } = await params;
@@ -18,10 +17,6 @@ export default async function Home({ params }: Props) {
             return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
         case "add":
             return redirect("https://discord.com/oauth2/authorize?client_id=1366507117044957276");
-        case "login":
-            return redirect(`${NEXT_PUBLIC_API}/auth/signin`);
-        case "logout":
-            return redirect(`${NEXT_PUBLIC_API}/auth/signout`);
         case "docs":
         case "guides":
             return redirect("/docs/home");

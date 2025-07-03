@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import Footer from "@/components/Footer";
+import { Footer } from "@/components/Footer";
 
 export const revalidate = 43200;
 

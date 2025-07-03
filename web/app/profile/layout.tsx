@@ -80,7 +80,6 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 </div>
             )}
 
-            {/* Tabs Section */}
             <Suspense fallback={<Skeleton />}>
                 <ListTab
                     tabs={[

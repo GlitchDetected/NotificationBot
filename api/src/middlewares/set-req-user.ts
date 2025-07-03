@@ -2,7 +2,8 @@ import { MiddlewareHandler } from "hono";
 import { getCookie } from "hono/cookie";
 import User from "../database/models/User";
 import jwt from "jsonwebtoken";
-import { parse } from "cookie"
+import { httpError } from "@/utils/httperror";
+import { HttpErrorMessage } from "@/utils/httpjson";
 
 interface DecodedToken {
   id?: string;
@@ -20,7 +21,11 @@ export const setReqUser: MiddlewareHandler = async (c, next) => {
       const targetUser = await User.findOne({ where: { id: decodedToken.id } });
 
       if (targetUser) {
-        c.set('user', targetUser) // use c.get instead of c.req(user) - hono's way to pass data between middlewares and handlers
+        c.set('user', targetUser)
+      }
+
+      if (!targetUser) {
+        return httpError(HttpErrorMessage.InvalidAuthorization);
       }
     }
   } catch (error) {

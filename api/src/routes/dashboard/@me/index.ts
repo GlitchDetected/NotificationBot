@@ -4,7 +4,7 @@ import redis from "@/lib/redis";
 import { httpError } from '@/utils/httperror';
 import { HttpErrorMessage } from '@/utils/httpjson';
 const router = new Hono();
-const DISCORD_ENDPOINT = "https://discord.com/api/v10";
+const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
 
 import dmnRouter from "./dmnotifications";
 router.route("/dmnotifications", dmnRouter);
@@ -57,7 +57,7 @@ router.get("/guilds", async (c) => {
   // Fetch the bot's guilds
   const botGuildsRes = await fetch(`${DISCORD_ENDPOINT}/users/@me/guilds`, {
     headers: {
-      Authorization: `Bot ${process.env.BOT_TOKEN}`
+      Authorization: `Bot ${process.env.DISCORD_TOKEN}`
     }
   });
 

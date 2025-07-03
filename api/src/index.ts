@@ -5,7 +5,6 @@ import models from "./database/models";
 import "dotenv/config";
 import apiKeyMiddleware from "./middlewares/verify-requests";
 import { HttpErrorCode, HttpErrorMessage } from "./utils/httpjson";
-import { httpError } from "./utils/httperror";
 
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'

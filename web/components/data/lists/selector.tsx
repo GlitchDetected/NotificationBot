@@ -109,7 +109,7 @@ export function ItemSelector<T extends TBase>({
 
 function Item({ buttons, children }: { buttons: React.ReactNode; children: React.ReactNode; }) {
     return (
-        <div className="flex justify-between p-4 bg-flame rounded-xl w-full duration-100">
+        <div className="flex justify-between p-4 bg-darkflame rounded-xl w-full duration-100">
             <div className="flex gap-3 items-center">{children}</div>
 
             <div className="space-x-2">{buttons}</div>
