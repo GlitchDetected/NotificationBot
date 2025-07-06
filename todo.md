@@ -3,7 +3,7 @@
 - [ ] Work on the dashboard UI  
 - [ ] Connect to database from API  
   - [ ] Sequelize
-- [ ] OpaqueResponseBlocking
+- [ ] add rss to /notifications
 
 ### In Progress
 

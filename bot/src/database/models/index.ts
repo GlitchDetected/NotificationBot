@@ -1,5 +1,4 @@
-import Uptime from "./Uptime";
-import Commands from "./Commands";
 import Prefix from "./Prefix"
+import dmnotifications from "./dmnotifications";
 
-export default { Uptime, Commands, Prefix };
+export default { Prefix, dmnotifications };

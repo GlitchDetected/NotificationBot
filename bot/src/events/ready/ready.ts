@@ -1,6 +1,8 @@
 import { Client, Message } from "discord.js";
 import { postStatus } from "../../utils/postStatus";
 import prefixHandler from "../../handlers/prefixHandler";
+import { dmnotify } from "@/utils/dmNotify";
+import cron from "node-cron";
 
 export default (client: Client) => {
 
@@ -12,19 +14,16 @@ export default (client: Client) => {
   const activities: Activity[] = [
     { name: `/help`, type: 4 },
     { name: `https://discord.gg/QnZcYsf2E9 | /help`, type: 4 },
-    // { name: `${client.guilds.cache.size} servers | /help`, type: 4 },
   ];
 
   if (client.user) {
     console.log(`${client.user.tag} is online`);
     prefixHandler(client);
 
+    cron.schedule("0 * * * *", () => {
     postStatus(client);
-
-    // 5 minutes
-      setInterval(() => {
-    postStatus(client);
-  }, 5 * 60 * 1000);
+    dmnotify(client);
+    });
 
     let currentIndex = 0;
 

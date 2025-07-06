@@ -1,7 +1,7 @@
 {
   "pages": [
     {
-      "name": "🏠 Home",
+      "name": "🏠︎ Home",
       "file": "home.md",
       "description": "Main page of the NotificationBot documentation!"
     },
@@ -9,11 +9,45 @@
       "name": "🔔 DM Notifications",
       "file": "dmnotifications.md",
       "image": "/docs-assets/open-graph/greetings.webp",
-      "description": "Create a warm and inviting atmosphere for new members in your community!",
+      "description": "Notifications sent directly to your direct messages",
       "permissions": {
         "bot": ["View Channel", "Send Messages", "Embed Links", "Attach Files"],
         "user": ["Manage Server"]
       }
-    }
+    },
+    {
+            "name": "📢 Social Notifications",
+            "file": "notifications.md",
+            "image": "/docs-assets/open-graph/notifications-youtube.webp",
+            "description": "Notify your community from your favorite socials like YouTube, Twitch, Bluesky or Reddit",
+            "permissions": {
+                "bot": [
+                    "View Channel",
+                    "Send Messages",
+                    "Embed Links",
+                    "Mention Everyone"
+                ],
+                "user": [
+                    "Manage Server"
+                ]
+            }
+        },
+               {
+            "name": "👋 Welcomer",
+            "file": "welcomer.md",
+            "image": "/docs-assets/open-graph/greetings.webp",
+            "description": "Automatic welcoming and leaving notifications",
+            "permissions": {
+                "bot": [
+                    "View Channel",
+                    "Send Messages",
+                    "Embed Links",
+                    "Attach Files"
+                ],
+                "user": [
+                    "Manage Server"
+                ]
+            }
+        }
   ]
 }

@@ -67,7 +67,7 @@ export function Herosection() {
                             className="h-5 w-5 relative top-px"
                             draggable={false}
                         />
-                        Get started here in seconds
+                        Add NotificationBot to get started!
                     </span>
                 </div>
             </div>

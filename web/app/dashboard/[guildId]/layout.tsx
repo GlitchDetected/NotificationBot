@@ -6,7 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { HiArrowNarrowLeft, HiBell, HiHome, HiPaperAirplane, HiRss, HiUsers, HiViewGridAdd } from "react-icons/hi";
+import { HiArrowNarrowLeft, HiBell, HiEmojiHappy, HiHome, HiPaperAirplane, HiUsers, HiViewGridAdd } from "react-icons/hi";
 
 import { guildStore } from "@/common/guildStore";
 import { ClientButton } from "@/components/clientfunc";
@@ -25,16 +25,26 @@ import { intl } from "@/utils/intl";
 function useGuildData<T extends unknown[]>(
     url: string,
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
+
     onLoad: (data: T, error: boolean)
     => void
 ) {
-    return useQuery({
+    const query = useQuery({
         queryKey: [url],
         queryFn: () => getData<T>(url),
         enabled: !!guildStore((g) => g)?.id,
         ...cacheOptions
     });
+
+    const { data, isError } = query;
+
+    useEffect(() => {
+        const isDataError = !data || "message" in (data as object);
+
+        if (data || isError) {
+            onLoad(isDataError ? ([] as unknown as T) : (data as T), isDataError);
+        }
+    }, [data, isError]);
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode; }) {
@@ -148,9 +158,9 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                             icon: <HiPaperAirplane className="rotate-45" />
                         },
                         {
-                            name: "Feed Notifications",
-                            value: "/feednotifications",
-                            icon: <HiRss />
+                            name: "Welcomer",
+                            value: "/welcomer",
+                            icon: <HiEmojiHappy />
                         }
                     ]}
                     url={`/dashboard/${params.guildId}`}
@@ -158,24 +168,31 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 />
             </Suspense>
 
-            {error ? (
+            {error ?
                 <ScreenMessage
-                    title={error.includes("permssions") ? "You cannot access this page.." : "Something went wrong on this page.."}
-                    description={error}
-                    buttons={
-                        <>
-                            <ClientButton as={Link} href="/profile" startContent={<HiViewGridAdd />}>
-                                Go back to Dashboard
-                            </ClientButton>
-                            <SupportButton />
-                        </>
+                    title={error.includes("permssions")
+                        ? "You cannot access this page.."
+                        : "Something went wrong on this page.."
                     }
-                ></ScreenMessage>
-            ) : guild && loaded.length === 3 ? (
-                children
-            ) : (
-                <></>
-            )}
+                    description={error}
+                    buttons={<>
+                        <ClientButton
+                            as={Link}
+                            href="/profile"
+                            startContent={<HiViewGridAdd />}
+                        >
+                            Go back to Dashboard
+                        </ClientButton>
+                        <SupportButton />
+                    </>}
+                >
+                </ScreenMessage>
+                :
+                // Only render children if the guild data exists and channels, roles, emojis have been loaded.
+                // Otherwise, render nothing to wait for data to be ready.
+                (guild && loaded.length === 3) ? children : <></>
+            }
+
         </div>
     );
 }

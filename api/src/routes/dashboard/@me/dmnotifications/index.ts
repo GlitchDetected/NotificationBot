@@ -5,10 +5,6 @@ import { HttpErrorMessage } from '@/utils/httpjson';
 
 const router = new Hono();
 
-/**
- * GET /dashboard/dmnotifications?userId=USER_ID
- * Fetch the user dmnotifications configuration for a specific user.
- */
 router.get("/", async (c) => {
   try {
       const user = c.get('user');
@@ -18,19 +14,15 @@ router.get("/", async (c) => {
       }
 
     const config = await dmnotifications.findOne({ where: { userId: user.id } });
-    if (!config) {
-       return c.json({ message: "No user dmnotifications configuration found." });
-    }
 
      return c.json({
-      embedcolor: config.embedcolor,
-      source: config.source,
-      thumbnail: config.thumbnail,
-      message: config.message
+      embedcolor: config?.embedcolor,
+      source: config?.source,
+      thumbnail: config?.thumbnail,
+      message: config?.message
     });
   } catch (error) {
     console.error("Error fetching user dmnotifications configuration:", error);
-     return c.json({ message: "Error fetching user dmnotifications configuration", error });
   }
 });
 
@@ -74,14 +66,9 @@ router.patch("/", async (c) => {
     });
   } catch (error) {
     console.error("Error creating/updating user dmnotifications configuration:", error);
-     return c.json({ message: "Error creating/updating dmnotifications configuration", error });
   }
 });
 
-/**
- * DELETE /dashboard/dmnotifications?userId=USER_ID
- * Delete a user's dmnotifications configuration.
- */
 router.delete("/", async (c) => {
       const user = c.get('user');
     
@@ -97,7 +84,6 @@ router.delete("/", async (c) => {
      return c.json({ message: "dmnotifications configuration deleted successfully." });
   } catch (error) {
     console.error("Error deleting dmnotifications configuration:", error);
-     return c.json({ message: "Error deleting dmnotifications configuration", error });
   }
 });
 

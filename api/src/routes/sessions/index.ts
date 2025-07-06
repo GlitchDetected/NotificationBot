@@ -13,7 +13,6 @@ const router = new Hono();
 router.post("/", async (c) => {
   try {
     const { code, redirectUri } = await c.req.json();
-    console.log(code, redirectUri);
 
         const oauthRes = await fetch(`${DISCORD_ENDPOINT}/oauth2/token`, {
       method: "POST",
@@ -85,8 +84,6 @@ router.post("/", async (c) => {
       process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
-
-    console.log(token);
 
     return c.json({sessiontoken: token})
   

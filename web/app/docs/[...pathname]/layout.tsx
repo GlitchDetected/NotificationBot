@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BsDiscord, BsGithub } from "react-icons/bs";
 import { HiUserAdd, HiViewGridAdd } from "react-icons/hi";
 
-import Footer from "@/components/Footer";
+import { Footer } from "@/components/Footer";
 import { LinkButton } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import metadata from "@/public/docs/meta.json";

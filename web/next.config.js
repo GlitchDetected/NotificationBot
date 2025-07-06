@@ -26,6 +26,12 @@ const nextConfig = {
                 port: "",
                 pathname: "/banners/**"
             },
+            {
+                protocol: "https",
+                hostname: "imageapi.notificationbot.xyz",
+                port: "",
+                pathname: "/"
+            },
     ],
   },
 };

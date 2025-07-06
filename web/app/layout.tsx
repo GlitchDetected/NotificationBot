@@ -10,7 +10,6 @@ import { CookiesProvider } from "next-client-cookies/server";
 import Notice, { NoticeType } from "@/components/notice";
 import { LoginButton } from "@/components/ui/loginbutton";
 import { LoginHeader } from "@/components/ui/loginheader";
-import { ActiveSectionContextProvider } from "@/lib/active-section-context";
 import { links } from "@/lib/data";
 import { cn } from "@/utils/cn";
 import { getBaseUrl } from "@/utils/urls";
@@ -94,14 +93,11 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     style={{ overflow: "visible" }}
                 >
                     <div className="absolute top-0 right-0 w-screen h-screen -z-50" />
-                    {/* <Noise /> */}
                     <NoScript />
-                    <ActiveSectionContextProvider>
-                        <NavBar />
-                        <Provider>
-                            {children}
-                        </Provider>
-                    </ActiveSectionContextProvider>
+                    <NavBar />
+                    <Provider>
+                        {children}
+                    </Provider>
                 </body>
             </html>
         </CookiesProvider>

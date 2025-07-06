@@ -5,7 +5,6 @@ import { HttpErrorMessage } from '@/utils/httpjson';
 const router = new Hono();
 
 import notificationIdRouter from "./[id]";
-import { JsxFlags } from 'typescript';
 router.route("/:id", notificationIdRouter); // dynamic route
 
 

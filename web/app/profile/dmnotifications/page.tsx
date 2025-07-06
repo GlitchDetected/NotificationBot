@@ -46,6 +46,11 @@ export default function Home() {
                         type="text"
                         defaultState={user?.extended?.dmnotifications?.source || ""}
                         onSave={(value) => {
+                            const rsslinkregex = /^(https?:\/\/[^\s]+(?:(?:\.rss|\.xml|\/rss|\/feed)(?:\/.*)?))$/i;
+                            if (!rsslinkregex.test(String(value).trim())) {
+                                alert("Please enter a valid RSS feed URL (e.g., ends in .rss, .xml, /rss, or /feed)");
+                                return;
+                            }
                             userStore.setState(
                                 deepMerge<User>(user, {
                                     extended: {

@@ -7,12 +7,13 @@ import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 import { createSession } from "./api";
 
 // const domain = getBaseUrl().split("://")[1];
+const cookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN;
 
 export const defaultCookieOptions = {
     secure: getBaseUrl().startsWith("http://"),
     httpOnly: false,
     sameSite: "lax",
-    domain: "localhost", // "." + (domain.startsWith("dev.") ? domain.replace(/^dev\./, "") : domain),
+    domain: cookieDomain, // "." + (domain.startsWith("dev.") ? domain.replace(/^dev\./, "") : domain),
     get expires() {
         return new Date(Date.now() + 1000 * 60 * 60 * 24 * 28);
     }

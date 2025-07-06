@@ -78,7 +78,7 @@ Notifications.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-        message: {
+    message: {
       type: DataTypes.JSONB,
       allowNull: true,
       defaultValue: {

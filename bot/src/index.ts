@@ -31,7 +31,7 @@ const client = new Client({
     });
 
     await db.sync({
-      // force: forceDbReset, if true ONLY
+      // force: forceDbReset,
       force: false
     });
 

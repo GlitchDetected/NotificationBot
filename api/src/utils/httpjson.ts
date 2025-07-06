@@ -4,6 +4,8 @@ export const HttpErrorCode = {
     InvalidAuthorization: 401,
     coderequired: 401,
     NotFound: 404,
+    NoConfigFound: 404,
+    ChannelNotFound: 400,
 
     // 5xx
     ServerError: 500,
@@ -26,6 +28,8 @@ export const HttpErrorMessage = {
     InvalidAuthorization: "Invalid Authorization",
     coderequired: "A 'code' query parameter must be present in the URL.",
     NotFound: "This route cannot be found or method is not in use",
+    NoConfigFound: "No configuration found for this resource",
+    ChannelNotFound: "Discord channel not found or set",
 
     // 5xx
     ServerError: "Something went wrong, try again later",
