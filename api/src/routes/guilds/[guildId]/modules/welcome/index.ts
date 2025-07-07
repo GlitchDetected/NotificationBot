@@ -16,8 +16,8 @@ router.get("/", async (c) => {
       channelId: config?.channelId ?? null,
 
       message: { 
-        content: config?.message?.content ?? "Welcome to the server @{user.username}",
-        embed: config?.message?.embed ?? "Welcome to the server @{user.username}",
+        content: config?.message?.content ?? null,
+        embed: config?.message?.embed ?? null,
     },
 
       roleIds: config?.roleIds ?? [],
@@ -163,8 +163,8 @@ if (typeof body.dm === "object" && body.dm !== null) {
         channelId: body.channelId,
 
         message: {
-  content: body.message?.content ?? null,
-  embed: body.message?.embed,
+          content: body.dm?.message?.content ?? "Welcome to the server @{user.username}",
+          embed: body.dm?.message?.embed ?? null,
 },
 
 
@@ -177,8 +177,8 @@ if (typeof body.dm === "object" && body.dm !== null) {
         dm: {
         enabled: body.dm?.enabled ?? false,
         message: {
-          content: body.dm?.message?.content ?? null,
-          embed: body.dm?.message?.embed,
+          content: body.dm?.message?.content ?? "Welcome to the server @{user.username}",
+          embed: body.dm?.message?.embed ?? null,
         },
       },
 

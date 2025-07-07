@@ -17,8 +17,8 @@ router.get("/", async (c) => {
       webhookURL: config?.webhookURL ?? null,
 
       message: { 
-        content: config?.message?.content ?? "Goodbye @{user.username}",
-        embed: config?.message?.embed ?? "Goodbye @{user.username}",
+        content: config?.message?.content ?? null,
+        embed: config?.message?.embed ?? null,
     },
 
       deleteAfter: config?.deleteAfter ?? 0,
@@ -93,8 +93,8 @@ if (typeof body.message === "object" && body.message !== null) {
         webhookURL: body.webhookURL,
 
         message: {
-  content: body.message?.content ?? null,
-  embed: body.message?.embed,
+          content: body.dm?.message?.content ?? "Goodbye @{user.username}",
+          embed: body.dm?.message?.embed ?? null,
 },
 
         deleteAfter: body.deleteAfter,

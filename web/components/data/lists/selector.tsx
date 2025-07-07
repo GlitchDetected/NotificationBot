@@ -96,7 +96,7 @@ export function ItemSelector<T extends TBase>({
 
                 <Button asChild className="w-full md:w-[unset]">
                     <Link href={`/docs/${docs}`} target="_blank">
-                        Read docs & view placeholders
+                        Read docs
                         <HiExternalLink />
                     </Link>
                 </Button>

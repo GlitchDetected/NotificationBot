@@ -4,10 +4,10 @@ import { httpError } from '@/utils/httperror';
 import { HttpErrorMessage } from '@/utils/httpjson';
 import { NotificationType } from '../../../../../../typings';
 import getYouTubeAvatar from '@/lib/youtube';
+import { getYtChannelId } from '@/lib/youtube';
 const router = new Hono();
 
 import notificationIdRouter from "./[id]";
-import { config } from 'dotenv';
 router.route("/:id", notificationIdRouter); // dynamic route
 
 
@@ -65,10 +65,10 @@ router.post("/", async (c) => {
     [NotificationType.Reddit]: "Hey {ping}, {author.name} just posted in **{subreddit.name}**!\n{post.link}",
   };
 
-  function defaultAvatarUrl(type: NotificationType, creatorId: string, channelId: string): string | null {
+  async function defaultAvatarUrl(type: NotificationType, creatorId: string): Promise<string | null> {
   switch (type) {
     case NotificationType.YouTube:
-      getYouTubeAvatar(channelId);
+      return await getYouTubeAvatar(creatorId);
     case NotificationType.Twitch:
       return `https://static-cdn.jtvnw.net/jtv_user_pictures/${creatorId}-profile_image-300x300.png`;
     case NotificationType.Bluesky:
@@ -81,6 +81,11 @@ router.post("/", async (c) => {
 }
 
   try {
+        let ytCreatorId: string | null = null;
+    if (body.type === NotificationType.YouTube && body.creatorHandle) {
+      ytCreatorId = await getYtChannelId(body.creatorHandle);
+    }
+
       const config = await Notifications.create({
         id: crypto.randomUUID(),
         guildId: guildId,
@@ -89,15 +94,15 @@ router.post("/", async (c) => {
         type: body.type,
         flags: body.flags ?? 0,
         regex: body.regex ?? null,
-        creatorId: body.creatorId,
+        creatorId: ytCreatorId ?? null,
         message: {
   content: body.message?.content ?? defaultMessage[body.type as NotificationType],
-  embed: body.message?.embed ?? defaultMessage[body.type as NotificationType],
+  embed: body.message?.embed ?? null,
 },
         creator: {
-          id: body.creatorId,
+          id: ytCreatorId ?? null,
           username: body.creatorHandle,
-          avatarUrl: body.avatarUrl ?? defaultAvatarUrl(body.type as NotificationType, body.creatorId, body.channelId),
+          avatarUrl: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, ytCreatorId ?? ""),
           customUrl: body.customUrl ?? null,
         },
         createdAt: new Date(),
