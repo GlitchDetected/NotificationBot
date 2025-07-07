@@ -6,21 +6,40 @@ const router = new Hono();
 
 router.get("/", async (c) => {
   const guildId = c.req.param('guildId')
+  const id = c.req.param('id');
 
   try {
-    const config = await Notifications.findOne({ where: { guildId } });
-    if (!config) {
-      return c.json({ message: "No configuration found for this guild." });
-    }
-    return c.json({ config });
-  } catch (error) {
-    console.error("Error fetching tpa configuration:", error);
-    return c.json({ message: "Error fetching tpa configuration", error });
+    const configs = await Notifications.findAll({ where: { guildId } });
+
+        return c.json(
+      configs.map(config => ({
+        id: config.id ?? null,
+        guildId: config.guildId ?? null,
+        channelId: config.channelId ?? null,
+        roleId: config.roleId ?? null,
+        type: config.type ?? null,
+        flags: config.flags ?? null,
+        regex: config.regex ?? null,
+        creatorId: config.creatorId ?? null,
+        message: { 
+          content: config.message?.content ?? null,
+          embed: config.message?.embed ?? null,
+        },
+        creator: { 
+          id: config.creator?.id ?? null,
+          username: config.creator?.username ?? null,
+          avatarUrl: config.creator?.avatarUrl ?? null,
+          customUrl: config.creator?.customUrl ?? null,
+          },
+        })));
+} catch (error) {
+    console.error("Error fetching notification configuration:", error);
   }
 });
 
 router.post("/", async (c) => {
   const guildId = c.req.param('guildId')
+  const id = c.req.param('id');
   const body = await c.req.json();
 
   try {
@@ -57,7 +76,7 @@ router.delete("/", async (c) => {
     return c.json({ message: "guildId is required" });
   }
 
-  const notificationId = c.req.param('id')
+  const id = c.req.param('id')
 
   try {
     const deletedCount = await Notifications.destroy({ where: { guildId } });

@@ -2,19 +2,36 @@
 
 import { type User, userStore } from "@/common/userStore";
 import ImageUrlInput from "@/components/input/imageurlinput";
+import Switch from "@/components/input/switch";
 import TextInput from "@/components/input/textinput";
 import { Section } from "@/components/section";
 import { deepMerge } from "@/utils/merge";
 
 export default function Home() {
     const user = userStore((s) => s);
-
     if (user?.id && !user.extended) return <></>;
-
-    // todo: zustand store state not saving
 
     return (
         <>
+            <Switch
+                name="Enable DM Notifications"
+                url="/dashboard/@me/dmnotifications"
+                dataName="enabled"
+                defaultState={user?.extended?.dmnotifications?.enabled ?? false}
+                disabled={false}
+                onSave={(s) => {
+                    userStore.setState(
+                        deepMerge<User>(user, {
+                            extended: {
+                                dmnotifications: {
+                                    enabled: s
+                                }
+                            }
+                        })
+                    );
+                }}
+            />
+
             <div className="lg:flex gap-3">
                 <div className="lg:w-1/2">
                     <TextInput

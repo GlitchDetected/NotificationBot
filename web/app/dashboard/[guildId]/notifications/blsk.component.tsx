@@ -98,7 +98,7 @@ export function BlueskyNotificationModal({
                     </span>
                     <br />
                     Your handle is likely something like <code className="break-all">randomuser.bsky.social</code>, some others
-                    may have a handle like <code>shi.gg</code>.
+                    may have a handle like <code>randomuser</code>.
                     <br />
                     <br />
                     Though, you can also use the link of the user&apos;s profile.

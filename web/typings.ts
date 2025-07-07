@@ -180,6 +180,7 @@ export interface ApiV1UsersMeGetResponse {
   voteCount?: number;
 
   dmnotifications?: {
+    enabled?: boolean;
     embedcolor?: number;
     source?: string | null;
     thumbnail?: string | null;

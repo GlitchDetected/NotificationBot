@@ -252,7 +252,7 @@ Placeholders allow you to use variables that change from message to message. For
         </tr>
         <tr>
             <td><code>creator.handle</code></td>
-            <td>shi.gg</td>
+            <td>random-user</td>
             <td>Creator handle</td>
         </tr>
         <tr>

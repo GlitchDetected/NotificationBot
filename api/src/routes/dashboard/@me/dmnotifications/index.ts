@@ -16,10 +16,11 @@ router.get("/", async (c) => {
     const config = await dmnotifications.findOne({ where: { userId: user.id } });
 
      return c.json({
-      embedcolor: config?.embedcolor,
-      source: config?.source,
-      thumbnail: config?.thumbnail,
-      message: config?.message
+      enabled: config?.enabled ?? false,
+      embedcolor: config?.embedcolor ?? 0,
+      source: config?.source ?? null,
+      thumbnail: config?.thumbnail ?? null,
+      message: config?.message ??	"You got a new notifications from"
     });
   } catch (error) {
     console.error("Error fetching user dmnotifications configuration:", error);
@@ -38,8 +39,8 @@ router.patch("/", async (c) => {
     let config = await dmnotifications.findOne({ where: { userId: user.id } });
 
     if (config) {
-      const keys: Array<"embedcolor" | "source" | "thumbnail" | "message"> = 
-      ["embedcolor", "source", "thumbnail", "message"];
+      const keys: Array<"enabled" | "embedcolor" | "source" | "thumbnail" | "message"> = 
+      ["enabled", "embedcolor", "source", "thumbnail", "message"];
       
       for (const key of keys) {
         if (key in body) {
@@ -51,6 +52,7 @@ router.patch("/", async (c) => {
       // Create
       config = await dmnotifications.create({
         userId: user.id,
+        enabled: body.enabled,
         embedcolor: body.embedcolor,
         source: body.source,
         thumbnail: body.thumbnail,
@@ -59,6 +61,7 @@ router.patch("/", async (c) => {
     }
 
      return c.json({
+      enabled: body.enabled,
       embedcolor: config.embedcolor,
       source: config.source,
       thumbnail: config.thumbnail,

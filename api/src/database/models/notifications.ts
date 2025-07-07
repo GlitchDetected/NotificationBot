@@ -45,7 +45,7 @@ class Notifications extends Model {
 Notifications.init(
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: true,
     },
     guildId: {

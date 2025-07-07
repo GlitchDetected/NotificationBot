@@ -78,6 +78,6 @@ export function useList<T extends { id: string; }>({ url }: UseDataQueryOptions)
         isLoading,
         error:
       (error as unknown as string) ||
-      (data && "message" in data ? JSON.stringify(data.message) : error ? `${error}` : null)
+      (data && "message" in data ? JSON.stringify(data.message) : error ? `${error}` : undefined)
     };
 }

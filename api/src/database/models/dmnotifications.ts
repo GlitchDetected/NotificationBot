@@ -4,6 +4,7 @@ import sequelize from "../index";
 class dmnotifications extends Model {
   declare userId: string;
 
+  declare enabled: boolean;
   declare embedcolor: number | null;
   declare source: string | null;
   declare thumbnail: string | null;
@@ -19,6 +20,10 @@ dmnotifications.init(
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
     },
     embedcolor: {
       type: DataTypes.INTEGER,

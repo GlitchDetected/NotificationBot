@@ -14,14 +14,39 @@ router.get("/", async (c) => {
   try {
     const configs = await Notifications.findAll({ where: { guildId } });
 
-    const indexedConfigs = configs.reduce((acc, config, index) => {
-      acc[index] = config;
-      return acc;
-    }, {} as Record<number, typeof configs[0]>);
+if (configs.length === 0) {
+  return c.json({
+    creator: { 
+      id: null,
+      username: null,
+      avatarUrl: null,
+      customUrl: null,
+    }
+  });
+}
 
-    return c.json(indexedConfigs);
-
-  } catch (error) {
+        return c.json(
+      configs.map(config => ({
+        id: config.id ?? null,
+        guildId: config.guildId ?? null,
+        channelId: config.channelId ?? null,
+        roleId: config.roleId ?? null,
+        type: config.type ?? null,
+        flags: config.flags ?? null,
+        regex: config.regex ?? null,
+        creatorId: config.creatorId ?? null,
+        message: { 
+          content: config.message?.content ?? null,
+          embed: config.message?.embed ?? null,
+        },
+        creator: { 
+          id: config.creator?.id ?? null,
+          username: config.creator?.username ?? null,
+          avatarUrl: config.creator?.avatarUrl ?? null,
+          customUrl: config.creator?.customUrl ?? null,
+          },
+        })));
+} catch (error) {
     console.error("Error fetching notification configuration:", error);
   }
 });
@@ -29,6 +54,8 @@ router.get("/", async (c) => {
 router.post("/", async (c) => {
   const guildId = c.req.param('guildId')
   const body = await c.req.json();
+
+  console.log(body);
 
   try {
     let config = await Notifications.findOne({ where: { guildId: guildId } });
@@ -62,7 +89,7 @@ router.post("/", async (c) => {
       };
 
       config = await Notifications.create({
-        // id:
+        id: crypto.randomUUID(),
         guildId: guildId,
         channelId: body.channelId,
         // roleId:
