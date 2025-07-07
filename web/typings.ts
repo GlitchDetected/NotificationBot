@@ -20,7 +20,6 @@ export interface ApiV1GuildsGetResponse {
   memberCount: number;
   inviteUrl: string | undefined;
   description: string | null;
-  botPrefix: string | null;
   follownewsChannel?: {
     id: string;
     name: string;

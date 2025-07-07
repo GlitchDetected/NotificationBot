@@ -74,7 +74,7 @@ export default function Home() {
                 endContent={<HiExternalLink />}
                 size="sm"
             >
-               Read docs
+                Read docs
             </Button>
         </div>
     );

@@ -1,6 +1,5 @@
 import { Client, Message } from "discord.js";
 import { postStatus } from "../../utils/postStatus";
-import prefixHandler from "../../handlers/prefixHandler";
 import { dmnotify } from "@/utils/dmNotify";
 import cron from "node-cron";
 
@@ -18,7 +17,6 @@ export default (client: Client) => {
 
   if (client.user) {
     console.log(`${client.user.tag} is online`);
-    prefixHandler(client);
 
     cron.schedule("0 * * * *", () => {
     postStatus(client);

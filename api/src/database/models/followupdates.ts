@@ -4,6 +4,7 @@ import sequelize from "../index";
 class FollowUpdates extends Model {
   declare guildId: string;
   declare id: string;
+  declare name: string;
 }
 
 FollowUpdates.init(
@@ -14,6 +15,10 @@ FollowUpdates.init(
       primaryKey: true
     },
     id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },

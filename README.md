@@ -139,6 +139,9 @@ API_SECRET=""
 
 # github token for fetching repositories
 GITHUB_TOKEN=""
+
+# https://www.geetest.com/en/ recommended for this
+NEXT_PUBLIC_CAPTCHA_ID=""
 ```
 - pnpm install
 - pnpm dev

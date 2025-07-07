@@ -1,13 +1,6 @@
-/**
-* /guilds/${params.guildId}
-* /channels
-* /roles
-* /emojis
-/** */
 import { Hono } from 'hono'
 import { httpError } from '@/utils/httperror';
 import { HttpErrorMessage } from '@/utils/httpjson';
-import Prefix from '@/database/models/Prefix';
 import FollowUpdates from '@/database/models/followupdates';
 import redis from '@/lib/redis';
 const router = new Hono()
@@ -37,23 +30,20 @@ router.get('/', async (c) => {
 
   const guild = await guildRes.json();
 
-    const botPrefix = await Prefix.findOne({
-  where: { guildId: guildId },
-  attributes: ['prefix'],
-});
-
     const followUpdates = await FollowUpdates.findOne({where: { guildId: guildId  }});
 
   return c.json({
     id: guild.id,
-    name: guild.name,
-    icon: guild.icon,
+    name: guild.name ?? null,
+    icon: guild.icon ?? null,
     banner: guild.banner ?? null,
-    memberCount: guild.approximate_member_count,
+    memberCount: guild.approximate_member_count || 0,
     inviteUrl: `https://discord.com/channels/${guild.id}`,
-    description: guild.description,
-    ...followUpdates,
-    botPrefix,
+    description: guild.description ?? null,
+    follownewsChannel: {
+      id: followUpdates?.id ?? null,
+      name: followUpdates?.name ?? null
+    }
   });
 });
 
@@ -129,67 +119,28 @@ router.get('/emojis', async (c) => {
       return c.json(emojis)
 })
 
-
-router.patch("/prefix", async (c) => {
-  const guildId = c.req.param('guildId')
-
-  const user = c.get("user");
-
-    if (!user?.accessToken) {
-       return httpError(HttpErrorMessage.MissingAccess)
-    }
-
-  const body = await c.req.json();
-
-  try {
-    let config = await Prefix.findOne({ where: { guildId: guildId } });
-
-        if (config) {
-      const keys: Array<"botPrefix"> = 
-      ["botPrefix"];
-      
-      for (const key of keys) {
-        if (key in body) {
-          (config as any)[key] = body[key];
-        }
-      }
-      await config.save();
-    } else {
-      config = await Prefix.create({
-        guildId: guildId,
-        prefix: body.botPrefix,
-      });
-    }
-
-    const cachedGuilds = await redis.get(`user-guilds:${user.id}`);
-    if (cachedGuilds) {
-      const guilds = JSON.parse(cachedGuilds);
-      const updatedGuilds = guilds.map((g: any) => (g.id === guildId ? { ...g, botPrefix: body.prefix } : g));
-      await redis.set(`user-guilds:${user.id}`, JSON.stringify(updatedGuilds), "EX", 600);
-    }
-
-    return c.json({
-      prefix: config.prefix,
-    });
-  } catch (error) {
-    console.error("Error updating prefix:", error);
-    return c.json({ message: "Internal server error" });
-  }
-});
-
 router.patch("/follow-updates", async (c) => {
   const guildId = c.req.param('guildId')
-
   const user = c.get("user");
-
     if (!user?.accessToken) {
        return httpError(HttpErrorMessage.MissingAccess)
     }
-
   const body = await c.req.json();
 
   try {
     let config = await FollowUpdates.findOne({ where: { guildId: guildId } });
+
+    let channelName: string | null = null;
+    if (body.channelId) {
+      const res = await fetch(`https://discord.com/api/v10/channels/${body.channelId}`, {
+        headers: {
+          Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        },
+      });
+
+      const channelData = await res.json();
+      channelName = channelData.name;
+    }
 
         if (config) {
       const keys: Array<"id"> = 
@@ -205,11 +156,13 @@ router.patch("/follow-updates", async (c) => {
       config = await FollowUpdates.create({
         guildId: guildId,
         id: body.channelId,
+        name: channelName
       });
     }
 
     return c.json({
       id: config.id,
+      name: config.name ?? null,
     });
   } catch (error) {
     console.error("Error updating follow-updates:", error);

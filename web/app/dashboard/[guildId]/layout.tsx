@@ -24,8 +24,6 @@ import { intl } from "@/utils/intl";
 
 function useGuildData<T extends unknown[]>(
     url: string,
-
-
     onLoad: (data: T, error: boolean)
     => void
 ) {
@@ -49,7 +47,6 @@ function useGuildData<T extends unknown[]>(
 
 export default function RootLayout({ children }: { children: React.ReactNode; }) {
     const params = useParams();
-
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<string[]>([]);
 
@@ -114,7 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                         className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0"
                     >
                         <ImageReduceMotion
-                            alt="this server"
+                            alt="Random Server"
                             className="rounded-full"
                             url={`https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}`}
                             size={128}
@@ -170,7 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
 
             {error ?
                 <ScreenMessage
-                    title={error.includes("permssions")
+                    title={error.includes("permissions")
                         ? "You cannot access this page.."
                         : "Something went wrong on this page.."
                     }
