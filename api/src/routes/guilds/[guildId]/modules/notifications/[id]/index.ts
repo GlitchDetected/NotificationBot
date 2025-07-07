@@ -9,43 +9,41 @@ router.get("/", async (c) => {
   const id = c.req.param('id');
 
   try {
-    const configs = await Notifications.findAll({ where: { guildId } });
-
-        return c.json(
-      configs.map(config => ({
-        id: config.id ?? null,
-        guildId: config.guildId ?? null,
-        channelId: config.channelId ?? null,
-        roleId: config.roleId ?? null,
-        type: config.type ?? null,
-        flags: config.flags ?? null,
-        regex: config.regex ?? null,
-        creatorId: config.creatorId ?? null,
+   const config = await Notifications.findOne({ where: { id, guildId } });
+        return c.json({
+        id: config?.id ?? null,
+        guildId: config?.guildId ?? null,
+        channelId: config?.channelId ?? null,
+        roleId: config?.roleId ?? null,
+        type: config?.type ?? null,
+        flags: config?.flags ?? null,
+        regex: config?.regex ?? null,
+        creatorId: config?.creatorId ?? null,
         message: { 
-          content: config.message?.content ?? null,
-          embed: config.message?.embed ?? null,
+          content: config?.message?.content ?? null,
+          embed: config?.message?.embed ?? null,
         },
         creator: { 
-          id: config.creator?.id ?? null,
-          username: config.creator?.username ?? null,
-          avatarUrl: config.creator?.avatarUrl ?? null,
-          customUrl: config.creator?.customUrl ?? null,
+          id: config?.creator?.id ?? null,
+          username: config?.creator?.username ?? null,
+          avatarUrl: config?.creator?.avatarUrl ?? null,
+          customUrl: config?.creator?.customUrl ?? null,
           },
-        })));
+        });
 } catch (error) {
     console.error("Error fetching notification configuration:", error);
   }
 });
 
-router.post("/", async (c) => {
+router.patch("/", async (c) => {
   const guildId = c.req.param('guildId')
   const id = c.req.param('id');
   const body = await c.req.json();
 
   try {
-    let config = await Notifications.findOne({ where: { guildId: guildId } });
+    const config = await Notifications.findOne({ where: { id, guildId } });
 
-        if (config) {
+    if (config) {
       const keys: Array<"type" | "channelId" | "creatorHandle" | "creatorId"> = 
       ["type", "channelId", "creatorHandle", "creatorId"];
       
@@ -54,39 +52,62 @@ router.post("/", async (c) => {
           (config as any)[key] = body[key];
         }
       }
+
+      if (typeof body.message === "object" && body.message !== null) {
+  config.message = {
+    content:
+      typeof body.message.content === "string"
+        ? body.message.content
+        : config.message?.content ?? null,
+    embed:
+      typeof body.message.embed === "object" && body.message.embed !== null
+        ? body.message.embed
+        : config.message?.embed ?? null
+  };
+}
+
+if (typeof body.creator === "object" && body.creator !== null) {
+  config.creator = {
+    id:
+      typeof body.creator.id === "string"
+        ? body.creator.id
+        : config.creator?.id ?? null,
+    username:
+      typeof body.creator.username === "string"
+        ? body.creator.username
+        : config.creator?.username ?? null,
+    avatarUrl:
+      typeof body.creator.avatarUrl === "string"
+        ? body.creator.avatarUrl
+        : config.creator?.avatarUrl ?? null,
+    customUrl:
+      typeof body.creator.customUrl === "string"
+        ? body.creator.customUrl
+        : config.creator?.customUrl ?? null,
+  };
+}
+
       await config.save();
-    } else {
-      config = await Notifications.create({
-        guildId: guildId,
-        type: body.type,
-        channelId: body.channelId,
-        creatorId: body.creatorId,
-      });
     }
 
     return c.json({ config: config });
   } catch (error) {
-    console.error("Error creating/updating rank configuration:", error);
+    console.error("Error creating/updating notification configuration:", error);
   }
 });
 
 router.delete("/", async (c) => {
   const guildId = c.req.param('guildId')
-  if (!guildId) {
-    return c.json({ message: "guildId is required" });
-  }
-
   const id = c.req.param('id')
 
   try {
-    const deletedCount = await Notifications.destroy({ where: { guildId } });
+    const deletedCount = await Notifications.destroy({ where: { id, guildId } });
     if (!deletedCount) {
       return c.json({ message: "No configuration found for this guild to delete." });
     }
-    return c.json({ message: "Configuration deleted successfully." });
+    return c.json({ message: "notification configuration deleted" });
   } catch (error) {
-    console.error("Error deleting TPA configuration:", error);
-    return c.json({ message: "Error deleting TPA configuration", error });
+    console.error("Error deleting notification configuration:", error);
   }
 });
 

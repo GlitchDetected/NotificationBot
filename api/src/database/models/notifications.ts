@@ -47,11 +47,11 @@ Notifications.init(
     id: {
       type: DataTypes.UUID,
       allowNull: true,
+      primaryKey: true,
     },
     guildId: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true
     },
     channelId: {
       type: DataTypes.STRING,

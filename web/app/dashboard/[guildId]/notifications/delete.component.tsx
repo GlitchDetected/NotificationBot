@@ -52,7 +52,7 @@ export function DeleteNotification({
             >
                 Are you sure you want to delete the {"\""}
                 {name}
-                {"\""} channel from posting notifications? It will be gone forever, probably, who knows.
+                {"\""} channel from your notifications list?
             </Modal>
         </>
     );
