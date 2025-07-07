@@ -97,11 +97,8 @@ export function BlueskyNotificationModal({
                         How to get a user&apos;s handle
                     </span>
                     <br />
-                    Your handle is likely something like <code className="break-all">randomuser.bsky.social</code>, some others
-                    may have a handle like <code>randomuser</code>.
-                    <br />
-                    <br />
-                    Though, you can also use the link of the user&apos;s profile.
+                    Most bluesky handles are formatted like: <code className="break-all">randomuser.bsky.social</code>, while
+                    others may have a domain as their handle: <code>example.com</code>.
                 </div>
             </Modal>
         </>

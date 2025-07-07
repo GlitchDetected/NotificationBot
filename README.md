@@ -91,6 +91,8 @@ JWT_SECRET="" # openssl rand -base64 32
 FRONTEND_SITE="http://localhost:3000"
 PORT="3001"
 API_SECRET=""
+
+YTV3API="
 ```
 - pnpm install
 - pnpm dev

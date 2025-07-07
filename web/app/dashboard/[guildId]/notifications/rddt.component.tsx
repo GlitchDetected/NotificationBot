@@ -85,14 +85,11 @@ export function RedditNotificationModal({
 
                 <div className="mt-4">
                     <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">
-                        How to get a subreddits&apos; name
+                        How to get a subreddit&apos;s name
                     </span>
                     <br />
-                    The subreddit name is the string with the leading <code className="break-all">r/</code>, such as{" "}
+                    The subreddit name is the string of text after <code className="break-all">r/</code>. For example:{" "}
                     <code>r/gaming</code>.
-                    <br />
-                    <br />
-                    Though, you can also use the link of the subreddit.
                 </div>
             </Modal>
         </>

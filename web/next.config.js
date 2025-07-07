@@ -49,6 +49,12 @@ const nextConfig = {
                hostname: "cdn.bsky.app",
                port: "",
                pathname: "/img/avatar/plain/**"
+           },
+           {
+               protocol: "https",
+               hostname: "www.redditstatic.com",
+               port: "",
+               pathname: "/avatars/**"
            }
     ],
   },
