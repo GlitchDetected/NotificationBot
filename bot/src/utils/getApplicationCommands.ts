@@ -1,20 +1,19 @@
-export default async (
-  client: { guilds: { fetch: (arg0: any) => any }; application: { commands: any } | null },
-  guildId: any
-) => {
-  let applicationCommands;
+import type { Client } from "discord.js";
 
-  if (guildId) {
-    const guild = await client.guilds.fetch(guildId);
-    applicationCommands = guild.commands;
-  } else {
-    if (client.application) {
-      applicationCommands = await client.application.commands;
+export default async (client: Client, guildId: string | null) => {
+    let applicationCommands;
+
+    if (guildId) {
+        const guild = await client.guilds.fetch(guildId);
+        applicationCommands = guild.commands;
     } else {
-      throw new Error("Client application is not available.");
+        if (client.application) {
+            applicationCommands = client.application.commands;
+        } else {
+            throw new Error("Client application is not available.");
+        }
     }
-  }
 
-  await applicationCommands.fetch();
-  return applicationCommands;
+    await applicationCommands.fetch({});
+    return applicationCommands;
 };

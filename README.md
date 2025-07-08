@@ -79,7 +79,7 @@ prerequisites:
 DISCORD_CLIENT_ID=""
 DISCORD_CLIENT_SECRET=""
 DISCORD_TOKEN=""
-DISCORD_ENDPOINT = "https://discord.com/api/v10";
+DISCORD_ENDPOINT = "https://discord.com/api/v10"
 
 # Database variables
 pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot # example string, setup postgresql on your own

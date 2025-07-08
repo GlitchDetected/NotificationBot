@@ -22,7 +22,8 @@ router.get("/", async (c) => {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
-    const guildRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}`, {
+    // https://discord.com/developers/docs/resources/guild
+    const guildRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guildId}?with_counts=true`, {
         headers: {
             Authorization: `Bot ${process.env.DISCORD_TOKEN}`
         }

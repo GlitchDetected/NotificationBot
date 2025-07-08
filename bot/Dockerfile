@@ -1,11 +1,16 @@
-FROM node:22
-
+FROM node:latest
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
-RUN npm install 
+RUN npm install -g pnpm
+
+RUN pnpm install
 
 COPY . .
 
-CMD ["npm", "run", "start"]
+RUN pnpm run build
+
+EXPOSE 3001
+
+CMD ["pnpm", "run", "start"]

@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import { Redis } from "ioredis";
 
 const redis = new Redis(process.env.REDIS_STRING as string);
@@ -9,7 +7,7 @@ redis.on("error", (err) => {
 });
 
 redis.on("connect", () => {
-    console.log("Successfully connected to Redis");
+    console.log("Connected to Redis");
 });
 
 redis.on("close", () => {

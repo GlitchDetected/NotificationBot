@@ -1,17 +1,17 @@
-import { Client, ChatInputCommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction, Client } from "discord.js";
 
 export default {
-  name: "ping",
-  description: "Replies with the bot ping",
-  // deleted: 'true',
+    name: "ping",
+    description: "Replies with the bot ping",
+    // deleted: 'true',
 
-  callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
-    await interaction.deferReply();
+    callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
+        await interaction.deferReply();
 
-    const reply = await interaction.fetchReply();
+        const reply = await interaction.fetchReply();
 
-    const ping = reply.createdTimestamp - interaction.createdTimestamp;
+        const ping = reply.createdTimestamp - interaction.createdTimestamp;
 
-    interaction.editReply(`Pong! Client ${ping}ms | Websocket: ${client.ws.ping}ms`);
-  }
+        interaction.editReply(`Pong! Client ${ping}ms | Websocket: ${client.ws.ping}ms`);
+    }
 };

@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "@dotenvx/dotenvx/config";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
@@ -53,7 +53,8 @@ Object.entries(models).forEach(([_, model]) => {
 db.sync({
     force: false
 });
-console.log("Completed database connection");
+
+console.log("Connected to PG DB");
 
 serve({
     fetch: app.fetch,

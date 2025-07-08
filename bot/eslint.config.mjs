@@ -7,7 +7,7 @@ export default tseslint.config(
     ...tseslint.configs.recommended,
     {
         files: ["**/*.ts", "**/*.tsx"],
-        ignores: ["node_modules", "dist"],
+        ignores: ["node_modules", "dist", "config", "migrations"],
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
@@ -136,6 +136,6 @@ export default tseslint.config(
         },
     },
     {
-        ignores: ["node_modules", "typings.ts", "dist"]
+        ignores: ["node_modules", "typings.ts", "dist", "config", "migrations"]
     }
 )

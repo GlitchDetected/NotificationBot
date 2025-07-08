@@ -37,6 +37,7 @@ router.post("/", async (c) => {
 
         const oauthResJson = await oauthRes.json();
 
+        // https://discord.com/developers/docs/resources/user
         const userRes = await fetch(`${DISCORD_ENDPOINT}/users/@me`, {
             headers: {
                 Authorization: `Bearer ${oauthResJson.access_token}`

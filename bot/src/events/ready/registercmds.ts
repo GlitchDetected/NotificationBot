@@ -1,53 +1,55 @@
+import type { ApplicationCommand, Client } from "discord.js";
+
 import areCommandsDifferent from "../../utils/areCommandsDifferent";
 import getApplicationCommands from "../../utils/getApplicationCommands";
 import getLocalCommands from "../../utils/getLocalCommands";
 
-export default async (client: any) => {
-  try {
-    const localCommands = await getLocalCommands();
-    const applicationCommands = await getApplicationCommands(
-      client,
-      null
-      // process.env.testServer
-    );
+export default async (client: Client) => {
+    try {
+        const localCommands = await getLocalCommands();
+        const applicationCommands = await getApplicationCommands(
+            client,
+            null
+            // process.env.testServer
+        );
 
-    for (const localCommand of localCommands) {
-      const { name, description, options } = localCommand;
+        for (const localCommand of localCommands) {
+            const { name, description, options } = localCommand;
 
-      const existingCommand = await applicationCommands.cache.find((cmd: { name: any }) => cmd.name === name);
+            const existingCommand = await applicationCommands.cache.find((cmd: ApplicationCommand) => cmd.name === name);
 
-      if (existingCommand) {
-        if (localCommand.deleted) {
-          await applicationCommands.delete(existingCommand.id);
-          console.log(`🗑 Deleted command "${name}".`);
-          continue;
+            if (existingCommand) {
+                if (localCommand.deleted) {
+                    await applicationCommands.delete(existingCommand.id);
+                    console.log(`🗑 Deleted command "${name}".`);
+                    continue;
+                }
+
+                if (areCommandsDifferent(existingCommand, localCommand)) {
+                    await applicationCommands.edit(existingCommand.id, {
+                        description,
+                        options
+                    });
+
+                    console.log(`🔁 Edited command "${name}".`);
+                }
+            } else {
+                if (localCommand.deleted) {
+                    console.log(`⏩ Skipping registering command "${name}" as it's set to delete.`);
+                    continue;
+                }
+                console.log(`Registering command "${name}" with options:`, options);
+
+                await applicationCommands.create({
+                    name,
+                    description,
+                    options
+                });
+
+                console.log(`👍 Registered command "${name}."`);
+            }
         }
-
-        if (areCommandsDifferent(existingCommand, localCommand)) {
-          await applicationCommands.edit(existingCommand.id, {
-            description,
-            options
-          });
-
-          console.log(`🔁 Edited command "${name}".`);
-        }
-      } else {
-        if (localCommand.deleted) {
-          console.log(`⏩ Skipping registering command "${name}" as it's set to delete.`);
-          continue;
-        }
-        console.log(`Registering command "${name}" with options:`, options);
-
-        await applicationCommands.create({
-          name,
-          description,
-          options
-        });
-
-        console.log(`👍 Registered command "${name}."`);
-      }
+    } catch (error) {
+        console.log(`There was an error: ${error}`);
     }
-  } catch (error) {
-    console.log(`There was an error: ${error}`);
-  }
 };

@@ -47,6 +47,7 @@ router.get("/", async (c) => {
 router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
     const body = await c.req.json() as ApiV1GuildsModulesByeGetResponse;
+    console.log(body);
 
     try {
     // overwrite values if they are explicitly provided. Otherwise, preserve the existing ones.
@@ -150,7 +151,7 @@ router.post("/test", async (c) => {
 
         if (!res.ok) {
             const error = await res.text();
-            console.error("Discord API Error:", error);
+            console.error(error);
         }
         return c.json({ success: true });
     } catch (error) {

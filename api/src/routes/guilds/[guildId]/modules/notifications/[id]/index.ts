@@ -5,7 +5,7 @@ import type { ApiV1GuildsModulesNotificationsGetResponse } from "~/typings";
 
 const router = new Hono();
 
-type UpdatableFields = "type" | "channelId" | "creatorId";
+type UpdatableFields = "type" | "channelId" | "creatorId" | "roleId" | "regex";
 
 router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
@@ -42,13 +42,13 @@ router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
     const id = c.req.param("id");
     const body = await c.req.json() as ApiV1GuildsModulesNotificationsGetResponse;
-
+    
     try {
         const config = await Notifications.findOne({ where: { id, guildId } });
 
         if (config) {
-            const keys: ("type" | "channelId" | "creatorId")[] =
-      ["type", "channelId", "creatorId"];
+            const keys: ("type" | "channelId" | "creatorId" | "roleId" | "regex")[] =
+      ["type", "channelId", "creatorId", "roleId", "regex"];
 
             for (const key of keys) {
                 if (key in body) {

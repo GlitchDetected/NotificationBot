@@ -1,34 +1,32 @@
-import {
-    ChatInputCommandInteraction,
-    Client,
-    EmbedBuilder,
-    ActionRowBuilder,
+import { ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle
-  } from "discord.js";
-  
-  export default {
+    ButtonStyle,
+    type ChatInputCommandInteraction,
+    type Client,
+    EmbedBuilder } from "discord.js";
+
+export default {
     name: "vote",
     description: "Vote for NotificationBot",
-    callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
-      await interaction.deferReply();
-  
+    callback: async (_client: Client, interaction: ChatInputCommandInteraction) => {
+        await interaction.deferReply();
+
         const embed = new EmbedBuilder()
-          .setColor(0x4285f4)
-          .setTitle("🗳️ Vote for NotificationBot!")
-          .setDescription(`Please vote for NotificationBot on top.gg - [Vote Now](https://top.gg/bot/1237878380838523001#vote)`)
-        
+            .setColor(0x4285f4)
+            .setTitle("🗳️ Vote for NotificationBot!")
+            .setDescription("Please vote for NotificationBot on top.gg");
+
         const row = new ActionRowBuilder<ButtonBuilder>()
-          .addComponents(
-            new ButtonBuilder()
-              .setLabel('Vote Now')
-              .setStyle(ButtonStyle.Link)
-              .setURL('https://top.gg/bot/1237878380838523001#vote')
-          );
-  
-        await interaction.editReply({ 
-          embeds: [embed],
-          components: [row]
+            .addComponents(
+                new ButtonBuilder()
+                    .setLabel("Vote Now")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL("https://top.gg/bot/1366507117044957276#vote")
+            );
+
+        await interaction.editReply({
+            embeds: [embed],
+            components: [row]
         });
-      }
-  };
+    }
+};

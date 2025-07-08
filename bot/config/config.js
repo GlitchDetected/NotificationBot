@@ -1,4 +1,4 @@
-require("dotenv").config();
+import "@dotenvx/dotenvx/config";
 
 module.exports = {
   development: {

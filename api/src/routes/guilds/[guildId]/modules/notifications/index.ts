@@ -3,8 +3,7 @@ import { Hono } from "hono";
 import Notifications from "@/database/models/notifications";
 import getYouTubeAvatar from "@/lib/youtube";
 import { getYtChannelId } from "@/lib/youtube";
-
-import { NotificationType } from "../../../../../../typings";
+import { NotificationType } from "~/typings";
 const router = new Hono();
 
 import notificationIdRouter from "./[id]";
