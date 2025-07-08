@@ -5,6 +5,14 @@ export interface ApiError {
   message: string;
 }
 
+export interface ApiV1GuildsModulesWebhookGetResponse {
+  content?: string;
+  embed?: GuildEmbed;
+  webhookAvatar?: string;
+  webhookUrl: string;
+  username?: string;
+}
+
 export interface ApiV1UsersMeGuildsGetResponse {
   id: string;
   name: string;

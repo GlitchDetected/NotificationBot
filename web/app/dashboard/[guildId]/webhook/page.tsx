@@ -1,172 +1,251 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Button } from "@heroui/react";
+import { useParams } from "next/navigation";
+import React, { useState } from "react";
+import { BiMoon, BiSun } from "react-icons/bi";
+import { FaFloppyDisk } from "react-icons/fa6";
 
-const NEXT_PUBLIC_API = process.env.NEXT_PUBLIC_API;
+import { DiscordMarkdown } from "@/components/discord/disc-markdown";
+import DiscordMessage from "@/components/discord/msg";
+import DiscordMessageEmbed from "@/components/discord/msg-embed";
+import ColorInput from "@/components/input/colorinput";
+import Smartinput from "@/components/input/smart-input";
+import { cn } from "@/utils/cn";
 
-export default function Webhook() {
-    const [webhookUrl, setWebhookUrl] = useState("");
-    const [message, setMessage] = useState("");
-    const [webhookAvatar, setWebhookAvatar] = useState("");
+enum State {
+    Idle = 0,
+    Loading = 1,
+    Success = 2
+}
+
+export default function Home() {
+    const params = useParams();
+    const [state, setState] = useState<State>(State.Idle);
+    const [error, setError] = useState<string | null>(null);
+
+    const [open] = useState<boolean>(true);
+    const [mode, setMode] = useState<"DARK" | "LIGHT">("DARK");
+
     const [username, setUsername] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(true);
+    const [webhookurl, setWebhookurl] = useState("");
+    const [webhookavatar, setWebhookavatar] = useState("");
+    const [content, setContent] = useState("");
+    const [embed, setEmbed] = useState<string>(JSON.stringify({}));
+    const [embedfooter, setEmbedfooter] = useState<string>(JSON.stringify({}));
 
-    useEffect(() => {
-        const fetchWebhookData = async () => {
-            try {
-                const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/webhook`, {
-                    method: "GET",
-                    credentials: "include"
-                });
+    const modeToggle = (
+        <div
+            className={cn(
+                mode === "DARK" ? "bg-darkflame-light" : "bg-darkflame-100-light",
+                "flex gap-1 text-neutral-400 rounded-md overflow-hidden"
+            )}
+        >
+            <button
+                onClick={() => setMode("DARK")}
+                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-darkflame" : "hover:bg-darkflame-100-alpha")}
+            >
+                <BiMoon className="h-5 w-5" />
+            </button>
+            <button
+                onClick={() => setMode("LIGHT")}
+                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-darkflame-100" : "hover:bg--alpha")}
+            >
+                <BiSun className="h-5 w-5" />
+            </button>
+        </div>
+    );
 
-                if (!res.ok) throw new Error("Failed to fetch webhook data");
+    async function save() {
+        setError(null);
+        setState(State.Loading);
 
-                const data = await res.json();
-                setWebhookUrl(data.webhookUrl || "");
-                setMessage(data.message || "");
-                setWebhookAvatar(data.webhookavatar || "");
-                setUsername(data.username || "");
-            } catch (error) {
-                console.error("Error fetching webhook data:", error);
-            } finally {
-                setFetching(false);
-            }
+        const body = {
+            content,
+            embed: Object.assign(JSON.parse(embed), embedfooter.length ? { footer: JSON.parse(embedfooter) } : undefined),
+            webhookAvatar: webhookavatar,
+            webhookUrl: webhookurl,
+            username: username
         };
 
-        fetchWebhookData();
-    }, []);
+        if (!body.embed.footer.text) body.embed.footer = { text: null };
 
-    const sendWebhook = async () => {
-        if (!webhookUrl || !message) {
-            alert("Webhook url and message is required! Avatar and username is optional!");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/guilds/${params.guildId}/modules/webhook`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+            .then((r) => r.json())
+            .catch(() => null);
+
+        if (!res || "status" in res) {
+            setState(State.Idle);
+            setError("message" in res ? res.message : "Something went wrong while saving...");
+
             return;
         }
 
-        setLoading(true);
-        try {
-            const res = await fetch(`${NEXT_PUBLIC_API}/dashboard/webhook`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    webhookUrl,
-                    message,
-                    webhookavatar: webhookAvatar || "",
-                    username: username || ""
-                })
-            });
-
-            if (!res.ok) throw new Error("Failed to send webhook");
-
-            alert("Webhook sent successfully!");
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Error sending webhook");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    if (fetching) {
-        return (
-            <div className="flex items-center justify-center h-40">
-                <Loader2 className="w-12 h-12 animate-spin" />
-            </div>
-        );
+        setState(State.Success);
+        setTimeout(() => setState(State.Idle), 1_000 * 8);
     }
 
-    const formattedTime = new Date().toLocaleString("en-US", {
-        month: "numeric",
-        day: "numeric",
-        year: "2-digit",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-    });
-
     return (
-        <div className="flex flex-col md:flex-row gap-6 mt-6 bg-gray-800 p-6 rounded-lg shadow-lg">
-            {/* Left Side - Input Fields */}
-            <div className="w-full md:w-1/2">
-                <h2 className="text-lg font-semibold text-white">Send Webhook</h2>
+        <>
+            <div
+                className={cn(
+                    "mt-8 mb-4 border-2 dark:border-darkflame border-darkflame-100 rounded-xl md:px-4 md:pb-4 px-2 py-2",
+                    error && "outline outline-red-500 outline-1"
+                )}
+            >
+                <div className="text-lg py-2 dark:text-neutral-700 text-neutral-300 font-medium px-2">Discord Webhook</div>
 
-                <div className="mt-2">
-                    <label className="block text-gray-300">Webhook URL:</label>
-                    <input
-                        type="text"
-                        value={webhookUrl}
-                        onChange={(e) => setWebhookUrl(e.target.value)}
-                        className="w-full p-2 mt-1 text-gray-900 bg-gray-200 rounded-md"
-                        placeholder="Enter Webhook URL"
-                    />
-                </div>
+                {open && (
+                    <div className="md:m-1 relative">
+                        <div className="lg:flex gap-1">
+                            <div className="lg:w-3/6 m-1">
+                                <Smartinput
+                                    placeholder="Username"
+                                    value={username}
+                                    setValue={setUsername}
+                                    max={20}
+                                />
+                                <Smartinput
+                                    placeholder="Webhook URL"
+                                    value={webhookurl}
+                                    setValue={setWebhookurl}
+                                    max={256}
+                                />
+                                <Smartinput
+                                    placeholder="Webhook Avatar"
+                                    value={webhookavatar}
+                                    setValue={setWebhookavatar}
+                                    max={256}
+                                />
+                                <Smartinput
+                                    placeholder="Content"
+                                    value={content}
+                                    setValue={setContent}
+                                    max={2000}
+                                />
+                                <Smartinput
+                                    placeholder="Embed Title"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={256}
+                                    dataName="title"
+                                />
+                                <Smartinput
+                                    placeholder="Embed Description"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={4096}
+                                    dataName="description"
+                                />
+                                <div className="flex gap-2">
+                                    <ColorInput
+                                        placeholder="Embed Color"
+                                        value={embed}
+                                        setValue={setEmbed}
+                                        dataName="color"
+                                    />
+                                    <Smartinput
+                                        placeholder="Embed Thumbnail"
+                                        value={embed}
+                                        setValue={setEmbed}
+                                        max={256}
+                                        dataName="thumbnail"
+                                    />
+                                </div>
+                                <Smartinput
+                                    placeholder="Embed Image"
+                                    value={embed}
+                                    setValue={setEmbed}
+                                    max={256}
+                                    dataName="image"
+                                />
+                                <div className="flex gap-2">
+                                    <Smartinput
+                                        placeholder="Embed Footer Icon"
+                                        value={embedfooter}
+                                        setValue={setEmbedfooter}
+                                        max={256}
+                                        dataName="icon_url"
+                                    />
+                                    <Smartinput
+                                        placeholder="Embed Footer"
+                                        value={embedfooter}
+                                        setValue={setEmbedfooter}
+                                        max={256}
+                                        dataName="text"
+                                    />
+                                </div>
 
-                <div className="mt-2">
-                    <label className="block text-gray-300">Message:</label>
-                    <textarea
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="w-full p-2 mt-1 text-gray-900 bg-gray-200 rounded-md"
-                        placeholder="Enter message"
-                    />
-                </div>
+                                <Button
+                                    className={cn("mt-1 w-full")}
+                                    color="secondary"
+                                    isLoading={state === State.Loading}
+                                    onClick={() => save()}
+                                    startContent={state !== State.Loading && <FaFloppyDisk />}
+                                >
+                                    Send Message
+                                </Button>
+                            </div>
 
-                <div className="mt-2">
-                    <label className="block text-gray-300">Avatar URL (Optional):</label>
-                    <input
-                        type="text"
-                        value={webhookAvatar}
-                        onChange={(e) => setWebhookAvatar(e.target.value)}
-                        className="w-full p-2 mt-1 text-gray-900 bg-gray-200 rounded-md"
-                        placeholder="Enter avatar URL"
-                    />
-                </div>
+                            <div className="md:hidden flex m-2 mt-4">
+                                <div className="flex items-center w-full">
+                                    <span className="text-lg dark:text-neutral-300 text-neutral-700 font-medium">Color Theme</span>
 
-                <div className="mt-2">
-                    <label className="block text-gray-300">Username (Optional):</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="w-full p-2 mt-1 text-gray-900 bg-gray-200 rounded-md"
-                        placeholder="Enter username"
-                    />
-                </div>
+                                    <div className="ml-auto flex items-center">{modeToggle}</div>
+                                </div>
+                            </div>
 
-                <button
-                    onClick={sendWebhook}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                    disabled={loading}
-                >
-                    {loading ? "Sending..." : "Send Webhook"}
-                </button>
-            </div>
+                            <div
+                                className={cn(
+                                    "relative lg:w-3/6 lg:mt-2 m-1 md:mt-8 mt-4 min-h-full rounded-md p-4 break-all overflow-hidden max-w-full text-neutral-200",
+                                    mode === "DARK" ? "bg-discord-gray" : "bg-white"
+                                )}
+                            >
+                                <div className="absolute z-10 top-2 right-2 hidden md:block">{modeToggle}</div>
 
-            <div className="w-full md:w-1/2 bg-gray-900 p-4 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold text-white">Message Preview</h3>
-                <div className="mt-4 flex items-center space-x-3 p-3 bg-gray-800 rounded-lg">
-                    {webhookAvatar ? (
-                        <Image src={webhookAvatar} alt="Avatar" className="w-12 h-12 rounded-full" />
-                    ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-gray-300">?</div>
-                    )}
-                    <div>
-                        <div className="flex items-center space-x-2">
-                            <p className="text-white font-bold">{username || "Webhook"}</p>
+                                <DiscordMessage
+                                    mode={mode}
+                                    user={{
+                                        username: username || "NotificationBot",
+                                        avatar: webhookavatar || "/images/notificationbot.png",
+                                        bot: true
+                                    }}
+                                >
+                                    <DiscordMarkdown mode={mode} text={content || ""} />
 
-                            <span className="bg-[#1447E6] text-white text-xs font-semibold px-2 py-1 rounded-md">APP</span>
-
-                            <span className="text-gray-400 text-xs">{formattedTime}</span>
+                                    <DiscordMessageEmbed
+                                        mode={mode}
+                                        title={JSON.parse(embed).title}
+                                        color={JSON.parse(embed).color}
+                                        thumbnail={JSON.parse(embed).thumbnail}
+                                        image={JSON.parse(embed).image}
+                                        footer={JSON.parse(embedfooter)}
+                                    >
+                                        {JSON.parse(embed).description && (
+                                            <DiscordMarkdown mode={mode} text={JSON.parse(embed).description} />
+                                        )}
+                                    </DiscordMessageEmbed>
+                                </DiscordMessage>
+                            </div>
                         </div>
-                        <p className="text-gray-300">{message || "Your message will appear here..."}</p>
+                        <div className="text-sm m-1 text-neutral-500">The preview might display things wrong*</div>
                     </div>
+                )}
+            </div>
+
+            <div className="flex relative bottom-3">
+                <div className="ml-auto mb-2">
+                    {error && <div className="ml-auto text-red-500 text-sm">{error}</div>}
+                    {state === State.Success && <div className="ml-auto text-green-500 text-sm">Saved</div>}
                 </div>
             </div>
-        </div>
+        </>
     );
 }

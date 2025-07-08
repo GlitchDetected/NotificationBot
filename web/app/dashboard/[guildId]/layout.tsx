@@ -150,14 +150,14 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                             icon: <HiBell />
                         },
                         {
-                            name: "Webhook",
-                            value: "/webhook",
-                            icon: <HiPaperAirplane className="rotate-45" />
-                        },
-                        {
                             name: "Welcomer",
                             value: "/welcomer",
                             icon: <HiEmojiHappy />
+                        },
+                        {
+                            name: "Webhook",
+                            value: "/webhook",
+                            icon: <HiPaperAirplane className="rotate-45" />
                         }
                     ]}
                     url={`/dashboard/${params.guildId}`}
