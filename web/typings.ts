@@ -21,7 +21,7 @@ export interface ApiV1GuildsGetResponse {
   inviteUrl: string | undefined;
   description: string | null;
   follownewsChannel?: {
-    id: string;
+    channelId: string;
     name: string;
   };
 }

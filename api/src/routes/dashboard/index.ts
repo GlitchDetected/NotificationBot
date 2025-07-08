@@ -1,4 +1,5 @@
-import { Hono } from 'hono';
+import { Hono } from "hono";
+
 import dashboardRouter from "./@me";
 
 const router = new Hono();

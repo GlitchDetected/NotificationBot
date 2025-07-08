@@ -1,5 +1,6 @@
-import { setReqUser } from "./set-req-user";
 import { Hono } from "hono";
+
+import { setReqUser } from "./set-req-user";
 
 const router = new Hono();
 

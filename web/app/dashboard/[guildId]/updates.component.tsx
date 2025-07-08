@@ -60,7 +60,7 @@ export default function FollowUpdates() {
 
                         g.follownewsChannel = {
                             name: g!.channels!.find((c) => c.id === channelId)!.name,
-                            id: channelId!
+                            channelId: channelId!
                         };
 
                         return g;
@@ -72,7 +72,7 @@ export default function FollowUpdates() {
                     dataName="channelId"
                     items={createSelectableItems(guild?.channels, ["ViewChannel", "ManageWebhooks"])}
                     description="Select a channel for the notificationbot updates to be sent to"
-                    defaultState={guild?.follownewsChannel?.id}
+                    defaultState={guild?.follownewsChannel?.channelId}
                     onSave={(o) => {
                         setChannelId(o.value as string);
                     }}

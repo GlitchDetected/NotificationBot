@@ -7,7 +7,7 @@ export default tseslint.config(
     ...tseslint.configs.recommended,
     {
         files: ["**/*.ts", "**/*.tsx"],
-        ignores: ["node_modules", ".next"],
+        ignores: ["node_modules", "dist"],
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
@@ -138,11 +138,6 @@ export default tseslint.config(
                 { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" },
             ],
         },
-        settings: {
-            react: {
-                version: "detect", // Automatically detects the React version
-            },
-        }
     },
     {
         ignores: ["node_modules", ".next", "**/gt4.ts", "next-env.d.ts", "typings.ts"]

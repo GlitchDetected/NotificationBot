@@ -1,10 +1,10 @@
-import { Hono } from 'hono';
+import { Hono } from "hono";
 
-import dashboardRouter from "./dashboard";
-import statusRouter from "./status";
 import commandsRouter from "./commands";
+import dashboardRouter from "./dashboard";
+import guildsRouter from "./guilds";
 import sessionsRouter from "./sessions";
-import guildsRouter from "./guilds"
+import statusRouter from "./status";
 
 const router = new Hono();
 

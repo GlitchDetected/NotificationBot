@@ -1,27 +1,25 @@
-import baseRouter from "./routes/base-router";
-import baseMiddleware from "./middlewares/base-middleware";
-import db from "./database/index";
-import models from "./database/models";
 import "dotenv/config";
-import apiKeyMiddleware from "./middlewares/verify-requests";
+
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+
+import db from "./database/index";
+import models, { type ModelsMap } from "./database/models";
+import baseMiddleware from "./middlewares/base-middleware";
+import baseRouter from "./routes/base-router";
 import { HttpErrorCode, HttpErrorMessage } from "./utils/httpjson";
 
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
-
-import { cors } from 'hono/cors';
-
-const app = new Hono()
-export default app
-
-// app.use(apiKeyMiddleware); 
+const app = new Hono();
+export default app;
+// app.use(apiKeyMiddleware);
 
 app.use(
-  cors({
-    origin: process.env.FRONTEND_SITE || 'http://localhost:3000',
-    credentials: true,
-    exposeHeaders: ['Set-Cookie']
-  })
+    cors({
+        origin: process.env.FRONTEND_SITE || "http://localhost:3000",
+        credentials: true,
+        exposeHeaders: ["Set-Cookie"]
+    })
 );
 
 app.route("/", baseMiddleware);
@@ -43,22 +41,23 @@ const PORT = Number(process.env.PORT) || 3001;
 
 console.clear();
 
-Object.keys(models).forEach((ele) => {
-  const model = (models as any)[ele];
-  if (model.associate) {
-    model.associate(models);
-  }
-  console.log(`Passed through model: ${model.name}`);
+// register associations between sequelize models at runtime
+Object.entries(models).forEach(([_, model]) => {
+    if ("associate" in model && typeof model.associate === "function") {
+        (model.associate as (models: ModelsMap) => void)(models);
+    }
+
+    console.log(`Registered: ${model.name}`);
 });
 
 db.sync({
-  force: false
+    force: false
 });
-console.log(`Completed database connection`);
+console.log("Completed database connection");
 
 serve({
-  fetch: app.fetch,
-  port: PORT
+    fetch: app.fetch,
+    port: PORT
 }, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`);
+    console.log(`Server is running on http://localhost:${info.port}`);
 });

@@ -1,9 +1,18 @@
-import User from "./User";
-import Notifications from "./notifications";
-import feednotifications from "./feednotifications";
-import dmnotifications from "./dmnotifications";
+import Bye from "./bye";
+import DmNotifications from "./dmnotifications";
 import FollowUpdates from "./followupdates";
-import Welcome from "./welcome"
-import Bye from "./bye"
+import Notifications from "./notifications";
+import User from "./User";
+import Welcome from "./welcome";
 
-export default { User, Notifications, feednotifications, dmnotifications, FollowUpdates, Welcome, Bye };
+const models = {
+    User,
+    Notifications,
+    DmNotifications,
+    FollowUpdates,
+    Welcome,
+    Bye
+};
+
+export type ModelsMap = typeof models;
+export default models;

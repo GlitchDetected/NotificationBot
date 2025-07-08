@@ -1,17 +1,16 @@
-import { Sequelize } from "sequelize";
-
 import dotenv from "dotenv";
+import { Sequelize } from "sequelize";
 dotenv.config();
 
 const pgConnectionString = process.env.pgConnectionString;
 
 if (!pgConnectionString) {
-  throw new Error("Environment variable 'pgConnectionString' is not defined.");
+    throw new Error("Environment variable 'pgConnectionString' is not defined.");
 }
 
 const sequelize = new Sequelize(pgConnectionString, {
-  dialect: "postgres",
-  logging: false
+    dialect: "postgres",
+    logging: false
 });
 
 export default sequelize;
