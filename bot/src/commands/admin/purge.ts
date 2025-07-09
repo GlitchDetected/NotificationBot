@@ -7,7 +7,7 @@ import {
 
 export default {
     name: "purge",
-    description: "Deletes a custom number of messages (between 10 and 100).",
+    description: "Deletes a custom number of messages between 10 and 100.",
     options: [
         {
             name: "amount",

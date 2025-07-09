@@ -44,13 +44,13 @@ export default {
                 .addFields({ name: "Support Server", value: "[Click me](https://discord.gg/GNdJMJCBdu)", inline: true })
                 .addFields({ name: "Add NotificationBot", value: "Click the link to add NotificationBot to your server: [Add NotificationBot](https://discord.com/oauth2/authorize?client_id=1237878380838523001)", inline: true })
                 .setTimestamp()
-                .setFooter({ text: "New era of moderation | NotificationBot" });
+                .setFooter({ text: "NotificationBot" });
 
             const commandsEmbed = new EmbedBuilder()
                 .setColor(0x333333)
                 .setTitle("Commands")
                 .setDescription("Here's a list of all available commands:")
-                .setFooter({ text: "New era of moderation | NotificationBot" });
+                .setFooter({ text: "NotificationBot" });
 
             chunks.forEach((chunk, index) => {
                 commandsEmbed.addFields({

@@ -17,6 +17,9 @@ importers:
       canvacord:
         specifier: ^6.0.2
         version: 6.0.2
+      discord-api-types:
+        specifier: ^0.38.15
+        version: 0.38.15
       discord.js:
         specifier: ^14.21.0
         version: 14.21.0

@@ -13,6 +13,7 @@
     "@dotenvx/dotenvx": "^1.46.0",
     "@stylistic/eslint-plugin": "^5.1.0",
     "canvacord": "^6.0.2",
+    "discord-api-types": "^0.38.15",
     "discord.js": "^14.21.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",

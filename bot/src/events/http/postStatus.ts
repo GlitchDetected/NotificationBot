@@ -2,7 +2,7 @@ import type { Client } from "discord.js";
 import os from "os";
 import ts from "typescript";
 
-export async function postStatus(client: Client) {
+export default async (client: Client, arg: any) => {
     try {
         if (!client.application) {
             console.error("Bot is not logged in or application object is not available.");
@@ -88,4 +88,4 @@ export async function postStatus(client: Client) {
     } catch (error) {
         console.error("Error fetching status data from API:", error);
     }
-}
+};

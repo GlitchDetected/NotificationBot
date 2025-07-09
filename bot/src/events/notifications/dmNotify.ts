@@ -3,28 +3,29 @@ import Parser from "rss-parser";
 
 import dmnotifications from "@/database/models/dmnotifications";
 
+import type { ApiV1UsersMeGetResponse } from "../../../typings";
+
 const parser = new Parser();
 
-export async function dmnotify(client: Client) {
+export default async (dmnotificationType: ApiV1UsersMeGetResponse["dmnotifications"], client: Client) => {
     try {
         const allUsers = await dmnotifications.findAll();
 
         for (const user of allUsers) {
             try {
-                const { userId, embedcolor, source, thumbnail, message } = user;
 
-                const content = await fetchFromSource(source);
+                const content = await fetchFromSource(dmnotificationType?.source);
                 if (!content) continue;
 
                 const embed = new EmbedBuilder()
                     .setTitle("🔔 Daily Notification")
-                    .setDescription(`${message ?? "You got a new notification from"} ${source}`)
+                    .setDescription(`${user.message ?? "You got a new notification from"} ${user.source}`)
                     .addFields({ name: "Content", value: content })
-                    .setColor(embedcolor ?? 0x5865f2);
+                    .setColor(user.embedcolor ?? 0x5865f2);
 
-                if (thumbnail) embed.setThumbnail(thumbnail);
+                if (user.thumbnail) embed.setThumbnail(user.thumbnail);
 
-                const userObj = await client.users.fetch(userId);
+                const userObj = await client.users.fetch(user.userId);
                 await userObj.send({ embeds: [embed] });
 
             } catch (err) {
@@ -32,10 +33,9 @@ export async function dmnotify(client: Client) {
             }
         }
     } catch (err) {
-        console.error("Failed to run dmnotify function:", err);
+        console.error("Failed to run dmnotifications function:", err);
     }
-}
-
+};
 
 async function fetchFromSource(source: string | null): Promise<string | null> {
     if (!source) return null;

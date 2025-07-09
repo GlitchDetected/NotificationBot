@@ -83,7 +83,7 @@ export default {
             const replyEmbed = new EmbedBuilder()
                 .setTitle(`Suggestion by ${interaction.user.username}`)
                 .addFields({ name: "Topic", value: topicValue }, { name: "Suggestion", value: suggestionValue })
-                .setFooter({ text: "NotificationBot • moderation bot" })
+                .setFooter({ text: "NotificationBot" })
                 .setTimestamp();
 
             await (channel as GuildTextBasedChannel).send({ embeds: [replyEmbed] });
