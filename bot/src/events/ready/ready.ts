@@ -1,4 +1,7 @@
 import type { Client, Message } from "discord.js";
+import cron from "node-cron";
+
+import dmNotify from "../messageCreate/dmNotify";
 
 export default (client: Client) => {
 
@@ -14,6 +17,10 @@ export default (client: Client) => {
 
     if (client.user) {
         console.log(`${client.user.tag} is online`);
+
+        cron.schedule("0 * * * *", () => {
+            dmNotify(client);
+        });
 
         let currentIndex = 0;
 

@@ -2,7 +2,7 @@ import type { ChatInputCommandInteraction, Client } from "discord.js";
 
 export default {
     name: "ping",
-    description: "Replies with the bot ping",
+    description: "Replies with pong",
 
     callback: async (client: Client, interaction: ChatInputCommandInteraction) => {
         await interaction.deferReply();

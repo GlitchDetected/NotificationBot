@@ -3,7 +3,7 @@ import { ChannelType,
     type Client,
     type CommandInteraction,
     type GuildTextBasedChannel,
-    PermissionsBitField } from "discord.js";
+    PermissionFlagsBits } from "discord.js";
 
 export default {
     name: "announce",
@@ -22,15 +22,10 @@ export default {
             required: true
         }
     ],
+    permissionsRequired: [PermissionFlagsBits.Administrator],
+    botPermissions: [PermissionFlagsBits.ManageRoles],
 
     callback: async (_client: Client, interaction: CommandInteraction) => {
-        const memberPermissions = interaction.member?.permissions as PermissionsBitField;
-        if (!memberPermissions || !memberPermissions.has(PermissionsBitField.Flags.Administrator)) {
-            return interaction.reply({
-                content: "You do not have permission to use this command!",
-                ephemeral: true
-            });
-        }
 
         await interaction.deferReply();
 

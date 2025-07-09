@@ -2,7 +2,7 @@ import type { Client } from "discord.js";
 import os from "os";
 import ts from "typescript";
 
-export default async (client: Client, arg: any) => {
+export default async (client: Client) => {
     try {
         if (!client.application) {
             console.error("Bot is not logged in or application object is not available.");

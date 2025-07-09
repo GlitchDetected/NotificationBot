@@ -3,33 +3,33 @@ import Parser from "rss-parser";
 
 import dmnotifications from "@/database/models/dmnotifications";
 
-import type { ApiV1UsersMeGetResponse } from "../../../typings";
-
 const parser = new Parser();
 
-export default async (dmnotificationType: ApiV1UsersMeGetResponse["dmnotifications"], client: Client) => {
+export default async (client: Client) => {
     try {
         const allUsers = await dmnotifications.findAll();
 
         for (const user of allUsers) {
             try {
 
-                const content = await fetchFromSource(dmnotificationType?.source);
+                const { userId, source, message, embedcolor, thumbnail } = user;
+
+                const content = await fetchFromSource(source);
                 if (!content) continue;
 
                 const embed = new EmbedBuilder()
                     .setTitle("🔔 Daily Notification")
-                    .setDescription(`${user.message ?? "You got a new notification from"} ${user.source}`)
+                    .setDescription(`${message ?? "You got a new notification from"} ${source}`)
                     .addFields({ name: "Content", value: content })
-                    .setColor(user.embedcolor ?? 0x5865f2);
+                    .setColor(embedcolor ?? 0x5865f2);
 
-                if (user.thumbnail) embed.setThumbnail(user.thumbnail);
+                if (thumbnail) embed.setThumbnail(thumbnail);
 
-                const userObj = await client.users.fetch(user.userId);
+                const userObj = await client.users.fetch(userId);
                 await userObj.send({ embeds: [embed] });
 
             } catch (err) {
-                console.error(`Failed to notify user ${user.userId}:`, err);
+                console.error("Failed to notify", err);
             }
         }
     } catch (err) {
