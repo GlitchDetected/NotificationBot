@@ -172,7 +172,7 @@ router.patch("/", async (c) => {
                 channelId: body.channelId,
 
                 message: {
-                    content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount}!",
+                    content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
                     embed: body.dm?.message?.embed ?? null
                 },
 
@@ -186,7 +186,7 @@ router.patch("/", async (c) => {
                 dm: {
                     enabled: body.dm?.enabled ?? false,
                     message: {
-                        content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount}!",
+                        content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
                         embed: body.dm?.message?.embed ?? null
                     }
                 },
