@@ -2,8 +2,8 @@ import type { MiddlewareHandler } from "hono";
 import { getCookie } from "hono/cookie";
 import jwt from "jsonwebtoken";
 
-import { httpError } from "@/utils/httperror";
-import { HttpErrorMessage } from "@/utils/httpjson";
+import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/constants/http-error";
 
 import User from "../database/models/User";
 

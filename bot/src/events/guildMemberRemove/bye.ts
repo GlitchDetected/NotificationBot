@@ -1,9 +1,11 @@
 import type { Client, GuildMember } from "discord.js";
 
+import { guildMemberInfo } from "@/constants/discord";
 import Bye from "@/database/models/bye";
+import { replacePlaceholder } from "@/utils/replacePlaceholder";
 
-export default async (client: Client, member: GuildMember) => {
-    const { guild } = member;
+export default async (_client: Client, member: GuildMember) => {
+    const { guild, mention, username } = guildMemberInfo(member);
 
     const config = await Bye.findOne({
         where: { guildId: guild.id }
@@ -14,8 +16,10 @@ export default async (client: Client, member: GuildMember) => {
     const channel = guild.channels.cache.get(config.channelId);
     if (!channel || !channel.isTextBased()) return;
 
-    const content = config.message?.content?.replace("{user.username}", member.user.username)
-        .replace("{user.mention}", `<@${member.id}>`) || `Welcome <@${member.id}>!`;
+    const content = replacePlaceholder(config.message?.content || "", {
+        username,
+        mention
+    });
 
     if (config.message?.embed) {
         const { title, description, color, image, thumbnail, footer } = config.message.embed;

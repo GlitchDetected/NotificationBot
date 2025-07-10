@@ -8,7 +8,7 @@ import db from "./database/index";
 import models, { type ModelsMap } from "./database/models";
 import baseMiddleware from "./middlewares/base-middleware";
 import baseRouter from "./routes/base-router";
-import { HttpErrorCode, HttpErrorMessage } from "./utils/httpjson";
+import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
 
 const app = new Hono();
 export default app;

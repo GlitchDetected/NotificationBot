@@ -3,8 +3,8 @@ import { Hono } from "hono";
 
 import { hasPermissions } from "@/lib/checkPerms";
 import redis from "@/lib/redis";
-import { httpError } from "@/utils/httperror";
-import { HttpErrorMessage } from "@/utils/httpjson";
+import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/constants/http-error";
 const router = new Hono();
 const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
 

@@ -1,7 +1,7 @@
 import { ZodError, type ZodIssue } from "zod";
 
-import type { HttpErrorEntry } from "./httpjson";
-import { HttpErrorCode, HttpErrorMessage } from "./httpjson";
+import type { HttpErrorEntry } from "@/constants/http-error";
+import { HttpErrorCode, HttpErrorMessage } from "@/constants/http-error";
 
 export function httpError(message: HttpErrorEntry = HttpErrorMessage.ServerError, customMessage?: string | ZodError) {
     const code = getErrorCodeByMessage(message);

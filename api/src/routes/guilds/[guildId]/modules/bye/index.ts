@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
 import Bye from "@/database/models/bye";
-import { httpError } from "@/utils/httperror";
-import { HttpErrorMessage } from "@/utils/httpjson";
+import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "~/typings";
 
 const router = new Hono();

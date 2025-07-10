@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
 import Welcome from "@/database/models/welcome";
-import { httpError } from "@/utils/httperror";
-import { HttpErrorMessage } from "@/utils/httpjson";
+import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "~/typings";
 
 interface TestPayload {

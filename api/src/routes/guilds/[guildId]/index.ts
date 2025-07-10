@@ -2,8 +2,8 @@
 import { Hono } from "hono";
 
 import FollowUpdates from "@/database/models/followupdates";
-import { httpError } from "@/utils/httperror";
-import { HttpErrorMessage } from "@/utils/httpjson";
+import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsGetResponse } from "~/typings";
 
 const router = new Hono();
