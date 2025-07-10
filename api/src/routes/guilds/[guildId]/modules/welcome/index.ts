@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
+import { HttpErrorMessage } from "@/constants/http-error";
 import Welcome from "@/database/models/welcome";
 import { httpError } from "@/utils/httperrorHandler";
-import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "~/typings";
 
 interface TestPayload {
@@ -38,7 +38,7 @@ router.get("/", async (c) => {
             dm: {
                 enabled: config?.dm?.enabled ?? false,
                 message: {
-                    content: config?.dm?.message?.content ?? "Welcome to the server {user.username}",
+                    content: config?.dm?.message?.content ?? null,
                     embed: config?.dm?.message?.embed ?? null
                 }
             },
@@ -172,7 +172,7 @@ router.patch("/", async (c) => {
                 channelId: body.channelId,
 
                 message: {
-                    content: body.dm?.message?.content ?? "Welcome to the server @{user.username}",
+                    content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount}!",
                     embed: body.dm?.message?.embed ?? null
                 },
 
@@ -186,7 +186,7 @@ router.patch("/", async (c) => {
                 dm: {
                     enabled: body.dm?.enabled ?? false,
                     message: {
-                        content: body.dm?.message?.content ?? "Welcome to the server @{user.username}",
+                        content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount}!",
                         embed: body.dm?.message?.embed ?? null
                     }
                 },

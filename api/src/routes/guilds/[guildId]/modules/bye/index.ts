@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
+import { HttpErrorMessage } from "@/constants/http-error";
 import Bye from "@/database/models/bye";
 import { httpError } from "@/utils/httperrorHandler";
-import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "~/typings";
 
 const router = new Hono();
@@ -101,7 +101,7 @@ router.patch("/", async (c) => {
                 webhookURL: body.webhookURL,
 
                 message: {
-                    content: body.message?.content ?? "Goodbye @{user.username}",
+                    content: body.message?.content ?? "😔 It is sad to see you leave {guild.name}, {user.name}. Come back anytime!",
                     embed: body.message?.embed ?? null
                 },
 
