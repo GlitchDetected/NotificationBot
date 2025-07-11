@@ -31,7 +31,7 @@ Note that `cdn.discordapp.com` no longer works due to [attachment authentication
 <br />
 <br />
 
-**Backgrounds templates:**
+**Background templates:**
 - [gameroom](/images/backgrounds/gameroom.jpg)
 - [grass](/images/backgrounds/grass.jpg)
 - [retro](/images/backgrounds/retro.jpg)

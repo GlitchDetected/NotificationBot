@@ -8,7 +8,7 @@
     {
       "name": "🔔 DM Notifications",
       "file": "dmnotifications.md",
-      "image": "/docs-assets/open-graph/greetings.webp",
+      "image": "/doc-assets/open-graph/notifications-youtube.webp",
       "description": "Notifications sent directly to your direct messages",
       "permissions": {
         "bot": ["View Channel", "Send Messages", "Embed Links", "Attach Files"],
@@ -18,7 +18,7 @@
     {
             "name": "📢 Social Notifications",
             "file": "notifications.md",
-            "image": "/docs-assets/open-graph/notifications-youtube.webp",
+            "image": "/doc-assets/open-graph/notifications-youtube.webp",
             "description": "Notify your community from your favorite socials like YouTube, Twitch, Bluesky or Reddit",
             "permissions": {
                 "bot": [
@@ -33,9 +33,26 @@
             }
         },
                {
-            "name": "👋 Welcomer",
-            "file": "welcomer.md",
-            "image": "/docs-assets/open-graph/greetings.webp",
+            "name": "👋 Welcome",
+            "file": "welcome.md",
+            "image": "/doc-assets/open-graph/welcome.png",
+            "description": "Automatic welcoming and leaving notifications",
+            "permissions": {
+                "bot": [
+                    "View Channel",
+                    "Send Messages",
+                    "Embed Links",
+                    "Attach Files"
+                ],
+                "user": [
+                    "Manage Server"
+                ]
+            }
+        },
+                       {
+            "name": "🍂 Goodbye",
+            "file": "goodbye.md",
+            "image": "/doc-assets/open-graph/goodbye.png",
             "description": "Automatic welcoming and leaving notifications",
             "permissions": {
                 "bot": [
