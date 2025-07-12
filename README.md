@@ -70,6 +70,8 @@
 prerequisites: 
 - Node.js @ https://nodejs.org/en/download
 - npm install -g pnpm
+> [!IMPORTANT]  
+> For node-canvas, you need to install a few dependencies on your machine before running. Refer to https://www.npmjs.com/package/canvas
 
 `./api`
 - cd api
@@ -82,15 +84,15 @@ DISCORD_TOKEN=""
 DISCORD_ENDPOINT = "https://discord.com/api/v10"
 
 # Database variables
-pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot # example string, setup postgresql on your own
-REDIS_STRING="redis://:foobared@0.0.0.0:6379" # example string, setup redis on your own
+pgConnectionString="postgresql://postgres@localhost:5432/notificationbot"
+REDIS_STRING="redis://default@localhost:6379"
 FORCE_DB_RESET="false"
 
 # variables to help the api and dashboard communicate
 JWT_SECRET="" # openssl rand -base64 32
 FRONTEND_SITE="http://localhost:3000"
 PORT="3001"
-API_SECRET=""
+API_SECRET="secret123"
 
 YTV3API="
 ```
@@ -111,12 +113,15 @@ devs=""
 owner=""
 
 # Database variables
-pgConnectionString="postgresql://postgres:password@0.0.0.0:5432/notificationbot"
+# Create migration using - npx sequelize-cli migration:generate --name example-name
+# Run migration - npx sequelize-cli db:migrate
+pgConnectionString="postgresql://postgres@localhost:5432/notificationbot"
+REDIS_STRING="redis://default@localhost:6379"
 FORCE_DB_RESET="false"
 
 # variables to send http requests
 API_URL="http://localhost:3001"
-API_SECRET=""
+API_SECRET="secret123"
 ```
 - pnpm install
 - pnpm dev
@@ -135,7 +140,7 @@ NEXT_PUBLIC_COOKIE_DOMAIN="localhost"
 # variables to help the api and dashboard communicate
 NEXT_PUBLIC_API="http://localhost:3001"
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-API_SECRET=""
+API_SECRET="secret123"
 
 # github token for fetching repositories
 GITHUB_TOKEN=""

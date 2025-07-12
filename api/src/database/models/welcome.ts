@@ -61,6 +61,8 @@ class Welcome extends Model {
         type: 0;
     };
 
+    declare welcomeMessageIds: Record<string, string>;
+
     declare readonly createdAt: Date;
     declare readonly updatedAt: Date;
 }
@@ -142,6 +144,11 @@ Welcome.init(
                 style: 1,
                 type: 0
             }
+        },
+        welcomeMessageIds: {
+            type: DataTypes.JSONB,
+            allowNull: true,
+            defaultValue: {}
         }
     },
     {

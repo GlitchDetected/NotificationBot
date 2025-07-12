@@ -4,11 +4,11 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 
+import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
 import db from "./database/index";
 import models, { type ModelsMap } from "./database/models";
 import baseMiddleware from "./middlewares/base-middleware";
 import baseRouter from "./routes/base-router";
-import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
 
 const app = new Hono();
 export default app;

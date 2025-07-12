@@ -1,34 +1,26 @@
 import type { GuildMember, User } from "discord.js";
 
-
-export const guildMemberInfo = (member: GuildMember) => {
+export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, inviteCode?: string, inviteCount?: number) => {
     const user = member.user;
+    const guild = member.guild;
+    if (!inviter) return {};
 
     return {
+        // user
         "user.mention": `<@${user.id}>`,
         "user.id": user.id,
         "user.tag": user.tag,
         "user.name": user.username,
-        "user.avatar": user.displayAvatarURL()
-    };
-};
+        "user.avatar": user.displayAvatarURL(),
 
-export const guildInfo = (member: GuildMember) => {
-    const guild = member.guild;
-
-    return {
+        // guild
         "guild.name": guild.name,
         "guild.id": guild.id,
         "guild.avatar": guild.iconURL() || "",
         "guild.rules": guild.rulesChannel ? `<#${guild.rulesChannel.id}>` : "",
-        "guild.memberCount": guild.memberCount
-    };
-};
+        "guild.memberCount": guild.memberCount,
 
-export const inviterInfo = (inviter: User | null, inviteCode?: string, inviteCount?: number) => {
-    if (!inviter) return {};
-
-    return {
+        // inviter
         "inviter.mention": `<@${inviter.id}>`,
         "inviter.id": inviter.id,
         "inviter.tag": inviter.tag,

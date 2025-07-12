@@ -1,6 +1,6 @@
 import "@dotenvx/dotenvx/config";
 
-module.exports = {
+export default {
   development: {
     url: process.env.pgConnectionString,
     dialect: "postgres"
