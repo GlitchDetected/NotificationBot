@@ -1,11 +1,11 @@
-import { type Client, EmbedBuilder } from "discord.js";
+import { type Client, EmbedBuilder, type Message } from "discord.js";
 import Parser from "rss-parser";
 
 import dmnotifications from "@/database/models/dmnotifications";
 
 const parser = new Parser();
 
-export default async (client: Client) => {
+export default async (client: Client, _message: Message) => {
     try {
         const allUsers = await dmnotifications.findAll();
 

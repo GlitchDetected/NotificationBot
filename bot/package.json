@@ -13,6 +13,7 @@
     "@dotenvx/dotenvx": "^1.46.0",
     "@napi-rs/canvas": "^0.1.73",
     "@stylistic/eslint-plugin": "^5.1.0",
+    "axios": "^1.10.0",
     "discord-api-types": "^0.38.15",
     "discord.js": "^14.21.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
