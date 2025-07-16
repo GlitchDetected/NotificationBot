@@ -10,7 +10,7 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
         const apiKey = process.env.YTV3API;
         if (!apiKey) throw new Error("Missing YouTube API key");
 
-        const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creator.id}&part=snippet,id&order=date&maxResults=1&type=video`;
+        const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creatorId}&part=snippet,id&order=date&maxResults=1&type=video`;
         const response = await axios.get(url);
         const item = response.data.items?.[0];
         if (!item) return null;
@@ -32,7 +32,7 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             subscriberCount: videoDetails.statistics?.subscriberCount || "0",
             videoCount: videoDetails.statistics?.videoCount || "0",
             viewCount: videoDetails.statistics?.viewCount || "0",
-            channelUrl: `https://youtube.com/channel/${config.creator.id}`,
+            channelUrl: `https://youtube.com/channel/${config.creatorId}`,
             link: `https://youtube.com/watch?v=${videoId}`
         };
     } catch (err) {
@@ -108,7 +108,7 @@ async function fetchLatestBlueskyContent(config: notificationConfig): Promise<Co
 // reddit
 async function fetchLatestRedditContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const subreddit = config.creator.id || config.creator.username;
+        const subreddit = config.creator.username;
 
         const url = `https://www.reddit.com/r/${subreddit}/new.json?limit=1`;
         const response = await axios.get(url, { headers: { "User-Agent": "DiscordBot/1.0" } });

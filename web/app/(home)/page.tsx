@@ -205,7 +205,7 @@ export default function Home() {
                 className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20"
             >
                 <div className="relative flex justify-center items-center mb-16">
-                    {evenMoreContent.map(({ icon: Icon }, index) => {
+                    {content.map(({ icon: Icon }, index) => {
                         const rotation = angle * index;
                         return (
                             <div
@@ -232,9 +232,8 @@ export default function Home() {
                     </p>
                 </div>
 
-                {/* Features Grid */}
                 <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16">
-                    {content.map(({ icon: Icon, title, text }) => (
+                    {evenMoreContent.map(({ icon: Icon, title, text }) => (
                         <div
                             key={title}
                             className="text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-zinc-700 to-zinc-900 rounded-4xl shadow-lg relative"

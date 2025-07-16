@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 
-import { Faq } from "@/components/homepage/faq";
+import { Faq } from "@/app/(home)/faq.component";
 import CustomMarkdown from "@/components/markdown";
 import Codeblock from "@/components/markdown/codeblock";
 import Notice, { NoticeType } from "@/components/notice";

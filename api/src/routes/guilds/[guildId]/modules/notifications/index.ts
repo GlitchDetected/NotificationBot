@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import Notifications from "@/database/models/notifications";
+import { fetchers } from "@/lib/getUploads";
 import getYouTubeAvatar from "@/lib/youtube";
 import { getYtChannelId } from "@/lib/youtube";
 import { NotificationType } from "~/typings";
@@ -83,6 +84,58 @@ router.post("/", async (c) => {
         let ytCreatorId: string | null = null;
         if (body.type === NotificationType.YouTube && body.creatorHandle) {
             ytCreatorId = await getYtChannelId(body.creatorHandle);
+            if (!ytCreatorId) {
+                return c.json({ error: "YouTube channel not found." }, 404);
+            }
+
+            try {
+                const latestVideo = await fetchers[NotificationType.YouTube]({
+                    ...body,
+                    creatorId: ytCreatorId
+                });
+                if (!latestVideo) {
+                    return c.json({ error: "YouTube channel has no videos." }, 400);
+                }
+            } catch (err) {
+                console.error("YouTube fetch failed:", err);
+                return c.json({ error: "Failed to fetch latest YouTube content." }, 500);
+            }
+        }
+
+        if (body.type === NotificationType.Twitch) {
+            try {
+                const latestStream = await fetchers[NotificationType.Twitch](body);
+                if (!latestStream) {
+                    return c.json({ error: "Twitch user has no live stream history." }, 400);
+                }
+            } catch (err) {
+                console.error("Twitch fetch failed:", err);
+                return c.json({ error: "Failed to fetch Twitch stream." }, 500);
+            }
+        }
+
+        if (body.type === NotificationType.Bluesky) {
+            try {
+                const latestPost = await fetchers[NotificationType.Bluesky](body);
+                if (!latestPost) {
+                    return c.json({ error: "Bluesky user has no posts." }, 400);
+                }
+            } catch (err) {
+                console.error("Bluesky fetch failed:", err);
+                return c.json({ error: "Failed to fetch Bluesky posts." }, 500);
+            }
+        }
+
+        if (body.type === NotificationType.Reddit) {
+            try {
+                const latestPost = await fetchers[NotificationType.Reddit](body);
+                if (!latestPost) {
+                    return c.json({ error: "Reddit user has no posts." }, 400);
+                }
+            } catch (err) {
+                console.error("Reddit fetch failed:", err);
+                return c.json({ error: "Failed to fetch Reddit posts." }, 500);
+            }
         }
 
         const config = await Notifications.create({

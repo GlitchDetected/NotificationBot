@@ -2,7 +2,7 @@ import type { Client, Guild, Message } from "discord.js";
 
 import { notificationPlaceholders } from "@/constants/discord";
 import Notifications from "@/database/models/notifications";
-import { fetchers } from "@/lib/uploads";
+import { fetchers } from "@/lib/getUploads";
 import { replacePlaceholder } from "@/utils/replacePlaceholder";
 
 import type { NotificationType } from "../../../typings";
@@ -41,6 +41,8 @@ export default async (
     let content = replacePlaceholder(dbConfig.message?.content || "", placeholders);
 
     content += `\n${latestContent.link}`;
+
+    console.log("Fetched content:", latestContent);
 
     if (dbConfig.roleId) {
         content = `<@&${dbConfig.roleId}> ${content}`;
