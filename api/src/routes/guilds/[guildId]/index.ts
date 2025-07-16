@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Hono } from "hono";
 
+import { HttpErrorMessage } from "@/constants/http-error";
 import FollowUpdates from "@/database/models/followupdates";
 import { httpError } from "@/utils/httperrorHandler";
-import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1GuildsGetResponse } from "~/typings";
 
 const router = new Hono();

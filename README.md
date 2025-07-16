@@ -4,7 +4,7 @@
 <br/>
 
   <p align="center">
-    <img src="images/notificationbot.png" alt="Logo" width="192">
+    <img src="/notificationbot.png" alt="Logo" width="192">
     </p>
 
 ## NotificationBot
@@ -230,7 +230,7 @@ Distributed under the Unlicense License. See `LICENSE` for more information.
 [issues-url]: https://github.com/GlitchDetected/notificationbot/issues
 [license-shield]: https://img.shields.io/github/license/GlitchDetected/notificationbot.svg?style=for-the-badge
 [license-url]: https://github.com/GlitchDetected/notificationbot/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: /screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB

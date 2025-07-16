@@ -11,7 +11,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/images/notificationbot256.webp",
+      "src": "/me.webp",
       "type": "image/jpg",
       "sizes": "675x675",
       "purpose": "any maskable"

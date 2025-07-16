@@ -3,8 +3,8 @@
 import { Accordion, AccordionItem, Code } from "@heroui/react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
-import LinkTag from "./link-tag";
-import { Section } from "./section";
+import LinkTag from "@/components/ui/link-tag";
+import { Section } from "@/components/ui/section";
 
 const data = [
     {

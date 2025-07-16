@@ -28,7 +28,7 @@ export const generateMetadata = (): Metadata => {
             url,
             type: "website",
             images: {
-                url: `${getBaseUrl()}/images/notificationbot.png`,
+                url: `${getBaseUrl()}//notificationbot.png`,
                 type: "image/webp"
             }
         },
@@ -37,7 +37,7 @@ export const generateMetadata = (): Metadata => {
             title,
             description,
             images: {
-                url: `${getBaseUrl()}/images/notificationbot.png`,
+                url: `${getBaseUrl()}//notificationbot.png`,
                 alt: title
             }
         }

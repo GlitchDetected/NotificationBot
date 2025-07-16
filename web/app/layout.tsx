@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_JP, Outfit } from "next/font/google";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,12 +11,10 @@ import { LoginButton } from "@/components/ui/loginbutton";
 import { LoginHeader } from "@/components/ui/loginheader";
 import { links } from "@/lib/data";
 import { cn } from "@/utils/cn";
+import { notosansJP, outfit } from "@/utils/font";
 import { getBaseUrl } from "@/utils/urls";
 
 import { Provider } from "./provider";
-
-const outfit = Outfit({ subsets: ["latin", "latin-ext"], variable: "--font-outfit" });
-const notosansJP = Noto_Sans_JP({ subsets: ["cyrillic", "vietnamese"], variable: "--font-noto-sans-jp" });
 
 export const viewport: Viewport = {
     themeColor: "#1c1c1c",
@@ -36,7 +33,7 @@ export const generateMetadata = (): Metadata => {
         appleWebApp: {
             capable: true,
             title: "NotificationBot",
-            startupImage: "/images/notificationbot256.webp",
+            startupImage: "/me.webp",
             statusBarStyle: "black-translucent"
         },
 
@@ -60,7 +57,14 @@ export const generateMetadata = (): Metadata => {
             description,
             type: "website",
             url: getBaseUrl(),
-            images: `${getBaseUrl()}/images/notificationbot256.webp`
+            images: `${getBaseUrl()}/me.webp`
+        },
+        twitter: {
+            card: "summary",
+            site: "notificationbot.xyz",
+            title,
+            description,
+            images: `${getBaseUrl()}/me.webp`
         },
 
         other: {
@@ -132,7 +136,7 @@ async function NavBar() {
         >
             <div className="flex gap-4 items-center">
                 <Link href="/" className="flex items-center gap-1">
-                    <Image src="/images/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
+                    <Image src="/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
                     <span className="text-lg font-semibold">NotificationBot</span>
                 </Link>
             </div>

@@ -42,7 +42,7 @@ router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
     const id = c.req.param("id");
     const body = await c.req.json() as ApiV1GuildsModulesNotificationsGetResponse;
-    
+
     try {
         const config = await Notifications.findOne({ where: { id, guildId } });
 

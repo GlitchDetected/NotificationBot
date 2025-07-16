@@ -2,7 +2,7 @@
 <br />
 <br />
 
-![DM notification example](/images/notificationbot.png?fullwidth=true)
+![DM notification example](//notificationbot.png?fullwidth=true)
 
 <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" height="513" frameborder="0" allow="autoplay">
 </iframe>

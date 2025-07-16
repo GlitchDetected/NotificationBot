@@ -214,7 +214,7 @@ export default function Home() {
                                     mode={mode}
                                     user={{
                                         username: username || "NotificationBot",
-                                        avatar: webhookavatar || "/images/notificationbot.png",
+                                        avatar: webhookavatar || "/notificationbot.png",
                                         bot: true
                                     }}
                                 >

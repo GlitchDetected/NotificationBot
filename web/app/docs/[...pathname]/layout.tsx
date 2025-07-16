@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BsDiscord, BsGithub } from "react-icons/bs";
 import { HiUserAdd, HiViewGridAdd } from "react-icons/hi";
 
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/footer";
 import { LinkButton } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import metadata from "@/public/docs/meta.json";
@@ -22,7 +22,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
     const url = getCanonicalUrl("docs", ...pathname);
     const images = {
-        url: meta?.image || `${getBaseUrl()}/images/notificationbot.png`,
+        url: meta?.image || `${getBaseUrl()}//notificationbot.png`,
         alt: meta?.description,
         heigth: 1008,
         width: 1935

@@ -13,9 +13,11 @@ import { Badge } from "./ui/badge";
 
 export async function Footer(props: HTMLProps<HTMLDivElement>) {
     const dev = await getUser("920487197046607872");
+    const date = new Date("April 15, 2024");
+    const timestamp = date.getTime();
 
     return (
-        <footer className="h-px bg-gray-700 mb-60 m-6">
+        <footer className="h-px bg-gray-700 mb-30 m-20">
             <div className={cn("text-primary/75 w-full mt-10 text-left", props.className)} {...props}>
                 <div className="flex items-center gap-1 font-semibold">
                     <BsDiscord className="relative top-[1px] text-red-900" />
@@ -35,7 +37,7 @@ export async function Footer(props: HTMLProps<HTMLDivElement>) {
                                 <BiCopyright />
                                 <span>
                                     <Link href="/" className="hover:underline">
-                                        NotificationBot {new Date(1745854252).getFullYear()} - {new Date().getFullYear()}
+                                        NotificationBot {new Date(timestamp).getFullYear()} - {new Date().getFullYear()}
                                     </Link>
                                     ,
                                 </span>

@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
+import { HttpErrorMessage } from "@/constants/http-error";
 import DmNotifications from "@/database/models/dmnotifications";
 import { httpError } from "@/utils/httperrorHandler";
-import { HttpErrorMessage } from "@/constants/http-error";
 import type { ApiV1UsersMeGetResponse } from "~/typings";
 
 const router = new Hono();

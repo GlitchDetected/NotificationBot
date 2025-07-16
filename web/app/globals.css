@@ -3,32 +3,162 @@
  @source '@/node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
  @custom-variant dark (&:is(.dark *));
 
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
 @theme {
-  --color-darkflame: #20070A; 
-  --color-blurple: #7289DA;
-  --color-accent: #CB4154;
-  --color-destructive: #FF0000;
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
 
-  --color-default: #B32126;
-  --color-primary: #CF5154;
-  --color-secondary: #B21807;
-  --color-success: #43B581;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-darkflame: hsl(var(--darkflame));
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
 }
 
-body {
-  background: #07080A;
-  color: #eeeeee;
-  overflow-x: hidden;
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-.not-found {
-  animation: break 6s ease-in-out forwards;
+@layer utilities {
+  html,
+  body {
+    background-color: #000000 !important;
+  }
+
+  .avatar-animation:hover {
+    transform: rotateZ(1.6deg) rotateY(10deg);
+  }
+}
+
+@layer base {
+  :root {
+    --darkflame: 345 85% 6%;
+
+    --background: 0 60% 15%; /* dark red tone */
+    --foreground: 0 70% 85%;  /* light red tone */
+
+    --card: 0 60% 15%;
+    --card-foreground: 0 70% 85%;
+
+    --popover: 0 60% 15%;
+    --popover-foreground: 0 70% 85%;
+
+    --primary: 0 70% 50%; /* vivid red */
+    --primary-foreground: 0 70% 85%;
+
+    --secondary: 0 60% 40%; /* darker red */
+    --secondary-foreground: 0 70% 85%;
+
+    --muted: 0 40% 60%; /* muted dark red */
+    --muted-foreground: 0 40% 30%;
+
+    --accent: 0 60% 80%; /* light red */
+    --accent-foreground: 0 70% 85%;
+
+    --destructive: 0 80% 50%; /* bright red */
+    --destructive-foreground: 0 70% 85%;
+
+    --border: 0 40% 60%;
+    --input: 0 40% 60%;
+    --ring: 0 70% 50%; /* red */
+
+    --chart-1: 0 70% 50%;
+    --chart-2: 0 60% 45%;
+    --chart-3: 0 50% 50%;
+    --chart-4: 0 60% 60%;
+    --chart-5: 0 80% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --darkflame: 345 85% 6%;
+
+    --background: 0 70% 10%; /* dark red */
+    --foreground: 0 60% 90%;  /* light red */
+
+    --card: 0 70% 10%;
+    --card-foreground: 0 60% 90%;
+
+    --popover: 0 70% 10%;
+    --popover-foreground: 0 60% 90%;
+
+    --primary: 0 70% 50%; /* vivid red */
+    --primary-foreground: 0 60% 90%;
+
+    --secondary: 0 70% 40%; /* darker red */
+    --secondary-foreground: 0 60% 90%;
+
+    --muted: 0 40% 30%; /* muted red */
+    --muted-foreground: 0 40% 70%;
+
+    --accent: 0 30% 25%; /* very dark red accent */
+    --accent-foreground: 0 60% 90%;
+
+    --destructive: 0 80% 40%; /* bright red */
+    --destructive-foreground: 0 60% 90%;
+
+    --border: 0 40% 30%;
+    --input: 0 40% 30%;
+    --ring: 0 70% 60%; /* red */
+
+    --chart-1: 0 70% 60%;
+    --chart-2: 0 70% 50%;
+    --chart-3: 0 50% 50%;
+    --chart-4: 0 60% 60%;
+    --chart-5: 0 80% 50%;
+  }
+}
+
+div[id="bg"] {
+    background-image: linear-gradient(175deg, rgb(66, 42, 126) 0%, var(--background-rgb) 75%);
+}
+
+::selection {
+  background-color: hsl(345, 85%, 20%);
+  color: hsl(0, 100%, 90%);
 }
 
 @keyframes ScaleBlink {
@@ -67,100 +197,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #B32126;
-}
-
-#boom {
-  position: absolute;
-  top: 20%;
-  right: 20%;
-  width: 200px;
-  height: 200px;
-  background-image: url('/images/explode.gif');
-  background-size: cover;
-  animation: crash 6s linear;
-}
-
-@keyframes crash {
-  0% {
-    translate: -100vw;
-    background-image: url('/images/moon.gif');
-  }
-  49% {
-    background-image: url('/images/moon.gif');
-  }
-  50% {
-    translate: 0;
-    background-image: url('/images/explode.gif');
-  }
-  60% {
-    background-image: url('/images/explode.gif');
-  }
-}
-
-@keyframes break {
-  50% {
-    rotate: 0deg;
-    color: white;
-  }
-  52% {
-    rotate: 1deg;
-    color: red;
-  }
-  54% {
-    rotate: -1deg;
-  }
-  56% {
-    rotate: 2deg;
-  }
-  58% {
-    rotate: -2deg;
-  }
-  60% {
-    rotate: 6deg;
-    color: white;
-  }
-  100% {
-    rotate: 6deg;
-  }
-}
-
-
-.animate-scroll {
-  border: 2px solid #460809;
-  height: 2.2rem;
-  position: relative;
-  width: 20px;
-}
-
-.animate-scroll-wheel {
-  animation: scroll 2.5s ease infinite;
-  background: #460809;
-  border-radius: 1rem;
-  height: 0.5rem;
-  left: calc(50% - 1.5px);
-  position: absolute;
-  right: 50%;
-  top: 8px;
-  width: 3px;
-}
-
-@keyframes scroll {
-  0% {
-      transform: translateY(0);
-  }
-
-  50% {
-      transform: translateY(0.5rem);
-  }
-
-  51% {
-      opacity: 1;
-  }
-
-  100% {
-      opacity: 0;
-      transform: translateY(0);
-  }
 }
 
 .card {
@@ -323,6 +359,44 @@ body {
   }
   100% {
     --angle: 360deg;
+  }
+}
+
+.animate-scroll {
+  border: 2px solid #460809;
+  height: 2.2rem;
+  position: relative;
+  width: 20px;
+}
+
+.animate-scroll-wheel {
+  animation: scroll 2.5s ease infinite;
+  background: #460809;
+  border-radius: 1rem;
+  height: 0.5rem;
+  left: calc(50% - 1.5px);
+  position: absolute;
+  right: 50%;
+  top: 8px;
+  width: 3px;
+}
+
+@keyframes scroll {
+  0% {
+      transform: translateY(0);
+  }
+
+  50% {
+      transform: translateY(0.5rem);
+  }
+
+  51% {
+      opacity: 1;
+  }
+
+  100% {
+      opacity: 0;
+      transform: translateY(0);
   }
 }
 
