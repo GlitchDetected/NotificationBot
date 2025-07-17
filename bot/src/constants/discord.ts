@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Guild, GuildMember, User } from "discord.js";
 
-import type { ContentData, notificationConfig, NotificationType } from "../../typings";
+import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
 export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, inviteCode?: string, inviteCount?: number) => {
     const user = member.user;

@@ -1,7 +1,7 @@
 import type { Client, Message } from "discord.js";
 
-import Welcome from "@/database/models/welcome";
-import redis from "@/lib/redis";
+import Welcome from "@/src/database/models/welcome";
+import redis from "@/src/lib/redis";
 
 export default async (_client: Client, message: Message) => {
     if (message.author.bot || !message.guild) return;

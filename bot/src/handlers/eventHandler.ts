@@ -1,7 +1,7 @@
 import type { Client } from "discord.js";
 import path from "path";
 
-import getAllFiles from "../utils/getAllFiles";
+import getAllFiles from "@/src/utils/getAllFiles";
 
 export default (client: Client) => {
     const eventFolders = getAllFiles(path.join(__dirname, "..", "events"), true);

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import axios from "axios";
 
-import type { notificationConfig, NotificationType } from "../../typings";
-import type { ContentData } from "../../typings";
+import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
 // YouTube
 async function fetchLatestYouTubeContent(config: notificationConfig): Promise<ContentData | null> {

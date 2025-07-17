@@ -2,10 +2,10 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import type { Client, GuildMember, User } from "discord.js";
 import { AttachmentBuilder } from "discord.js";
 
-import { welcomerPlaceholders } from "@/constants/discord";
-import Bye from "@/database/models/bye";
-import Welcome from "@/database/models/welcome";
-import { replacePlaceholder } from "@/utils/replacePlaceholder";
+import { welcomerPlaceholders } from "@/src/constants/discord";
+import Bye from "@/src/database/models/bye";
+import Welcome from "@/src/database/models/welcome";
+import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
 
 export default async (
     _client: Client,

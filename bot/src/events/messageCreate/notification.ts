@@ -1,11 +1,10 @@
 import type { Client, Guild, Message } from "discord.js";
 
-import { notificationPlaceholders } from "@/constants/discord";
-import Notifications from "@/database/models/notifications";
-import { fetchers } from "@/lib/getUploads";
-import { replacePlaceholder } from "@/utils/replacePlaceholder";
-
-import type { ContentData, notificationConfig, NotificationType } from "../../../typings";
+import { notificationPlaceholders } from "@/src/constants/discord";
+import Notifications from "@/src/database/models/notifications";
+import { fetchers } from "@/src/lib/getUploads";
+import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
+import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
 export default async (
     _client: Client,
@@ -16,16 +15,16 @@ export default async (
     type: NotificationType,
     contentData: ContentData
 ) => {
-    if (config.type !== type) {
-        return;
-    }
-
     const placeholders = {
         ...notificationPlaceholders(guild, config, type, contentData)
     };
 
     const dbConfig = await Notifications.findOne({ where: { id: notificationId } });
     if (!dbConfig || !dbConfig.id || !dbConfig.guildId) return;
+
+    if (dbConfig.type !== type) {
+        return;
+    }
 
     const fetcher = fetchers[type];
     if (!fetcher) return;

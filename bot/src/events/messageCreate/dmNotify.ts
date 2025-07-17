@@ -1,7 +1,7 @@
 import { type Client, EmbedBuilder, type Message } from "discord.js";
 import Parser from "rss-parser";
 
-import dmnotifications from "@/database/models/dmnotifications";
+import dmnotifications from "@/src/database/models/dmnotifications";
 
 const parser = new Parser();
 

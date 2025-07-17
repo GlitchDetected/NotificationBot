@@ -2,9 +2,9 @@ import "@dotenvx/dotenvx/config";
 
 import { Client, IntentsBitField } from "discord.js";
 
-import db from "./database/index";
-import models, { type ModelsMap } from "./database/models";
-import eventHandler from "./handlers/eventHandler";
+import db from "@/src/database/index";
+import models, { type ModelsMap } from "@/src/database/models";
+import eventHandler from "@/src/handlers/eventHandler";
 
 const client = new Client({
     intents: [

@@ -1,8 +1,8 @@
 import type { ApplicationCommand, Client } from "discord.js";
 
-import areCommandsDifferent from "../../utils/areCommandsDifferent";
-import getApplicationCommands from "../../utils/getApplicationCommands";
-import getLocalCommands from "../../utils/getLocalCommands";
+import areCommandsDifferent from "@/src/utils/areCommandsDifferent";
+import getApplicationCommands from "@/src/utils/getApplicationCommands";
+import getLocalCommands from "@/src/utils/getLocalCommands";
 
 export default async (client: Client) => {
     try {

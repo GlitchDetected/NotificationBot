@@ -1,4 +1,4 @@
-import getLocalCommands from "../../utils/getLocalCommands";
+import getLocalCommands from "@/src/utils/getLocalCommands";
 
 const devs = process.env.devs ? process.env.devs.split(",") : [];
 const testServer = process.env.testServer;
