@@ -5,9 +5,7 @@ import Notifications from "@/database/models/notifications";
 import { fetchers } from "@/lib/getUploads";
 import { replacePlaceholder } from "@/utils/replacePlaceholder";
 
-import type { NotificationType } from "../../../typings";
-import type { notificationConfig } from "../../../typings";
-import type { ContentData } from "../../../typings";
+import type { ContentData, notificationConfig, NotificationType } from "../../../typings";
 
 export default async (
     _client: Client,
