@@ -126,8 +126,8 @@ export default function SelectMenu({
 
             <button
                 className={cn(
-                    "mt-1 h-12 w-full bg-darkflame rounded-lg flex items-center px-3 suspicious-modal",
-                    open && "outline outline-darkflame-400 outline-offset-2 outline-2",
+                    "mt-1 h-12 w-full bg-foreground rounded-lg flex items-center px-3 suspicious-modal",
+                    open && "outline outline-foreground-400 outline-offset-2 outline-2",
                     (value?.error || error) && !open && "outline outline-red-500 outline-1",
                     state === State.Success && !open && "outline outline-green-500 outline-1",
                     (state === State.Loading || disabled) && "cursor-not-allowed opacity-50"
@@ -166,13 +166,13 @@ export default function SelectMenu({
             </button>
 
             {open && (
-                <div className="absolute mt-2 w-full bg-darkflame backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
+                <div className="absolute mt-2 w-full bg-foreground backdrop-blur-lg backdrop-brightness-50 rounded-lg max-h-40 overflow-y-scroll shadow-lg z-20 suspicious-modal">
                     <ClickOutside onClose={() => setOpen(false)} />
                     {items.map((item) => (
                         <button
                             key={"select-" + item.value}
                             className={cn(
-                                "p-4 py-2 w-full text-left duration-200 flex items-center hover:bg-darkflame",
+                                "p-4 py-2 w-full text-left duration-200 flex items-center hover:bg-foreground",
                                 item.error && "dark:bg-red-500/10 hover:dark:bg-red-500/25 bg-red-500/30 hover:bg-red-500/40"
                             )}
                             style={item.color ? { color: `#${item.color.toString(16)}` } : {}}

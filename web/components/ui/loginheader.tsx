@@ -1,6 +1,5 @@
 "use client";
 
-import { Switch } from "@heroui/react";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,6 +24,7 @@ import { Button } from "./button";
 import { LoginButton } from "./loginbutton";
 import ReduceMotion from "./reducemotion";
 import { Skeleton } from "./skeleton";
+import { Switch } from "./switch";
 
 enum State {
     Idle = 0,
@@ -109,8 +109,8 @@ export function LoginHeader() {
         () => (
             <button
                 className={cn(
-                    "ml-auto truncate flex hover:bg-darkflame py-2 px-4 rounded-lg duration-200 items-center",
-                    menu && "bg-darkflame"
+                    "ml-auto truncate flex hover:bg-foreground py-2 px-4 rounded-lg duration-200 items-center",
+                    menu && "bg-foreground"
                 )}
                 onClick={() => setMenu(!menu)}
             >
@@ -190,7 +190,7 @@ export function LoginHeader() {
                 {buttons.map((button, i) => {
                     if ("type" in button && button.type === "split")
                         return (
-                            <hr key={"headerButton-" + button.type + i} className="my-1 mx-2 dark:border-darkflame border-darkflame-100" />
+                            <hr key={"headerButton-" + button.type + i} className="my-1 mx-2 dark:border-foreground border-foreground-100" />
                         );
 
                     if ("url" in button)
@@ -198,7 +198,7 @@ export function LoginHeader() {
                             <Button
                                 key={"headerButton-" + button.name + button.url}
                                 asChild
-                                className="w-full font-medium justify-start text-xl my-1 sm:my-0 sm:text-medium bg-transparent hover:bg-darkflame rounded-sm"
+                                className="w-full font-medium justify-start text-xl my-1 sm:my-0 sm:text-medium bg-transparent hover:bg-foreground rounded-sm"
                                 onClick={() => setMenu(false)}
                             >
                                 <Link href={button.url!}>
@@ -216,11 +216,10 @@ export function LoginHeader() {
                                 <Switch
                                     key={"headerButton-" + button.name}
                                     className="ml-auto"
-                                    isSelected={button.value}
-                                    onValueChange={button.onChange}
+                                    checked={button.value}
+                                    onCheckedChange={button.onChange}
                                     aria-label={button.name}
                                     color="secondary"
-                                    size="sm"
                                 />
                             </div>
                         );

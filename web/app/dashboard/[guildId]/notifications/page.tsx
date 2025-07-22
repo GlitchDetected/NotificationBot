@@ -86,7 +86,7 @@ export default function Home() {
                                         height={46}
                                     />
                                 ) : (
-                                    <div className="size-[46px] flex items-center justify-center bg-darkflame rounded-full select-none font-medium text-lg text-neutral-200">
+                                    <div className="size-[46px] flex items-center justify-center bg-foreground rounded-full select-none font-medium text-lg text-neutral-200">
                                         {item.creator.username.slice(0, 2)}
                                     </div>
                                 )}
@@ -125,7 +125,7 @@ export default function Home() {
                             height={24}
                         />
                     ) : (
-                        <div className="size-[24px] flex items-center justify-center bg-darkflame rounded-full select-none font-medium text-sm text-neutral-200">
+                        <div className="size-[24px] flex items-center justify-center bg-foreground rounded-full select-none font-medium text-sm text-neutral-200">
                             {item.creator.username.slice(0, 2)}
                         </div>
                     )

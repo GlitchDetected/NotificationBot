@@ -1,18 +1,19 @@
 "use client";
 
-import { Button, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { HiArrowNarrowLeft, HiBell, HiEmojiHappy, HiHome, HiPaperAirplane, HiUsers, HiViewGridAdd } from "react-icons/hi";
+import { HiBell, HiEmojiHappy, HiHome, HiPaperAirplane, HiUsers, HiViewGridAdd } from "react-icons/hi";
 
 import { guildStore } from "@/common/guildStore";
 import { ClientButton } from "@/components/clientfunc";
 import { ListTab } from "@/components/list-tab";
 import { ScreenMessage, SupportButton } from "@/components/screen-message";
+import { Button } from "@/components/ui/button";
 import ImageReduceMotion from "@/components/ui/reducemotion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cacheOptions, getData } from "@/lib/api";
 import type {
     ApiV1GuildsChannelsGetResponse,
@@ -101,13 +102,12 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
             )}
 
             <div className="flex flex-col gap-5 mb-6">
-                <Button as={Link} className="w-fit" href="/profile" startContent={<HiArrowNarrowLeft />}>
-                    Profile
+                <Button asChild>
+                    <Link href="/profile">Profile</Link>
                 </Button>
 
                 <div className="text-lg flex gap-5">
                     <Skeleton
-                        isLoaded={!isLoading}
                         className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0"
                     >
                         <ImageReduceMotion

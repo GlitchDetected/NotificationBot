@@ -21,7 +21,7 @@ export default function Box({
     return (
         <div
             className={cn(
-                "bg-darkflame rounded-lg",
+                "bg-foreground rounded-lg",
                 !none && "py-6 px-8 md:py-10 md:px-16",
                 small && "py-4 px-6 md:py-8 md:px-10",
                 border && "",

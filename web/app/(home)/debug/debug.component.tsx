@@ -20,7 +20,7 @@ export default function Panel({
         <div className="w-full">
             <h2 className="text-2xl font-medium text-neutral-200">{name}</h2>
 
-            <div className="mt-2 flex flex-col gap-3 divide-y-1 divide-darkflame">
+            <div className="mt-2 flex flex-col gap-3 divide-y-1 divide-foreground">
 
                 {items.map((item) => (
                     <Row

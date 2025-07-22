@@ -10,7 +10,7 @@ import type { ApiCluster } from "./api";
 export function Cluster(cluster: ApiCluster) {
     return (
         <div
-            className="w-full md:flex gap-4 space-y-2 md:space-y-0 justify-between items-center p-4 bg-darkflame rounded-lg outline-red-400 duration-200 h-min"
+            className="w-full md:flex gap-4 space-y-2 md:space-y-0 justify-between items-center p-4 bg-foreground rounded-lg outline-red-400 duration-200 h-min"
             id={"cluster-" + cluster.id}
         >
             <div className="sm:flex items-center w-1/6">
@@ -46,7 +46,7 @@ export function Cluster(cluster: ApiCluster) {
             </div>
 
             <Badge
-                className={cn(cluster.ping > 0 && "text-neutral-400 bg-darkflame max-w-1/6")}
+                className={cn(cluster.ping > 0 && "text-neutral-400 bg-foreground max-w-1/6")}
                 variant={cluster.ping < 0 ? "destructive" : "default"}
                 radius="rounded"
             >

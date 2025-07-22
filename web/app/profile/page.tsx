@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -10,6 +9,7 @@ import { HiRefresh, HiUserAdd, HiViewGridAdd } from "react-icons/hi";
 
 import Smartinput from "@/components/input/smart-input";
 import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import { Button } from "@/components/ui/button";
 import ImageReduceMotion from "@/components/ui/reducemotion";
 import { useApi } from "@/lib/api/hooks";
 import type { ApiV1UsersMeGuildsGetResponse } from "@/typings";
@@ -72,26 +72,24 @@ export default function Home() {
                 <div className="relative top-2 w-full">
                     <Smartinput value={search} setValue={setSearch} placeholder="Search by name" thin />
                 </div>
-
-                {/* Action Buttons */}
                 <div className="flex items-center gap-3">
-                    <Button
-                        as={Link}
-                        className="w-1/2 md:w-min"
-                        href="/login?invite=true"
-                        prefetch={false}
-                        startContent={<HiUserAdd />}
-                    >
-                        Add to Server
+                    <Button asChild size="sm" variant="secondary">
+                        <Link href={"/login?invite=true"} className="flex items-center gap-2">
+                            <HiUserAdd className="h-4 w-4" />
+                            Add to Server
+                        </Link>
                     </Button>
-                    <Button
-                        as={Link}
-                        className="button-primary w-1/2 md:w-min"
-                        href="/login"
-                        prefetch={false}
-                        startContent={<HiRefresh />}
-                    >
-                        <span>Refresh</span>
+
+                    <Button asChild size="sm">
+                        <Link
+                            href="/login"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
+                            Refresh
+                            <HiRefresh className="h-4 w-4" />
+                        </Link>
                     </Button>
                 </div>
             </div>
@@ -149,7 +147,7 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
     return (
         <motion.li
             className={cn(
-                "dark:bg-darkflame bg-darkflame-100 p-3.5 flex items-center rounded-xl drop-shadow-md overflow-hidden relative duration-100 outline-darkflame-500 hover:outline group/card",
+                "dark:bg-foreground bg-foreground-100 p-3.5 flex items-center rounded-xl drop-shadow-md overflow-hidden relative duration-100 outline-foreground-500 hover:outline group/card",
                 !botInGuild && "saturate-50 brightness-50"
             )}
             variants={springAnimation}
@@ -182,31 +180,34 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
     );
 }
 
-function InviteButton({ guildId }: { guildId: string; }) {
+export function InviteButton({ guildId }: { guildId: string; }) {
     return (
         <Button
-            as={Link}
-            className="default dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20 bg-neutral-400/40 hover:bg-neutral-400/20 text-sm h-9"
-            href={`/login?invite=true&guild_id=${guildId}`}
-            prefetch={false}
-            startContent={<HiUserAdd />}
+            asChild
+            className="bg-neutral-400/40 text-sm h-9 hover:bg-neutral-400/20 dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20"
         >
-            Add NotificationBot
+            <Link href={`/login?invite=true&guild_id=${guildId}`} prefetch={false} className="flex items-center gap-2">
+                <HiUserAdd className="h-4 w-4" />
+                Add NotificationBot
+            </Link>
         </Button>
     );
 }
 
-function ManageButton({ guildId }: { guildId: string; }) {
+export function ManageButton({ guildId }: { guildId: string; }) {
     const searchParams = useSearchParams();
+    const toParam = searchParams.get("to");
+    const href = `/dashboard/${guildId}${toParam ? `/${toParam}` : ""}`;
 
     return (
         <Button
-            as={Link}
-            className="default dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20 bg-neutral-400/40 hover:bg-neutral-400/20 text-sm h-9"
-            href={`/dashboard/${guildId}${searchParams.get("to") ? `/${searchParams.get("to")}` : ""}`}
-            startContent={<HiViewGridAdd />}
+            asChild
+            className="bg-neutral-400/40 text-sm h-9 hover:bg-neutral-400/20 dark:bg-neutral-500/40 hover:dark:bg-neutral-500/20"
         >
-            Manage
+            <Link href={href} className="flex items-center gap-2">
+                <HiViewGridAdd className="h-4 w-4" />
+                Manage
+            </Link>
         </Button>
     );
 }

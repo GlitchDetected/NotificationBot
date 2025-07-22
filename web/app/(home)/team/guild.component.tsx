@@ -19,7 +19,7 @@ export async function DiscordServer({
     return (
         <Link
             className={cn(
-                "flex items-center gap-3 p-4 bg-darkflame rounded-xl cursor-default",
+                "flex items-center gap-3 p-4 bg-foreground rounded-xl cursor-default",
                 "duration-100 outline-red-500 hover:outline cursor-pointer"
             )}
             href={widget?.instant_invite || "/support"}

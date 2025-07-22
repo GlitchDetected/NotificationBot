@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -10,13 +9,14 @@ import { guildStore } from "@/common/guildStore";
 import { userStore } from "@/common/userStore";
 import Fetch from "@/components/buttonfetch";
 import MessageCreatorEmbed from "@/components/discord/embedmaker";
+import Switch from "@/components/input/api-switch";
 import ImageUrlInput from "@/components/input/imageurlinput";
 import MultiSelectMenu from "@/components/input/multiselectmenu";
 import NumberInput from "@/components/input/numinput";
 import SelectMenu from "@/components/input/selectmenu";
-import Switch from "@/components/input/switch";
 import Notice from "@/components/notice";
 import { Section } from "@/components/section";
+import { Button } from "@/components/ui/button";
 import type { ApiError, ApiV1GuildsModulesWelcomeGetResponse } from "@/typings";
 import { createSelectableEmojiItems, createSelectableItems } from "@/utils/selectableitems";
 
@@ -59,22 +59,23 @@ export default function Home() {
 
     const Head = () => (
         <div className="flex justify-between relative bottom-2 mb-3">
-            <Button
-                as={Link}
-                href={`/dashboard/${guild?.id}/welcomer`}
-                startContent={<HiArrowLeft />}
-                size="sm"
-            >
-                Back
+            <Button asChild size="sm" variant="secondary">
+                <Link href={`/dashboard/${guild?.id}/welcomer`} className="flex items-center gap-2">
+                    <HiArrowLeft className="h-4 w-4" />
+                    Back
+                </Link>
             </Button>
-            <Button
-                as={Link}
-                href="/docs/welcomer"
-                target="_blank"
-                endContent={<HiExternalLink />}
-                size="sm"
-            >
-                Read docs
+
+            <Button asChild size="sm">
+                <Link
+                    href="/docs/welcomer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                >
+                    Read docs
+                    <HiExternalLink className="h-4 w-4" />
+                </Link>
             </Button>
         </div>
     );
@@ -227,7 +228,7 @@ export default function Home() {
             disabled={!welcome.enabled}
         >
 
-            <div className={`mt-2 mb-4 border-2 dark:border-darkflame border-darkflame-100 rounded-xl p-6 ${!welcome.card.enabled && "pb-[0px]"}`}>
+            <div className={`mt-2 mb-4 border-2 dark:border-foreground border-foreground-100 rounded-xl p-6 ${!welcome.card.enabled && "pb-[0px]"}`}>
 
                 <Switch
                     name="Show image card"

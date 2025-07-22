@@ -23,7 +23,7 @@ export async function Person({
     return (
         <Component
             className={cn(
-                "flex items-center gap-3 h-14 px-2 pl-[5px] pr-4 hover:bg-darkflame rounded-full cursor-default",
+                "flex items-center gap-3 h-14 px-2 pl-[5px] pr-4 hover:bg-foreground rounded-full cursor-default",
                 social && "duration-100 outline-red-500 hover:outline cursor-pointer"
             )}
             href={social}

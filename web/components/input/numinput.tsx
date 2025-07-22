@@ -1,4 +1,3 @@
-import { Button } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import { TailSpin } from "react-loading-icons";
@@ -6,6 +5,8 @@ import { TailSpin } from "react-loading-icons";
 import { webStore } from "@/common/webStore";
 import type { ApiError } from "@/typings";
 import { cn } from "@/utils/cn";
+
+import { Button } from "../ui/button";
 
 enum State {
     Idle = 0,
@@ -173,12 +174,10 @@ export default function NumberInput({
                         <Button
                             onClick={handleSave}
                             className="mr-2"
-                            isLoading={state === State.Loading}
-                            isDisabled={disabled}
+                            disabled={state === State.Loading}
                             size="sm"
                             color="secondary"
                             variant="flat"
-                            radius="lg"
                         >
                             Save
                         </Button>
@@ -192,7 +191,7 @@ export default function NumberInput({
                             else setValue((value ?? 0) - 1);
                         }}
                         className={cn(
-                            "dark:bg-darkflame bg-darkflame-100 hover:dark:bg-darkflame-light hover:bg-darkflame-100-light h-full w-12 rounded-l-xl duration-100",
+                            "dark:bg-foreground bg-foreground-100 hover:dark:bg-foreground-light hover:bg-foreground-100-light h-full w-12 rounded-l-xl duration-100",
                             (state === State.Loading || disabled) ? "cursor-not-allowed" : "cursor-pointer"
                         )}
                         disabled={state === State.Loading || disabled}
@@ -202,7 +201,7 @@ export default function NumberInput({
 
                     <input
                         className={cn(
-                            "outline-none text-center w-12 min-h-full dark:bg-darkflame bg-darkflame-100 font-semibold text-lg flex items-center text-neutral-500 rounded-none",
+                            "outline-none text-center w-12 min-h-full dark:bg-foreground bg-foreground-100 font-semibold text-lg flex items-center text-neutral-500 rounded-none",
                             (state === State.Loading || disabled) ? "cursor-not-allowed" : "cursor-text"
                         )}
                         onChange={(e) => {
@@ -221,7 +220,7 @@ export default function NumberInput({
                             else setValue((value ?? 0) + 1);
                         }}
                         className={cn(
-                            "dark:bg-darkflame bg-darkflame-100 hover:dark:bg-darkflame-light hover:bg-darkflame-100-light h-full w-12 rounded-r-xl duration-100",
+                            "dark:bg-foreground bg-foreground-100 hover:dark:bg-foreground-light hover:bg-foreground-100-light h-full w-12 rounded-r-xl duration-100",
                             (state === State.Loading || disabled) ? "cursor-not-allowed" : "cursor-pointer"
                         )}
                         disabled={state === State.Loading || disabled}

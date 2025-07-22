@@ -1,10 +1,14 @@
 "use client";
 
-import { Tab, Tabs } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
+import {
+    Tabs,
+    TabsList,
+    TabsTrigger
+} from "@/components/ui/tabs";
 import decimalToRgb from "@/utils/decimalToRgb";
 
 interface ListProps {
@@ -76,36 +80,38 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
         <div className="font-medium mt-2 mb-6 flex items-center relative">
             <Tabs
                 ref={ref}
-                className="flex w-full"
-                classNames={{
-                    tabList: "w-full relative rounded-none p-0 border-b border-divider",
-                    tab: "w-fit px-4 h-12 relative right-2.5"
-                }}
-                defaultSelectedKey={
-                    searchParamName ? params.get(searchParamName) || "" : path.split(url)[1].split("/").slice(0, 2).join("/")
+                onValueChange={handleChange}
+                defaultValue={
+                    searchParamName
+                        ? params.get(searchParamName) || ""
+                        : path.replace(url, "").split("/").filter(Boolean).slice(0, 2).join("/") || tabs[0].value
                 }
-                onSelectionChange={handleChange}
-                variant="underlined"
-                color="danger"
-                isDisabled={disabled}
+                className="w-full"
             >
-                {tabs.map((tab) => (
-                    <Tab
-                        key={tab.value}
-                        title={
-                            <div className="flex items-center space-x-2">
+                <TabsList
+                    ref={ref}
+                    className="w-full overflow-x-auto no-scrollbar flex rounded-none border-b border-border p-0"
+                >
+                    {tabs.map((tab) => (
+                        <TabsTrigger
+                            key={tab.value}
+                            value={tab.value}
+                            disabled={disabled}
+                            className="whitespace-nowrap px-4 h-12"
+                        >
+                            <div className="flex items-center gap-2">
                                 {tab.icon}
-                                <span>{tab.name}</span>
+                                {tab.name}
                             </div>
-                        }
-                    />
-                ))}
+                        </TabsTrigger>
+                    ))}
+                </TabsList>
             </Tabs>
 
             {/* Left Scroll Button */}
             {tabs.length > 4 && position > 0 && (
                 <button
-                    className="absolute xl:hidden top-1 left-0 bg-darkflame backdrop-blur-lg rounded-xl p-2"
+                    className="absolute xl:hidden top-1 left-0 bg-foreground backdrop-blur-lg rounded-xl p-2"
                     onClick={() => scroll("left")}
                 >
                     <HiChevronLeft className="size-5" />
@@ -115,7 +121,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
             {/* Right Scroll Button */}
             {tabs.length > 4 && position < (ref.current?.clientWidth || 0) && (
                 <button
-                    className="absolute xl:hidden top-1 right-0 bg-darkflame backdrop-blur-lg rounded-xl p-2"
+                    className="absolute xl:hidden top-1 right-0 bg-foreground backdrop-blur-lg rounded-xl p-2"
                     onClick={() => scroll("right")}
                 >
                     <HiChevronRight className="size-5" />

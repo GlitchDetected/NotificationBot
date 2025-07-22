@@ -1,11 +1,15 @@
 "use client";
 
-import { Button, Tooltip } from "@heroui/react";
 import { useState } from "react";
 import { HiTrash } from "react-icons/hi";
 
 import { guildStore } from "@/common/guildStore";
 import Modal from "@/components/input/modal";
+import { Button } from "@/components/ui/button";
+import {
+    Tooltip,
+    TooltipTrigger
+} from "@/components/ui/tooltip";
 
 interface Props {
     id: string | null;
@@ -25,8 +29,9 @@ export function DeleteNotification({
 
     return (
         <>
-            <Tooltip content="Delete Notification" closeDelay={0}>
-                <Button isIconOnly color="danger" variant="flat" onClick={() => setOpen(true)} isDisabled={!id}>
+            <Tooltip>
+                <TooltipTrigger>Delete Notification</TooltipTrigger>
+                <Button onClick={() => setOpen(true)} disabled={!id}>
                     <span>
                         <HiTrash />
                     </span>

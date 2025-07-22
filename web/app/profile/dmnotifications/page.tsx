@@ -1,8 +1,8 @@
 "use client";
 
 import { type User, userStore } from "@/common/userStore";
+import Switch from "@/components/input/api-switch";
 import ImageUrlInput from "@/components/input/imageurlinput";
-import Switch from "@/components/input/switch";
 import TextInput from "@/components/input/textinput";
 import { Section } from "@/components/section";
 import { deepMerge } from "@/utils/merge";

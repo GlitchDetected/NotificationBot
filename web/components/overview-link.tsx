@@ -13,7 +13,7 @@ export function OverviewLink({ title, message, url, className, icon }: Props) {
     return (
         <div className={className}>
             <Link href={url}>
-                <div className="w-full dark:text-neutral-100 text-neutral-900 dark:bg-darkflame bg-darkflame-100 py-4 px-5 mb-6 rounded-xl outline-red-500 hover:outline flex gap-2 group/item duration-100">
+                <div className="w-full dark:text-neutral-100 text-neutral-900 dark:bg-foreground bg-foreground-100 py-4 px-5 mb-6 rounded-xl outline-red-500 hover:outline flex gap-2 group/item duration-100">
                     <div>
                         <div className="flex gap-2 items-center">
                             <div className="text-xl font-semibold">{title}</div>

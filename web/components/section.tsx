@@ -1,4 +1,4 @@
-import { Divider } from "@heroui/react";
+import { Separator } from "@radix-ui/react-separator";
 
 import { cn } from "@/utils/cn";
 
@@ -16,7 +16,7 @@ export function Section({
 } & React.HTMLAttributes<HTMLDivElement>) {
     return (
         <>
-            {showDivider && <Divider className="mt-12 mb-4" />}
+            {showDivider && <Separator className="mt-12 mb-4" />}
 
             <div className={cn("mb-3", className)} {...props}>
                 <h3 className="text-xl text-neutral-200">{title}</h3>

@@ -6,7 +6,7 @@ import type { ApiNode } from "./api";
 export function Node({ index, node }: { index: number; node: ApiNode; }) {
     return (
         <div
-            className="p-4 bg-darkflame rounded-lg space-y-2 outline-red-400 duration-200 h-fit"
+            className="p-4 bg-foreground rounded-lg space-y-2 outline-red-400 duration-200 h-fit"
             id={"node-" + node.id}
         >
             <div className="flex items-center gap-1">

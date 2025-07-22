@@ -1,7 +1,5 @@
-import { Button } from "@heroui/react";
 import React, { useState } from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
-import { FaFloppyDisk } from "react-icons/fa6";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 
 import type { GuildEmbed } from "@/typings";
@@ -9,6 +7,7 @@ import { cn } from "@/utils/cn";
 
 import ColorInput from "../input/colorinput";
 import Smartinput from "../input/smart-input";
+import { Button } from "../ui/button";
 import { DiscordMarkdown } from "./disc-markdown";
 import DiscordMessage from "./msg";
 import DiscordMessageEmbed from "./msg-embed";
@@ -65,19 +64,19 @@ export default function MessageCreatorEmbed({
     const modeToggle = (
         <div
             className={cn(
-                mode === "DARK" ? "bg-darkflame-light" : "bg-darkflame-100-light",
+                mode === "DARK" ? "bg-foreground-light" : "bg-foreground-100-light",
                 "flex gap-1 text-neutral-400 rounded-md overflow-hidden"
             )}
         >
             <button
                 onClick={() => setMode("DARK")}
-                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-darkflame" : "hover:bg-darkflame-100-alpha")}
+                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-foreground" : "hover:bg-foreground-100-alpha")}
             >
                 <BiMoon className="h-5 w-5" />
             </button>
             <button
                 onClick={() => setMode("LIGHT")}
-                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-darkflame-100" : "hover:bg--alpha")}
+                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-foreground-100" : "hover:bg--alpha")}
             >
                 <BiSun className="h-5 w-5" />
             </button>
@@ -124,7 +123,7 @@ export default function MessageCreatorEmbed({
         <div>
             <div
                 className={cn(
-                    "mt-8 mb-4 border-2 dark:border-darkflame border-darkflame-100 rounded-xl md:px-4 md:pb-4 px-2 py-2",
+                    "mt-8 mb-4 border-2 dark:border-foreground border-foreground-100 rounded-xl md:px-4 md:pb-4 px-2 py-2",
                     error && "outline outline-red-500 outline-1"
                 )}
             >
@@ -133,7 +132,7 @@ export default function MessageCreatorEmbed({
                 {isCollapseable && (
                     <div className={cn("md:mx-2 mx-1", open ? "lg:mb-0 mb-2" : "mb-2")}>
                         <button
-                            className="dark:bg-darkflame hover:dark:bg-darkflame-light bg-darkflame-100 hover:bg-darkflame-100-light duration-200 cursor-pointer rounded-md dark:text-neutral-400 text-neutral-600 flex items-center h-12 px-3 w-full"
+                            className="dark:bg-foreground hover:dark:bg-foreground-light bg-foreground-100 hover:bg-foreground-100-light duration-200 cursor-pointer rounded-md dark:text-neutral-400 text-neutral-600 flex items-center h-12 px-3 w-full"
                             onClick={() => setOpen(!open)}
                         >
                             {open ? (
@@ -227,10 +226,8 @@ export default function MessageCreatorEmbed({
                                 <Button
                                     className={cn("mt-1 w-full", disabled && "cursor-not-allowed opacity-50")}
                                     color="secondary"
-                                    isDisabled={disabled}
-                                    isLoading={state === State.Loading}
+                                    disabled={state === State.Loading}
                                     onClick={() => save()}
-                                    startContent={state !== State.Loading && <FaFloppyDisk />}
                                 >
                                     Save Changes
                                 </Button>

@@ -1,8 +1,14 @@
 "use client";
 
-import { Accordion, AccordionItem, Code } from "@heroui/react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
+import Codeblock from "@/components/markdown/codeblock";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from "@/components/ui/accordion";
 import LinkTag from "@/components/ui/link-tag";
 import { Section } from "@/components/ui/section";
 
@@ -14,7 +20,7 @@ const data = [
         content: (
             <ol className="list-decimal list-inside marker:text-neutral-500" itemProp="text">
                 <li>
-                    Be sure to have the <Code color="secondary">Manage Server</Code> permission on the server you want{" "}
+                    Be sure to have the <Codeblock>Manage Server</Codeblock> permission on the server you want{" "}
                     <LinkTag href="/add">invite NotificationBot</LinkTag> into.
                 </li>
                 <li>
@@ -96,23 +102,13 @@ export function Faq({ showTitle = false }: Props) {
                 <b className="sr-only">Frequently Asked Questions for NotificationBot</b>
             )}
 
-            <Accordion className="rounded-lg overflow-hidden" variant="splitted" defaultExpandedKeys={["0"]}>
-                {data.map((item, index) => (
-                    <AccordionItem
-                        aria-label={item.title}
-                        className="bg-[#151515]"
-                        classNames={{ content: "mb-2 space-y-4" }}
-                        key={index}
-                        startContent={item.startContent}
-                        subtitle={item.subtitle}
-                        title={<span itemProp="name">{item.title}</span>}
-                        itemType="https://schema.org/Question"
-                        itemProp="mainEntity"
-                        itemScope
-                    >
-                        <span itemType="https://schema.org/Answer" itemProp="acceptedAnswer" itemScope>
+            <Accordion type="single" collapsible className="w-full" defaultValue={data[0].title}>
+                {data.map((item) => (
+                    <AccordionItem key={item.title} value={item.title}>
+                        <AccordionTrigger>{item.title}</AccordionTrigger>
+                        <AccordionContent className="text-sm leading-relaxed">
                             {item.content}
-                        </span>
+                        </AccordionContent>
                     </AccordionItem>
                 ))}
             </Accordion>

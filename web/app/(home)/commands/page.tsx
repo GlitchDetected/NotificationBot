@@ -20,7 +20,7 @@ export default async function Home({ limit }: { limit?: number; }) {
     return (
         <Box
             none
-            className="p-5 pb-3 dark:bg-darkflame bg-darkflame-100 rounded-lg my-4 w-full"
+            className="p-5 pb-3 dark:bg-foreground bg-foreground-100 rounded-lg my-4 w-full"
         >
             <div className="flex">
                 <Badge
@@ -38,7 +38,7 @@ export default async function Home({ limit }: { limit?: number; }) {
             </div>
 
             {commands && Array.isArray(commands) && commands.length ?
-                <div className="divide-y divide-darkflame">
+                <div className="divide-y divide-foreground">
                     {commands
                         .sort((a, b) => b.name.localeCompare(a.name))
                         .slice(0, safeLimit)

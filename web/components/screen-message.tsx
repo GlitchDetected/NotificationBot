@@ -1,4 +1,3 @@
-import type { Button } from "@heroui/react";
 import Link from "next/link";
 import { BsDiscord } from "react-icons/bs";
 import { HiHome } from "react-icons/hi";
@@ -6,8 +5,10 @@ import { HiHome } from "react-icons/hi";
 import { cn } from "@/utils/cn";
 
 import { ClientButton } from "./clientfunc";
+import type { Button } from "./ui/button";
 
 type Props = {
+    href: string;
     title: string;
     description: string;
     top?: string;
@@ -26,6 +27,7 @@ type Props = {
 } & React.ComponentProps<typeof Button>;
 
 export function ScreenMessage({
+    href,
     title,
     description,
     top = "16vh",
@@ -49,13 +51,21 @@ export function ScreenMessage({
                     <span className="text-lg dark:text-neutral-400 text-neutral-600 font-semibold max-w-xl">{description}</span>
                 </div>
 
-                {button && props.href && (
+                {button && href && (
                     <div className="w-full flex flex-col items-center">
-                        <ClientButton as={Link} {...props} className={cn("px-20", props.className)} startContent={icon}>
-                            {button}
+                        <ClientButton
+                            asChild
+                            {...props}
+                            className={cn("px-20", props.className)}
+                            startContent={icon}
+                        >
+                            <Link href={href}>
+                                {button}
+                            </Link>
                         </ClientButton>
                     </div>
                 )}
+
 
                 {buttons && (
                     <div className="w-full flex flex-col items-center">

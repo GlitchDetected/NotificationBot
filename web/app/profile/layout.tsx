@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { CircleUser } from "lucide-react";
 import Image from "next/image";
@@ -10,6 +9,7 @@ import { HiHome, HiSpeakerphone } from "react-icons/hi";
 import { userStore } from "@/common/userStore";
 import { ListTab } from "@/components/list-tab";
 import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cacheOptions, getData } from "@/lib/api";
 import type { ApiV1UsersMeGetResponse } from "@/typings";
 

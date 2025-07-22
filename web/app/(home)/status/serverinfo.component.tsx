@@ -1,10 +1,14 @@
 "use client";
 
-import { Accordion, AccordionItem, Chip } from "@heroui/react";
-import { useCookies } from "next-client-cookies";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import DumbTextInput from "@/components/input/smart-input";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import { intl } from "@/utils/intl";
 
 import type { ApiV1StatusGetResponse } from "./api";
@@ -14,7 +18,6 @@ export function Side({
 }: {
     status: ApiV1StatusGetResponse;
 }) {
-    const cookies = useCookies();
     const [guildId, setGuildId] = useState<string>("");
 
     const clusterId = useMemo(
@@ -35,27 +38,23 @@ export function Side({
     return (
         <div className="flex flex-col gap-5">
             <Accordion
-                variant="shadow"
-                className="bg-darkflame"
-                selectionMode="multiple"
-                defaultExpandedKeys={["1"]}
-                disableAnimation={cookies.get("reduceMotions") === "true"}
+                type="single"
+                collapsible
+                className="w-full"
+                defaultValue="item-1"
             >
-                <AccordionItem
-                    key="1"
-                    aria-label="about"
-                    title="Performance & Usage"
-                    classNames={{ content: "mb-2 space-y-4" }}
-                >
-                    <Row name="Uptime">
-                        {status.clusters[0].uptime}
-                    </Row>
-                    <Row name="Latency avg">
-                        {~~(status.clusters.reduce((prev, cur) => prev + cur.ping, 0) / status.clusters.length)}ms
-                    </Row>
-                    <Row name="Memory">
-                        {intl.format(~~(status.clusters.reduce((prev, cur) => prev + cur.memory, 0)))}mb
-                    </Row>
+                <AccordionItem value="item-1">
+                    <AccordionContent className="flex flex-col gap-4 text-balance">
+                        <Row name="Uptime">
+                            {status.clusters[0].uptime}
+                        </Row>
+                        <Row name="Latency avg">
+                            {~~(status.clusters.reduce((prev, cur) => prev + cur.ping, 0) / status.clusters.length)}ms
+                        </Row>
+                        <Row name="Memory">
+                            {intl.format(~~(status.clusters.reduce((prev, cur) => prev + cur.memory, 0)))}mb
+                        </Row>
+                    </AccordionContent>
                 </AccordionItem>
             </Accordion>
 
@@ -78,12 +77,9 @@ function Row({ name, children }: { name: string; children: ReactNode; }) {
     return (
         <div className="flex items-center justify-between">
             {name}
-            <Chip
-                className="select-none"
-                radius="sm"
-            >
+            <Button>
                 {children}
-            </Chip>
+            </Button>
         </div>
     );
 }

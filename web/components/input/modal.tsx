@@ -1,6 +1,5 @@
 "use client";
 
-import { Progress } from "@heroui/react";
 import { Separator } from "@radix-ui/react-separator";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -12,6 +11,7 @@ import { cn } from "@/utils/cn";
 import { ClickOutside } from "../clickoutside";
 import Notice, { NoticeType } from "../notice";
 import { Button } from "../ui/button";
+import { Progress } from "../ui/progress";
 
 enum State {
     Idle = 0,
@@ -109,16 +109,11 @@ export default function Modal<T>({
                     </Button>
                 </div>
 
+
                 <Progress
-                    size="sm"
-                    isIndeterminate={state === State.Loading}
                     aria-label="Loading..."
                     className="mt-3 mb-4 h-0.5"
-                    classNames={{
-                        track: "bg-divider",
-                        indicator: "bg-red-500"
-                    }}
-                    value={0}
+                    value={state === State.Loading ? 50 : 0}
                 />
             </>
         );
@@ -134,7 +129,7 @@ export default function Modal<T>({
                         onClick={() => onClose()}
                         className={cn(
                             "ml-auto text-sm font-medium dark:text-neutral-200 text-neutral-800",
-                            state === State.Idle && "cursort-not-allowed"
+                            state === State.Idle && "cursor-not-allowed"
                         )}
                         disabled={state !== State.Idle}
                     >

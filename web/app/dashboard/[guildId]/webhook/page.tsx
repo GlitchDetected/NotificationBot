@@ -1,16 +1,15 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
-import { FaFloppyDisk } from "react-icons/fa6";
 
 import { DiscordMarkdown } from "@/components/discord/disc-markdown";
 import DiscordMessage from "@/components/discord/msg";
 import DiscordMessageEmbed from "@/components/discord/msg-embed";
 import ColorInput from "@/components/input/colorinput";
 import Smartinput from "@/components/input/smart-input";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 
 enum State {
@@ -37,19 +36,19 @@ export default function Home() {
     const modeToggle = (
         <div
             className={cn(
-                mode === "DARK" ? "bg-darkflame-light" : "bg-darkflame-100-light",
+                mode === "DARK" ? "bg-foreground-light" : "bg-foreground-100-light",
                 "flex gap-1 text-neutral-400 rounded-md overflow-hidden"
             )}
         >
             <button
                 onClick={() => setMode("DARK")}
-                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-darkflame" : "hover:bg-darkflame-100-alpha")}
+                className={cn("py-2 px-3 rounded-md", mode === "DARK" ? "bg-foreground" : "hover:bg-foreground-100-alpha")}
             >
                 <BiMoon className="h-5 w-5" />
             </button>
             <button
                 onClick={() => setMode("LIGHT")}
-                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-darkflame-100" : "hover:bg--alpha")}
+                className={cn("py-2 px-3 rounded-md", mode === "LIGHT" ? "bg-foreground-100" : "hover:bg--alpha")}
             >
                 <BiSun className="h-5 w-5" />
             </button>
@@ -96,7 +95,7 @@ export default function Home() {
         <>
             <div
                 className={cn(
-                    "mt-8 mb-4 border-2 dark:border-darkflame border-darkflame-100 rounded-xl md:px-4 md:pb-4 px-2 py-2",
+                    "mt-8 mb-4 border-2 dark:border-foreground border-foreground-100 rounded-xl md:px-4 md:pb-4 px-2 py-2",
                     error && "outline outline-red-500 outline-1"
                 )}
             >
@@ -186,9 +185,8 @@ export default function Home() {
                                 <Button
                                     className={cn("mt-1 w-full")}
                                     color="secondary"
-                                    isLoading={state === State.Loading}
+                                    disabled={state === State.Loading}
                                     onClick={() => save()}
-                                    startContent={state !== State.Loading && <FaFloppyDisk />}
                                 >
                                     Send Message
                                 </Button>

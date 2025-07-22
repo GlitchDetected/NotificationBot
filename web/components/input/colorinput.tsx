@@ -31,7 +31,7 @@ export default function ColorInput({
     dataName
 }: Props) {
     const className = cn(
-        "mt-1 resize-none w-full dark:bg-darkflame bg-darkflame-100 rounded-lg flex items-center px-4 py-2 focus:outline outline-red-400 outline-2",
+        "mt-1 resize-none w-full dark:bg-foreground bg-foreground-100 rounded-lg flex items-center px-4 py-2 focus:outline outline-red-400 outline-2",
         thin ? "h-10" : "h-12",
         thin && "relative bottom-1",
         disabled && "cursor-not-allowed opacity-50"
@@ -95,7 +95,7 @@ export default function ColorInput({
                                 duration: 0.15,
                                 ease: "easeInOut"
                             }}
-                            className="absolute top-0 left-0 w-full h-full bg-darkflame-900-alpha rounded-md pointer-events-none flex items-center justify-center"
+                            className="absolute top-0 left-0 w-full h-full bg-foreground-900-alpha rounded-md pointer-events-none flex items-center justify-center"
                         >
                             <AiOutlineEdit className="w-6 h-6 text-[rgba(255,255,255,0.8)]" />
                         </motion.div>

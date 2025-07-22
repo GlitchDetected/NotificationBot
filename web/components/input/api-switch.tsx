@@ -1,4 +1,4 @@
-import { Checkbox, Chip, Switch as UiSwitch } from "@heroui/react";
+import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { useEffect, useState } from "react";
 import { TailSpin } from "react-loading-icons";
 
@@ -126,9 +126,9 @@ export default function Switch({
                     </span>
 
                     {badge && (
-                        <Chip variant="flat" color="secondary" size="sm">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-neutral-300 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300">
                             {badge}
-                        </Chip>
+                        </span>
                     )}
 
                     {state === State.Loading && (
@@ -136,25 +136,23 @@ export default function Switch({
                     )}
                 </div>
 
-                {isTickbox ? (
-                    <Checkbox
-                        className="ml-auto"
-                        isSelected={value}
-                        onValueChange={update}
-                        aria-label={name}
-                        color="secondary"
-                        isDisabled={disabled}
+                <SwitchPrimitive.Root
+                    className={cn(
+                        "ml-auto inline-flex h-5 w-9 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500",
+                        value
+                            ? "bg-green-500 dark:bg-green-600"
+                            : "bg-neutral-300 dark:bg-neutral-700",
+                        disabled && "opacity-50 cursor-not-allowed"
+                    )}
+                    checked={value}
+                    onCheckedChange={update}
+                    disabled={disabled}
+                    aria-label={name}
+                >
+                    <SwitchPrimitive.Thumb
+                        className="block h-4 w-4 rounded-full bg-white shadow-md transform transition-transform duration-200 translate-x-0.5 data-[state=checked]:translate-x-[18px]"
                     />
-                ) : (
-                    <UiSwitch
-                        className="ml-auto"
-                        isSelected={value}
-                        onValueChange={update}
-                        aria-label={name}
-                        color="secondary"
-                        isDisabled={disabled}
-                    />
-                )}
+                </SwitchPrimitive.Root>
             </div>
 
             <div className="absolute top-6 mt-0.5">
