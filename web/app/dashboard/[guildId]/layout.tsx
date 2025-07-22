@@ -167,18 +167,18 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
 
             {error ?
                 <ScreenMessage
+                    href="/profile"
                     title={error.includes("permissions")
                         ? "You cannot access this page.."
                         : "Something went wrong on this page.."
                     }
                     description={error}
                     buttons={<>
-                        <ClientButton
-                            as={Link}
-                            href="/profile"
-                            startContent={<HiViewGridAdd />}
-                        >
-                            Go back to Dashboard
+                        <ClientButton>
+                            <Link href="/profile" className="flex items-center gap-2">
+                                <HiViewGridAdd />
+                                Go back to Dashboard
+                            </Link>
                         </ClientButton>
                         <SupportButton />
                     </>}

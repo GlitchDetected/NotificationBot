@@ -42,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
     if (error || (data && "message" in data)) {
         return (
             <ScreenMessage
+                href="/"
                 title="Something went wrong on this page.."
                 description={(data && "message" in data ? data.message : `${error}`) || "An unknown error occurred."}
                 buttons={

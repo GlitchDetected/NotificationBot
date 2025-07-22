@@ -141,7 +141,7 @@ async function NavBar() {
                 </Link>
             </div>
 
-            <ul className="flex-5 gap-8 text-[0.9rem] font-medium text-gray-500 dark:text-gray-400">
+            <ul className="flex-5 gap-8 text-[0.9rem] font-medium text-white">
                 {links.map((link) => (
                     <Link
                         key={link.hash}

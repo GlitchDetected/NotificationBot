@@ -57,10 +57,12 @@ export function ScreenMessage({
                             asChild
                             {...props}
                             className={cn("px-20", props.className)}
-                            startContent={icon}
                         >
                             <Link href={href}>
-                                {button}
+                                <div className="flex items-center">
+                                    {icon && <span className="mr-2">{icon}</span>}
+                                    {button}
+                                </div>
                             </Link>
                         </ClientButton>
                     </div>
@@ -79,30 +81,33 @@ export function ScreenMessage({
 
 export function HomeButton() {
     return (
-        <ClientButton as={Link} href="/" startContent={<HiHome />}>
-            Go back to Home
+        <ClientButton asChild>
+            <Link href="/" className="flex items-center gap-2">
+                <HiHome />
+                Go back to Home
+            </Link>
         </ClientButton>
     );
 }
 
 export function AddButton() {
     return (
-        <ClientButton
-            as={Link}
-            className="button-primary"
-            href="/login?invite=true"
-            prefetch={false}
-            startContent={<BsDiscord />}
-        >
-            Add NotificationBot to your server
+        <ClientButton asChild className="button-primary">
+            <Link href="/login?invite=true" prefetch={false} className="flex items-center gap-2">
+                <BsDiscord />
+                Add NotificationBot to your server
+            </Link>
         </ClientButton>
     );
 }
 
 export function SupportButton() {
     return (
-        <ClientButton as={Link} className="button-primary" href="/support" startContent={<BsDiscord />}>
-            Join support server
+        <ClientButton asChild className="button-primary">
+            <Link href="/support" className="flex items-center gap-2">
+                <BsDiscord />
+                Join support server
+            </Link>
         </ClientButton>
     );
 }

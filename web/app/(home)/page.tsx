@@ -10,6 +10,12 @@ import { useRef } from "react";
 import { BsDiscord } from "react-icons/bs";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
+import { Button } from "@/components/ui/button";
+import { Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle } from "@/components/ui/card";
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import ArrowPic from "@/public/arrow.webp";
@@ -125,25 +131,32 @@ export default function Home() {
                             Go to Dashboard <HiArrowNarrowRight />
                         </Link>
 
-                        <div className="button-row">
-                            <div className="button-link">
-                                <Link href="https://discord.com/oauth2/authorize?client_id=1366507117044957276">
-                                    <button className="button flex items-center gap-2">
-                                        <Sparkles className="w-5 h-5" />
-                                        Invite NotificationBot
-                                    </button>
+                        <div className="flex space-x-4 mt-20">
+                            <Button>
+                                <Link
+                                    href="https://discord.com/oauth2/authorize?client_id=1366507117044957276"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2"
+                                >
+                                    <Sparkles className="w-5 h-5" />
+                                    Invite NotificationBot
                                 </Link>
-                            </div>
+                            </Button>
 
-                            <div className="button-link">
-                                <Link href="https://discord.gg/QnZcYsf2E9">
-                                    <button className="button flex items-center gap-2">
-                                        <BsDiscord className="w-5 h-5" />
-                                        Support Server
-                                    </button>
+                            <Button>
+                                <Link
+                                    href="https://discord.gg/QnZcYsf2E9"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2"
+                                >
+                                    <BsDiscord className="w-5 h-5" />
+                                    Support Server
                                 </Link>
-                            </div>
+                            </Button>
                         </div>
+
                         <span
                             className={cn(
                                 "lg:ml-auto flex gap-2 text-neutral-500 font-medium -mt-2 opacity-80 pl-20 lg:pr-20 rotate-2 relative -top-10",
@@ -169,28 +182,40 @@ export default function Home() {
                 animate="visible"
                 variants={fadeIn}
             >
-                <div className="card">
-                    <h3>Third Party Posts</h3>
-                    <p>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Third Party Posts</CardTitle>
+                    </CardHeader>
+                    <CardContent>
                         With NotificationBot, you can easily setup notifications for your favorite sites like YouTube, TikTok, and
                         Twitch just from the dashboard. No slash commands needed!
-                    </p>
-                </div>
+                    </CardContent>
+                </Card>
 
-                <div className="card">
-                    <h3>RSS Notifications</h3>
-                    <p>RSS and content feed updates</p>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>RSS Notifications</CardTitle>
+                    </CardHeader>
+                    <CardContent>RSS and content feed updates</CardContent>
+                </Card>
 
-                <div className="card">
-                    <h3>Custom announcements</h3>
-                    <p>Easily send custom announcements from your server&apos;s NotificationBot dashboard</p>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Custom announcements</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        Easily send custom announcements from your server&apos;s NotificationBot dashboard
+                    </CardContent>
+                </Card>
 
-                <div className="card">
-                    <h3>/Purge</h3>
-                    <p>Delete old announcements with /purge or use the dashboard instead!</p>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>/Purge</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        Delete old announcements with /purge or use the dashboard instead!
+                    </CardContent>
+                </Card>
 
                 <div className="col-span-full flex justify-center button-link">
                     <Link href="/commands">
@@ -234,19 +259,17 @@ export default function Home() {
 
                 <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16">
                     {evenMoreContent.map(({ icon: Icon, title, text }) => (
-                        <div
-                            key={title}
-                            className="text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-zinc-700 to-zinc-900 rounded-4xl shadow-lg relative"
-                            style={{
-                                background: "radial-gradient(circle, #333333, #151515)"
-                            }}
-                        >
-                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#151515]">
-                                <Icon className="h-8 w-8 text-white" />
+                        <Card key={title} className="text-center relative">
+                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                                <Icon className="h-8 w-8" />
                             </span>
-                            <h3 className="mt-16 mb-2 text-lg sm:text-xl text-white">{title}</h3>
-                            <p className="text-sm sm:text-md text-white">{text}</p>
-                        </div>
+                            <CardHeader className="mt-16">
+                                <CardTitle>{title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p>{text}</p>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             </motion.section>
@@ -272,36 +295,44 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
                     {content.map(({ icon: Icon, title, text }, index) => (
-                        <div
+                        <Card
                             key={title}
-                            className={`text-center p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-zinc-700 to-zinc-900 rounded-4xl shadow-lg relative ${
+                            className={`text-center relative ${
                                 index === 0 || index === 5 ? "h-[400px]" : "h-[300px]"
                             }`}
-                            style={{
-                                background: "radial-gradient(circle, #333333, #151515)"
-                            }}
                         >
-                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#151515]">
-                                <Icon className="h-8 w-8 text-white" />
+                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                                <Icon className="h-8 w-8" />
                             </span>
-                            <h3 className="mt-16 mb-2 text-lg sm:text-xl text-white">{title}</h3>
-                            <p className="text-sm sm:text-md text-white">{text}</p>
-                        </div>
+                            <CardHeader className="mt-16">
+                                <CardTitle>{title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p>{text}</p>
+                            </CardContent>
+                        </Card>
                     ))}
                 </div>
             </motion.section>
             <Faq />
 
-            <div className="bg-[#151515] text-white py-32 px-40 lg:p-24 rounded-2xl shadow-xl text-center max-w-5xl mx-auto mt-25">
-                <h2 className="text-2xl lg:text-3xl font-bold mb-4">Enhance your community’s experience by 1000%.</h2>
-                <p className="text-lg lg:text-xl opacity-90 mb-6">Get NotificationBot in your server today.</p>
-
-                <div className="button-link">
-                    <Link href="/profile" target="_blank">
-                        <button className="button">Get Started</button>
-                    </Link>
-                </div>
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        Enhance your community’s experience by 1000%.
+                    </CardTitle>
+                    <CardDescription>
+                        Get NotificationBot in your server today.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button className="mx-auto" asChild>
+                        <Link href="/profile" target="_blank">
+                            Get Started
+                        </Link>
+                    </Button>
+                </CardContent>
+            </Card>
 
             <ScrollToTopButton />
         </div>
