@@ -6,13 +6,16 @@ export interface ApiError {
 }
 
 export interface ApiV1TopguildsGetResponse {
+    userCount: number;
+    guildCount: number;
+    guilds: {
     id: string;
     name: string;
     icon: string | null;
     memberCount: number;
-
     verified: boolean;
     partnered: boolean;
+    }[];
 }
 
 export interface ApiV1BotreviewsGetResponse {

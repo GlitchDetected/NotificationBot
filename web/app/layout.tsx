@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 suppressHydrationWarning
                 data-theme="dark"
                 lang="en"
-                className="dark dark:text-white text-white flex justify-center max-w-screen overflow-x-hidden"
+                className="dark dark:text-white text-white justify-center max-w-screen overflow-x-hidden"
             >
                 <link rel="icon" href="/icons/favicon.ico" sizes="any" />
                 <body

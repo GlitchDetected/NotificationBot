@@ -17,7 +17,6 @@ export async function Footer(props: HTMLProps<HTMLDivElement>) {
     const timestamp = date.getTime();
 
     return (
-        <footer className="h-px bg-gray-700 mb-30 m-20">
             <div className={cn("text-primary/75 w-full mt-10 text-left", props.className)} {...props}>
                 <div className="flex items-center gap-1 font-semibold">
                     <BsDiscord className="relative top-[1px] text-red-900" />
@@ -73,7 +72,6 @@ export async function Footer(props: HTMLProps<HTMLDivElement>) {
                     <FooterLinks />
                 </div>
             </div>
-        </footer>
     );
 }
 
@@ -105,7 +103,7 @@ function FooterLinks() {
     return (
         <div className="flex gap-12 dark:text-neutral-400 text-neutral-600 select-none">
             <div>
-                <div className="font-medium dark:text-neutral-200 text-neutral-800 mb-1">Legal stuff</div>
+                <div className="font-medium dark:text-neutral-200 text-neutral-800 mb-1">Legal</div>
                 <Link className="text-primary/75 hover:text-primary/65 duration-200 flex items-center gap-2" href="/terms">
                     <HiLibrary />
                     Terms of Service

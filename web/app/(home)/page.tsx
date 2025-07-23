@@ -1,17 +1,8 @@
-import {
-    CodeIcon,
-    EraserIcon,
-    GearIcon,
-    GlobeIcon,
-    HeartIcon,
-    RocketIcon,
-    SlashIcon,
-    SpeakerLoudIcon
-} from "@radix-ui/react-icons";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsDiscord } from "react-icons/bs";
+import { HiArrowRight, HiChartBar, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 import { Button } from "@/components/ui/button";
@@ -62,32 +53,32 @@ const integrationsData = [
 
 const evenMoreContent = [
     {
-        icon: RocketIcon,
-        title: "Growing support for third-party platforms",
-        text: "We currently support notifications from YouTube, Twitch, and Twitch but that will change"
+        icon: HiDocument,
+        title: "Vote",
+        text: "Voting helps our bot grow!"
     },
     {
-        icon: EraserIcon,
+        icon: HiTrash,
         title: "Purge",
         text: "Use /purge to delete old notifications from the bot"
     },
     {
-        icon: CodeIcon,
+        icon: HiTerminal,
         title: "Rolling out new features",
         text: "We are constantly working on the bot"
     },
     {
-        icon: SpeakerLoudIcon,
+        icon: HiTerminal,
         title: "Great support",
         text: "If you see any bugs, just use /support and we will fix the bug immediately"
     },
     {
-        icon: GearIcon,
+        icon: HiTerminal,
         title: "Github notifications",
         text: "coming soon"
     },
     {
-        icon: GlobeIcon,
+        icon: HiTerminal,
         title: "Global",
         text: "Used globally by many users"
     }
@@ -97,7 +88,7 @@ export default function Home() {
     return (
         <div className="flex flex-col items-center w-full">
             {/* Hero Section */}
-            <div className="w-full flex flex-col md:flex-row gap-8 mb-24 md:mb-16 h-auto md:h-[calc(100dvh-16rem)] items-start">
+            <div className="flex w-full items-center gap-8 mb-16 md:mb-12 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
                 <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
                     <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
                         <span className="bg-gradient-to-r from-red-900 to-red-600 bg-clip-text text-transparent">
@@ -157,14 +148,14 @@ export default function Home() {
                         </span>
                     </div>
                 </div>
-
-                <Topguilds />
             </div>
+
+            <Topguilds />
 
             <Scrollwheel />
 
             {/* Features */}
-            <div className="md:w-1/2 flex flex-col items-center">
+            <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Card>
                     <CardHeader>
                         <CardTitle>Third Party Posts</CardTitle>
@@ -203,15 +194,19 @@ export default function Home() {
             {/* Commands */}
             <Button className="mb-24" asChild>
                 <Link href="/commands" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    <SlashIcon className="w-5 h-5" />
-                    More Commands!
+                    <HiTerminal className="w-5 h-5" />
+                    More Commands
+                    <HiArrowRight className="w-5 h-5" />
                 </Link>
             </Button>
 
             <div className="text-center mb-16">
-                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
-                    Integrations with your favorite platforms
+                <h2 className="text-xl font-bold">
+                    <span className="text-red-900">Integrations </span>
+                    with your favorite{" "}
+                    <span className="text-red-500">platforms</span>
                 </h2>
+
                 <p className="mt-4 text-sm sm:text-md text-gray-400">
                     Never worry about sending manually sending out new notifications from your favorite platforms ever again!
                 </p>
@@ -287,7 +282,7 @@ export default function Home() {
 
             <div className="w-full flex justify-center mb-12">
                 <div className="bg-red-600 rounded-full h-16 w-16 flex items-center justify-center">
-                    <HeartIcon className="h-8 w-8 text-white" />
+                    <HiChartBar className="h-8 w-8 text-white" />
                 </div>
             </div>
 
@@ -308,7 +303,6 @@ export default function Home() {
                 <Faq />
             </div>
 
-            {/* CTA */}
             <Card className="mb-32 max-w-xl w-full">
                 <CardHeader>
                     <CardTitle>Enhance your community’s experience by 1000%</CardTitle>

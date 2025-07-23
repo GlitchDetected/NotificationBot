@@ -14,13 +14,14 @@ router.get("/", async (c) => {
         });
 
         if (!res.ok) {
-            console.error("Failed to fetch bot guild list");
             return c.json({ error: "Failed to fetch guilds" }, 500);
         }
 
         const botGuilds = await res.json();
 
-        const enriched = await Promise.all(
+        let totalUsers = 0;
+
+        const allGuilds = await Promise.all(
             botGuilds.map(async (guild: { id: string; }) => {
                 try {
                     const detailRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}?with_counts=true`, {
@@ -36,11 +37,14 @@ router.get("/", async (c) => {
 
                     const full = await detailRes.json();
 
+                    const memberCount = full.approximate_member_count || 0;
+                    totalUsers += memberCount;
+
                     return {
                         id: full.id,
                         name: full.name,
                         icon: full.icon ?? null,
-                        memberCount: full.approximate_member_count || 0,
+                        memberCount,
                         verified: full.verified || false,
                         partnered: full.features?.includes("PARTNERED") || false
                     };
@@ -51,9 +55,14 @@ router.get("/", async (c) => {
             })
         );
 
-        return c.json(enriched.filter(Boolean));
-    } catch (err) {
-        console.error("Unexpected error:", err);
+        const validGuilds = allGuilds.filter(Boolean);
+
+        return c.json({
+            guildCount: validGuilds.length,
+            userCount: totalUsers,
+            guilds: validGuilds
+        });
+    } catch {
         return c.json({ error: "Internal server error" }, 500);
     }
 });
