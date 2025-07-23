@@ -73,28 +73,28 @@
 @layer base {
   :root {
     --background: 0 60% 15%; /* dark red tone */
-    --foreground: 218, 0%, 31%;
+    --foreground: 30, 6%, 38%;
 
-    --card: 0 60% 15%;
-    --card-foreground: 0 70% 85%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
 
     --popover: 0 60% 15%;
     --popover-foreground: 0 70% 85%;
 
     --primary: 0 70% 50%; /* vivid red */
-    --primary-foreground: 0 70% 85%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 60% 40%; /* darker red */
-    --secondary-foreground: 0 70% 85%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 0 40% 60%; /* muted dark red */
     --muted-foreground: 0 40% 30%;
 
     --accent: 0 60% 80%; /* light red */
-    --accent-foreground: 0 70% 85%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 80% 50%; /* bright red */
-    --destructive-foreground: 0 70% 85%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 0 40% 60%;
     --input: 0 40% 60%;
@@ -111,28 +111,28 @@
 
   .dark {
     --background: 0 70% 10%;
-    --foreground: 218, 0%, 31%;
+    --foreground: 30, 6%, 38%;
 
-    --card: 0 70% 10%;
-    --card-foreground: 0 60% 90%;
+    --card: 0 0% 18%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 70% 10%;
-    --popover-foreground: 0 60% 90%;
+    --popover: 0 0% 18%;
+    --popover-foreground: 0 0% 100%;
 
     --primary: 0 70% 50%; /* vivid red */
-    --primary-foreground: 0 60% 90%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 70% 40%; /* darker red */
-    --secondary-foreground: 0 60% 90%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 0 40% 30%; /* muted red */
-    --muted-foreground: 0 40% 70%;
+    --muted-foreground: 0 0% 100%;
 
     --accent: 0 30% 25%; /* very dark red accent */
-    --accent-foreground: 0 60% 90%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 80% 40%; /* bright red */
-    --destructive-foreground: 0 60% 90%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 0 40% 30%;
     --input: 0 40% 30%;
@@ -257,4 +257,45 @@ div[id="bg"] {
       opacity: 0;
       transform: translateY(0);
   }
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left var(--duration, 40s) linear infinite;
+}
+
+@keyframes marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee-up {
+  animation: marquee-up var(--duration, 40s) linear infinite;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.gap-\[1rem\] {
+  gap: 1rem;
+}
+.overflow-hidden {
+  overflow: hidden;
 }

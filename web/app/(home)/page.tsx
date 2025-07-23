@@ -1,29 +1,64 @@
-"use client";
-
-import { CodeIcon, EraserIcon, GearIcon, GlobeIcon, HeartIcon, RocketIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import {
+    CodeIcon,
+    EraserIcon,
+    GearIcon,
+    GlobeIcon,
+    HeartIcon,
+    RocketIcon,
+    SlashIcon,
+    SpeakerLoudIcon
+} from "@radix-ui/react-icons";
 import { Sparkles } from "lucide-react";
-import { Patrick_Hand } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
 import { BsDiscord } from "react-icons/bs";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 import { Button } from "@/components/ui/button";
-import { Card,
+import {
+    Card,
     CardContent,
     CardDescription,
     CardHeader,
-    CardTitle } from "@/components/ui/card";
+    CardTitle
+} from "@/components/ui/card";
+import { Marquee } from "@/components/ui/marquee";
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import ArrowPic from "@/public/arrow.webp";
 import { cn } from "@/utils/cn";
+import { handwritten, montserrat } from "@/utils/font";
 
 import { Faq } from "./faq.component";
+import Reviews from "./reviews.component";
+import Topguilds from "./top-guilds.component";
 
-const handwritten = Patrick_Hand({ subsets: ["latin"], weight: "400" });
+const integrationsData = [
+    {
+        name: "YouTube",
+        avatar: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+        content:
+      "With placeholders like `video.title`, `video.uploaded.ago`, and `creator.subs`, NotificationBot will notify your server whenever a YouTube creator uploads."
+    },
+    {
+        name: "Twitch",
+        avatar: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Twitch_Glitch_Logo_Purple.svg",
+        content:
+      "We use `stream.title`, `stream.game`, and even `stream.live.since` to make stream notifications that feel personal and timely."
+    },
+    {
+        name: "Reddit",
+        avatar: "https://upload.wikimedia.org/wikipedia/en/8/82/Reddit_logo_and_wordmark.svg",
+        content:
+      "The bot pulls `post.title`, `post.flair`, and `author.username` so cleanly that our Reddit integration feels native."
+    },
+    {
+        name: "Bluesky",
+        avatar: "https://cdn.bsky.app/static/favicon.png",
+        content:
+      "`post.text`, `post.type`, and `creator.handle` let us deliver Bluesky posts right to Discord"
+    }
+];
 
 const evenMoreContent = [
     {
@@ -58,81 +93,33 @@ const evenMoreContent = [
     }
 ];
 
-const content = [
-    {
-        icon: RocketIcon,
-        title: "1",
-        text: "1"
-    },
-    {
-        icon: EraserIcon,
-        title: "2",
-        text: "2"
-    },
-    {
-        icon: CodeIcon,
-        title: "3",
-        text: "3"
-    },
-    {
-        icon: SpeakerLoudIcon,
-        title: "4",
-        text: "4"
-    },
-    {
-        icon: GearIcon,
-        title: "5",
-        text: "5"
-    },
-    {
-        icon: GlobeIcon,
-        title: "6",
-        text: "6"
-    }
-];
-
 export default function Home() {
-    const fadeIn = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-    };
-
-    const targetRef = useRef<HTMLDivElement | null>(null);
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start end", "end start"]
-    });
-
-    const opacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
-    const y = useTransform(scrollYProgress, [0.8, 1], ["0vh", "50vh"]);
-
-    const numberOfIcons = content.length;
-    const angle = 180 / (numberOfIcons - 1);
-
-    const isInView = useInView(targetRef, { once: true, margin: "-100px" });
-
     return (
-        <div
-            className="relative flex items-center flex-col w-full p-8 min-h-screen px-5 md:px-8 lg:px-12 xl:px-16 py-8 z-10"
-        >
-            <motion.div className="flex w-full items-center gap-3" initial="hidden" animate="visible" variants={fadeIn}>
-                <div className="w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
-                    <h1 className="text-5xl font-semibold">
-                        <span className="bg-gradient-to-r from-red-900 to-red-500 bg-clip-text text-transparent">
+        <div className="flex flex-col items-center w-full">
+            {/* Hero Section */}
+            <div className="w-full flex flex-col md:flex-row gap-8 mb-24 md:mb-16 h-auto md:h-[calc(100dvh-16rem)] items-start">
+                <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
+                    <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
+                        <span className="bg-gradient-to-r from-red-900 to-red-600 bg-clip-text text-transparent">
                             The Next generation
+                        </span>{" "}
+                        of{" "}
+                        <span className="inline-flex items-center">
+                            Discord Notifications
                         </span>
-                        {" of "}
-                        <span className="inline-flex items-center">notifications</span>
                     </h1>
-                    <p className="text-lg mb-4">It has never been easier to notify your community until now...</p>
+
+                    <span className="text-lg font-medium max-w-[38rem] mb-4">
+                        We introduce you to notifications from third party sources
+                    </span>
 
                     <div className="space-y-4">
                         <Link href="/dashboard" className="flex items-center text-zinc-600 hover:underline">
-                            Go to Dashboard <HiArrowNarrowRight />
+                            Go to Dashboard <HiArrowNarrowRight className="ml-1" />
                         </Link>
 
-                        <div className="flex space-x-4 mt-20">
-                            <Button>
+                        <div className="flex flex-wrap gap-2">
+                            <Button asChild>
                                 <Link
                                     href="https://discord.com/oauth2/authorize?client_id=1366507117044957276"
                                     target="_blank"
@@ -144,7 +131,7 @@ export default function Home() {
                                 </Link>
                             </Button>
 
-                            <Button>
+                            <Button asChild>
                                 <Link
                                     href="https://discord.gg/QnZcYsf2E9"
                                     target="_blank"
@@ -157,38 +144,33 @@ export default function Home() {
                             </Button>
                         </div>
 
-                        <span
-                            className={cn(
-                                "lg:ml-auto flex gap-2 text-neutral-500 font-medium -mt-2 opacity-80 pl-20 lg:pr-20 rotate-2 relative -top-10",
-                                handwritten.className
-                            )}
-                        >
+                        <span className={cn("lg:ml-auto flex gap-2 text-neutral-500 font-medium opacity-80 pl-20 lg:pr-20 rotate-2 scale-110 relative pt-0.5", handwritten.className)}>
                             <Image
                                 src={ArrowPic}
                                 width={24}
                                 height={24}
                                 alt="arrow up"
-                                className="h-5 w-5 relative top-px"
+                                className="h-5 w-5"
                                 draggable={false}
                             />
                             Add NotificationBot to get started!
                         </span>
                     </div>
                 </div>
-            </motion.div>
-            <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-            >
+
+                <Topguilds />
+            </div>
+
+            <Scrollwheel />
+
+            {/* Features */}
+            <div className="md:w-1/2 flex flex-col items-center">
                 <Card>
                     <CardHeader>
                         <CardTitle>Third Party Posts</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        With NotificationBot, you can easily setup notifications for your favorite sites like YouTube, TikTok, and
-                        Twitch just from the dashboard. No slash commands needed!
+                        Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
                     </CardContent>
                 </Card>
 
@@ -196,15 +178,15 @@ export default function Home() {
                     <CardHeader>
                         <CardTitle>RSS Notifications</CardTitle>
                     </CardHeader>
-                    <CardContent>RSS and content feed updates</CardContent>
+                    <CardContent>RSS and content feed updates straight to your server.</CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Custom announcements</CardTitle>
+                        <CardTitle>Custom Announcements</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        Easily send custom announcements from your server&apos;s NotificationBot dashboard
+                        Send personalized messages directly from the NotificationBot dashboard.
                     </CardContent>
                 </Card>
 
@@ -213,120 +195,127 @@ export default function Home() {
                         <CardTitle>/Purge</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        Delete old announcements with /purge or use the dashboard instead!
+                        Delete old announcements using <code>/purge</code> or from the dashboard.
                     </CardContent>
                 </Card>
+            </div>
 
-                <div className="col-span-full flex justify-center button-link">
-                    <Link href="/commands">
-                        <button className="button">More Commands</button>
-                    </Link>
-                </div>
-            </motion.div>
-            <Scrollwheel />
-            <motion.section
-                ref={targetRef}
-                style={{ opacity, y }}
-                className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20"
-            >
-                <div className="relative flex justify-center items-center mb-16">
-                    {content.map(({ icon: Icon }, index) => {
-                        const rotation = angle * index;
-                        return (
-                            <div
-                                key={index}
-                                className="absolute"
-                                style={{
-                                    transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
-                                }}
-                            >
-                                <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
-                                    <Icon className="h-8 w-8" />
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+            {/* Commands */}
+            <Button className="mb-24" asChild>
+                <Link href="/commands" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    <SlashIcon className="w-5 h-5" />
+                    More Commands!
+                </Link>
+            </Button>
 
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
-                        Countless more Features
-                    </h2>
-                    <p className="mt-4 text-sm sm:text-md text-gray-400">
-                        Never worry manually sending announcements for everything. NotificationBot has got you covered for that!
-                    </p>
-                </div>
+            <div className="text-center mb-16">
+                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                    Integrations with your favorite platforms
+                </h2>
+                <p className="mt-4 text-sm sm:text-md text-gray-400">
+                    Never worry about sending manually sending out new notifications from your favorite platforms ever again!
+                </p>
+            </div>
 
-                <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16">
-                    {evenMoreContent.map(({ icon: Icon, title, text }) => (
-                        <Card key={title} className="text-center relative">
-                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                <Icon className="h-8 w-8" />
-                            </span>
-                            <CardHeader className="mt-16">
-                                <CardTitle>{title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p>{text}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </motion.section>
-            <motion.section
-                ref={targetRef}
-                className="mx-auto w-full max-w-[120rem] py-24 sm:py-32 lg:py-40 mt-20 mb-20"
-                variants={fadeIn}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-            >
-                <div className="w-full flex justify-center mb-16">
-                    <div className="bg-red-600 rounded-full h-16 w-16 flex items-center justify-center">
-                        <HeartIcon className="h-8 w-8" />
-                    </div>
-                </div>
+            <Marquee className="py-2" fade={true}>
+                {integrationsData.map((integration, i) => (
+                    <Card key={i} className="w-80 mx-4 shrink-0">
+                        <CardHeader className="flex flex-row items-center gap-4">
+                            <Image
+                                src={integration.avatar}
+                                alt={integration.name}
+                                width={40}
+                                height={40}
+                                className="rounded-full"
+                            />
+                            <CardTitle className="text-base">
+                                {integration.name}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm text-muted-foreground">
+                            {integration.content}
+                        </CardContent>
+                    </Card>
+                ))}
+            </Marquee>
 
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
-                        Highly trusted by server owners & staff
-                    </h2>
-                    <p className="mt-4 text-sm sm:text-md text-gray-400">We appreciate every feedback you give us!</p>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
-                    {content.map(({ icon: Icon, title, text }, index) => (
-                        <Card
-                            key={title}
-                            className={`text-center relative ${
-                                index === 0 || index === 5 ? "h-[400px]" : "h-[300px]"
-                            }`}
+            <div className="relative flex justify-center items-center mb-16">
+                {evenMoreContent.map(({ icon: Icon }, index) => {
+                    const rotation = 180 / (evenMoreContent.length - 1) * index;
+                    return (
+                        <div
+                            key={index}
+                            className="absolute"
+                            style={{
+                                transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
+                            }}
                         >
-                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                                <Icon className="h-8 w-8" />
-                            </span>
-                            <CardHeader className="mt-16">
-                                <CardTitle>{title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p>{text}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </motion.section>
-            <Faq />
+                            <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
+                                <Icon className="h-8 w-8 text-white" />
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
 
-            <Card>
+            {/* Even More Features */}
+            <div className="text-center mb-16">
+                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                    Countless more Features
+                </h2>
+                <p className="mt-4 text-sm sm:text-md text-gray-400">
+                    Never worry about sending announcements manually again.
+                </p>
+            </div>
+
+            <div className="grid w-full max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 px-4">
+                {evenMoreContent.map(({ icon: Icon, title, text }) => (
+                    <Card key={title} className="text-center relative">
+                        <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                            <Icon className="h-8 w-8" />
+                        </span>
+                        <CardHeader className="mt-16">
+                            <CardTitle>{title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p>{text}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+
+            <div className="w-full flex justify-center mb-12">
+                <div className="bg-red-600 rounded-full h-16 w-16 flex items-center justify-center">
+                    <HeartIcon className="h-8 w-8 text-white" />
+                </div>
+            </div>
+
+            <div className="text-center mb-16 px-4">
+                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                    Highly trusted by server owners & staff
+                </h2>
+                <p className="mt-4 text-sm sm:text-md text-gray-400">We appreciate every feedback you give us!</p>
+            </div>
+
+            {/* Reviews */}
+            <div className="mb-24 w-full px-4">
+                <Reviews />
+            </div>
+
+            {/* FAQ */}
+            <div className="mb-24 w-full px-4">
+                <Faq />
+            </div>
+
+            {/* CTA */}
+            <Card className="mb-32 max-w-xl w-full">
                 <CardHeader>
-                    <CardTitle>
-                        Enhance your community’s experience by 1000%.
-                    </CardTitle>
-                    <CardDescription>
-                        Get NotificationBot in your server today.
-                    </CardDescription>
+                    <CardTitle>Enhance your community’s experience by 1000%</CardTitle>
+                    <CardDescription>Get NotificationBot in your server today.</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <Button className="mx-auto" asChild>
+                <CardContent className="flex justify-center">
+                    <Button asChild>
                         <Link href="/profile" target="_blank">
                             Get Started
                         </Link>

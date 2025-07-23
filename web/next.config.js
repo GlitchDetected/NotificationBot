@@ -12,19 +12,7 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "cdn.discordapp.com",
                 port: "",
-                pathname: "/icons/**"
-            },
-            {
-                protocol: "https",
-                hostname: "cdn.discordapp.com",
-                port: "",
-                pathname: "/emojis/**"
-            },
-                        {
-                protocol: "https",
-                hostname: "cdn.discordapp.com",
-                port: "",
-                pathname: "/banners/**"
+                pathname: "/**"
             },
             {
                 protocol: "https",
@@ -55,6 +43,18 @@ const nextConfig = {
                hostname: "www.redditstatic.com",
                port: "",
                pathname: "/avatars/**"
+           },
+           {
+               protocol: "https",
+               hostname: "upload.wikimedia.org",
+               port: "",
+               pathname: "/**"
+           },
+           {
+               protocol: "https",
+               hostname: "cdn.bsky.app",
+               port: "",
+               pathname: "/**"
            }
     ],
   },

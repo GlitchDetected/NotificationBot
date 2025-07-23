@@ -79,25 +79,21 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
     return (
         <div className="font-medium mt-2 mb-6 flex items-center relative">
             <Tabs
-                ref={ref}
                 onValueChange={handleChange}
                 defaultValue={
                     searchParamName
                         ? params.get(searchParamName) || ""
                         : path.replace(url, "").split("/").filter(Boolean).slice(0, 2).join("/") || tabs[0].value
                 }
-                className="w-full"
+                variant="underline"
             >
-                <TabsList
-                    ref={ref}
-                    className="w-full overflow-x-auto no-scrollbar flex rounded-none border-b border-border p-0"
-                >
+                <TabsList variant="underline">
                     {tabs.map((tab) => (
                         <TabsTrigger
                             key={tab.value}
                             value={tab.value}
                             disabled={disabled}
-                            className="whitespace-nowrap px-4 h-12"
+                            variant="underline"
                         >
                             <div className="flex items-center gap-2">
                                 {tab.icon}
@@ -107,6 +103,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
                     ))}
                 </TabsList>
             </Tabs>
+
 
             {/* Left Scroll Button */}
             {tabs.length > 4 && position > 0 && (

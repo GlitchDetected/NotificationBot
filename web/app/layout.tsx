@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 suppressHydrationWarning
                 data-theme="dark"
                 lang="en"
-                className="dark flex justify-center max-w-screen overflow-x-hidden"
+                className="dark dark:text-white text-white flex justify-center max-w-screen overflow-x-hidden"
             >
                 <link rel="icon" href="/icons/favicon.ico" sizes="any" />
                 <body
@@ -96,7 +96,8 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     )}
                     style={{ overflow: "visible" }}
                 >
-                    <div className="absolute top-0 right-0 w-screen h-screen -z-50" />
+                    <div id="bg" className="absolute top-0 right-0 w-screen h-screen -z-50" />
+                    <Noise />
                     <NoScript />
                     <NavBar />
                     <Provider>
@@ -105,6 +106,37 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 </body>
             </html>
         </CookiesProvider>
+    );
+}
+
+function Noise() {
+    return (
+        <svg
+            className="absolute top-0 left-0 w-screen h-full -z-40 blur-[1px] saturate-0"
+            viewBox='0 0 142 158'
+            xmlns='http://www.w3.org/2000/svg'
+        >
+            <filter id='noiseFilter'>
+                <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="9"
+                    numOctaves="1"
+                    stitchTiles="stitch"
+                    result="turbulence"
+
+                />
+                <feComponentTransfer>
+                    <feFuncR type="table" tableValues="0 1" />
+                    <feFuncG type="table" tableValues="-0" />
+                    <feFuncB type="table" tableValues="0" />
+                </feComponentTransfer>
+            </filter>
+
+            <rect
+                className="w-screen h-screen"
+                filter='url(#noiseFilter)'
+            />
+        </svg>
     );
 }
 
@@ -141,11 +173,11 @@ async function NavBar() {
                 </Link>
             </div>
 
-            <ul className="flex-5 gap-8 text-[0.9rem] font-medium text-white">
+            <ul className="flex-5 gap-8 text-[0.9rem] font-medium">
                 {links.map((link) => (
                     <Link
                         key={link.hash}
-                        className="px-3 py-2 hover:text-gray-950 dark:hover:text-gray-300 transition"
+                        className="px-3 py-2 transition"
                         href={link.hash}
                     >
                         {link.name}

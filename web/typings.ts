@@ -5,6 +5,24 @@ export interface ApiError {
   message: string;
 }
 
+export interface ApiV1TopguildsGetResponse {
+    id: string;
+    name: string;
+    icon: string | null;
+    memberCount: number;
+
+    verified: boolean;
+    partnered: boolean;
+}
+
+export interface ApiV1BotreviewsGetResponse {
+    id: string;
+    name: string;
+    icon: string | null;
+    memberCount: number;
+    review: string;
+}
+
 export interface ApiV1UsersMeGuildsGetResponse {
   id: string;
   name: string;
@@ -23,32 +41,6 @@ export interface ApiV1GuildsGetResponse {
   follownewsChannel?: {
     channelId: string;
     name: string;
-  };
-}
-
-export interface ApiV1GuildsTopmembersGetResponse {
-  id: string;
-  username: string | null;
-  globalName: string | null;
-  avatar: string | null;
-  bot: true;
-  emoji: string | null;
-  // activity: ApiV1UsersMeGetResponse["activity"] & { formattedVoicetime: string };
-}
-
-export interface ApiV1GuildsTopmembersPaginationGetResponse {
-  messages: {
-    pages: number;
-    total: number;
-  };
-  voiceminutes: {
-    pages: number;
-    total: string;
-    formattedTotal: string;
-  };
-  invites: {
-    pages: number;
-    total: number;
   };
 }
 

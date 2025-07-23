@@ -2,6 +2,7 @@ import Bye from "./bye";
 import DmNotifications from "./dmnotifications";
 import FollowUpdates from "./followupdates";
 import Notifications from "./notifications";
+import Reviews from "./reviews";
 import User from "./User";
 import Welcome from "./welcome";
 
@@ -11,7 +12,8 @@ const models = {
     DmNotifications,
     FollowUpdates,
     Welcome,
-    Bye
+    Bye,
+    Reviews
 };
 
 export type ModelsMap = typeof models;
