@@ -8,9 +8,9 @@ import { cn } from "@/utils/cn";
 import ColorInput from "../input/colorinput";
 import Smartinput from "../input/smart-input";
 import { Button } from "../ui/button";
-import { DiscordMarkdown } from "./disc-markdown";
-import DiscordMessage from "./msg";
-import DiscordMessageEmbed from "./msg-embed";
+import DiscordMessageEmbed from "./embed";
+import { DiscordMarkdown } from "./markdown";
+import DiscordMessage from "./message";
 
 enum State {
     Idle = 0,

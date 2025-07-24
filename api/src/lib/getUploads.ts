@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import axios from "axios";
 
 import type { notificationConfig, NotificationType } from "../../typings";

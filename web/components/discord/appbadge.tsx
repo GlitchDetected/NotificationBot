@@ -7,7 +7,7 @@ export default function DiscordAppBadge({ className, children, ...props }: HTMLP
     return (
         <div
             className={cn(
-                "!text-xxs  text-white bg-[#5865F2] rounded py-[1px] px-1 h-12 inline-flex items-center",
+                "!text-xxs text-white bg-[#5865F2] rounded py-[1px] px-1 h-12 inline-flex items-center",
                 className
             )}
             {...props}

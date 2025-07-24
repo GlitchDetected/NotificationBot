@@ -4,9 +4,9 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
 
-import { DiscordMarkdown } from "@/components/discord/disc-markdown";
-import DiscordMessage from "@/components/discord/msg";
-import DiscordMessageEmbed from "@/components/discord/msg-embed";
+import DiscordMessageEmbed from "@/components/discord/embed";
+import { DiscordMarkdown } from "@/components/discord/markdown";
+import DiscordMessage from "@/components/discord/message";
 import ColorInput from "@/components/input/colorinput";
 import Smartinput from "@/components/input/smart-input";
 import { Button } from "@/components/ui/button";

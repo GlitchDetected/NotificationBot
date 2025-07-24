@@ -5,9 +5,9 @@ import { BsDiscord, BsYoutube } from "react-icons/bs";
 import { HiArrowRight, HiChartBar, HiCheck, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
-import { DiscordMarkdown } from "@/components/discord/disc-markdown";
-import DiscordMessage from "@/components/discord/msg";
-import DiscordMessageEmbed from "@/components/discord/msg-embed";
+import DiscordMessageEmbed from "@/components/discord/embed";
+import { DiscordMarkdown } from "@/components/discord/markdown";
+import DiscordMessage from "@/components/discord/message";
 import { Badge } from "@/components/ui/badge";
 import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";

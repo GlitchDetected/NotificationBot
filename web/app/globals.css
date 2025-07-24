@@ -72,6 +72,8 @@
 
 @layer base {
   :root {
+    --blurple: 235 82% 67%;
+
     --background: 0 60% 15%; /* dark red tone */
     --foreground: 30, 6%, 38%;
 
@@ -110,6 +112,8 @@
   }
 
   .dark {
+    --blurple: 235 82% 67%;
+    
     --background: 0 70% 10%;
     --foreground: 30, 6%, 38%;
 

@@ -3,7 +3,7 @@ import React from "react";
 
 import { cn } from "@/utils/cn";
 
-import { DiscordMarkdown } from "./disc-markdown";
+import { DiscordMarkdown } from "./markdown";
 
 interface Props {
     children: React.ReactNode;
