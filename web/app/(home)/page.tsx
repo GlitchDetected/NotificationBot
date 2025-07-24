@@ -1,10 +1,15 @@
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { BsDiscord } from "react-icons/bs";
-import { HiArrowRight, HiChartBar, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
+import { BsDiscord, BsYoutube } from "react-icons/bs";
+import { HiArrowRight, HiChartBar, HiCheck, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
+import { DiscordMarkdown } from "@/components/discord/disc-markdown";
+import DiscordMessage from "@/components/discord/msg";
+import DiscordMessageEmbed from "@/components/discord/msg-embed";
+import { Badge } from "@/components/ui/badge";
+import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -17,12 +22,36 @@ import { Marquee } from "@/components/ui/marquee";
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import ArrowPic from "@/public/arrow.webp";
+import thumbnail from "@/public/assets/thumbnail.png";
+import Grasspic from "@/public/backgrounds/grass.jpg";
 import { cn } from "@/utils/cn";
 import { handwritten, montserrat } from "@/utils/font";
 
 import { Faq } from "./faq.component";
 import Reviews from "./reviews.component";
 import Topguilds from "./top-guilds.component";
+
+const styles = {
+    h2: cn(montserrat.className, "lg:text-5xl text-4xl bg-gradient-to-b bg-clip-text text-transparent from-red-900 from-40% to-red-500 font-bold mb-4"),
+    h3: cn(montserrat.className, "lg:text-2xl text-xl bg-gradient-to-b bg-clip-text text-transparent from-red-900 from-40% to-red-500 font-semibold")
+};
+
+const messageProps = (command?: string) => ({
+    mode: "DARK" as const,
+    commandUsed: command
+        ? {
+            name: command,
+            username: "@NotificationBot",
+            avatar: "/me.webp",
+            bot: false
+        }
+        : undefined,
+    user: {
+        username: "NotificationBot",
+        avatar: "/me.webp",
+        bot: true
+    }
+});
 
 const integrationsData = [
     {
@@ -154,51 +183,244 @@ export default function Home() {
 
             <Scrollwheel />
 
-            {/* Features */}
-            <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Third Party Posts</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
-                    </CardContent>
-                </Card>
+            <article
+                itemScope
+                itemType="http://schema.org/Article"
+                className="flex flex-col gap-28 my-10"
+            >
+                <div>
+                    <h2 className={styles.h2}>Platform Notifications 🔊</h2>
+                    <Box className="flex flex-col md:flex-row gap-10 items-center">
+                        <div className="md:w-1/2 flex flex-col items-start">
+                            <Badge
+                                className="mb-2"
+                                variant="flat"
+                                radius="rounded"
+                            >
+                                <HiCheck />
+                                Supports up to 3 platforms
+                            </Badge>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>RSS Notifications</CardTitle>
-                    </CardHeader>
-                    <CardContent>RSS and content feed updates straight to your server.</CardContent>
-                </Card>
+                            <h3 className={styles.h3}>97 Voices in 10 Languages</h3>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Custom Announcements</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        Send personalized messages directly from the NotificationBot dashboard.
-                    </CardContent>
-                </Card>
+                            <div className="pt-6">
+                                Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
+                            </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>/Purge</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        Delete old announcements using <code>/purge</code> or from the dashboard.
-                    </CardContent>
-                </Card>
-            </div>
+                            <div className="flex gap-2 mt-5">
+                                <Button asChild>
+                                    <Link
+                                        prefetch={false}
+                                        href="https://youtu.be/NS5fZ1ltovE?si=I3nViYb4sx3n3Uvo"
+                                        target="_blank"
+                                    >
+                                        <BsYoutube />
+                                        Watch YouTube Video
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
 
-            {/* Commands */}
-            <Button className="mb-24" asChild>
-                <Link href="/commands" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    <HiTerminal className="w-5 h-5" />
-                    More Commands
-                    <HiArrowRight className="w-5 h-5" />
-                </Link>
-            </Button>
+                        <div
+                            className="bg-discord-gray px-8 py-6 md:py-12 rounded-lg flex flex-col sm:flex-row sm:items-center md:flex-col md:items-start lg:flex-row lg:items-center gap-4 min-h-56"
+                        >
+                            <DiscordMessage {...messageProps()}>
+                                <DiscordMarkdown
+                                    mode="DARK"
+                                    text={"Hey **@everyone**, MrBeast just uploaded a new video!\n[https://www.youtube.com/watch?v=0e3GPea1Tyg&vl](https://www.youtube.com/watch?v=0e3GPea1Tyg&vl)"}
+                                />
+                                <DiscordMessageEmbed mode="DARK" title="$456000 Squid Game in Real Life!" color={0xFF0000}>
+                                    <Image
+                                        alt=""
+                                        className="rounded-md shadow-md w-full mt-2"
+                                        itemProp="image"
+                                        loading="lazy"
+                                        src={thumbnail}
+                                    />
+                                </DiscordMessageEmbed>
+                            </DiscordMessage>
+
+                            <span className="text-sm mt-1 opacity-75">
+                                Example message
+                            </span>
+
+                        </div>
+
+                    </Box>
+                </div>
+
+                <div>
+                    <h2 className={styles.h2}>DM Notifications 🔊</h2>
+                    <Box className="flex flex-col md:flex-row gap-10 items-center">
+                        <div className="md:w-1/2 flex flex-col items-start">
+                            <Badge
+                                className="mb-2"
+                                variant="flat"
+                                radius="rounded"
+                            >
+                                <HiCheck />
+                                Supports RSS
+                            </Badge>
+
+                            <h3 className={styles.h3}>97 Voices in 10 Languages</h3>
+
+                            <div className="pt-6">
+                                Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
+                            </div>
+
+                            <div className="flex gap-2 mt-5">
+                                <Button asChild>
+                                    <Link
+                                        prefetch={false}
+                                        href="https://youtu.be/NS5fZ1ltovE?si=I3nViYb4sx3n3Uvo"
+                                        target="_blank"
+                                    >
+                                        <BsYoutube />
+                                        Watch YouTube Video
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div
+                            className="bg-discord-gray px-8 py-6 md:py-12 rounded-lg flex flex-col sm:flex-row sm:items-center md:flex-col md:items-start lg:flex-row lg:items-center gap-4 min-h-56"
+                        >
+                            <DiscordMessage {...messageProps()}>
+                                <DiscordMarkdown
+                                    mode="DARK"
+                                    text={"Hey **@everyone**, MrBeast just uploaded a new video!\n[https://www.youtube.com/watch?v=0e3GPea1Tyg&vl](https://www.youtube.com/watch?v=0e3GPea1Tyg&vl)"}
+                                />
+                                <DiscordMessageEmbed mode="DARK" title="$456000 Squid Game in Real Life!" color={0xFF0000}>
+                                    <Image
+                                        alt=""
+                                        className="rounded-md shadow-md w-full mt-2"
+                                        itemProp="image"
+                                        loading="lazy"
+                                        src={thumbnail}
+                                    />
+                                </DiscordMessageEmbed>
+                            </DiscordMessage>
+
+                            <span className="text-sm mt-1 opacity-75">
+                                Example message
+                            </span>
+
+                        </div>
+
+                    </Box>
+                </div>
+
+                <div>
+                    <h2 className={styles.h2}>Automatic Welcoming/Leaving Messages</h2>
+
+                    <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
+                        <div className="md:w-1/2">
+                            <Badge
+                                className="mb-2"
+                                variant="flat"
+                                radius="rounded"
+                            >
+                                <HiCheck />
+                                includes custom backgrounds
+                            </Badge>
+
+                            <h3 className={styles.h3}>Greetings</h3>
+
+                            <div className="pt-6">
+                                Automatic messages for new and leaving members. Supports direct messages.
+                            </div>
+                            <div className="flex gap-2 mt-6">
+                                <Button asChild>
+                                    <Link
+                                        href="/dashboard?to=greeting"
+                                        target="_blank"
+                                    >
+                                        <HiArrowRight />
+                                        Setup
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
+                            <DiscordMessage {...messageProps()}>
+                                <DiscordMarkdown mode={"DARK"} text="Welcome @user to **a very special server** 👋" />
+                                <Image
+                                    alt="example welcome card"
+                                    src={Grasspic}
+                                    height={(256 + 16) / 2}
+                                    itemProp="image"
+                                    loading="lazy"
+                                    width={1024 / 2}
+                                />
+                            </DiscordMessage>
+                        </div>
+                    </Box>
+                </div>
+
+                <div>
+                    <h2 className={styles.h2}>Create webhook messages 🖊️</h2>
+
+                    <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
+                        <div className="md:w-1/2">
+                            <Badge
+                                className="mb-2"
+                                variant="flat"
+                                radius="rounded"
+                            >
+                                <HiCheck />
+                                Supports embeds for free
+                            </Badge>
+
+                            <h3 className={styles.h3}>Webhooks</h3>
+
+                            <div className="pt-6">
+                                Easily send a message with a webhook right in the dashboard!
+                            </div>
+                            <div className="flex gap-2 mt-6">
+                                <Button asChild>
+                                    <Link
+                                        href="/dashboard?to=custom-commands"
+                                        target="_blank"
+                                    >
+                                        <HiArrowRight />
+                                        Setup
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg flex flex-col gap-4">
+                            <DiscordMessage
+                                mode={"DARK"}
+                                user={{
+                                    username: "User1",
+                                    avatar: "/me.webp",
+                                    bot: false
+                                }}
+                            >
+                                <DiscordMarkdown mode={"DARK"} text="Below is a custom webhook message!" />
+                            </DiscordMessage>
+
+                            <DiscordMessage
+                                mode={"DARK"}
+                                user={{
+                                    username: "NotificationBot",
+                                    avatar: "/me.webp",
+                                    bot: true
+                                }}
+                            >
+                                <DiscordMessageEmbed
+                                    mode={"DARK"}
+                                    color={0xbc7ed4}
+                                >
+                                    <DiscordMarkdown mode={"DARK"} text="custom message here!" />
+                                </DiscordMessageEmbed>
+                            </DiscordMessage>
+                        </div>
+                    </Box>
+                </div>
+            </article>
 
             <div className="text-center mb-16">
                 <h2 className="text-xl font-bold">
@@ -278,6 +500,14 @@ export default function Home() {
                         </CardContent>
                     </Card>
                 ))}
+
+                <Button className="mb-24" asChild>
+                    <Link href="/commands" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                        <HiTerminal className="w-5 h-5" />
+                        More Commands
+                        <HiArrowRight className="w-5 h-5" />
+                    </Link>
+                </Button>
             </div>
 
             <div className="w-full flex justify-center mb-12">
@@ -293,12 +523,10 @@ export default function Home() {
                 <p className="mt-4 text-sm sm:text-md text-gray-400">We appreciate every feedback you give us!</p>
             </div>
 
-            {/* Reviews */}
             <div className="mb-24 w-full px-4">
                 <Reviews />
             </div>
 
-            {/* FAQ */}
             <div className="mb-24 w-full px-4">
                 <Faq />
             </div>
