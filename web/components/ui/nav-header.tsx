@@ -21,7 +21,7 @@ import { authorize } from "@/utils/authorizeuser";
 import { cn } from "@/utils/cn";
 
 import { Button } from "./button";
-import { LoginButton } from "./loginbutton";
+import { LoginButton } from "./login-button";
 import ReduceMotion from "./reducemotion";
 import { Skeleton } from "./skeleton";
 import { Switch } from "./switch";
@@ -200,6 +200,7 @@ export function LoginHeader() {
                                 asChild
                                 className="w-full font-medium justify-start text-xl my-1 sm:my-0 sm:text-medium bg-transparent hover:bg-foreground rounded-sm"
                                 onClick={() => setMenu(false)}
+                                variant="secondary"
                             >
                                 <Link href={button.url!}>
                                     {button.icon}

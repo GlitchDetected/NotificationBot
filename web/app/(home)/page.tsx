@@ -1,7 +1,7 @@
-import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { BsDiscord, BsYoutube } from "react-icons/bs";
+import { BsChat, BsDiscord, BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
+import { HiPlus } from "react-icons/hi";
 import { HiArrowRight, HiChartBar, HiCheck, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
@@ -57,25 +56,25 @@ const messageProps = (command?: string) => ({
 const integrationsData = [
     {
         name: "YouTube",
-        avatar: "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg",
+        icon: BsYoutube,
         content:
       "With placeholders like `video.title`, `video.uploaded.ago`, and `creator.subs`, NotificationBot will notify your server whenever a YouTube creator uploads."
     },
     {
         name: "Twitch",
-        avatar: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Twitch_Glitch_Logo_Purple.svg",
+        icon: BsTwitch,
         content:
       "We use `stream.title`, `stream.game`, and even `stream.live.since` to make stream notifications that feel personal and timely."
     },
     {
         name: "Reddit",
-        avatar: "https://upload.wikimedia.org/wikipedia/en/8/82/Reddit_logo_and_wordmark.svg",
+        icon: BsReddit,
         content:
       "The bot pulls `post.title`, `post.flair`, and `author.username` so cleanly that our Reddit integration feels native."
     },
     {
         name: "Bluesky",
-        avatar: "https://cdn.bsky.app/static/favicon.png",
+        icon: BsChat,
         content:
       "`post.text`, `post.type`, and `creator.handle` let us deliver Bluesky posts right to Discord"
     }
@@ -131,7 +130,7 @@ export default function Home() {
                     </h1>
 
                     <span className="text-lg font-medium max-w-[38rem] mb-4">
-                        We introduce you to notifications from third party sources
+                        We introduce you to notifications from your favorite platforms, full-on welcoming system, and useful slash commands!
                     </span>
 
                     <div className="space-y-4">
@@ -147,7 +146,7 @@ export default function Home() {
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-2"
                                 >
-                                    <Sparkles className="w-5 h-5" />
+                                    <HiPlus className="w-5 h-5" />
                                     Invite NotificationBot
                                 </Link>
                             </Button>
@@ -491,17 +490,11 @@ export default function Home() {
             </div>
 
             <div className="w-full my-16 px-4">
-                <Marquee className="py-2" fade={true}>
+                <Marquee className="py-2" fade={true} pauseOnHover={true}>
                     {integrationsData.map((integration, i) => (
                         <Card key={i} className="w-80 mx-4 shrink-0">
                             <CardHeader className="flex flex-row items-center gap-4">
-                                <Image
-                                    src={integration.avatar}
-                                    alt={integration.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full"
-                                />
+                                <integration.icon className="w-10 h-10 text-red-500" />
                                 <CardTitle className="text-base">
                                     {integration.name}
                                 </CardTitle>
@@ -514,9 +507,8 @@ export default function Home() {
                 </Marquee>
             </div>
 
-
             <div className="max-w-7xl mx-auto px-20">
-                <div className="relative flex justify-center items-center">
+                <div className="relative flex justify-center items-center mb-12 mt-32">
                     {evenMoreContent.map(({ icon: Icon }, index) => {
                         const rotation = 180 / (evenMoreContent.length - 1) * index;
                         return (
@@ -535,7 +527,7 @@ export default function Home() {
                     })}
                 </div>
 
-                <div className="text-center mb-20">
+                <div className="text-center mb-20 mt-12">
                     <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
                         Countless more Features
                     </h2>
@@ -559,16 +551,18 @@ export default function Home() {
                         </Card>
                     ))}
 
-                    <Button className="flex justify-center" asChild>
-                        <Link
-                            href="/commands"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2"
-                        >
-                            <HiTerminal className="w-5 h-5" />
-                            More Commands
-                        </Link>
-                    </Button>
+                    <div className="w-full flex justify-center items-center">
+                        <Button className="w-fit px-4 py-2 flex items-center gap-2" asChild>
+                            <Link
+                                href="/commands"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2"
+                            >
+                                <HiTerminal className="w-5 h-5" />
+                                More Commands
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -593,20 +587,6 @@ export default function Home() {
             <div className="mb-24 w-full px-4">
                 <Faq />
             </div>
-
-            <Card className="mb-32 max-w-xl w-full">
-                <CardHeader>
-                    <CardTitle>Enhance your community’s experience by 1000%</CardTitle>
-                    <CardDescription>Get NotificationBot in your server today.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex justify-center">
-                    <Button asChild>
-                        <Link href="/profile" target="_blank">
-                            Get Started
-                        </Link>
-                    </Button>
-                </CardContent>
-            </Card>
 
             <ScrollToTopButton />
         </div>

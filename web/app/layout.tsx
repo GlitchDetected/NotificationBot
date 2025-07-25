@@ -7,8 +7,8 @@ import Link from "next/link";
 import { CookiesProvider } from "next-client-cookies/server";
 
 import Notice, { NoticeType } from "@/components/notice";
-import { LoginButton } from "@/components/ui/loginbutton";
-import { LoginHeader } from "@/components/ui/loginheader";
+import { LoginButton } from "@/components/ui/login-button";
+import { LoginHeader } from "@/components/ui/nav-header";
 import { links } from "@/lib/data";
 import { cn } from "@/utils/cn";
 import { notosansJP, outfit } from "@/utils/font";

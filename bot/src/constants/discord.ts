@@ -41,10 +41,10 @@ export const notificationPlaceholders = (
     contentData: ContentData
 ) => {
     const placeholders: Record<string, any> = {
-        "creator.name": config.creator.username,
-        "creator.id": config.creator.id,
-        "creator.link": config.creator.customUrl,
-        "creator.avatar": config.creator.avatarUrl || "",
+        "creator.name": config.creator?.username ?? "Unknown",
+        "creator.id": config.creator?.id ?? "Unknown",
+        "creator.link": config.creator?.customUrl ?? "",
+        "creator.avatar": config.creator?.avatarUrl ?? "",
 
         // Guild meta
         "guild.name": guild.name,
