@@ -8,7 +8,7 @@ import { Suspense, useEffect, useState } from "react";
 import { HiBell, HiEmojiHappy, HiHome, HiPaperAirplane, HiUsers, HiViewGridAdd } from "react-icons/hi";
 
 import { guildStore } from "@/common/guildStore";
-import { ClientButton } from "@/components/clientfunc";
+import { ClientButton } from "@/components/client-ui";
 import { ListTab } from "@/components/list-tab";
 import { ScreenMessage, SupportButton } from "@/components/screen-message";
 import { Button } from "@/components/ui/button";

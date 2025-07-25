@@ -1,4 +1,10 @@
-export default function Codeblock({ children }) {
+import React from "react";
+
+interface Props {
+    children: React.ReactNode;
+}
+
+export default function Codeblock({ children }: Props) {
     return (
         <span
             className="bg-red-900 p-1 rounded-md

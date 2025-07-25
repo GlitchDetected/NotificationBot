@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import type { ApiError } from "@/typings";
 import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 
 import { createSession } from "./api";
@@ -9,7 +11,7 @@ import { createSession } from "./api";
 // const domain = getBaseUrl().split("://")[1];
 const cookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN;
 
-export const defaultCookieOptions = {
+const defaultCookieOptions = {
     secure: getBaseUrl().startsWith("http://"),
     httpOnly: false,
     sameSite: "lax",
@@ -79,8 +81,12 @@ export async function GET(request: Request) {
     let redirectUrl = await getRedirectUrl(searchParams);
 
     if (!res || "status" in res) {
-        const data = { statusCode: 500, message: res?.message || "An error occurred" };
-        console.log(data);
+        const isApiError = (obj: any): obj is ApiError =>
+            obj && typeof obj.message === "string" && typeof obj.code === "number";
+
+        const message = isApiError(res) ? res.message : "An error occurred";
+
+        const data = { statusCode: 500, message };
 
         redirectUrl += "?error=" + JSON.stringify(data);
         redirect(redirectUrl);

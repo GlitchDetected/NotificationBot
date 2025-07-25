@@ -14,6 +14,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  --color-blurple: hsl(var(--blurple));
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 

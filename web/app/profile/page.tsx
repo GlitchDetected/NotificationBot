@@ -180,7 +180,7 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
     );
 }
 
-export function InviteButton({ guildId }: { guildId: string; }) {
+function InviteButton({ guildId }: { guildId: string; }) {
     return (
         <Button
             asChild
@@ -194,7 +194,7 @@ export function InviteButton({ guildId }: { guildId: string; }) {
     );
 }
 
-export function ManageButton({ guildId }: { guildId: string; }) {
+function ManageButton({ guildId }: { guildId: string; }) {
     const searchParams = useSearchParams();
     const toParam = searchParams.get("to");
     const href = `/dashboard/${guildId}${toParam ? `/${toParam}` : ""}`;

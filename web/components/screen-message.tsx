@@ -4,7 +4,7 @@ import { HiHome } from "react-icons/hi";
 
 import { cn } from "@/utils/cn";
 
-import { ClientButton } from "./clientfunc";
+import { ClientButton } from "./client-ui";
 import type { Button } from "./ui/button";
 
 type Props = {

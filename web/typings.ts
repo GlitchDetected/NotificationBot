@@ -1,7 +1,7 @@
 import { ChannelType } from "discord-api-types/v10";
 
 export interface ApiError {
-  code: number;
+  status: number;
   message: string;
 }
 

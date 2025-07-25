@@ -8,8 +8,18 @@ export function deepMerge<T>(target: T | undefined, source: Partial<T>): T | und
             const targetValue = target[key];
             const sourceValue = source[key];
 
-            if (typeof targetValue === "object" && typeof sourceValue === "object") {
-                target[key] = deepMerge(targetValue, sourceValue);
+            const isObj =
+        targetValue !== undefined &&
+        targetValue !== null &&
+        typeof targetValue === "object" &&
+        sourceValue !== undefined &&
+        sourceValue !== null &&
+        typeof sourceValue === "object";
+
+
+            if (isObj) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                target[key] = deepMerge(targetValue, sourceValue) as any;
             } else {
                 // @ts-expect-error Some exteractor error
                 target[key] = sourceValue;

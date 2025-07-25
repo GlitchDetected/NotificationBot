@@ -28,7 +28,7 @@ app.route("/", baseRouter);
 app.all("/*", () => {
     return Response.json(
         {
-            code: HttpErrorCode.NotFound,
+            status: HttpErrorCode.NotFound,
             message: HttpErrorMessage.NotFound
         },
         {

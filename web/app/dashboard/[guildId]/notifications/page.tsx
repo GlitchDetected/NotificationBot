@@ -9,7 +9,7 @@ import { HiChat, HiViewGridAdd } from "react-icons/hi";
 
 import { guildStore } from "@/common/guildStore";
 import Fetch from "@/components/buttonfetch";
-import { ClientBadge } from "@/components/clientfunc";
+import { ClientBadge } from "@/components/client-ui";
 import { useList } from "@/components/data/lists/hook";
 import { Navigation } from "@/components/data/lists/navigation";
 import { ItemSelector } from "@/components/data/lists/selector";
@@ -72,11 +72,9 @@ export default function Home() {
                         <>
                             <ClientBadge
                                 className="aspect-square bg-[#1c1b1f]"
-                                content={<Icon type={item.type} className="size-4 mt-0.5" />}
-                                showOutline={false}
                                 size="sm"
-                                placement="bottom-left"
                             >
+                                <Icon type={item.type} className="size-4 mt-0.5" />
                                 {item.creator.avatarUrl ? (
                                     <Image
                                         alt={`${item.creator.username}'s avatar`}

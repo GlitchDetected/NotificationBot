@@ -10,9 +10,7 @@ interface Commands {
     id: string;
 }
 
-export default async function Home({ limit }: { limit?: number; }) {
-    const safeLimit = limit ?? 6;
-
+export default async function Home() {
     const commands = await fetch(`${process.env.NEXT_PUBLIC_API}/commands`, defaultFetchOptions)
         .then((res) => res.json())
         .catch(() => null) as Commands[] | null;
@@ -41,7 +39,7 @@ export default async function Home({ limit }: { limit?: number; }) {
                 <div className="divide-y divide-foreground">
                     {commands
                         .sort((a, b) => b.name.localeCompare(a.name))
-                        .slice(0, safeLimit)
+                        .slice(0, 6)
                         .map((command) => (
                             <div
                                 key={command.name}
