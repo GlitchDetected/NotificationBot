@@ -90,7 +90,7 @@ export function LoginHeader() {
                         url: "/debug"
                     },
                     {
-                        name: "random things",
+                        name: "Developer Tools",
                         icon: <HiBeaker />,
                         value: devTools,
                         onChange: () => {

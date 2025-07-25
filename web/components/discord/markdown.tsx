@@ -1,4 +1,4 @@
-import "./markdown";
+import "./markdown.css";
 
 import * as md from "@odiffey/discord-markdown";
 

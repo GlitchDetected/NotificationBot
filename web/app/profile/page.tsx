@@ -188,7 +188,7 @@ export function InviteButton({ guildId }: { guildId: string; }) {
         >
             <Link href={`/login?invite=true&guild_id=${guildId}`} prefetch={false} className="flex items-center gap-2">
                 <HiUserAdd className="h-4 w-4" />
-                Add NotificationBot
+                Add Bot
             </Link>
         </Button>
     );

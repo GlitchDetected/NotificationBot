@@ -8,7 +8,7 @@ import { ClientButton } from "./clientfunc";
 import type { Button } from "./ui/button";
 
 type Props = {
-    href: string;
+    href?: string;
     title: string;
     description: string;
     top?: string;
@@ -95,7 +95,7 @@ export function AddButton() {
         <ClientButton asChild className="button-primary">
             <Link href="/login?invite=true" prefetch={false} className="flex items-center gap-2">
                 <BsDiscord />
-                Add NotificationBot to your server
+                Add Bot to your server
             </Link>
         </ClientButton>
     );

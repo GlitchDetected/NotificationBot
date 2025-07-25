@@ -116,7 +116,7 @@ const evenMoreContent = [
 export default function Home() {
     return (
         <div className="flex flex-col items-center w-full">
-            {/* Hero Section */}
+
             <div className="flex w-full items-center gap-8 mb-16 md:mb-12 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
                 <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
                     <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
@@ -201,7 +201,7 @@ export default function Home() {
                                 Supports up to 3 platforms
                             </Badge>
 
-                            <h3 className={styles.h3}>97 Voices in 10 Languages</h3>
+                            <h3 className={styles.h3}>Notifications from your favorite platforms</h3>
 
                             <div className="pt-6">
                                 Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
@@ -262,10 +262,23 @@ export default function Home() {
                                 Supports RSS
                             </Badge>
 
-                            <h3 className={styles.h3}>97 Voices in 10 Languages</h3>
+                            <h3 className={styles.h3}>Notifications sent right into your DMs</h3>
 
                             <div className="pt-6">
-                                Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
+                                For this to work, just make sure direct messages is turned on!
+
+                                <ol className="mt-4">
+                                    {[
+                                        "Youtube, Twitch, Bluesky and Reddit",
+                                        "Custom message & embed",
+                                        "Up to 30 notification configs for free"
+                                    ].map((name) => (
+                                        <li key={name} className="flex gap-1 items-center">
+                                            <HiCheck className="text-red-400" />
+                                            {name}
+                                        </li>
+                                    ))}
+                                </ol>
                             </div>
 
                             <div className="flex gap-2 mt-5">
@@ -434,81 +447,90 @@ export default function Home() {
                 </p>
             </div>
 
-            <Marquee className="py-2" fade={true}>
-                {integrationsData.map((integration, i) => (
-                    <Card key={i} className="w-80 mx-4 shrink-0">
-                        <CardHeader className="flex flex-row items-center gap-4">
-                            <Image
-                                src={integration.avatar}
-                                alt={integration.name}
-                                width={40}
-                                height={40}
-                                className="rounded-full"
-                            />
-                            <CardTitle className="text-base">
-                                {integration.name}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-sm text-muted-foreground">
-                            {integration.content}
-                        </CardContent>
-                    </Card>
-                ))}
-            </Marquee>
+            <div className="w-full my-16 px-4">
+                <Marquee className="py-2" fade={true}>
+                    {integrationsData.map((integration, i) => (
+                        <Card key={i} className="w-80 mx-4 shrink-0">
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <Image
+                                    src={integration.avatar}
+                                    alt={integration.name}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full"
+                                />
+                                <CardTitle className="text-base">
+                                    {integration.name}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="text-sm text-muted-foreground">
+                                {integration.content}
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Marquee>
+            </div>
 
 
-            <div className="relative flex justify-center items-center mb-16">
-                {evenMoreContent.map(({ icon: Icon }, index) => {
-                    const rotation = 180 / (evenMoreContent.length - 1) * index;
-                    return (
-                        <div
-                            key={index}
-                            className="absolute"
-                            style={{
-                                transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
-                            }}
-                        >
-                            <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
-                                <Icon className="h-8 w-8 text-white" />
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="relative flex justify-center items-center">
+                    {evenMoreContent.map(({ icon: Icon }, index) => {
+                        const rotation = 180 / (evenMoreContent.length - 1) * index;
+                        return (
+                            <div
+                                key={index}
+                                className="absolute"
+                                style={{
+                                    transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
+                                }}
+                            >
+                                <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
+                                    <Icon className="h-8 w-8 text-white" />
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
+
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                        Countless more Features
+                    </h2>
+                    <p className="mt-4 text-sm sm:text-md text-gray-400">
+                        Never worry about sending announcements manually again.
+                    </p>
+                </div>
+
+                <div className="grid w-full max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 px-4">
+                    {evenMoreContent.map(({ icon: Icon, title, text }) => (
+                        <Card key={title} className="text-center relative">
+                            <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                                <Icon className="h-8 w-8" />
+                            </span>
+                            <CardHeader className="mt-16">
+                                <CardTitle>{title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p>{text}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+
+                    <Button className="flex justify-center" asChild>
+                        <Link
+                            href="/commands"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
+                            <HiTerminal className="w-5 h-5" />
+                            More Commands
+                            <HiArrowRight className="w-5 h-5" />
+                        </Link>
+                    </Button>
+                </div>
             </div>
 
-            {/* Even More Features */}
-            <div className="text-center mb-16">
-                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
-                    Countless more Features
-                </h2>
-                <p className="mt-4 text-sm sm:text-md text-gray-400">
-                    Never worry about sending announcements manually again.
-                </p>
-            </div>
-
-            <div className="grid w-full max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 px-4">
-                {evenMoreContent.map(({ icon: Icon, title, text }) => (
-                    <Card key={title} className="text-center relative">
-                        <span className="absolute top-4 left-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                            <Icon className="h-8 w-8" />
-                        </span>
-                        <CardHeader className="mt-16">
-                            <CardTitle>{title}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p>{text}</p>
-                        </CardContent>
-                    </Card>
-                ))}
-
-                <Button className="mb-24" asChild>
-                    <Link href="/commands" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                        <HiTerminal className="w-5 h-5" />
-                        More Commands
-                        <HiArrowRight className="w-5 h-5" />
-                    </Link>
-                </Button>
-            </div>
 
             <div className="w-full flex justify-center mb-12">
                 <div className="bg-red-600 rounded-full h-16 w-16 flex items-center justify-center">
