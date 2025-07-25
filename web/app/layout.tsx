@@ -33,7 +33,7 @@ export const generateMetadata = (): Metadata => {
         appleWebApp: {
             capable: true,
             title: "NotificationBot",
-            startupImage: "/me.webp",
+            startupImage: "/bot.webp",
             statusBarStyle: "black-translucent"
         },
 
@@ -57,14 +57,14 @@ export const generateMetadata = (): Metadata => {
             description,
             type: "website",
             url: getBaseUrl(),
-            images: `${getBaseUrl()}/me.webp`
+            images: `${getBaseUrl()}/bot.webp`
         },
         twitter: {
             card: "summary",
             site: "notificationbot.xyz",
             title,
             description,
-            images: `${getBaseUrl()}/me.webp`
+            images: `${getBaseUrl()}/bot.webp`
         },
 
         other: {
@@ -131,8 +131,8 @@ async function NavBar() {
                 flex items-center justify-between
                 px-6 sm:px-10 lg:px-20
                 rounded-none sm:rounded-xl
-                shadow-xl shadow-black/90
-                bg-red-950/40 backdrop-blur-xs backdrop-brightness-75"
+                shadow-xs shadow-gray-600/90
+                bg-foreground/40 backdrop-blur-xs backdrop-brightness-75"
         >
             <div className="flex gap-4 items-center">
                 <Link href="/" className="flex items-center gap-1">

@@ -24,7 +24,7 @@ const data = [
                     <LinkTag href="/add">invite NotificationBot</LinkTag> into.
                 </li>
                 <li>
-                    Open Discord{"'"}s add-app flow at <LinkTag href="/add">notificationbot.xyz/add</LinkTag>.
+                    Open Discord{"'"}s add-app flow at <LinkTag href="/add">/add</LinkTag>.
                 </li>
                 <li>
                     Select a server and click on {"\""}Continue{"\""}.

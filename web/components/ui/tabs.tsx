@@ -58,9 +58,9 @@ function TabsTrigger({
             className={cn(
                 "inline-flex items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
                 variant === "default" &&
-          "text-foreground dark:text-muted-foreground h-[calc(100%-1px)] flex-1 gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm focus-visible:ring-[3px] focus-visible:outline-1 data-[state=active]:bg-background dark:data-[state=active]:text-foreground dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 data-[state=active]:shadow-sm",
+          "text-primary dark:text-primary-foreground h-[calc(100%-1px)] flex-1 gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm focus-visible:ring-[3px] focus-visible:outline-1 data-[state=active]:bg-background dark:data-[state=active]:text-primary dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 data-[state=active]:shadow-sm",
                 variant === "underline" &&
-          "relative px-4 pb-3 pt-2 text-muted-foreground border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-foreground",
+          "relative px-4 pb-3 pt-2 text-primary-foreground border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary",
                 className
             )}
             {...props}

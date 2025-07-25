@@ -11,7 +11,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/me.webp",
+      "src": "/bot.webp",
       "type": "image/jpg",
       "sizes": "675x675",
       "purpose": "any maskable"

@@ -8,6 +8,7 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 import DiscordMessageEmbed from "@/components/discord/embed";
 import { DiscordMarkdown } from "@/components/discord/markdown";
 import DiscordMessage from "@/components/discord/message";
+import Codeblock from "@/components/markdown/codeblock";
 import { Badge } from "@/components/ui/badge";
 import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
@@ -41,14 +42,14 @@ const messageProps = (command?: string) => ({
     commandUsed: command
         ? {
             name: command,
-            username: "@NotificationBot",
-            avatar: "/me.webp",
+            username: "@Panda1",
+            avatar: "/user.webp",
             bot: false
         }
         : undefined,
     user: {
         username: "NotificationBot",
-        avatar: "/me.webp",
+        avatar: "/bot.webp",
         bot: true
     }
 });
@@ -265,13 +266,11 @@ export default function Home() {
                             <h3 className={styles.h3}>Notifications sent right into your DMs</h3>
 
                             <div className="pt-6">
-                                For this to work, just make sure direct messages is turned on!
+                                For this to work, just make sure <Codeblock>direct messages</Codeblock> is turned on!
 
                                 <ol className="mt-4">
                                     {[
-                                        "Youtube, Twitch, Bluesky and Reddit",
-                                        "Custom message & embed",
-                                        "Up to 30 notification configs for free"
+                                        "One configuration only for now"
                                     ].map((name) => (
                                         <li key={name} className="flex gap-1 items-center">
                                             <HiCheck className="text-red-400" />
@@ -298,12 +297,23 @@ export default function Home() {
                         <div
                             className="bg-discord-gray px-8 py-6 md:py-12 rounded-lg flex flex-col sm:flex-row sm:items-center md:flex-col md:items-start lg:flex-row lg:items-center gap-4 min-h-56"
                         >
+                            <DiscordMessage
+                                mode={"DARK"}
+                                user={{
+                                    username: "Panda1",
+                                    avatar: "/user.webp",
+                                    bot: false
+                                }}
+                            >
+                                <DiscordMarkdown mode={"DARK"} text="Demonstration below" />
+                            </DiscordMessage>
+
                             <DiscordMessage {...messageProps()}>
                                 <DiscordMarkdown
                                     mode="DARK"
-                                    text={"Hey **@everyone**, MrBeast just uploaded a new video!\n[https://www.youtube.com/watch?v=0e3GPea1Tyg&vl](https://www.youtube.com/watch?v=0e3GPea1Tyg&vl)"}
+                                    text={"Hey **@Panda1**, you have a new notification"}
                                 />
-                                <DiscordMessageEmbed mode="DARK" title="$456000 Squid Game in Real Life!" color={0xFF0000}>
+                                <DiscordMessageEmbed mode="DARK" title="From: [https://rss.nytimes.com/services/xml/rss/nyt/World.xml](https://rss.nytimes.com/services/xml/rss/nyt/World.xml)" color={0xFF0000}>
                                     <Image
                                         alt=""
                                         className="rounded-md shadow-md w-full mt-2"
@@ -407,8 +417,8 @@ export default function Home() {
                             <DiscordMessage
                                 mode={"DARK"}
                                 user={{
-                                    username: "User1",
-                                    avatar: "/me.webp",
+                                    username: "Panda1",
+                                    avatar: "/user.webp",
                                     bot: false
                                 }}
                             >
@@ -419,16 +429,49 @@ export default function Home() {
                                 mode={"DARK"}
                                 user={{
                                     username: "NotificationBot",
-                                    avatar: "/me.webp",
+                                    avatar: "/bot.webp",
                                     bot: true
                                 }}
                             >
                                 <DiscordMessageEmbed
                                     mode={"DARK"}
-                                    color={0xbc7ed4}
+                                    color={0xFF0000}
                                 >
                                     <DiscordMarkdown mode={"DARK"} text="custom message here!" />
                                 </DiscordMessageEmbed>
+                            </DiscordMessage>
+                        </div>
+                    </Box>
+                </div>
+
+                <div>
+                    <h2 className={styles.h2}>Easily set up your server</h2>
+
+                    <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
+                        <div className="md:w-1/2">
+
+                            <h3 className={styles.h3}>/serversetup</h3>
+
+                            <div className="pt-6">
+                                Easily set up your server{"'"}s notification channels and categories
+                            </div>
+                            <div className="flex gap-2 mt-6">
+                                <Button asChild>
+                                    <Link
+                                        href="/commands"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2"
+                                    >
+                                        <HiTerminal className="w-5 h-5" />
+                                        More Commands
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
+                            <DiscordMessage {...messageProps("serversetup")}>
+                                <DiscordMarkdown mode={"DARK"} text="Set up began..." />
                             </DiscordMessage>
                         </div>
                     </Box>
@@ -472,7 +515,7 @@ export default function Home() {
             </div>
 
 
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-7xl mx-auto px-20">
                 <div className="relative flex justify-center items-center">
                     {evenMoreContent.map(({ icon: Icon }, index) => {
                         const rotation = 180 / (evenMoreContent.length - 1) * index;
@@ -492,12 +535,12 @@ export default function Home() {
                     })}
                 </div>
 
-                <div className="text-center mb-16">
+                <div className="text-center mb-20">
                     <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
                         Countless more Features
                     </h2>
                     <p className="mt-4 text-sm sm:text-md text-gray-400">
-                        Never worry about sending announcements manually again.
+                        We offer more than just notifications
                     </p>
                 </div>
 
@@ -519,13 +562,11 @@ export default function Home() {
                     <Button className="flex justify-center" asChild>
                         <Link
                             href="/commands"
-                            target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2"
                         >
                             <HiTerminal className="w-5 h-5" />
                             More Commands
-                            <HiArrowRight className="w-5 h-5" />
                         </Link>
                     </Button>
                 </div>

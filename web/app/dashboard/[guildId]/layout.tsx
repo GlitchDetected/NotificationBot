@@ -11,7 +11,6 @@ import { guildStore } from "@/common/guildStore";
 import { ClientButton } from "@/components/client-ui";
 import { ListTab } from "@/components/list-tab";
 import { ScreenMessage, SupportButton } from "@/components/screen-message";
-import { Button } from "@/components/ui/button";
 import ImageReduceMotion from "@/components/ui/reducemotion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cacheOptions, getData } from "@/lib/api";
@@ -102,9 +101,6 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
             )}
 
             <div className="flex flex-col gap-5 mb-6">
-                <Button asChild>
-                    <Link href="/profile">Profile</Link>
-                </Button>
 
                 <div className="text-lg flex gap-5">
                     <Skeleton

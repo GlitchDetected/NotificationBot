@@ -253,7 +253,7 @@ export default function MessageCreatorEmbed({
                                     mode={mode}
                                     user={{
                                         username: "NotificationBot",
-                                        avatar: "/me.webp",
+                                        avatar: "/bot.webp",
                                         bot: true
                                     }}
                                 >
