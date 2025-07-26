@@ -3,7 +3,8 @@ import { ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     EmbedBuilder } from "discord.js";
-    import config from "@/src/config";
+
+import config from "@/src/config";
 
 export default async (client: Client, guild: Guild) => {
 

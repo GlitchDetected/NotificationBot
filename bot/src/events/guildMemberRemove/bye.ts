@@ -3,8 +3,8 @@ import type { Client, GuildMember, User } from "discord.js";
 import { AttachmentBuilder } from "discord.js";
 
 import { welcomerPlaceholders } from "@/src/constants/discord";
-import Bye from "@/src/database/models/bye";
-import Welcome from "@/src/database/models/welcome";
+import { getBye } from "@/src/db/models/bye";
+import { getWelcome, updateWelcome } from "@/src/db/models/welcome";
 import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
 
 export default async (
@@ -22,9 +22,7 @@ export default async (
         ...welcomerPlaceholders(member, inviter, inviteCode, inviteCount)
     };
 
-    const config = await Bye.findOne({
-        where: { guildId: guild.id }
-    });
+    const config = await getBye(guild.id);
 
     if (!config || !config.enabled || !config.channelId) return;
 
@@ -34,9 +32,9 @@ export default async (
     const content = replacePlaceholder(config.message?.content || "", placeholders);
 
     // delete welcome message after leave
-    const welcomeConfig = await Welcome.findOne({ where: { guildId: guild.id } });
+    const welcomeConfig = await getWelcome(guild.id);
 
-    const messageId = welcomeConfig?.welcomeMessageIds[member.id];
+    const messageId = welcomeConfig?.welcomeMessageIds?.[member.id];
     if (!messageId) return;
 
     if (!welcomeConfig || !welcomeConfig.welcomeMessageIds || !welcomeConfig.channelId) return;
@@ -48,7 +46,10 @@ export default async (
     } catch {
         return;
     }
-    await Welcome.update({ welcomeMessageId: null }, { where: { guildId: guild.id } });
+    await updateWelcome(guild.id, {
+        welcomeMessageIds: welcomeConfig.welcomeMessageIds
+    });
+
 
     if (config.message?.embed) {
         const { title, description, color, image, thumbnail, footer } = config.message.embed;

@@ -3,7 +3,7 @@ import type { Client, GuildMember, User } from "discord.js";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { welcomerPlaceholders } from "@/src/constants/discord";
-import Welcome from "@/src/database/models/welcome";
+import { getWelcome, updateWelcome } from "@/src/db/models/welcome";
 import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
 
 export default async (
@@ -22,9 +22,7 @@ export default async (
         ...welcomerPlaceholders(member, inviter, inviteCode, inviteCount)
     };
 
-    const config = await Welcome.findOne({
-        where: { guildId: guild.id }
-    });
+    const config = await getWelcome(guild.id);
 
     if (!config || !config.enabled || !config.channelId) return;
 
@@ -80,10 +78,8 @@ export default async (
     if (config.deleteAfterLeave) {
         const welcomeMessageIds = { ...(config.welcomeMessageIds || {}) };
         welcomeMessageIds[member.id] = sentMessage.id;
-        await Welcome.update(
-            { welcomeMessageIds },
-            { where: { guildId: guild.id } }
-        );
+        await updateWelcome(guild.id, { welcomeMessageIds });
+
     }
 
     if (config.deleteAfter && Number.isFinite(config.deleteAfter)) {

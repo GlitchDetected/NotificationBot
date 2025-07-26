@@ -1,7 +1,7 @@
 import type { Client, Guild, Message } from "discord.js";
 
 import { notificationPlaceholders } from "@/src/constants/discord";
-import Notifications from "@/src/database/models/notifications";
+import { getNotificationById } from "@/src/db/models/notifications";
 import { fetchers } from "@/src/lib/getUploads";
 import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
@@ -9,7 +9,7 @@ import type { ContentData, notificationConfig, NotificationType } from "@/typing
 export default async (
     _client: Client,
     _message: Message,
-    notificationId: string,
+    id: string,
     guild: Guild,
     config: notificationConfig,
     type: NotificationType,
@@ -19,7 +19,7 @@ export default async (
         ...notificationPlaceholders(guild, config, type, contentData)
     };
 
-    const dbConfig = await Notifications.findOne({ where: { id: notificationId } });
+    const dbConfig = await getNotificationById(id);
     if (!dbConfig || !dbConfig.id || !dbConfig.guildId) return;
 
     if (dbConfig.type !== type) {

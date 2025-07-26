@@ -1,6 +1,7 @@
 import type { Client } from "discord.js";
 import os from "os";
 import ts from "typescript";
+
 import config from "../config";
 export default async (client: Client) => {
     try {

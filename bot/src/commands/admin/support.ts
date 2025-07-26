@@ -7,6 +7,7 @@ import { ActionRowBuilder,
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle } from "discord.js";
+
 import config from "@/src/config";
 
 export default {

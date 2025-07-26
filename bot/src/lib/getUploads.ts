@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
+
 import appConfig from "../config";
 
 // YouTube

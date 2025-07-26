@@ -1,5 +1,5 @@
-import getLocalCommands from "@/src/utils/getLocalCommands";
 import config from "@/src/config";
+import getLocalCommands from "@/src/utils/getLocalCommands";
 
 const devs = config.devs;
 const testServer = config.testServer;

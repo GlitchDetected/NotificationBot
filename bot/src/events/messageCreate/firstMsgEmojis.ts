@@ -1,19 +1,13 @@
-import type { Client, Message } from "discord.js";
+import type { Client, GuildMember, Message } from "discord.js";
 
-import Welcome from "@/src/database/models/welcome";
-import redis from "@/src/lib/redis";
+import { getWelcome } from "@/src/db/models/welcome";
 
-export default async (_client: Client, message: Message) => {
+export default async (_client: Client, message: Message, member: GuildMember) => {
+    const { guild } = member;
+
     if (message.author.bot || !message.guild) return;
 
-    const seenUser = `seenUser:${message.guild.id}:${message.author.id}`;
-
-    const hasSeen = await redis.get(seenUser);
-    if (hasSeen) return;
-
-    await redis.set(seenUser, "1", "EX", 60 * 60 * 24 * 365);
-
-    const config = await Welcome.findOne({ where: { guildId: message.guild.id } });
+    const config = await getWelcome(guild.id);
     if (!config?.reactions?.firstMessageEmojis?.length) return;
 
     for (const emoji of config.reactions.firstMessageEmojis) {
