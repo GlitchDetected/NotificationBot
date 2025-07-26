@@ -37,7 +37,7 @@ export default async function Home({ params }: Props) {
     return (
         <article itemType="http://schema.org/Article" className="w-full lg:w-3/4">
             {meta?.permissions?.bot && (
-                <Notice type={NoticeType.Info} message="NotificationBot requries permission:" location="bottom">
+                <Notice type={NoticeType.Info} message="Required bot permissions:" location="bottom">
                     <div className="flex flex-wrap gap-1">
                         {meta.permissions.bot.map((perm) => (
                             <Codeblock key={perm}>

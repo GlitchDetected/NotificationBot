@@ -68,7 +68,7 @@ Bring Discord's "Wave to say hi!" feature to NotificationBot's custom messages, 
 - Button emoji (must be from your server)
 - Toggle ping
 
-## Placeholders
+## Message Placeholders
 Placeholders allow you to use variables that change from message to message. For example to display the username of the joining user on your server, enclosed `user.username` in curly brackets: `{user.username}`.
 
 <table>

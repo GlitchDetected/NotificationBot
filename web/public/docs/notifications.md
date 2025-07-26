@@ -8,9 +8,9 @@
 </iframe>
 
 ## Setup
-1. Add NotificationBot to your server by going to [/add](/add) on the website.
-2. Head to the dashboard by going to [/dashboard](/dashboard?to=notifications).
-3. Select your server from your profile.
+1. Add the bot to your server by going to [/add](/add).
+2. Go to the dashboard by going to [/dashboard](/dashboard?to=notifications).
+3. Select your server
 4. Navigate to the **Notifications** tab.
 5. Click **Create new Notification**, select a platform and enter a channel url or username.
 7. Click **Submit** and start customizing it however you want
@@ -34,7 +34,7 @@ You can create a notification message with a **fully customizable message and em
 **Note:** Image previews might be broken on the dashboard.
 
 ### 🏓 Pings
-The role that should get notified about new uploads.
+The ping role is the role that will be used for your notification, for pinging purposes
 examples:
 - `@everyone` will ping every member in the server.
 - `@here` will ping every *currently online* member in the server.
@@ -45,35 +45,35 @@ examples:
 **Note:** If NotificationBot does not have the `Mention Everyone` permission inside a channel, it will not be able to notify any server members.
 
 ### 📫 Filter
-Allows you to select additional types or filter notifications for Bluesky:
-- `Send Reposts` will also notify when the user reposts any post.
-- `Send Replies` will also notify when the user replies to any post.
-- `Send Quotes` will also notify when the user quotes any post.
+Filters allow you to select additional types or filter notifications for Bluesky:
+- `Send Reposts` will also notify when the user reposts
+- `Send Replies` will also notify when the user replies to a post.
+- `Send Quotes` will also notify when the user quotes a post.
 - `Must Contain Image` will only notify when the post contains an image.
 <br />
 <br />
 
-For all other services, you can take advantage of a regex to blacklist posts:
+For all other platforms, you can use a `regex` to blacklist posts!
+Example regexes:
 - `^\[live\]` will not post anything starting with `[live]`.
 - `insult|badword` will not post anything that includes either `insult` or `badword`.
 - `^(?!support$).+$` will only post that are `support`. (useful for reddit flairs)
 <br />
 <br />
 
-You can use [regexr.com](https://regexr.com/) or [ChatGPT](https://chatgpt.com/) to create (JavaScript-like) regexes.
-You can use regex keywords to negate the condition, in order to create a whitelist filter.
+You can use [regexr.com](https://regexr.com/) or [ChatGPT](https://chatgpt.com/) to create JavaScript-like regexes.
+You can use regex keywords to avoid a condition, in order to create a whitelist filter.
 The flags used for string matching are `gi`, only the titles and reddit flairs are checked.
 
 ### Testing your notification
-Test notifications let you see how your message will look like when a video is uploaded or a streamer goes live, basically
-a simulation
+Test notifications let you see how your notification message will look like
 
-Therefore, all pings are disabled, so no member will get notified.
-For streaming platforms like Twitch, mock data is used to simulate a live stream.
-Notification filters will still be ignored.
+- pings will be disabled
+- streaming platforms such as Twitch, mock data is used to simulate a live stream.
+- notification filters will still be ignored.
 
 ## Offline notifications
-If NotificationBot is offline when a video, stream or post is published, your notification will be queued and sent as soon as NotificationBot comes back online. You can check NotificationBot’s status on [/status](/status).
+If the bot is offline when a video, stream or post is published, your notification will be queued and sent as soon as the bot comes back online. You can check the current status on [/status](/status).
 
 ## Notification speed
 Notifications are typically sent within these time frames:
@@ -83,12 +83,13 @@ Notifications are typically sent within these time frames:
 - **Reddit**: up to 20 minutes
 
 ## Platform limitations
-YouTube keeps the video private for a few seconds to minutes after uploading, so the notification might be delayed by a few seconds.
+- YouTube keeps the video private for a few seconds to minutes after uploading, so the notification might be delayed by a few seconds.
 <br />
 <br />
-Due to changes in Reddit's API pricing in 2023, we can't offer notification speeds any faster than 20 minutes.
 
-## Placeholders
+- Due to changes in Reddit's API pricing in 2023, we can't offer notification speeds any faster than 20 minutes.
+
+## Message Placeholders
 Placeholders allow you to use variables that change from message to message. For example to display information about a creator, you can enclose creator.name in curly brackets like `{creator.name}`.
 <br />
 <br />
@@ -269,7 +270,7 @@ Placeholders allow you to use variables that change from message to message. For
 </table>
 <br />
 
-*If a post is a reply, and your custom message is `{post.type}ed` it will display `replied to`, instead of `replied`.
+*If a post is a reply, and your custom message has `{post.type}` it will display `replied to`, instead of the default `replied`.
 
 <br />
 <br />

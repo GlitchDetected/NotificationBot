@@ -11,12 +11,12 @@
       "image": "/doc-assets/open-graph/notifications-youtube.webp",
       "description": "Notifications sent directly to your direct messages",
       "permissions": {
-        "bot": ["View Channel", "Send Messages", "Embed Links", "Attach Files"],
-        "user": ["Manage Server"]
+        "bot": ["Mutual server w/ bot", "DMs enabled", "Bot is not blocked"],
+        "user": ["DMs enabled"]
       }
     },
     {
-            "name": "📢 Social Notifications",
+            "name": "📢 Notifications",
             "file": "notifications.md",
             "image": "/doc-assets/open-graph/notifications-youtube.webp",
             "description": "Notify your community from your favorite socials like YouTube, Twitch, Bluesky or Reddit",
