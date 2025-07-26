@@ -1,7 +1,8 @@
 import getLocalCommands from "@/src/utils/getLocalCommands";
+import config from "@/src/config";
 
-const devs = process.env.devs ? process.env.devs.split(",") : [];
-const testServer = process.env.testServer;
+const devs = config.devs;
+const testServer = config.testServer;
 
 import type { Client, GuildMember, PermissionResolvable } from "discord.js";
 

@@ -1,9 +1,11 @@
+import "@dotenvx/dotenvx/config";
+
 import type { CacheWithLimitsOptions } from "discord.js";
 
 // export config as a constant value
 export default {
     client: {
-        token: String(process.env["TOKEN"]),
+        token: String(process.env["DISCORD_TOKEN"]),
         caches: {
             ApplicationCommandManager: 0,
             BaseGuildEmojiManager: 0,
@@ -25,6 +27,12 @@ export default {
         } as CacheWithLimitsOptions
     },
     databaseUri: String(process.env["pgConnectionString"]),
+    redisString: String(process.env["REDIS_STRING"]),
+
+    apiSecrets: {
+        botApiSecret: String(process.env["API_SECRET"]),
+        youtubeAPI: String(process.env["YTV3API"])
+    },
 
     cluster: {
         id: parseInt(process.env["CLUSTER"] ?? "", 10) || 0,
@@ -32,19 +40,19 @@ export default {
         shardCount: parseInt(process.env["SHARD_COUNT"] ?? "", 10) || 1
     },
 
+    clientId: process.env["clientId"] ?? "",
     owner: process.env["owner"] ?? "",
     devs: (process.env["devs"] ?? "").split(","),
     testServer: process.env["testServer"] ?? null,
 
-    api: {
-        port: parseInt(process.env["PORT"] ?? "", 10) || null,
-        numberOfProxies: parseInt(process.env["API_NUMBER_OF_PROXIES"] ?? "", 10) || 0
-    },
+    guildId: process.env["GUILD_ID"] ?? "",
+    supportServer: process.env["SUPPORT_SERVER"] ?? "",
+    supportChannel: process.env["SUPPORT_CHANNEL_ID"] ?? "",
 
-    websocket: {
-        port: parseInt(process.env["WEBSOCKET_INTERNAL_PORT"] ?? "9900", 10),
-        uri: process.env["WEBSOCKET_INTERNAL_URI"] ?? "ws://localhost:9900"
+    api: {
+        api_url: String(process.env["API_URL"])
     },
+    dashboard: String(process.env["DASHBOARD_URL"]),
 
     colors: {
         primary: parseInt(process.env["COLOR_PRIMARY"] ?? "BD4632", 16),

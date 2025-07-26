@@ -1,10 +1,10 @@
-import "@dotenvx/dotenvx/config";
-
 import { Client, IntentsBitField } from "discord.js";
 
 import db from "@/src/database/index";
 import models, { type ModelsMap } from "@/src/database/models";
 import eventHandler from "@/src/handlers/eventHandler";
+
+import config from "./config";
 
 const client = new Client({
     intents: [
@@ -15,8 +15,6 @@ const client = new Client({
         IntentsBitField.Flags.MessageContent
     ]
 });
-
-// const forceDbReset = process.env.FORCE_DB_RESET === 'false';
 
 (async () => {
     try {
@@ -39,7 +37,7 @@ const client = new Client({
 
         eventHandler(client);
 
-        client.login(process.env.DISCORD_TOKEN);
+        client.login(config.client.token);
 
     } catch (error) {
         console.log(`Error: ${error}`);

@@ -3,6 +3,7 @@ import { ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     EmbedBuilder } from "discord.js";
+    import config from "@/src/config";
 
 export default async (client: Client, guild: Guild) => {
 
@@ -25,7 +26,7 @@ Thank you for adding NotificationBot!
 
 ### Here are some FAQs:
 ## How do I set up the bot?
-You can setup everything on the **[Web Dashboard](${process.env.DASHBOARD_URL}/dashboard/${guild.id})**
+You can setup everything on the **[Web Dashboard](${config.dashboard}/dashboard/${guild.id})**
 
 ## Does the bot have / commands?
 Yes, just type slash (/) in the chat box to get started
@@ -40,13 +41,13 @@ Yes, just type slash (/) in the chat box to get started
             .setLabel("Join Support")
             .setEmoji("📞")
             .setStyle(ButtonStyle.Link)
-            .setURL(process.env.SUPPORT_SERVER!),
+            .setURL(config.supportServer),
 
         new ButtonBuilder()
             .setLabel("Dashboard")
             .setEmoji("📊")
             .setStyle(ButtonStyle.Link)
-            .setURL(process.env.DASHBOARD_URL!)
+            .setURL(config.dashboard)
     );
 
     channel.send({ embeds: [embed], components: [row] });

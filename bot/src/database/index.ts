@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
+import config from "../config";
 
-const connection = process.env.pgConnectionString;
+const connection = config.databaseUri;
 
 if (!connection) {
     throw new Error("Environment variable 'PG_CONNECTION_STRING' is not defined.");

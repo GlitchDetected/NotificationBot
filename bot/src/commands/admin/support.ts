@@ -7,6 +7,7 @@ import { ActionRowBuilder,
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle } from "discord.js";
+import config from "@/src/config";
 
 export default {
     name: "support",
@@ -56,24 +57,13 @@ export default {
                 return;
             }
 
-            const guildId = process.env.GUILD_ID;
-            const channelId = process.env.SUPPORT_CHANNEL_ID;
-
-            if (!guildId) {
-                throw new Error("GUILD_ID is not defined in environment variables.");
-            }
-
-            if (!channelId) {
-                throw new Error("SUPPORT_CHANNEL_ID is not defined in environment variables.");
-            }
-
-            const guild = client.guilds.cache.get(guildId);
+            const guild = client.guilds.cache.get(config.guildId);
             if (!guild) {
                 console.error("Invalid guild ID");
                 return;
             }
 
-            const channel = guild.channels.cache.get(channelId);
+            const channel = guild.channels.cache.get(config.supportChannel);
 
             if (!channel || channel.type !== ChannelType.GuildText) {
                 console.error("Invalid or unsupported channel type.");

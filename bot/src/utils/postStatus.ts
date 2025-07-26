@@ -1,7 +1,7 @@
 import type { Client } from "discord.js";
 import os from "os";
 import ts from "typescript";
-
+import config from "../config";
 export default async (client: Client) => {
     try {
         if (!client.application) {
@@ -69,11 +69,11 @@ export default async (client: Client) => {
   -H "apikey: apikey" \
 */
 
-        fetch(`${process.env.API_URL}/status`, {
+        fetch(`${config.api.api_url}/status`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                apikey: process.env.API_KEY as string
+                apikey: (config.apiSecrets.botApiSecret) as string
             },
             body: JSON.stringify(payload)
         })
