@@ -4,17 +4,17 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 
+import config from "./config";
 import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
 import baseMiddleware from "./middlewares/base-middleware";
 import baseRouter from "./routes/base-router";
 
 const app = new Hono();
 export default app;
-// app.use(apiKeyMiddleware);
 
 app.use(
     cors({
-        origin: process.env.FRONTEND_SITE || "http://localhost:3000",
+        origin: config.dashboard,
         credentials: true,
         exposeHeaders: ["Set-Cookie"]
     })
@@ -35,7 +35,7 @@ app.all("/*", () => {
     );
 });
 
-const PORT = Number(process.env.PORT) || 3001;
+const PORT = config.api.apiPort;
 
 serve({
     fetch: app.fetch,

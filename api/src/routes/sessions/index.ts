@@ -1,15 +1,17 @@
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 
+import config from "@/src/config";
+
 import { HttpErrorMessage } from "../../constants/http-error";
 import User from "../../db/models/user";
 import { httpError } from "../../utils/httperrorHandler";
 
 const router = new Hono();
 
-const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
-const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
-const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
+const DISCORD_ENDPOINT = config.discordEndpoint;
+const CLIENT_ID = config.client.clientId;
+const CLIENT_SECRET = config.client.clientSecret;
 
 router.post("/", async (c) => {
     try {
@@ -83,7 +85,7 @@ router.post("/", async (c) => {
                 displayName: userResJson.global_name,
                 avatarHash: userResJson.avatar || null
             },
-            process.env.JWT_SECRET!,
+            config.apiSecrets.jwtSecret!,
             { expiresIn: "7d" }
         );
 

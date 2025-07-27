@@ -1,9 +1,11 @@
 import { Hono } from "hono";
 
-import { HttpErrorMessage } from "@/constants/http-error";
-import Bye from "@/db/models/bye";
-import { httpError } from "@/utils/httperrorHandler";
-import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "~/typings";
+import appConfig from "@/src/config";
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { createBye, getBye, updateBye } from "@/src/db/models/bye";
+import type { ByeTable } from "@/src/db/types";
+import { httpError } from "@/src/utils/httperrorHandler";
+import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "@/typings";
 
 const router = new Hono();
 
@@ -18,7 +20,7 @@ router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
     try {
-        const config = await Bye.findOne({ where: { guildId } });
+        const config = await getBye(guildId!);
 
         return c.json({
             enabled: config?.enabled ?? false,
@@ -46,27 +48,29 @@ router.get("/", async (c) => {
 
 router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
+    const updateData: Partial<Omit<ByeTable, "createdAt" | "updatedAt">> = {};
+
     const body = await c.req.json() as ApiV1GuildsModulesByeGetResponse;
-    console.log(body);
 
     try {
     // overwrite values if they are explicitly provided. Otherwise, preserve the existing ones.
-        let config = await Bye.findOne({ where: { guildId: guildId } });
+        let config = await getBye(guildId!);
         if (config) {
             const keys: ("enabled" | "channelId" | "webhookURL" | "deleteAfter")[] =
       ["enabled", "channelId", "webhookURL", "deleteAfter"];
+
             for (const key of keys) {
                 if (key in body) {
-                    (config as Record<UpdatableFields, unknown>)[key] = body[key];
+                    (updateData as Record<UpdatableFields, unknown>)[key] = body[key];
                 }
             }
 
             if (typeof body.message === "object" && body.message !== null) {
-                config.message = {
+                updateData.message = {
                     content:
-      typeof body.message.content === "string"
-          ? body.message.content
-          : config.message?.content ?? null,
+                    typeof body.message.content === "string"
+                        ? body.message.content
+                        : config.message?.content ?? null,
                     embed:
       typeof body.message.embed === "object" && body.message.embed !== null
           ? body.message.embed
@@ -75,7 +79,7 @@ router.patch("/", async (c) => {
             }
 
             if (typeof body.card === "object" && body.card !== null) {
-                config.card = {
+                updateData.card = {
                     enabled: typeof body.card.enabled === "boolean"
                         ? body.card.enabled
                         : config.card?.enabled ?? false,
@@ -90,28 +94,28 @@ router.patch("/", async (c) => {
                         : config.card?.textColor ?? undefined
                 };
             }
-            await config.save();
+            await updateBye(guildId!, updateData);
         } else {
         // create if the guild does not have a configuration
-            config = await Bye.create({
-                guildId: guildId,
+            config = await createBye({
+                guildId: guildId!,
 
-                enabled: body.enabled,
-                channelId: body.channelId,
-                webhookURL: body.webhookURL,
+                enabled: body.enabled ?? false,
+                channelId: body.channelId ?? null,
+                webhookURL: body.webhookURL ?? null,
 
                 message: {
                     content: body.message?.content ?? "😔 It is sad to see you leave {guild.name}, {user.name}. Come back anytime!",
-                    embed: body.message?.embed ?? null
+                    embed: body.message?.embed ?? undefined
                 },
 
-                deleteAfter: body.deleteAfter,
+                deleteAfter: body.deleteAfter ?? null,
 
                 card: {
                     enabled: body.card?.enabled ?? false,
                     inEmbed: body.card?.inEmbed ?? false,
-                    background: body.card?.background ?? null,
-                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : null
+                    background: body.card?.background ?? undefined,
+                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
                 }
             });
         }
@@ -127,7 +131,7 @@ router.post("/test", async (c) => {
     const user = c.get("user");
 
     try {
-        const config = await Bye.findOne({ where: { guildId } });
+        const config = await getBye(guildId!);
 
         if (!config || !config.channelId) {
             return httpError(HttpErrorMessage.ChannelNotFound);
@@ -143,7 +147,7 @@ router.post("/test", async (c) => {
         const res = await fetch(`https://discord.com/api/v10/channels/${config.channelId}/messages`, {
             method: "POST",
             headers: {
-                Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+                Authorization: `Bot ${appConfig.client.token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)

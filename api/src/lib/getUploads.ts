@@ -2,10 +2,12 @@ import axios from "axios";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
+import appConfig from "../config";
+
 // YouTube
 async function fetchLatestYouTubeContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const apiKey = process.env.YTV3API;
+        const apiKey = appConfig.apiSecrets.youtubeAPI;
         if (!apiKey) throw new Error("Missing YouTube API key");
 
         const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creatorId}&part=snippet,id&order=date&maxResults=1&type=video`;

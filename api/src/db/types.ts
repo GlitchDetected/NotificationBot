@@ -39,8 +39,8 @@ export interface DmNotificationsTable {
 
 export interface FollowUpdatesTable {
     guildId: string;
-    channelId: string;
-    name: string;
+    channelId: string | null;
+    name: string | null;
 }
 
 export interface NotificationsTable {

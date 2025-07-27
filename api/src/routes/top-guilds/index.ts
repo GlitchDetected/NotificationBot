@@ -1,9 +1,11 @@
 import { Hono } from "hono";
 
+import config from "@/src/config";
+
 const router = new Hono();
 
-const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
-const BOT_TOKEN = process.env.DISCORD_TOKEN;
+const DISCORD_ENDPOINT = config.discordEndpoint;
+const BOT_TOKEN = config.client.token;
 
 router.get("/", async (c) => {
     try {

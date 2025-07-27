@@ -19,7 +19,7 @@ export default {
     discordEndpoint: String(process.env["DISCORD_ENDPOINT"]),
 
     api: {
-        apiPort: String(process.env["PORT"]),
+        apiPort: Number(process.env["PORT"]) || 3001,
         api_url: String(process.env["API_URL"])
     },
     dashboard: String(process.env["DASHBOARD_URL"]),

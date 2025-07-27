@@ -1,13 +1,14 @@
 import { Hono } from "hono";
 
-import Reviews from "@/db/models/reviews";
+import config from "@/src/config";
+import { getAllReviews } from "@/src/db/models/reviews";
 
 const router = new Hono();
 
-const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
+const DISCORD_ENDPOINT = config.discordEndpoint;
 
 router.get("/", async (c) => {
-    const reviews = await Reviews.findAll();
+    const reviews = await getAllReviews();
 
     const enrichedReviews = await Promise.all(
         reviews.map(async (review) => {
@@ -16,7 +17,7 @@ router.get("/", async (c) => {
                     `${DISCORD_ENDPOINT}/guilds/${review.guildId}?with_counts=true`,
                     {
                         headers: {
-                            Authorization: `Bot ${process.env.DISCORD_TOKEN}`
+                            Authorization: `Bot ${config.client.token}`
                         }
                     }
                 );

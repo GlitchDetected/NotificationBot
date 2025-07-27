@@ -1,6 +1,8 @@
+import config from "../config";
+
 export default async function getYouTubeAvatar(creatorId: string): Promise<string | null> {
     try {
-        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${creatorId}&key=${process.env.YTV3API}`);
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${creatorId}&key=${config.apiSecrets.youtubeAPI}`);
         const data = await res.json();
         return data?.items?.[0]?.snippet?.thumbnails?.high?.url ?? null;
     } catch {
@@ -12,7 +14,7 @@ export async function getYtChannelId(creatorHandle: string): Promise<string | nu
     try {
         const query = encodeURIComponent(creatorHandle);
         const res = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${query}&key=${process.env.YTV3API}`
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${query}&key=${config.apiSecrets.youtubeAPI}`
         );
         const data = await res.json();
         return data?.items?.[0]?.id?.channelId ?? null;

@@ -4,9 +4,12 @@ import { Hono } from "hono";
 import { HttpErrorMessage } from "@/constants/http-error";
 import { hasPermissions } from "@/lib/checkPerms";
 import redis from "@/lib/redis";
+import config from "@/src/config";
 import { httpError } from "@/utils/httperrorHandler";
+
 const router = new Hono();
-const DISCORD_ENDPOINT = process.env.DISCORD_ENDPOINT;
+
+const DISCORD_ENDPOINT = config.discordEndpoint;
 
 import dmnRouter from "./dmnotifications";
 router.route("/dmnotifications", dmnRouter);
@@ -59,7 +62,7 @@ router.get("/guilds", async (c) => {
     // Fetch the bot's guilds
     const botGuildsRes = await fetch(`${DISCORD_ENDPOINT}/users/@me/guilds`, {
         headers: {
-            Authorization: `Bot ${process.env.DISCORD_TOKEN}`
+            Authorization: `Bot ${config.client.token}`
         }
     });
 

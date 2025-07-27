@@ -1,6 +1,8 @@
 import { Redis } from "ioredis";
 
-const redis = new Redis(process.env.REDIS_STRING as string);
+import config from "../config";
+
+const redis = new Redis(config.redisString as string);
 
 redis.on("error", (err) => {
     console.error("Redis connection error:", err);

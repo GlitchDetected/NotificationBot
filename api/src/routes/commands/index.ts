@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 
+import config from "@/src/config";
+
 const router = new Hono();
 
 interface Command {
@@ -10,9 +12,9 @@ interface Command {
 
 router.get("/", async (c) => {
     try {
-        const res = await fetch(`${process.env.DISCORD_ENDPOINT}/applications/${process.env.DISCORD_CLIENT_ID}/commands`, {
+        const res = await fetch(`${config.discordEndpoint}/applications/${config.client.clientId}/commands`, {
             headers: {
-                Authorization: `Bot ${process.env.DISCORD_TOKEN}`
+                Authorization: `Bot ${config.client.token}`
             }
         });
 

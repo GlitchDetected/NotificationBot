@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 
-import { HttpErrorMessage } from "@/constants/http-error";
-import DmNotifications from "@/db/models/dmnotifications";
-import { httpError } from "@/utils/httperrorHandler";
-import type { ApiV1UsersMeGetResponse } from "~/typings";
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { createDmNotification, deleteDmNotification, getDmNotification, updateDmNotification } from "@/src/db/models/dmnotifications";
+import { httpError } from "@/src/utils/httperrorHandler";
+import type { ApiV1UsersMeGetResponse } from "@/typings";
 
 const router = new Hono();
 
@@ -17,7 +17,7 @@ router.get("/", async (c) => {
             return httpError(HttpErrorMessage.MissingAccess);
         }
 
-        const config = await DmNotifications.findOne({ where: { userId: user.id } });
+        const config = await getDmNotification(user.id);
 
         return c.json({
             enabled: config?.enabled ?? false,
@@ -40,7 +40,7 @@ router.patch("/", async (c) => {
     const body = await c.req.json() as ApiV1UsersMeGetResponse["dmnotifications"];
 
     try {
-        let config = await DmNotifications.findOne({ where: { userId: user.id } });
+        let config = await getDmNotification(user.id);
 
         if (!body) {
             return httpError(HttpErrorMessage.BadRequest);
@@ -50,30 +50,32 @@ router.patch("/", async (c) => {
             const keys: ("enabled" | "embedcolor" | "source" | "thumbnail" | "message")[] =
       ["enabled", "embedcolor", "source", "thumbnail", "message"];
 
+            const updateData: Partial<typeof body> = {};
+
             for (const key of keys) {
                 if (key in body) {
-                    (config as Record<UpdatableFields, unknown>)[key] = body[key];
+                    (updateData as Record<UpdatableFields, unknown>)[key] = body[key];
                 }
             }
-            await config.save();
+            await updateDmNotification(user.id, updateData);
         } else {
             // Create
-            config = await DmNotifications.create({
+            config = await createDmNotification({
                 userId: user.id,
-                enabled: body?.enabled,
-                embedcolor: body?.embedcolor,
-                source: body?.source,
-                thumbnail: body?.thumbnail,
-                message: body?.message
+                enabled: body?.enabled ?? false,
+                embedcolor: body?.embedcolor ?? 0,
+                source: body?.source ?? null,
+                thumbnail: body?.thumbnail ?? null,
+                message: body?.message ?? "You got a new notification from"
             });
         }
 
         return c.json({
             enabled: body?.enabled,
-            embedcolor: config.embedcolor,
-            source: config.source,
-            thumbnail: config.thumbnail,
-            message: config.message
+            embedcolor: config?.embedcolor,
+            source: config?.source,
+            thumbnail: config?.thumbnail,
+            message: config?.message
         });
     } catch (error) {
         console.error("Error creating/updating user dmnotifications configuration:", error);
@@ -88,7 +90,7 @@ router.delete("/", async (c) => {
     }
 
     try {
-        const deletedCount = await DmNotifications.destroy({ where: { userId: user.id } });
+        const deletedCount = await deleteDmNotification(user.id);
         if (!deletedCount) {
             return c.json({ message: "No configuration found to delete." });
         }

@@ -1,9 +1,10 @@
 import { Hono } from "hono";
 
-import { HttpErrorMessage } from "@/constants/http-error";
-import Welcome from "@/db/models/welcome";
-import { httpError } from "@/utils/httperrorHandler";
-import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "~/typings";
+import appConfig from "@/src/config";
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import Welcome from "@/src/db/models/welcome";
+import { httpError } from "@/src/utils/httperrorHandler";
+import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "@/typings";
 
 interface TestPayload {
     content?: string;
@@ -241,7 +242,7 @@ router.post("/test", async (c) => {
         const res = await fetch(`https://discord.com/api/v10/channels/${config.channelId}/messages`, {
             method: "POST",
             headers: {
-                Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+                Authorization: `Bot ${appConfig.client.token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
