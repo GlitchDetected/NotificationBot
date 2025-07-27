@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 
-import Notifications from "@/db/models/notifications";
-import { fetchers } from "@/lib/getUploads";
-import getYouTubeAvatar from "@/lib/youtube";
-import { getYtChannelId } from "@/lib/youtube";
-import { NotificationType } from "~/typings";
+import { getNotificationByGuild, upsertNotification } from "@/src/db/models/notifications";
+import { fetchers } from "@/src/lib/getUploads";
+import getYouTubeAvatar from "@/src/lib/youtube";
+import { getYtChannelId } from "@/src/lib/youtube";
+import { NotificationType } from "@/typings";
 const router = new Hono();
 
 import notificationIdRouter from "./[id]";
@@ -14,8 +14,12 @@ router.route("/:id", notificationIdRouter); // dynamic route
 router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
+    if (!guildId) {
+        return c.json({ error: "guildId parameter is required" });
+    }
+
     try {
-        const configs = await Notifications.findAll({ where: { guildId } });
+        const configs = await getNotificationByGuild(guildId);
 
         if (configs.length === 0) {
             return c.json({
@@ -138,9 +142,9 @@ router.post("/", async (c) => {
             }
         }
 
-        const config = await Notifications.create({
+        const config = await upsertNotification({
             id: crypto.randomUUID(),
-            guildId: guildId,
+            guildId: guildId!,
             channelId: body.channelId,
             roleId: body.roleId ?? null,
             type: body.type,
@@ -157,7 +161,7 @@ router.post("/", async (c) => {
                 avatarUrl: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, ytCreatorId ?? ""),
                 customUrl: body.customUrl ?? null
             },
-            createdAt: new Date()
+            createdAt: new Date().toISOString()
         });
 
         return c.json(config);

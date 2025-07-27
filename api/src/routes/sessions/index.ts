@@ -2,9 +2,9 @@ import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 
 import config from "@/src/config";
+import { getUser, upsertUser } from "@/src/db/models/user";
 
 import { HttpErrorMessage } from "../../constants/http-error";
-import User from "../../db/models/user";
 import { httpError } from "../../utils/httperrorHandler";
 
 const router = new Hono();
@@ -54,10 +54,11 @@ router.post("/", async (c) => {
 
         const userResJson = await userRes.json();
 
-        let user = await User.findOne({ where: { id: userResJson.id } });
+        const user = await getUser(userResJson.id);
+        let payload;
 
         if (!user) {
-            user = new User({
+            payload = ({
                 id: userResJson.id,
                 email: userResJson.email,
                 username: userResJson.username,
@@ -67,15 +68,17 @@ router.post("/", async (c) => {
                 refreshToken: oauthResJson.refresh_token
             });
         } else {
-            user.email = userResJson.email;
-            user.username = userResJson.username;
-            user.displayName = userResJson.global_name;
-            user.avatarHash = userResJson.avatar;
-            user.accessToken = oauthResJson.access_token;
-            user.refreshToken = oauthResJson.refresh_token;
+            payload = {
+                email: userResJson.email,
+                username: userResJson.username,
+                displayName: userResJson.global_name ?? null,
+                avatarHash: userResJson.avatar ?? null,
+                accessToken: oauthResJson.access_token,
+                refreshToken: oauthResJson.refresh_token
+            };
         }
 
-        await user.save();
+        await upsertUser(payload);
 
         const token = jwt.sign(
             {

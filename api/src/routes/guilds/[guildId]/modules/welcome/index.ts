@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import appConfig from "@/src/config";
 import { HttpErrorMessage } from "@/src/constants/http-error";
-import Welcome from "@/src/db/models/welcome";
+import { getWelcome, upsertWelcome } from "@/src/db/models/welcome";
 import { httpError } from "@/src/utils/httperrorHandler";
 import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "@/typings";
 
@@ -19,7 +19,7 @@ router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
     try {
-        const config = await Welcome.findOne({ where: { guildId } });
+        const config = await getWelcome(guildId!);
 
         return c.json({
             enabled: config?.enabled ?? false,
@@ -74,8 +74,17 @@ router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
     const body = await c.req.json() as ApiV1GuildsModulesWelcomeGetResponse;
 
+    if (!guildId) {
+        return c.json({ error: "Missing guildId parameter" }, 400);
+    }
+
     try {
-        let config = await Welcome.findOne({ where: { guildId: guildId } });
+        let config = await getWelcome(guildId!);
+
+        if (!config) {
+            return c.json({ error: "configuration not found" }, 404);
+        }
+
         if (config) {
             const keys: ("enabled" | "channelId" | "roleIds" | "pingIds" | "deleteAfter" | "deleteAfterLeave" | "restore")[] =
       ["enabled", "channelId", "roleIds", "pingIds", "deleteAfter", "deleteAfterLeave", "restore"];
@@ -164,17 +173,27 @@ router.patch("/", async (c) => {
                 };
             }
 
-            await config.save();
+            const dataToSave = {
+                ...config,
+                createdAt: config.createdAt instanceof Date
+                    ? config.createdAt.toISOString()
+                    : config.createdAt,
+                updatedAt: new Date().toISOString()
+            };
+
+
+            const updatedConfig = await upsertWelcome(dataToSave);
+            return c.json(updatedConfig);
         } else {
         // create if the guild does not have a configuration
-            config = await Welcome.create({
+            config = await upsertWelcome({
                 guildId: guildId,
                 enabled: body.enabled,
                 channelId: body.channelId,
 
                 message: {
                     content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
-                    embed: body.dm?.message?.embed ?? null
+                    embed: body.dm?.message?.embed ?? undefined
                 },
 
 
@@ -188,7 +207,7 @@ router.patch("/", async (c) => {
                     enabled: body.dm?.enabled ?? false,
                     message: {
                         content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
-                        embed: body.dm?.message?.embed ?? null
+                        embed: body.dm?.message?.embed ?? undefined
                     }
                 },
 
@@ -200,8 +219,8 @@ router.patch("/", async (c) => {
                 card: {
                     enabled: body.card?.enabled ?? false,
                     inEmbed: body.card?.inEmbed ?? false,
-                    background: body.card?.background ?? null,
-                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : null
+                    background: body.card?.background ?? undefined,
+                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
                 },
 
                 button: {
@@ -215,7 +234,7 @@ router.patch("/", async (c) => {
             });
         }
 
-        return c.json({ config: config });
+        return c.json(config);
     } catch (error) {
         console.error("Error creating/updating welcome configuration:", error);
     }
@@ -226,7 +245,7 @@ router.post("/test", async (c) => {
     const user = c.get("user");
 
     try {
-        const config = await Welcome.findOne({ where: { guildId } });
+        const config = await getWelcome(guildId!);
 
         if (!config || !config.channelId) {
             return httpError(HttpErrorMessage.ChannelNotFound);

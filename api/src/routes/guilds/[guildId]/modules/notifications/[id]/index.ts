@@ -1,18 +1,21 @@
 import { Hono } from "hono";
 
-import Notifications from "@/db/models/notifications";
-import type { ApiV1GuildsModulesNotificationsGetResponse } from "~/typings";
+import { deleteNotification, getNotificationById, upsertNotification } from "@/src/db/models/notifications";
+import type { ApiV1GuildsModulesNotificationsGetResponse } from "@/typings";
 
 const router = new Hono();
 
 type UpdatableFields = "type" | "channelId" | "creatorId" | "roleId" | "regex";
 
 router.get("/", async (c) => {
-    const guildId = c.req.param("guildId");
     const id = c.req.param("id");
 
+    if (!id) {
+        return c.json({ error: "Missing id parameter" }, 400);
+    }
+
     try {
-        const config = await Notifications.findOne({ where: { id, guildId } });
+        const config = await getNotificationById(id);
         return c.json({
             id: config?.id ?? null,
             guildId: config?.guildId ?? null,
@@ -39,12 +42,19 @@ router.get("/", async (c) => {
 });
 
 router.patch("/", async (c) => {
-    const guildId = c.req.param("guildId");
     const id = c.req.param("id");
     const body = await c.req.json() as ApiV1GuildsModulesNotificationsGetResponse;
 
+    if (!id) {
+        return c.json({ error: "Missing id parameter" }, 400);
+    }
+
     try {
-        const config = await Notifications.findOne({ where: { id, guildId } });
+        const config = await getNotificationById(id);
+
+        if (!config) {
+            return c.json({ error: "Notification configuration not found" }, 404);
+        }
 
         if (config) {
             const keys: ("type" | "channelId" | "creatorId" | "roleId" | "regex")[] =
@@ -89,22 +99,33 @@ router.patch("/", async (c) => {
           : config.creator?.customUrl ?? null
                 };
             }
-
-            await config.save();
         }
 
-        return c.json({ config: config });
+        const dataToSave = {
+            ...config,
+            createdAt: config.createdAt instanceof Date
+                ? config.createdAt.toISOString()
+                : config.createdAt,
+            updatedAt: new Date().toISOString()
+        };
+
+
+        const updatedConfig = await upsertNotification(dataToSave);
+        return c.json(updatedConfig);
     } catch (error) {
         console.error("Error creating/updating notification configuration:", error);
     }
 });
 
 router.delete("/", async (c) => {
-    const guildId = c.req.param("guildId");
     const id = c.req.param("id");
 
+    if (!id) {
+        return c.json({ error: "Missing id parameter" }, 400);
+    }
+
     try {
-        const deletedCount = await Notifications.destroy({ where: { id, guildId } });
+        const deletedCount = await deleteNotification(id);
         if (!deletedCount) {
             return c.json({ message: "No configuration found for this guild to delete." });
         }

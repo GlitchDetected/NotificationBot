@@ -46,7 +46,7 @@ export interface FollowUpdatesTable {
 export interface NotificationsTable {
     id: Generated<string>;
     guildId: string;
-    channelId: string;
+    channelId: string | null;
     roleId: string | null;
     type: 0 | 1 | 2 | 3 | null;
     flags: number | null;
@@ -59,9 +59,9 @@ export interface NotificationsTable {
     } | null;
 
     creator: {
-        id: string;
-        username: string;
-        customUrl: string;
+        id: string | null;
+        username: string | null;
+        customUrl: string | null;
         avatarUrl: string | null;
     } | null;
 
@@ -82,9 +82,9 @@ export interface ReviewsTable {
 }
 
 export interface UserTable {
-    id: string;
-    email: string;
-    username: string;
+    id: string | null;
+    email: string | null;
+    username: string | null;
     displayName: string | null;
     avatarHash: string | null;
     accessToken: string;
