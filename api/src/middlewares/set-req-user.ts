@@ -2,10 +2,10 @@ import type { MiddlewareHandler } from "hono";
 import { getCookie } from "hono/cookie";
 import jwt from "jsonwebtoken";
 
-import { HttpErrorMessage } from "@/constants/http-error";
-import { httpError } from "@/utils/httperrorHandler";
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { httpError } from "@/src/utils/httperrorHandler";
 
-import User from "../database/models/User";
+import User from "../db/models/user";
 
 interface DecodedToken {
     id?: string;

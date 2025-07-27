@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 
 import { HttpErrorMessage } from "../../constants/http-error";
-import User from "../../database/models/User";
+import User from "../../db/models/user";
 import { httpError } from "../../utils/httperrorHandler";
 
 const router = new Hono();

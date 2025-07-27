@@ -2,7 +2,7 @@
 import { Hono } from "hono";
 
 import { HttpErrorMessage } from "@/constants/http-error";
-import FollowUpdates from "@/database/models/followupdates";
+import FollowUpdates from "@/db/models/followupdates";
 import { httpError } from "@/utils/httperrorHandler";
 import type { ApiV1GuildsGetResponse } from "~/typings";
 

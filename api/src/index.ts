@@ -5,8 +5,6 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 
 import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
-import db from "./database/index";
-import models, { type ModelsMap } from "./database/models";
 import baseMiddleware from "./middlewares/base-middleware";
 import baseRouter from "./routes/base-router";
 
@@ -38,23 +36,6 @@ app.all("/*", () => {
 });
 
 const PORT = Number(process.env.PORT) || 3001;
-
-console.clear();
-
-// register associations between sequelize models at runtime
-Object.entries(models).forEach(([_, model]) => {
-    if ("associate" in model && typeof model.associate === "function") {
-        (model.associate as (models: ModelsMap) => void)(models);
-    }
-
-    console.log(`Registered: ${model.name}`);
-});
-
-db.sync({
-    force: false
-});
-
-console.log("Connected to PG DB");
 
 serve({
     fetch: app.fetch,

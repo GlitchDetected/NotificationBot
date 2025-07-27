@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import Reviews from "@/database/models/reviews";
+import Reviews from "@/db/models/reviews";
 
 const router = new Hono();
 

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { HttpErrorMessage } from "@/constants/http-error";
-import Welcome from "@/database/models/welcome";
+import Welcome from "@/db/models/welcome";
 import { httpError } from "@/utils/httperrorHandler";
 import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "~/typings";
 

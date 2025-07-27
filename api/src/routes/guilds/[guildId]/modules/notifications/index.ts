@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import Notifications from "@/database/models/notifications";
+import Notifications from "@/db/models/notifications";
 import { fetchers } from "@/lib/getUploads";
 import getYouTubeAvatar from "@/lib/youtube";
 import { getYtChannelId } from "@/lib/youtube";

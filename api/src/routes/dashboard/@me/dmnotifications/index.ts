@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { HttpErrorMessage } from "@/constants/http-error";
-import DmNotifications from "@/database/models/dmnotifications";
+import DmNotifications from "@/db/models/dmnotifications";
 import { httpError } from "@/utils/httperrorHandler";
 import type { ApiV1UsersMeGetResponse } from "~/typings";
 

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import Notifications from "@/database/models/notifications";
+import Notifications from "@/db/models/notifications";
 import type { ApiV1GuildsModulesNotificationsGetResponse } from "~/typings";
 
 const router = new Hono();
