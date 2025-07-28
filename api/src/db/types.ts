@@ -69,7 +69,6 @@ export interface NotificationsTable {
     updatedAt: ColumnType<Date, string | undefined, never>;
 }
 
-
 export interface ReviewsTable {
     guildId: string;
     name: string | null;
