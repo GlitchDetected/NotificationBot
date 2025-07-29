@@ -1,7 +1,7 @@
 import { type APIEmbed, WebhookClient } from "discord.js";
 import { Hono } from "hono";
 
-import type { ApiV1GuildsModulesWebhookGetResponse } from "~/typings";
+import type { ApiV1GuildsModulesWebhookGetResponse } from "@/typings";
 
 const router = new Hono();
 

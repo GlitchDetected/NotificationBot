@@ -7,12 +7,12 @@ export function getWelcome(guildId: string) {
     return db
         .selectFrom("welcome")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }
 
 const DISALLOWED_UPDATE_COLUMNS = [
-    "createdAt"
+    "created_at"
 ] satisfies (keyof Database["welcome"])[];
 
 export function upsertWelcome(welcome: Insertable<Database["welcome"]>) {
@@ -27,7 +27,7 @@ export function upsertWelcome(welcome: Insertable<Database["welcome"]>) {
         .insertInto("welcome")
         .values(welcome)
         .onConflict((oc) => oc
-            .column("guildId")
+            .column("guild_id")
             .doUpdateSet(updateConfig)
         )
         .returningAll()

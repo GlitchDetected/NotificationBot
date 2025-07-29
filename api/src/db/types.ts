@@ -1,57 +1,56 @@
 import type { ColumnType, Generated } from "kysely";
-
 import type { GuildEmbed } from "@/typings";
 
 export interface ByeTable {
-    guildId: string;
+    guild_id: string;
     enabled: boolean | null;
-    channelId: string | null;
-    webhookURL: string | null;
+    channel_id: string | null;
+    webhook_url: string | null;
 
     message: {
         content: string | null;
         embed?: GuildEmbed;
     } | null;
 
-    deleteAfter: number | null;
+    delete_after: number | null;
 
     card: {
         enabled: boolean;
-        inEmbed: boolean;
+        in_embed: boolean;
         background?: string;
-        textColor?: number;
+        text_color?: number;
     } | null;
 
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
 
 export interface DmNotificationsTable {
-    userId: string;
+    user_id: string;
     enabled: boolean | null;
-    embedcolor: number | null;
+    embed_color: number | null;
     source: string | null;
     thumbnail: string | null;
     message: string | null;
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
 
 export interface FollowUpdatesTable {
-    guildId: string;
-    channelId: string | null;
+    guild_id: string;
+    channel_id: string | null;
     name: string | null;
 }
 
 export interface NotificationsTable {
     id: Generated<string>;
-    guildId: string;
-    channelId: string | null;
-    roleId: string | null;
+    guild_id: string;
+    channel_id: string | null;
+    role_id: string | null;
     type: 0 | 1 | 2 | 3 | null;
     flags: number | null;
     regex: string | null;
-    creatorId: string | null;
+    creator_id: string | null;
 
     message: {
         content: string | null;
@@ -61,54 +60,54 @@ export interface NotificationsTable {
     creator: {
         id: string | null;
         username: string | null;
-        customUrl: string | null;
-        avatarUrl: string | null;
+        custom_url: string | null;
+        avatar_url: string | null;
     } | null;
 
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
 
 export interface ReviewsTable {
-    guildId: string;
+    guild_id: string;
     name: string | null;
     icon: string | null;
-    memberCount: number | null;
+    member_count: number | null;
     review: string | null;
 
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
 
 export interface UserTable {
     id: string | null;
     email: string | null;
     username: string | null;
-    displayName: string | null;
-    avatarHash: string | null;
-    accessToken: string;
-    refreshToken: string;
+    display_name: string | null;
+    avatar_hash: string | null;
+    access_token: string;
+    refresh_token: string;
 
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
 
 export interface WelcomeTable {
-    guildId: string;
+    guild_id: string;
     enabled: boolean | null;
-    channelId: string | null;
+    channel_id: string | null;
 
     message: {
         content: string | null;
         embed?: GuildEmbed;
     } | null;
 
-    roleIds: string[];
-    pingIds: string[];
+    role_ids: string[];
+    ping_ids: string[];
 
-    deleteAfter: number | null;
-    deleteAfterLeave: boolean | null;
-    isRestorable: boolean;
+    delete_after: number | null;
+    delete_after_leave: boolean | null;
+    is_restorable: boolean;
 
     dm: {
         enabled: boolean;
@@ -119,15 +118,15 @@ export interface WelcomeTable {
     } | null;
 
     reactions: {
-        welcomeMessageEmojis: string[];
-        firstMessageEmojis: string[];
+        welcome_message_emojis: string[];
+        first_message_emojis: string[];
     } | null;
 
     card: {
         enabled: boolean;
-        inEmbed: boolean;
+        in_embed: boolean;
         background?: string;
-        textColor?: number;
+        text_color?: number;
     } | null;
 
     button: {
@@ -139,12 +138,11 @@ export interface WelcomeTable {
         type: 0;
     } | null;
 
-    welcomeMessageIds: Record<string, string> | null;
+    welcome_message_ids: Record<string, string> | null;
 
-    createdAt: ColumnType<Date, string | undefined, never>;
-    updatedAt: ColumnType<Date, string | undefined, never>;
+    created_at: ColumnType<Date, string | undefined, never>;
+    updated_at: ColumnType<Date, string | undefined, never>;
 }
-
 
 export interface Database {
     bye: ByeTable;

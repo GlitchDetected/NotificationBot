@@ -18,13 +18,13 @@ router.get("/", async (c) => {
         const config = await getNotificationById(id);
         return c.json({
             id: config?.id ?? null,
-            guildId: config?.guildId ?? null,
-            channelId: config?.channelId ?? null,
-            roleId: config?.roleId ?? null,
+            guildId: config?.guild_id ?? null,
+            channelId: config?.channel_id ?? null,
+            roleId: config?.role_id ?? null,
             type: config?.type ?? null,
             flags: config?.flags ?? null,
             regex: config?.regex ?? null,
-            creatorId: config?.creatorId ?? null,
+            creatorId: config?.creator_id ?? null,
             message: {
                 content: config?.message?.content ?? null,
                 embed: config?.message?.embed ?? null
@@ -32,8 +32,8 @@ router.get("/", async (c) => {
             creator: {
                 id: config?.creator?.id ?? null,
                 username: config?.creator?.username ?? null,
-                avatarUrl: config?.creator?.avatarUrl ?? null,
-                customUrl: config?.creator?.customUrl ?? null
+                avatarUrl: config?.creator?.avatar_url ?? null,
+                customUrl: config?.creator?.custom_url ?? null
             }
         });
     } catch (error) {
@@ -89,24 +89,24 @@ router.patch("/", async (c) => {
       typeof body.creator.username === "string"
           ? body.creator.username
           : config.creator?.username ?? null,
-                    avatarUrl:
+                    avatar_url:
       typeof body.creator.avatarUrl === "string"
           ? body.creator.avatarUrl
-          : config.creator?.avatarUrl ?? null,
-                    customUrl:
+          : config.creator?.avatar_url ?? null,
+                    custom_url:
       typeof body.creator.customUrl === "string"
           ? body.creator.customUrl
-          : config.creator?.customUrl ?? null
+          : config.creator?.custom_url ?? null
                 };
             }
         }
 
         const dataToSave = {
             ...config,
-            createdAt: config.createdAt instanceof Date
-                ? config.createdAt.toISOString()
-                : config.createdAt,
-            updatedAt: new Date().toISOString()
+            created_at: config.created_at instanceof Date
+                ? config.created_at.toISOString()
+                : config.created_at,
+            updated_at: new Date().toISOString()
         };
 
 

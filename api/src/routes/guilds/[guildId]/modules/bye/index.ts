@@ -24,21 +24,21 @@ router.get("/", async (c) => {
 
         return c.json({
             enabled: config?.enabled ?? false,
-            channelId: config?.channelId ?? null,
-            webhookURL: config?.webhookURL ?? null,
+            channelId: config?.channel_id ?? null,
+            webhookURL: config?.webhook_url ?? null,
 
             message: {
                 content: config?.message?.content ?? null,
                 embed: config?.message?.embed ?? null
             },
 
-            deleteAfter: config?.deleteAfter ?? 0,
+            deleteAfter: config?.delete_after ?? 0,
 
             card: {
                 enabled: config?.card?.enabled ?? false,
-                inEmbed: config?.card?.inEmbed ?? false,
+                inEmbed: config?.card?.in_embed ?? false,
                 background: config?.card?.background ?? null,
-                textColor: config?.card?.textColor ?? null
+                textColor: config?.card?.text_color ?? null
             }
         });
     } catch (error) {
@@ -83,39 +83,39 @@ router.patch("/", async (c) => {
                     enabled: typeof body.card.enabled === "boolean"
                         ? body.card.enabled
                         : config.card?.enabled ?? false,
-                    inEmbed: typeof body.card.inEmbed === "boolean"
+                    in_embed: typeof body.card.inEmbed === "boolean"
                         ? body.card.inEmbed
-                        : config.card?.inEmbed ?? false,
+                        : config.card?.in_embed ?? false,
                     background: "background" in body.card
                         ? body.card.background
                         : config.card?.background ?? undefined,
-                    textColor: typeof body.card.textColor === "number"
+                    text_color: typeof body.card.textColor === "number"
                         ? body.card.textColor
-                        : config.card?.textColor ?? undefined
+                        : config.card?.text_color ?? undefined
                 };
             }
             await updateBye(guildId!, updateData);
         } else {
         // create if the guild does not have a configuration
             config = await createBye({
-                guildId: guildId!,
+                guild_id: guildId!,
 
                 enabled: body.enabled ?? false,
-                channelId: body.channelId ?? null,
-                webhookURL: body.webhookURL ?? null,
+                channel_id: body.channelId ?? null,
+                webhook_url: body.webhookURL ?? null,
 
                 message: {
                     content: body.message?.content ?? "😔 It is sad to see you leave {guild.name}, {user.name}. Come back anytime!",
                     embed: body.message?.embed ?? undefined
                 },
 
-                deleteAfter: body.deleteAfter ?? null,
+                delete_after: body.deleteAfter ?? null,
 
                 card: {
                     enabled: body.card?.enabled ?? false,
-                    inEmbed: body.card?.inEmbed ?? false,
+                    in_embed: body.card?.inEmbed ?? false,
                     background: body.card?.background ?? undefined,
-                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
+                    text_color: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
                 }
             });
         }
@@ -133,7 +133,7 @@ router.post("/test", async (c) => {
     try {
         const config = await getBye(guildId!);
 
-        if (!config || !config.channelId) {
+        if (!config || !config.channel_id) {
             return httpError(HttpErrorMessage.ChannelNotFound);
         }
 
@@ -144,7 +144,7 @@ router.post("/test", async (c) => {
         if (content) payload.content = content;
         if (embed) payload.embeds = [embed];
 
-        const res = await fetch(`https://discord.com/api/v10/channels/${config.channelId}/messages`, {
+        const res = await fetch(`https://discord.com/api/v10/channels/${config.channel_id}/messages`, {
             method: "POST",
             headers: {
                 Authorization: `Bot ${appConfig.client.token}`,

@@ -5,11 +5,11 @@ export function getBye(guildId: string) {
     return db
         .selectFrom("bye")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }
 
-export function createBye(data: Omit<ByeTable, "createdAt" | "updatedAt">) {
+export function createBye(data: Omit<ByeTable, "created_at" | "updated_at">) {
     return db
         .insertInto("bye")
         .values(data)
@@ -19,11 +19,11 @@ export function createBye(data: Omit<ByeTable, "createdAt" | "updatedAt">) {
 
 export function updateBye(
     guildId: string,
-    updates: Partial<Omit<ByeTable, "userId" | "createdAt" | "updatedAt">>
+    updates: Partial<Omit<ByeTable, "created_at" | "updated_at">>
 ) {
     return db
         .updateTable("bye")
         .set(updates)
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }

@@ -15,12 +15,12 @@ export function getNotificationByGuild(guildId: string) {
     return db
         .selectFrom("notifications")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .execute();
 }
 
 const DISALLOWED_UPDATE_COLUMNS = [
-    "createdAt"
+    "created_at"
 ] satisfies (keyof Database["notifications"])[];
 
 export function upsertNotification(notifications: Insertable<Database["notifications"]>) {

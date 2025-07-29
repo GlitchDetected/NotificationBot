@@ -21,7 +21,7 @@ router.get("/", async (c) => {
 
         return c.json({
             enabled: config?.enabled ?? false,
-            embedcolor: config?.embedcolor ?? 0,
+            embedcolor: config?.embed_color ?? 0,
             source: config?.source ?? null,
             thumbnail: config?.thumbnail ?? null,
             message: config?.message ??	"You got a new notifications from"
@@ -61,9 +61,9 @@ router.patch("/", async (c) => {
         } else {
             // Create
             config = await createDmNotification({
-                userId: user.id,
+                user_id: user.id,
                 enabled: body?.enabled ?? false,
-                embedcolor: body?.embedcolor ?? 0,
+                embed_color: body?.embedcolor ?? 0,
                 source: body?.source ?? null,
                 thumbnail: body?.thumbnail ?? null,
                 message: body?.message ?? "You got a new notification from"
@@ -72,7 +72,7 @@ router.patch("/", async (c) => {
 
         return c.json({
             enabled: body?.enabled,
-            embedcolor: config?.embedcolor,
+            embedcolor: config?.embed_color,
             source: config?.source,
             thumbnail: config?.thumbnail,
             message: config?.message

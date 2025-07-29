@@ -35,13 +35,13 @@ router.get("/", async (c) => {
         return c.json(
             configs.map((config) => ({
                 id: config.id ?? null,
-                guildId: config.guildId ?? null,
-                channelId: config.channelId ?? null,
-                roleId: config.roleId ?? null,
+                guildId: config.guild_id ?? null,
+                channelId: config.channel_id ?? null,
+                roleId: config.role_id ?? null,
                 type: config.type ?? null,
                 flags: config.flags ?? null,
                 regex: config.regex ?? null,
-                creatorId: config.creatorId ?? null,
+                creatorId: config.creator_id ?? null,
                 message: {
                     content: config.message?.content ?? null,
                     embed: config.message?.embed ?? null
@@ -49,8 +49,8 @@ router.get("/", async (c) => {
                 creator: {
                     id: config.creator?.id ?? null,
                     username: config.creator?.username ?? null,
-                    avatarUrl: config.creator?.avatarUrl ?? null,
-                    customUrl: config.creator?.customUrl ?? null
+                    avatarUrl: config.creator?.avatar_url ?? null,
+                    customUrl: config.creator?.custom_url ?? null
                 }
             })));
     } catch (error) {
@@ -144,13 +144,13 @@ router.post("/", async (c) => {
 
         const config = await upsertNotification({
             id: crypto.randomUUID(),
-            guildId: guildId!,
-            channelId: body.channelId,
-            roleId: body.roleId ?? null,
+            guild_id: guildId!,
+            channel_id: body.channelId,
+            role_id: body.roleId ?? null,
             type: body.type,
             flags: body.flags ?? 0,
             regex: body.regex ?? null,
-            creatorId: ytCreatorId ?? null,
+            creator_id: ytCreatorId ?? null,
             message: {
                 content: body.message?.content ?? defaultMessage[body.type as NotificationType],
                 embed: body.message?.embed ?? null
@@ -158,10 +158,10 @@ router.post("/", async (c) => {
             creator: {
                 id: ytCreatorId ?? null,
                 username: body.creatorHandle,
-                avatarUrl: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, ytCreatorId ?? ""),
-                customUrl: body.customUrl ?? null
+                avatar_url: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, ytCreatorId ?? ""),
+                custom_url: body.customUrl ?? null
             },
-            createdAt: new Date().toISOString()
+            created_at: new Date().toISOString()
         });
 
         return c.json(config);

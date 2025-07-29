@@ -48,7 +48,7 @@ router.get("/", async (c) => {
         inviteUrl: `https://discord.com/channels/${guild.id}`,
         description: guild.description ?? null,
         follownewsChannel: {
-            id: followUpdates?.channelId ?? null,
+            id: followUpdates?.channel_id ?? null,
             name: followUpdates?.name ?? null
         }
     });
@@ -167,14 +167,14 @@ router.patch("/follow-updates", async (c) => {
             await updateFollowUpdates(guildId!, updateData);
         } else {
             config = await createFollowUpdates({
-                guildId: guildId!,
-                channelId: body?.channelId ?? null,
+                guild_id: guildId!,
+                channel_id: body?.channelId ?? null,
                 name: channelName ?? null
             });
         }
 
         return c.json({
-            channelId: config?.channelId,
+            channelId: config?.channel_id,
             name: config?.name
         });
     } catch (error) {

@@ -62,19 +62,19 @@ router.post("/", async (c) => {
                 id: userResJson.id,
                 email: userResJson.email,
                 username: userResJson.username,
-                displayName: userResJson.global_name,
-                avatarHash: userResJson.avatar,
-                accessToken: oauthResJson.access_token,
-                refreshToken: oauthResJson.refresh_token
+                display_name: userResJson.global_name,
+                avatar_hash: userResJson.avatar,
+                access_token: oauthResJson.access_token,
+                refresh_token: oauthResJson.refresh_token
             });
         } else {
             payload = {
                 email: userResJson.email,
                 username: userResJson.username,
-                displayName: userResJson.global_name ?? null,
-                avatarHash: userResJson.avatar ?? null,
-                accessToken: oauthResJson.access_token,
-                refreshToken: oauthResJson.refresh_token
+                display_name: userResJson.global_name ?? null,
+                avatar_hash: userResJson.avatar ?? null,
+                access_token: oauthResJson.access_token,
+                refresh_token: oauthResJson.refresh_token
             };
         }
 

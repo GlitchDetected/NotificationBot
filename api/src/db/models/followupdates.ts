@@ -5,7 +5,7 @@ export function getFollowUpdates(guildId: string) {
     return db
         .selectFrom("followupdates")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }
 
@@ -24,6 +24,6 @@ export function updateFollowUpdates(
     return db
         .updateTable("followupdates")
         .set(updates)
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }

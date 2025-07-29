@@ -4,7 +4,7 @@ export function getReview(guildId: string) {
     return db
         .selectFrom("reviews")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }
 

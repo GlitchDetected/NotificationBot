@@ -14,7 +14,7 @@ router.get("/", async (c) => {
         reviews.map(async (review) => {
             try {
                 const guildRes = await fetch(
-                    `${DISCORD_ENDPOINT}/guilds/${review.guildId}?with_counts=true`,
+                    `${DISCORD_ENDPOINT}/guilds/${review.guild_id}?with_counts=true`,
                     {
                         headers: {
                             Authorization: `Bot ${config.client.token}`
@@ -23,7 +23,7 @@ router.get("/", async (c) => {
                 );
 
                 if (!guildRes.ok) {
-                    console.error("Failed to fetch guild:", review.guildId);
+                    console.error("Failed to fetch guild:", review.guild_id);
                     return null;
                 }
 
@@ -38,7 +38,7 @@ router.get("/", async (c) => {
                     review: review.review
                 };
             } catch (err) {
-                console.error("Fetch error for guild", review.guildId, err);
+                console.error("Fetch error for guild", review.guild_id, err);
                 return null;
             }
         })

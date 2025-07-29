@@ -23,18 +23,18 @@ router.get("/", async (c) => {
 
         return c.json({
             enabled: config?.enabled ?? false,
-            channelId: config?.channelId ?? null,
+            channelId: config?.channel_id ?? null,
 
             message: {
                 content: config?.message?.content ?? null,
                 embed: config?.message?.embed ?? null
             },
 
-            roleIds: config?.roleIds ?? [],
-            pingIds: config?.pingIds ?? [],
-            deleteAfter: config?.deleteAfter ?? 0,
-            deleteAfterLeave: config?.deleteAfterLeave ?? false,
-            restore: config?.isRestorable ?? false,
+            roleIds: config?.role_ids ?? [],
+            pingIds: config?.ping_ids ?? [],
+            deleteAfter: config?.delete_after ?? 0,
+            deleteAfterLeave: config?.delete_after_leave ?? false,
+            restore: config?.is_restorable ?? false,
 
             dm: {
                 enabled: config?.dm?.enabled ?? false,
@@ -45,15 +45,15 @@ router.get("/", async (c) => {
             },
 
             reactions: {
-                welcomeMessageEmojis: config?.reactions?.welcomeMessageEmojis ?? [],
-                firstMessageEmojis: config?.reactions?.firstMessageEmojis ?? []
+                welcomeMessageEmojis: config?.reactions?.welcome_message_emojis ?? [],
+                firstMessageEmojis: config?.reactions?.first_message_emojis ?? []
             },
 
             card: {
                 enabled: config?.card?.enabled ?? false,
-                inEmbed: config?.card?.inEmbed ?? false,
+                inEmbed: config?.card?.in_embed ?? false,
                 background: config?.card?.background ?? null,
-                textColor: config?.card?.textColor ?? null
+                textColor: config?.card?.text_color ?? null
             },
 
             button: {
@@ -126,12 +126,12 @@ router.patch("/", async (c) => {
 
             if (typeof body.reactions === "object" && body.reactions !== null) {
                 config.reactions = {
-                    welcomeMessageEmojis: Array.isArray(body.reactions.welcomeMessageEmojis)
+                    welcome_message_emojis: Array.isArray(body.reactions.welcomeMessageEmojis)
                         ? body.reactions.welcomeMessageEmojis
-                        : config.reactions?.welcomeMessageEmojis ?? [],
-                    firstMessageEmojis: Array.isArray(body.reactions.firstMessageEmojis)
+                        : config.reactions?.welcome_message_emojis ?? [],
+                    first_message_emojis: Array.isArray(body.reactions.firstMessageEmojis)
                         ? body.reactions.firstMessageEmojis
-                        : config.reactions?.firstMessageEmojis ?? []
+                        : config.reactions?.first_message_emojis ?? []
                 };
             }
 
@@ -140,15 +140,15 @@ router.patch("/", async (c) => {
                     enabled: typeof body.card.enabled === "boolean"
                         ? body.card.enabled
                         : config.card?.enabled ?? false,
-                    inEmbed: typeof body.card.inEmbed === "boolean"
+                    in_embed: typeof body.card.inEmbed === "boolean"
                         ? body.card.inEmbed
-                        : config.card?.inEmbed ?? false,
+                        : config.card?.in_embed ?? false,
                     background: "background" in body.card
                         ? body.card.background
                         : config.card?.background ?? undefined,
-                    textColor: typeof body.card.textColor === "number"
+                    text_color: typeof body.card.textColor === "number"
                         ? body.card.textColor
-                        : config.card?.textColor ?? undefined
+                        : config.card?.text_color ?? undefined
                 };
             }
 
@@ -175,10 +175,10 @@ router.patch("/", async (c) => {
 
             const dataToSave = {
                 ...config,
-                createdAt: config.createdAt instanceof Date
-                    ? config.createdAt.toISOString()
-                    : config.createdAt,
-                updatedAt: new Date().toISOString()
+                created_at: config.created_at instanceof Date
+                    ? config.created_at.toISOString()
+                    : config.created_at,
+                updated_at: new Date().toISOString()
             };
 
 
@@ -187,9 +187,9 @@ router.patch("/", async (c) => {
         } else {
         // create if the guild does not have a configuration
             config = await upsertWelcome({
-                guildId: guildId,
+                guild_id: guildId,
                 enabled: body.enabled,
-                channelId: body.channelId,
+                channel_id: body.channelId,
 
                 message: {
                     content: body.dm?.message?.content ?? "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
@@ -197,11 +197,11 @@ router.patch("/", async (c) => {
                 },
 
 
-                roleIds: Array.isArray(body.roleIds) ? body.roleIds : [],
-                pingIds: Array.isArray(body.pingIds) ? body.pingIds : [],
-                deleteAfter: body.deleteAfter,
-                deleteAfterLeave: body.deleteAfterLeave,
-                isRestorable: body.restore,
+                role_ids: Array.isArray(body.roleIds) ? body.roleIds : [],
+                ping_ids: Array.isArray(body.pingIds) ? body.pingIds : [],
+                delete_after: body.deleteAfter,
+                delete_after_leave: body.deleteAfterLeave,
+                is_restorable: body.restore,
 
                 dm: {
                     enabled: body.dm?.enabled ?? false,
@@ -212,15 +212,15 @@ router.patch("/", async (c) => {
                 },
 
                 reactions: {
-                    welcomeMessageEmojis: Array.isArray(body.reactions?.welcomeMessageEmojis) ? body.reactions.welcomeMessageEmojis : [],
-                    firstMessageEmojis: Array.isArray(body.reactions?.firstMessageEmojis) ? body.reactions.firstMessageEmojis : []
+                    welcome_message_emojis: Array.isArray(body.reactions?.welcomeMessageEmojis) ? body.reactions.welcomeMessageEmojis : [],
+                    first_message_emojis: Array.isArray(body.reactions?.firstMessageEmojis) ? body.reactions.firstMessageEmojis : []
                 },
 
                 card: {
                     enabled: body.card?.enabled ?? false,
-                    inEmbed: body.card?.inEmbed ?? false,
+                    in_embed: body.card?.inEmbed ?? false,
                     background: body.card?.background ?? undefined,
-                    textColor: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
+                    text_color: typeof body.card?.textColor === "number" ? body.card.textColor : undefined
                 },
 
                 button: {
@@ -247,7 +247,7 @@ router.post("/test", async (c) => {
     try {
         const config = await getWelcome(guildId!);
 
-        if (!config || !config.channelId) {
+        if (!config || !config.channel_id) {
             return httpError(HttpErrorMessage.ChannelNotFound);
         }
 
@@ -258,7 +258,7 @@ router.post("/test", async (c) => {
         if (content) payload.content = content;
         if (embed) payload.embeds = [embed];
 
-        const res = await fetch(`https://discord.com/api/v10/channels/${config.channelId}/messages`, {
+        const res = await fetch(`https://discord.com/api/v10/channels/${config.channel_id}/messages`, {
             method: "POST",
             headers: {
                 Authorization: `Bot ${appConfig.client.token}`,

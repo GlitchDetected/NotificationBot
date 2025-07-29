@@ -12,7 +12,7 @@ export function getUser(id: string) {
 }
 
 const DISALLOWED_UPDATE_COLUMNS = [
-    "createdAt"
+    "created_at"
 ] satisfies (keyof Database["user"])[];
 
 export function upsertUser(user: Insertable<Database["user"]>) {
