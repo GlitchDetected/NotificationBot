@@ -20,7 +20,7 @@ export default async (
     };
 
     const dbConfig = await getNotificationById(id);
-    if (!dbConfig || !dbConfig.id || !dbConfig.guildId) return;
+    if (!dbConfig || !dbConfig.id || !dbConfig.guild_id) return;
 
     if (dbConfig.type !== type) {
         return;
@@ -32,7 +32,7 @@ export default async (
     const latestContent = await fetcher(config);
     if (!latestContent || !latestContent.link) return;
 
-    const channel = guild.channels.cache.get(dbConfig.channelId);
+    const channel = guild.channels.cache.get(dbConfig.channel_id);
     if (!channel || !channel.isTextBased()) return;
 
     let content = replacePlaceholder(dbConfig.message?.content || "", placeholders);
@@ -41,8 +41,8 @@ export default async (
 
     console.log("Fetched content:", latestContent);
 
-    if (dbConfig.roleId) {
-        content = `<@&${dbConfig.roleId}> ${content}`;
+    if (dbConfig.role_id) {
+        content = `<@&${dbConfig.role_id}> ${content}`;
     }
 
     if (dbConfig.message?.embed) {

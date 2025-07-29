@@ -12,7 +12,7 @@ export default async (client: Client, _message: Message, userId?: string) => {
         for (const user of allUsers) {
             try {
 
-                const { userId, source, message, embedcolor, thumbnail } = user;
+                const { user_id, source, message, embed_color, thumbnail } = user;
 
                 const content = await fetchFromSource(source);
                 if (!content) continue;
@@ -21,11 +21,11 @@ export default async (client: Client, _message: Message, userId?: string) => {
                     .setTitle("🔔 Daily Notification")
                     .setDescription(`${message ?? "You got a new notification from"} ${source}`)
                     .addFields({ name: "Content", value: content })
-                    .setColor(embedcolor ?? 0x5865f2);
+                    .setColor(embed_color ?? 0x5865f2);
 
                 if (thumbnail) embed.setThumbnail(thumbnail);
 
-                const userObj = await client.users.fetch(userId);
+                const userObj = await client.users.fetch(user_id);
                 await userObj.send({ embeds: [embed] });
 
             } catch (err) {

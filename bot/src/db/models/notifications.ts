@@ -12,6 +12,6 @@ export function getNotificationsByGuild(guildId: string) {
     return db
         .selectFrom("notifications")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .execute();
 }

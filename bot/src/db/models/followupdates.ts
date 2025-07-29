@@ -4,6 +4,6 @@ export function getFollowUpdates(guildId: string) {
     return db
         .selectFrom("followupdates")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }

@@ -102,10 +102,9 @@ router.post("/", async (c) => {
 
 router.get("/", (c) => {
     try {
-
         const user = c.get("user");
 
-        if (!user?.accessToken) {
+        if (!user?.access_token) {
             return httpError(HttpErrorMessage.MissingAccess);
         }
 
@@ -113,8 +112,8 @@ router.get("/", (c) => {
             id: user.id,
             email: user.email,
             username: user.username,
-            displayName: user.displayName,
-            avatarHash: user.avatarHash
+            displayName: user.display_name,
+            avatarHash: user.avatar_hash
         });
     } catch (err) {
         console.error("Error processing sessions data:", err);

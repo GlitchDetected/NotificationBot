@@ -1,4 +1,4 @@
-import type { ApplicationCommand, Client } from "discord.js";
+import type {ApplicationCommand, Client, ChatInputApplicationCommandData} from "discord.js";
 
 import areCommandsDifferent from "@/src/utils/areCommandsDifferent";
 import getApplicationCommands from "@/src/utils/getApplicationCommands";
@@ -17,6 +17,7 @@ export default async (client: Client) => {
             const { name, description, options } = localCommand;
 
             const existingCommand = await applicationCommands.cache.find((cmd: ApplicationCommand) => cmd.name === name);
+            const existingData = existingCommand?.toJSON() as ChatInputApplicationCommandData;
 
             if (existingCommand) {
                 if (localCommand.deleted) {
@@ -25,7 +26,11 @@ export default async (client: Client) => {
                     continue;
                 }
 
-                if (areCommandsDifferent(existingCommand, localCommand)) {
+                if (areCommandsDifferent(
+                    { description: existingData.description, options: existingData.options ?? [] },
+                    { description: localCommand.description, options: localCommand.options ?? [] }
+                )) {
+
                     await applicationCommands.edit(existingCommand.id, {
                         description,
                         options

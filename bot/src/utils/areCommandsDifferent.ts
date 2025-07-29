@@ -1,12 +1,12 @@
 import type { ApplicationCommandOptionChoiceData, ApplicationCommandOptionData } from "discord.js";
 
 export default (
-    existingCommand: { description: string; options: ApplicationCommandOptionData[]; },
-    localCommand: { description: string; options: ApplicationCommandOptionData[]; }
+    existingCommand: { description: string; options: readonly ApplicationCommandOptionData[]; },
+    localCommand: { description: string; options: readonly ApplicationCommandOptionData[]; }
 ): boolean => {
     const areChoicesDifferent = (
-        existingChoices: readonly ApplicationCommandOptionChoiceData[],
-        localChoices: readonly ApplicationCommandOptionChoiceData[]
+        existingChoices: readonly ApplicationCommandOptionChoiceData[] = [],
+        localChoices: readonly ApplicationCommandOptionChoiceData[] = []
     ): boolean => {
         for (const localChoice of localChoices) {
             const existingChoice = existingChoices?.find((choice: { name: string; }) => choice.name === localChoice.name);
@@ -23,8 +23,8 @@ export default (
     };
 
     const areOptionsDifferent = (
-        existingOptions: ApplicationCommandOptionData[],
-        localOptions: ApplicationCommandOptionData[]
+        existingOptions: readonly ApplicationCommandOptionData[] = [],
+        localOptions: readonly ApplicationCommandOptionData[] = []
     ): boolean => {
         for (const localOption of localOptions) {
             const existingOption = existingOptions?.find((option: { name: string; }) => option.name === localOption.name);

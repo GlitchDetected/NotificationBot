@@ -12,7 +12,7 @@ import config from "@/src/config";
 
 export default {
     name: "support",
-    description: "Problems, questions, and suggestions for NotificationBot",
+    description: "Support and questions for the bot",
 
     callback: async (client: Client, interaction: CommandInteraction) => {
         try {

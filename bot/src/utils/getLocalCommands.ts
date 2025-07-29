@@ -1,13 +1,16 @@
-// where the commands are born
-
 import path from "path";
 
 import getAllFiles from "./getAllFiles";
 
-export default async (exceptions: string[] = []) => {
+export default async (
+    exceptions: string[] = []
+) => {
     const localCommands = [];
 
-    const commandCategories = getAllFiles(path.join(__dirname, "..", "commands"), true);
+    const commandCategories = getAllFiles(
+        path.join(__dirname, "..", "commands"),
+        true
+    );
 
     for (const commandCategory of commandCategories) {
         const commandFiles = getAllFiles(commandCategory);

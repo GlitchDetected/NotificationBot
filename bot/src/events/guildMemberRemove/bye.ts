@@ -24,9 +24,9 @@ export default async (
 
     const config = await getBye(guild.id);
 
-    if (!config || !config.enabled || !config.channelId) return;
+    if (!config || !config.enabled || !config.channel_id) return;
 
-    const channel = guild.channels.cache.get(config.channelId);
+    const channel = guild.channels.cache.get(config.channel_id);
     if (!channel || !channel.isTextBased()) return;
 
     const content = replacePlaceholder(config.message?.content || "", placeholders);
@@ -34,11 +34,11 @@ export default async (
     // delete welcome message after leave
     const welcomeConfig = await getWelcome(guild.id);
 
-    const messageId = welcomeConfig?.welcomeMessageIds?.[member.id];
+    const messageId = welcomeConfig?.welcome_message_ids?.[member.id];
     if (!messageId) return;
 
-    if (!welcomeConfig || !welcomeConfig.welcomeMessageIds || !welcomeConfig.channelId) return;
-    const welcomeChannel = guild.channels.cache.get(welcomeConfig.channelId);
+    if (!welcomeConfig || !welcomeConfig.welcome_message_ids || !welcomeConfig.channel_id) return;
+    const welcomeChannel = guild.channels.cache.get(welcomeConfig.channel_id);
     if (!welcomeChannel || !welcomeChannel.isTextBased()) return;
     try {
         const msg = await welcomeChannel.messages.fetch(messageId);
@@ -47,7 +47,7 @@ export default async (
         return;
     }
     await updateWelcome(guild.id, {
-        welcomeMessageIds: welcomeConfig.welcomeMessageIds
+        welcome_message_ids: welcomeConfig.welcome_message_ids
     });
 
 
@@ -76,15 +76,15 @@ export default async (
         sentMessage = await channel.send({ content });
     }
 
-    if (config.deleteAfter && Number.isFinite(config.deleteAfter)) {
+    if (config.delete_after && Number.isFinite(config.delete_after)) {
         setTimeout(() => {
             sentMessage.delete().catch(() => {});
-        }, config.deleteAfter);
+        }, config.delete_after);
     }
 
     if (config.card?.enabled) {
         try {
-            const { inEmbed, background, textColor } = config.card;
+            const { in_embed, background, text_color } = config.card;
 
             const canvas = createCanvas(1024, 450);
             const ctx = canvas.getContext("2d");
@@ -95,7 +95,7 @@ export default async (
             ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
             ctx.font = "bold 36px Sans";
-            ctx.fillStyle = textColor ? `#${textColor.toString(16).padStart(6, "0")}` : "#ffffff";
+            ctx.fillStyle = text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#ffffff";
             ctx.fillText(member.user.username, 320, 100);
 
             ctx.font = "28px Sans";
@@ -116,7 +116,7 @@ export default async (
             const buffer = canvas.toBuffer("image/png");
             const attachment = new AttachmentBuilder(buffer, { name: "welcome.png" });
 
-            if (inEmbed) {
+            if (in_embed) {
                 await channel.send({
                     embeds: [
                         {

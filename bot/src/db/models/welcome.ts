@@ -7,7 +7,7 @@ export function getWelcome(guildId: string) {
     return db
         .selectFrom("welcome")
         .selectAll()
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }
 
@@ -15,6 +15,6 @@ export function updateWelcome(guildId: string, data: Updateable<Database["welcom
     return db
         .updateTable("welcome")
         .set(data)
-        .where("guildId", "=", guildId)
+        .where("guild_id", "=", guildId)
         .executeTakeFirst();
 }

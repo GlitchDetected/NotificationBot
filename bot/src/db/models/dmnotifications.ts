@@ -4,8 +4,8 @@ export function getDmNotifications(userId?: string) {
     let query = db.selectFrom("dmnotifications").selectAll();
 
     if (userId) {
-        query = query.where("userId", "=", userId);
+        query = query.where("user_id", "=", userId);
     }
 
-    return query.execute(); // returns Promise<DmNotification[]>
+    return query.execute();
 }
