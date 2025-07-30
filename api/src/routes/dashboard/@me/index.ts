@@ -27,24 +27,13 @@ router.get("/", (c) => {
 
 router.get("/guilds", async (c) => {
     const user = c.get("user");
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
-    }
-
-    const url = new URL(c.req.url, "http://localhost");
-    const skipCache = url.searchParams.get("skipcache");
-
-    if (!skipCache) {
-        const redisCacheRes = await redis.get(`user-guilds:${user.id}`);
-
-        if (redisCacheRes) {
-            return c.json(JSON.parse(redisCacheRes));
-        }
     }
 
     const guildsRes = await fetch(`${DISCORD_ENDPOINT}/users/@me/guilds`, {
         headers: {
-            Authorization: `Bearer ${user.accessToken}`
+            Authorization: `Bearer ${user.access_token}`
         }
     });
 

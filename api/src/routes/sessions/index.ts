@@ -69,6 +69,7 @@ router.post("/", async (c) => {
             });
         } else {
             payload = {
+                id: userResJson.id,
                 email: userResJson.email,
                 username: userResJson.username,
                 display_name: userResJson.global_name ?? null,

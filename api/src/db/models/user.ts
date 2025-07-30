@@ -16,7 +16,11 @@ const DISALLOWED_UPDATE_COLUMNS = [
 ] satisfies (keyof Database["user"])[];
 
 export function upsertUser(user: Insertable<Database["user"]>) {
-    const userUpdate = user;
+    if (!user.id) {
+        throw new Error("upsertUser: 'id' is required");
+    }
+
+    const userUpdate = { ...user };
 
     for (const k of Object.keys(userUpdate) as typeof DISALLOWED_UPDATE_COLUMNS) {
         if (!DISALLOWED_UPDATE_COLUMNS.includes(k)) continue;
