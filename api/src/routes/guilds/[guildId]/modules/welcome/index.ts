@@ -15,6 +15,16 @@ const router = new Hono();
 
 type UpdatableFields = "enabled" | "channelId" | "roleIds" | "pingIds" | "deleteAfter" | "deleteAfterLeave" | "restore";
 
+const keyMap: Record<UpdatableFields, string> = {
+    enabled: "enabled",
+    channelId: "channel_id",
+    roleIds: "role_ids",
+    pingIds: "ping_ids",
+    deleteAfter: "delete_after",
+    deleteAfterLeave: "delete_after_leave",
+    restore: "is_restorable"
+};
+
 router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
@@ -91,7 +101,8 @@ router.patch("/", async (c) => {
 
             for (const key of keys) {
                 if (key in body) {
-                    (config as Record<UpdatableFields, unknown>)[key] = body[key];
+                    const configKey = keyMap[key];
+                    (config as any)[configKey] = body[key];
                 }
             }
 

@@ -101,7 +101,7 @@ export default function Home() {
                     );
                 }}
             >
-                <CreateSplash name="notifications" description="Notify your community when new videos are released.">
+                <CreateSplash name="notifications" description="Click create new notification to get started">
                     <CreateNotificationSelect style={Style.Big} add={addItem} set={setItemId} />
                 </CreateSplash>
             </ItemSelector>

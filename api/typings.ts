@@ -26,14 +26,14 @@ export interface GuildEmbed {
 export type notificationConfig = {
   id: string;
   guildId: string;
-  channelId: string;
+  channelId: string | null;
   roleId: string | null;
 
   type: 0 | 1 | 2 | 3;
   flags: number;
   regex: string | null;
 
-  creatorId: string;
+  creatorId: string | null;
 
   message?: {
     content: string | null;
@@ -41,9 +41,9 @@ export type notificationConfig = {
   };
 
   creator: {
-    id: string;
-    username: string;
-    customUrl: string;
+    id: string | null;
+    username: string | null;
+    customUrl: string | null;
     avatarUrl: string | null;
   };
 };

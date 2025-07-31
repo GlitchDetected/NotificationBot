@@ -20,7 +20,7 @@ router.get("/", async (c) => {
 
     const user = c.get("user");
 
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
@@ -59,7 +59,7 @@ router.get("/channels", async (c) => {
 
     const user = c.get("user");
 
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
@@ -83,7 +83,7 @@ router.get("/roles", async (c) => {
 
     const user = c.get("user");
 
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
@@ -107,7 +107,7 @@ router.get("/emojis", async (c) => {
 
     const user = c.get("user");
 
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
@@ -129,7 +129,7 @@ router.get("/emojis", async (c) => {
 router.patch("/follow-updates", async (c) => {
     const guildId = c.req.param("guildId");
     const user = c.get("user");
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
     const body = await c.req.json() as ApiV1GuildsGetResponse["follownewsChannel"];

@@ -51,7 +51,12 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
         const tokenResp = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`);
         const accessToken = tokenResp.data.access_token;
 
-        const username = config.creator.username.toLowerCase();
+        const username = config.creator?.username;
+
+        if (!username) {
+            return null;
+        }
+
         const userResp = await axios.get(`https://api.twitch.tv/helix/users?login=${username}`, {
             headers: { "Client-ID": clientId, Authorization: `Bearer ${accessToken}` }
         });

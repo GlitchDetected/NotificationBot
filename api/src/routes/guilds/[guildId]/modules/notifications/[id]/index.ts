@@ -7,6 +7,14 @@ const router = new Hono();
 
 type UpdatableFields = "type" | "channelId" | "creatorId" | "roleId" | "regex";
 
+const keyMap: Record<UpdatableFields, string> = {
+    type: "type",
+    channelId: "channel_id",
+    creatorId: "creator_id",
+    roleId: "role_id",
+    regex: "regex"
+};
+
 router.get("/", async (c) => {
     const id = c.req.param("id");
 
@@ -62,7 +70,8 @@ router.patch("/", async (c) => {
 
             for (const key of keys) {
                 if (key in body) {
-                    (config as Record<UpdatableFields, unknown>)[key] = body[key];
+                    const configKey = keyMap[key];
+                    (config as any)[configKey] = body[key];
                 }
             }
 
@@ -103,12 +112,12 @@ router.patch("/", async (c) => {
 
         const dataToSave = {
             ...config,
-            created_at: config.created_at instanceof Date
-                ? config.created_at.toISOString()
-                : config.created_at,
-            updated_at: new Date().toISOString()
+            created_at:
+                config.created_at instanceof Date
+                    ? config.created_at.toISOString()
+                    : config.created_at,
+            updated_at: new Date().toISOString(),
         };
-
 
         const updatedConfig = await upsertNotification(dataToSave);
         return c.json(updatedConfig);
