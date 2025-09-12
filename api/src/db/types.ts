@@ -28,7 +28,7 @@ export interface ByeTable {
 export interface DmNotificationsTable {
     user_id: string;
     enabled: boolean | null;
-    embed_color: number | null;
+    embedcolor: number | null;
     source: string | null;
     thumbnail: string | null;
     message: string | null;

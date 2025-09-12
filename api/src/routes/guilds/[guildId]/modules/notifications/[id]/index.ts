@@ -116,7 +116,7 @@ router.patch("/", async (c) => {
                 config.created_at instanceof Date
                     ? config.created_at.toISOString()
                     : config.created_at,
-            updated_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
         };
 
         const updatedConfig = await upsertNotification(dataToSave);

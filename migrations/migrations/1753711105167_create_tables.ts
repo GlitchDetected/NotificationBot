@@ -18,7 +18,7 @@ export async function up(db: Kysely<any>): Promise<void> {
       .createTable('dmnotifications')
       .addColumn('user_id', 'varchar', col => col.primaryKey())
       .addColumn('enabled', 'boolean')
-      .addColumn('embed_color', 'integer')
+      .addColumn('embedcolor', 'integer')
       .addColumn('source', 'varchar')
       .addColumn('thumbnail', 'varchar')
       .addColumn('message', 'varchar')

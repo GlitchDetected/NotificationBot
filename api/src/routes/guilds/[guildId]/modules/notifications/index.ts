@@ -85,61 +85,45 @@ router.post("/", async (c) => {
     }
 
     try {
-        let ytCreatorId: string | null = null;
-        if (body.type === NotificationType.YouTube && body.creatorHandle) {
-            ytCreatorId = await getYtChannelId(body.creatorHandle);
-            if (!ytCreatorId) {
-                return c.json({ error: "YouTube channel not found." }, 404);
-            }
+        let creatorId: string | null = null;
+        let creatorUsername: string | null = null;
 
-            try {
-                const latestVideo = await fetchers[NotificationType.YouTube]({
-                    ...body,
-                    creatorId: ytCreatorId
-                });
-                if (!latestVideo) {
-                    return c.json({ error: "YouTube channel has no videos." }, 400);
+        switch (body.type) {
+            case NotificationType.YouTube:
+                if (body.creatorHandle) {
+                    creatorId = await getYtChannelId(body.creatorHandle);
+                    if (!creatorId) return c.json({ error: "YouTube channel not found." }, 404);
+
+                    const latestVideo = await fetchers[NotificationType.YouTube]({ ...body, creatorId: creatorId });
+                    if (!latestVideo) return c.json({ error: "YouTube channel has no videos." }, 400);
+
+                    creatorUsername = body.creatorHandle;
                 }
-            } catch (err) {
-                console.error("YouTube fetch failed:", err);
-                return c.json({ error: "Failed to fetch latest YouTube content." }, 500);
-            }
-        }
+                break;
 
-        if (body.type === NotificationType.Twitch) {
-            try {
+            case NotificationType.Twitch:
                 const latestStream = await fetchers[NotificationType.Twitch](body);
-                if (!latestStream) {
-                    return c.json({ error: "Twitch user has no live stream history." }, 400);
-                }
-            } catch (err) {
-                console.error("Twitch fetch failed:", err);
-                return c.json({ error: "Failed to fetch Twitch stream." }, 500);
-            }
-        }
+                if (!latestStream) return c.json({ error: "Twitch user has no live stream history." }, 400);
 
-        if (body.type === NotificationType.Bluesky) {
-            try {
+                creatorUsername = body.creatorHandle ?? null;
+                break;
+
+            case NotificationType.Bluesky:
                 const latestPost = await fetchers[NotificationType.Bluesky](body);
-                if (!latestPost) {
-                    return c.json({ error: "Bluesky user has no posts." }, 400);
-                }
-            } catch (err) {
-                console.error("Bluesky fetch failed:", err);
-                return c.json({ error: "Failed to fetch Bluesky posts." }, 500);
-            }
-        }
+                if (!latestPost) return c.json({ error: "Bluesky user has no posts." }, 400);
 
-        if (body.type === NotificationType.Reddit) {
-            try {
-                const latestPost = await fetchers[NotificationType.Reddit](body);
-                if (!latestPost) {
-                    return c.json({ error: "Reddit user has no posts." }, 400);
-                }
-            } catch (err) {
-                console.error("Reddit fetch failed:", err);
-                return c.json({ error: "Failed to fetch Reddit posts." }, 500);
-            }
+                creatorUsername = body.creatorHandle ?? null;
+                break;
+
+            case NotificationType.Reddit:
+                const latestRedditPost = await fetchers[NotificationType.Reddit](body);
+                if (!latestRedditPost) return c.json({ error: "Reddit user has no posts." }, 400);
+
+                creatorUsername = body.creatorHandle ?? null;
+                break;
+
+            default:
+                return c.json({ error: "Unsupported notification type." }, 400);
         }
 
         const config = await upsertNotification({
@@ -150,15 +134,15 @@ router.post("/", async (c) => {
             type: body.type,
             flags: body.flags ?? 0,
             regex: body.regex ?? null,
-            creator_id: ytCreatorId ?? null,
+            creator_id: creatorId ?? null,
             message: {
                 content: body.message?.content ?? defaultMessage[body.type as NotificationType],
                 embed: body.message?.embed ?? null
             },
             creator: {
-                id: ytCreatorId ?? null,
-                username: body.creatorHandle,
-                avatar_url: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, ytCreatorId ?? ""),
+                id: creatorId ?? null,
+                username: creatorUsername,
+                avatar_url: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, creatorId ?? ""),
                 custom_url: body.customUrl ?? null
             },
             created_at: new Date().toISOString()

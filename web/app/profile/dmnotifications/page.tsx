@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { type User, userStore } from "@/common/userStore";
 import Switch from "@/components/input/api-switch";
 import ImageUrlInput from "@/components/input/imageurlinput";
@@ -9,6 +11,14 @@ import { deepMerge } from "@/utils/merge";
 
 export default function Home() {
     const user = userStore((s) => s);
+    const [enabled, setEnabled] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (user?.extended?.dmnotifications?.enabled !== undefined) {
+            setEnabled(user.extended.dmnotifications.enabled);
+        }
+    }, [user?.extended?.dmnotifications?.enabled]);
+
     if (user?.id && !user.extended) return <></>;
 
     return (
@@ -20,6 +30,7 @@ export default function Home() {
                 defaultState={user?.extended?.dmnotifications?.enabled ?? false}
                 disabled={false}
                 onSave={(s) => {
+                    setEnabled(s);
                     userStore.setState(
                         deepMerge<User>(user, {
                             extended: {
@@ -41,6 +52,7 @@ export default function Home() {
                         description="Color of your notification embed"
                         type="color"
                         defaultState={user?.extended?.dmnotifications?.embedcolor ?? 0}
+                        disabled={!enabled}
                         onSave={(value) => {
                             userStore.setState(
                                 deepMerge<User>(user, {
@@ -62,6 +74,7 @@ export default function Home() {
                         description="Where your notification is coming from"
                         type="text"
                         defaultState={user?.extended?.dmnotifications?.source || ""}
+                        disabled={!enabled}
                         onSave={(value) => {
                             const rsslinkregex = /^(https?:\/\/[^\s]+(?:(?:\.rss|\.xml|\/rss|\/feed)(?:\/.*)?))$/i;
                             if (!rsslinkregex.test(String(value).trim())) {
@@ -89,6 +102,7 @@ export default function Home() {
                     description="Custom message"
                     type="text"
                     defaultState={user?.extended?.dmnotifications?.message || "You got a new notifications from"}
+                    disabled={!enabled}
                     onSave={(value) => {
                         userStore.setState(
                             deepMerge<User>(user, {
@@ -111,6 +125,7 @@ export default function Home() {
                     dataName="thumbnail"
                     description="Enter the url for your thumbnail. The recomended image ration is 4:1 and recommended resolution 1024x256px."
                     defaultState={user?.extended?.dmnotifications?.thumbnail || ""}
+                    disabled={!enabled}
                     onSave={(value) => {
                         userStore.setState(
                             deepMerge<User>(user, {

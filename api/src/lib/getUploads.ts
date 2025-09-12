@@ -51,7 +51,8 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
         const tokenResp = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`);
         const accessToken = tokenResp.data.access_token;
 
-        const username = config.creator?.username;
+        const username = config.creator?.username || (config as any).creatorHandle;
+        if (!username) throw new Error("Missing username");
 
         if (!username) {
             return null;
@@ -86,7 +87,9 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
 // Bluesky
 async function fetchLatestBlueskyContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const blueskyHandle = config.creator.username;
+        const blueskyHandle = config.creator?.username || (config as any).creatorHandle;
+        if (!blueskyHandle) throw new Error("Missing blueskyHandle");
+
         const url = `https://bsky.app/api/profile/${blueskyHandle}/posts?limit=1`;
         const response = await axios.get(url);
 
@@ -113,7 +116,8 @@ async function fetchLatestBlueskyContent(config: notificationConfig): Promise<Co
 // reddit
 async function fetchLatestRedditContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const subreddit = config.creator.username;
+        const subreddit = config.creator?.username || (config as any).creatorHandle;
+        if (!subreddit) throw new Error("Missing subreddit name");
 
         const url = `https://www.reddit.com/r/${subreddit}/new.json?limit=1`;
         const response = await axios.get(url, { headers: { "User-Agent": "DiscordBot/1.0" } });

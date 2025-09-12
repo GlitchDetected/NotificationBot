@@ -13,7 +13,7 @@ router.get("/", async (c) => {
     try {
         const user = c.get("user");
 
-        if (!user?.accessToken) {
+        if (!user?.access_token) {
             return httpError(HttpErrorMessage.MissingAccess);
         }
 
@@ -21,7 +21,7 @@ router.get("/", async (c) => {
 
         return c.json({
             enabled: config?.enabled ?? false,
-            embedcolor: config?.embed_color ?? 0,
+            embedcolor: config?.embedcolor ?? 0,
             source: config?.source ?? null,
             thumbnail: config?.thumbnail ?? null,
             message: config?.message ??	"You got a new notifications from"
@@ -33,7 +33,8 @@ router.get("/", async (c) => {
 
 router.patch("/", async (c) => {
     const user = c.get("user");
-    if (!user?.id) {
+
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
@@ -63,7 +64,7 @@ router.patch("/", async (c) => {
             config = await createDmNotification({
                 user_id: user.id,
                 enabled: body?.enabled ?? false,
-                embed_color: body?.embedcolor ?? 0,
+                embedcolor: body?.embedcolor ?? 0,
                 source: body?.source ?? null,
                 thumbnail: body?.thumbnail ?? null,
                 message: body?.message ?? "You got a new notification from"
@@ -72,7 +73,7 @@ router.patch("/", async (c) => {
 
         return c.json({
             enabled: body?.enabled,
-            embedcolor: config?.embed_color,
+            embedcolor: config?.embedcolor,
             source: config?.source,
             thumbnail: config?.thumbnail,
             message: config?.message
@@ -85,7 +86,7 @@ router.patch("/", async (c) => {
 router.delete("/", async (c) => {
     const user = c.get("user");
 
-    if (!user?.accessToken) {
+    if (!user?.access_token) {
         return httpError(HttpErrorMessage.MissingAccess);
     }
 
