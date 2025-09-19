@@ -11,7 +11,9 @@ export default {
     apiSecrets: {
         botApiSecret: String(process.env["API_SECRET"]),
         jwtSecret: String(process.env["JWT_SECRET"]),
-        youtubeAPI: String(process.env["YTV3API"])
+        youtubeAPI: String(process.env["YTV3API"]),
+        blueskyIdentifier: String(process.env["BLUESKY_IDENTIFIER"]),
+        blueskyPassword: String(process.env["BLUESKY_PASSWORD"])
     },
 
     databaseUri: String(process.env["pgConnectionString"]),

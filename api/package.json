@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@atproto/api": "^0.16.9",
     "@dotenvx/dotenvx": "^1.47.0",
     "@hono/node-server": "^1.14.4",
     "@stylistic/eslint-plugin": "^5.1.0",

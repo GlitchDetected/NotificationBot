@@ -1,8 +1,20 @@
+import { BskyAgent } from "@atproto/api";
 import axios from "axios";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
 import appConfig from "../config";
+
+const agent = new BskyAgent({ service: "https://bsky.social" });
+
+async function bskySession() {
+    if (!agent.session) {
+        await agent.login({
+            identifier: appConfig.apiSecrets.blueskyIdentifier,
+            password: appConfig.apiSecrets.blueskyPassword
+        });
+    }
+}
 
 // YouTube
 async function fetchLatestYouTubeContent(config: notificationConfig): Promise<ContentData | null> {
@@ -85,25 +97,30 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
 }
 
 // Bluesky
-async function fetchLatestBlueskyContent(config: notificationConfig): Promise<ContentData | null> {
+export async function fetchLatestBlueskyContent(
+    config: notificationConfig
+): Promise<ContentData | null> {
     try {
+        await bskySession();
+
         const blueskyHandle = config.creator?.username || (config as any).creatorHandle;
         if (!blueskyHandle) throw new Error("Missing blueskyHandle");
 
-        const url = `https://bsky.app/api/profile/${blueskyHandle}/posts?limit=1`;
-        const response = await axios.get(url);
+        const feed = await agent.getAuthorFeed({ actor: blueskyHandle, limit: 1 });
+        const item = feed.data.feed?.[0];
+        if (!item) return null;
 
-        const post = response.data.posts?.[0];
-        if (!post) return null;
+        const post = item.post; // PostView
+        const author = post.author; // ProfileViewBasic
 
         return {
             id: post.cid,
-            type: post.type,
-            text: post.text,
-            timestamp: Math.floor(new Date(post.createdAt).getTime() / 1000),
+            type: post.$type,
+            text: (post.record as any)?.text || "",
+            timestamp: Math.floor(new Date(post.indexedAt).getTime() / 1000),
             creator: {
-                posts: post.author.postsCount || 0,
-                followers: post.author.followersCount || 0
+                posts: (author as any).postsCount || 0,
+                followers: (author as any).followersCount || 0
             },
             link: `https://bsky.app/profile/${blueskyHandle}/post/${post.cid}`
         };
@@ -112,6 +129,7 @@ async function fetchLatestBlueskyContent(config: notificationConfig): Promise<Co
         return null;
     }
 }
+
 
 // reddit
 async function fetchLatestRedditContent(config: notificationConfig): Promise<ContentData | null> {
