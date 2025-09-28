@@ -14,25 +14,6 @@ interface TestPayload {
 
 const router = new Hono();
 
-type UpdatableFields =
-    | "enabled"
-    | "channelId"
-    | "roleIds"
-    | "pingIds"
-    | "delete_after"
-    | "delete_after_leave"
-    | "restore";
-
-const keyMap: Record<UpdatableFields, string> = {
-    enabled: "enabled",
-    channelId: "channel_id",
-    roleIds: "role_ids",
-    pingIds: "ping_ids",
-    delete_after: "delete_after",
-    delete_after_leave: "delete_after_leave",
-    restore: "is_restorable"
-};
-
 router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
@@ -153,31 +134,33 @@ router.patch("/", async (c) => {
         }
 
         // UPDATE existing configuration
-        const keys: UpdatableFields[] = [
-            "enabled",
-            "channelId",
-            "roleIds",
-            "pingIds",
-            "delete_after",
-            "delete_after_leave",
-            "restore"
-        ];
-
-        for (const key of keys) {
-            if (!(key in body)) continue;
-
-            const dbKey = keyMap[key];
-
-            if (key === "roleIds" || key === "pingIds") {
-                const value = Array.isArray(body[key])
-                    ? body[key].map(String)
-                    : [];
-                (config as any)[dbKey] = value;
-            } else {
-                (config as any)[dbKey] = body[key];
-            }
+        if (typeof body.enabled === "boolean") {
+            config.enabled = body.enabled;
         }
 
+        if (typeof body.channelId === "string") {
+            config.channel_id = body.channelId;
+        }
+
+        if (Array.isArray(body.roleIds)) {
+            config.role_ids = body.roleIds.map(String);
+        }
+
+        if (Array.isArray(body.pingIds)) {
+            config.ping_ids = body.pingIds.map(String);
+        }
+
+        if (typeof body.delete_after === "number") {
+            config.delete_after = body.delete_after;
+        }
+
+        if (typeof body.delete_after_leave === "boolean") {
+            config.delete_after_leave = body.delete_after_leave;
+        }
+
+        if (typeof body.restore === "boolean") {
+            config.is_restorable = body.restore;
+        }
 
         if (typeof body.message === "object" && body.message !== null) {
             config.message = {

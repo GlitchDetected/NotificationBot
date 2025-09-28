@@ -12,7 +12,7 @@ export function CreateSplash({
             <div>
                 <div className="mb-10 flex flex-col items-center text-center">
                     <span className="text-4xl dark:text-neutral-100 text-neutral-900 font-semibold">
-                        No {name} configuration found yet...
+                        No {name} configuration found
                     </span>{" "}
                     <br />
                     <span className="text-lg dark:text-neutral-400 text-neutral-600 font-semibold">{description}</span>

@@ -18,7 +18,7 @@ export default async function Home() {
     return (
         <Box
             none
-            className="p-5 pb-3 dark:bg-foreground bg-foreground-100 rounded-lg my-4 w-full"
+            className="p-5 pb-3 dark:bg-foreground bg-foreground-100 rounded-lg my-4 w-full mt-15"
         >
             <div className="flex">
                 <Badge
@@ -30,7 +30,7 @@ export default async function Home() {
                 </Badge>
 
                 <div className="ml-auto flex items-center gap-1 opacity-80">
-                    <span className="text-xs">Since June 2025</span>
+                    <span className="text-xs">Since May 2025</span>
                     <HiInformationCircle />
                 </div>
             </div>

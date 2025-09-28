@@ -11,8 +11,7 @@ import {
     HiChevronDown,
     HiEyeOff,
     HiIdentification,
-    HiLogout,
-    HiViewGridAdd
+    HiLogout
 } from "react-icons/hi";
 
 import { userStore } from "@/common/userStore";
@@ -61,11 +60,6 @@ export function LoginHeader() {
     const buttons = useMemo(
         () => [
             split,
-            {
-                name: "Dashboard",
-                icon: <HiViewGridAdd />,
-                url: "/dashboard"
-            },
             {
                 name: "Profile",
                 icon: <HiIdentification />,

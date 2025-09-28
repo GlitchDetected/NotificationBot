@@ -32,7 +32,7 @@ export async function GET() {
         .toBuffer();
 
     return new Response(
-        icon,
+        new Uint8Array(icon),
         {
             headers: {
                 "Content-Type": "image/png",

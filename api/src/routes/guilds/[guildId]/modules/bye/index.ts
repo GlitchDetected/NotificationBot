@@ -9,17 +9,6 @@ import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "@/typings";
 
 const router = new Hono();
 
-type UpdatableFields = "enabled" | "channelId" | "webhookURL" | "delete_after";
-
-const keyMap: Record<UpdatableFields, string> = {
-    enabled: "enabled",
-    channelId: "channel_id",
-    webhookURL: "webhook_url",
-    delete_after: "delete_after"
-};
-
-const keys: UpdatableFields[] = ["enabled", "channelId", "webhookURL", "delete_after"];
-
 interface TestPayload {
     content?: string;
     embeds?: GuildEmbed[];
@@ -62,14 +51,22 @@ router.patch("/", async (c) => {
     const body = await c.req.json() as ApiV1GuildsModulesByeGetResponse;
 
     try {
-    // overwrite values if they are explicitly provided. Otherwise, preserve the existing ones.
         let config = await getBye(guildId!);
         if (config) {
-            for (const key of keys) {
-                if (key in body) {
-                    const configKey = keyMap[key];
-                    (updateData as any)[configKey] = (body as any)[key];
-                }
+            if (typeof body.enabled === "boolean") {
+                updateData.enabled = body.enabled;
+            }
+
+            if ("channelId" in body) {
+                updateData.channel_id = body.channelId ?? null;
+            }
+
+            if ("webhookURL" in body) {
+                updateData.webhook_url = body.webhookURL ?? null;
+            }
+
+            if ("delete_after" in body) {
+                updateData.delete_after = body.delete_after ?? null;
             }
 
             if (typeof body.enabled === "boolean") {

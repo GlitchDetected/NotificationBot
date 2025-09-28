@@ -130,7 +130,7 @@ export default function Home() {
                     </h1>
 
                     <span className="text-lg font-medium max-w-[38rem] mb-4">
-                        We introduce you to notifications from your favorite platforms, full-on welcoming system, and useful slash commands!
+                        We introduce you to notifications from your favorite platforms, a full-on welcoming system, and webhooks!
                     </span>
 
                     <div className="space-y-4">

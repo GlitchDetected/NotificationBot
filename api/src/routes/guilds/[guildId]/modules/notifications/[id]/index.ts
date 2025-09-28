@@ -1,19 +1,10 @@
 import { Hono } from "hono";
 
+import { now } from "@/src/constants/global";
 import { deleteNotification, getNotificationById, upsertNotification } from "@/src/db/models/notifications";
 import type { ApiV1GuildsModulesNotificationsGetResponse } from "@/typings";
 
 const router = new Hono();
-
-type UpdatableFields = "type" | "channelId" | "creatorId" | "roleId" | "regex";
-
-const keyMap: Record<UpdatableFields, string> = {
-    type: "type",
-    channelId: "channel_id",
-    creatorId: "creator_id",
-    roleId: "role_id",
-    regex: "regex"
-};
 
 router.get("/", async (c) => {
     const id = c.req.param("id");
@@ -65,14 +56,29 @@ router.patch("/", async (c) => {
         }
 
         if (config) {
-            const keys: ("type" | "channelId" | "creatorId" | "roleId" | "regex")[] =
-                ["type", "channelId", "creatorId", "roleId", "regex"];
 
-            for (const key of keys) {
-                if (key in body) {
-                    const configKey = keyMap[key];
-                    (config as any)[configKey] = body[key];
-                }
+            if (typeof body.type === "string") {
+                config.type = body.type;
+            }
+
+            if (typeof body.channelId === "string") {
+                config.channel_id = body.channelId;
+            }
+
+            if (typeof body.creatorId === "string") {
+                config.creator_id = body.creatorId;
+            }
+
+            if (typeof body.roleId === "string") {
+                config.role_id = body.roleId;
+            }
+
+            if (typeof body.regex === "string" || body.regex === null) {
+                config.regex = body.regex;
+            }
+
+            if (typeof body.flags === "number") {
+                config.flags = body.flags;
             }
 
             if (typeof body.message === "object" && body.message !== null) {
@@ -108,21 +114,18 @@ router.patch("/", async (c) => {
           : config.creator?.custom_url ?? null
                 };
             }
+            config.updated_at = now;
+            if (!config.created_at) {
+                config.created_at = now;
+            }
+
+
+            const updatedConfig = await upsertNotification(config);
+            return c.json(updatedConfig);
         }
 
-        const dataToSave = {
-            ...config,
-            created_at:
-                config.created_at instanceof Date
-                    ? config.created_at.toISOString()
-                    : config.created_at,
-            updated_at: new Date().toISOString()
-        };
-
-        const updatedConfig = await upsertNotification(dataToSave);
-        return c.json(updatedConfig);
-    } catch (error) {
-        console.error("Error creating/updating notification configuration:", error);
+    } catch {
+        return c.json({ error: "Internal server error" }, 500);
     }
 });
 

@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 
+import { now } from "@/src/constants/global";
 import { getNotificationByGuild, upsertNotification } from "@/src/db/models/notifications";
 import { fetchers } from "@/src/lib/getUploads";
 import getYouTubeAvatar from "@/src/lib/youtube";
@@ -145,7 +146,8 @@ router.post("/", async (c) => {
                 avatar_url: body.avatarUrl ?? await defaultAvatarUrl(body.type as NotificationType, creatorId ?? ""),
                 custom_url: body.customUrl ?? null
             },
-            created_at: new Date().toISOString()
+            created_at: now,
+            updated_at: now
         });
 
         return c.json(config);
