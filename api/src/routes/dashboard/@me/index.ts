@@ -1,10 +1,10 @@
 import type { APIGuild, PermissionResolvable } from "discord.js";
 import { Hono } from "hono";
 
+import config from "@/src/config";
 import { HttpErrorMessage } from "@/src/constants/http-error";
 import { hasPermissions } from "@/src/lib/checkPerms";
 import redis from "@/src/lib/redis";
-import config from "@/src/config";
 import { httpError } from "@/src/utils/httperrorHandler";
 
 const router = new Hono();

@@ -98,8 +98,8 @@ export interface ApiV1GuildsModulesWelcomeGetResponse {
 
   roleIds: string[];
   pingIds: string[];
-  deleteAfter?: number;
-  deleteAfterLeave?: boolean;
+  delete_after?: number;
+  delete_after_leave?: boolean;
   restore: boolean;
 
   dm: {
@@ -142,7 +142,7 @@ export interface ApiV1GuildsModulesByeGetResponse {
     embed?: GuildEmbed;
   };
 
-  deleteAfter?: number;
+  delete_after?: number;
 
   card: {
     enabled: boolean;
@@ -211,7 +211,7 @@ export interface ApiV1GuildsModulesTagsGetResponse {
 
   authorId: string;
 
-  createdAt: Date;
+  createdAt: string;
 }
 
 export interface Upload {
@@ -294,7 +294,7 @@ export interface ApiV1GuildsModulesNotificationsGetResponse {
     embed?: GuildEmbed;
   };
 
-  createdAt: Date;
+  createdAt: string;
 
   creator: {
     id: string;

@@ -36,7 +36,7 @@ export default function Home() {
 
     const url = `/guilds/${params.guildId}/modules/notifications` as const;
     const { item, items, setItemId, editItem, addItem, removeItem, isLoading, error } =
-    useList<ApiV1GuildsModulesNotificationsGetResponse>({ url });
+        useList<ApiV1GuildsModulesNotificationsGetResponse>({ url });
 
     const flags = useMemo(() => new BitfieldManager(item?.flags || 0), [item?.flags]);
 
@@ -101,7 +101,7 @@ export default function Home() {
                     );
                 }}
             >
-                <CreateSplash name="notifications" description="Click create new notification to get started">
+                <CreateSplash name="notifications" description="Click Create New Notification to get started">
                     <CreateNotificationSelect style={Style.Big} add={addItem} set={setItemId} />
                 </CreateSplash>
             </ItemSelector>

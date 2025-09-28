@@ -117,8 +117,8 @@ export default function Home() {
             name="Delete welcome message after leave"
             description="This only takes affect if the user joined less than 24h ago"
             url={`/guilds/${guild?.id}/modules/welcome`}
-            dataName="deleteAfterLeave"
-            defaultState={welcome?.deleteAfterLeave || false}
+            dataName="delete_after_leave"
+            defaultState={welcome?.delete_after_leave || false}
             disabled={!welcome.enabled}
         />
 
@@ -126,8 +126,8 @@ export default function Home() {
             name="After how many seconds the message should be deleted"
             description="Set to 0 to disable"
             url={`/guilds/${guild?.id}/modules/welcome`}
-            dataName="deleteAfter"
-            defaultState={welcome?.deleteAfter ?? 0}
+            dataName="delete_after"
+            defaultState={welcome?.delete_after ?? 0}
             disabled={!welcome.enabled}
         />
 
@@ -217,7 +217,7 @@ export default function Home() {
             defaultMessage={welcome?.message}
             messageAttachmentComponent={welcome.card.enabled &&
                 <Image
-                    src={`https://imageapi.notificationbot.xyz/?type=join&username=${encodeURIComponent(user?.username as string)}&members=1090&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${welcome.card.background ? `&background=${encodeURIComponent(welcome.card.background)}` : ""}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/images/?type=join&username=${encodeURIComponent(user?.username as string)}&members=1090&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${welcome.card.background ? `&background=${encodeURIComponent(welcome.card.background)}` : ""}`}
                     width={1024 / 2}
                     height={(256 + 16) / 2}
                     loading="lazy"

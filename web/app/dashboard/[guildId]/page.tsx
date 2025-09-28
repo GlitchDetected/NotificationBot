@@ -20,7 +20,7 @@ export default function Home() {
 
             <FollowUpdates />
 
-            <Section title="Miscellaneous">Random configs that don&apos;t fit in the other tabs</Section>
+            <Section title="Miscellaneous">Coming soon...</Section>
         </>
     );
 }

@@ -100,7 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 </Head>
             )}
 
-            <div className="flex flex-col gap-5 mb-6">
+            <div className="flex flex-col gap-5 mb-6 mt-20">
 
                 <div className="text-lg flex gap-5">
                     <Skeleton

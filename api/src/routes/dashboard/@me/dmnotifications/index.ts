@@ -49,7 +49,7 @@ router.patch("/", async (c) => {
 
         if (config) {
             const keys: ("enabled" | "embedcolor" | "source" | "thumbnail" | "message")[] =
-      ["enabled", "embedcolor", "source", "thumbnail", "message"];
+                ["enabled", "embedcolor", "source", "thumbnail", "message"];
 
             const updateData: Partial<typeof body> = {};
 

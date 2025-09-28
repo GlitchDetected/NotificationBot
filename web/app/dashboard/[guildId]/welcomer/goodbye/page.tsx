@@ -106,8 +106,8 @@ export default function Home() {
             name="After how many seconds the message should be deleted"
             description="Set to 0 to disable."
             url={`/guilds/${guild?.id}/modules/bye`}
-            dataName="deleteAfter"
-            defaultState={bye?.deleteAfter ?? 0}
+            dataName="delete_after"
+            defaultState={bye?.delete_after ?? 0}
             disabled={!bye.enabled}
         />
 
@@ -139,7 +139,7 @@ export default function Home() {
             defaultMessage={bye?.message}
             messageAttachmentComponent={bye.card.enabled &&
                 <Image
-                    src={`https://imageapi.notificationbot.xyz/?type=join&username=${encodeURIComponent(user?.username as string)}&members=1090&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${bye.card.background ? `&background=${encodeURIComponent(bye.card.background)}` : ""}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/images/?type=join&username=${encodeURIComponent(user?.username as string)}&members=1090&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${bye.card.background ? `&background=${encodeURIComponent(bye.card.background)}` : ""}`}
                     width={1024 / 2}
                     height={(256 + 16) / 2}
                     loading="lazy"

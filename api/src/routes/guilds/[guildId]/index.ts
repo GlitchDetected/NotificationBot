@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Hono } from "hono";
 
 import config from "@/src/config";
@@ -158,7 +157,7 @@ router.patch("/follow-updates", async (c) => {
                 return httpError(HttpErrorMessage.BadRequest);
             }
 
-            const updateData: Partial<typeof body> & { name?: string } = {};
+            const updateData: Partial<typeof body> & { name?: string; } = {};
 
             // Update channelId if provided
             if ("channelId" in body) {

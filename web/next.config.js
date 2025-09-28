@@ -55,7 +55,13 @@ const nextConfig = {
                hostname: "cdn.bsky.app",
                port: "",
                pathname: "/**"
-           }
+           },
+            {
+                protocol: "http",
+                hostname: "localhost",
+                port: "5000",
+                pathname: "/**"
+            },
     ],
   },
 };

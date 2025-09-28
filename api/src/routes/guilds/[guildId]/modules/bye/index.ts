@@ -9,7 +9,16 @@ import type { ApiV1GuildsModulesByeGetResponse, GuildEmbed } from "@/typings";
 
 const router = new Hono();
 
-type UpdatableFields = "enabled" | "channelId" | "webhookURL" | "deleteAfter";
+type UpdatableFields = "enabled" | "channelId" | "webhookURL" | "delete_after";
+
+const keyMap: Record<UpdatableFields, string> = {
+    enabled: "enabled",
+    channelId: "channel_id",
+    webhookURL: "webhook_url",
+    delete_after: "delete_after"
+};
+
+const keys: UpdatableFields[] = ["enabled", "channelId", "webhookURL", "delete_after"];
 
 interface TestPayload {
     content?: string;
@@ -32,7 +41,7 @@ router.get("/", async (c) => {
                 embed: config?.message?.embed ?? null
             },
 
-            deleteAfter: config?.delete_after ?? 0,
+            delete_after: config?.delete_after ?? 0,
 
             card: {
                 enabled: config?.card?.enabled ?? false,
@@ -56,13 +65,24 @@ router.patch("/", async (c) => {
     // overwrite values if they are explicitly provided. Otherwise, preserve the existing ones.
         let config = await getBye(guildId!);
         if (config) {
-            const keys: ("enabled" | "channelId" | "webhookURL" | "deleteAfter")[] =
-      ["enabled", "channelId", "webhookURL", "deleteAfter"];
-
             for (const key of keys) {
                 if (key in body) {
-                    (updateData as Record<UpdatableFields, unknown>)[key] = body[key];
+                    const configKey = keyMap[key];
+                    (updateData as any)[configKey] = (body as any)[key];
                 }
+            }
+
+            if (typeof body.enabled === "boolean") {
+                updateData.enabled = body.enabled;
+            }
+            if ("channelId" in body) {
+                updateData.channel_id = body.channelId ?? null;
+            }
+            if ("webhookURL" in body) {
+                updateData.webhook_url = body.webhookURL ?? null;
+            }
+            if ("delete_after" in body) {
+                updateData.delete_after = body.delete_after ?? null;
             }
 
             if (typeof body.message === "object" && body.message !== null) {
@@ -109,7 +129,7 @@ router.patch("/", async (c) => {
                     embed: body.message?.embed ?? undefined
                 },
 
-                delete_after: body.deleteAfter ?? null,
+                delete_after: body.delete_after ?? null,
 
                 card: {
                     enabled: body.card?.enabled ?? false,

@@ -66,7 +66,7 @@ router.patch("/", async (c) => {
 
         if (config) {
             const keys: ("type" | "channelId" | "creatorId" | "roleId" | "regex")[] =
-      ["type", "channelId", "creatorId", "roleId", "regex"];
+                ["type", "channelId", "creatorId", "roleId", "regex"];
 
             for (const key of keys) {
                 if (key in body) {

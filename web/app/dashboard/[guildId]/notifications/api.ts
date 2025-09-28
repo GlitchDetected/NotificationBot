@@ -1,5 +1,5 @@
 const ACTOR_POSTS_URL =
-  "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?filter=posts_no_replies&includePins=false&limit=1&actor=";
+    "https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?filter=posts_no_replies&includePins=false&limit=1&actor=";
 
 interface ApiGetPost {
     feed: [
