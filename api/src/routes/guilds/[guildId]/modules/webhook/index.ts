@@ -11,12 +11,12 @@ router.post("/", async (c) => {
         console.log(body);
 
         if (!body.webhookUrl) {
-            return c.json({ error: "webhookUrl required" });
+            return c.json({ error: "A webhook url is required" });
         }
 
         const match = body.webhookUrl.match(/\/webhooks\/(\d+)\/([\w-]+)/);
         if (!match) {
-            return c.json({ error: "Invalid webhook URL" });
+            return c.json({ error: "Your webhook URL is invalid" });
         }
         const [, webhookId, webhookToken] = match;
 

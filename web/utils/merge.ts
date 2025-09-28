@@ -9,7 +9,7 @@ export function deepMerge<T>(target: T | undefined, source: Partial<T>): T | und
             const sourceValue = source[key];
 
             const isObj =
-        targetValue !== undefined &&
+                targetValue !== undefined &&
         targetValue !== null &&
         typeof targetValue === "object" &&
         sourceValue !== undefined &&
