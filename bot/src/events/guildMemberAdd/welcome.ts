@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import type { Client, GuildMember, Message, User } from "discord.js";
+import type { Client, GuildMember, User } from "discord.js";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { welcomerPlaceholders } from "@/src/constants/discord";
@@ -16,25 +16,19 @@ export default async (
     const { guild } = member;
     console.log(`[Welcome] Member joined: ${member.user.tag} (${member.id})`);
 
-    let sentMessage: Message | undefined;
-
-    const components: ActionRowBuilder<ButtonBuilder>[] = [];
-
     const placeholders = {
         ...welcomerPlaceholders(member, inviter, inviteCode, inviteCount)
     };
 
     const config = await getWelcome(guild.id);
 
-    const embedConfig = config?.message?.embed;
-
     if (!config || !config.enabled || !config.channel_id) return;
 
     const channel = guild.channels.cache.get(config.channel_id);
     if (!channel || !channel.isTextBased()) return;
 
-    const content = replacePlaceholder(config.message?.content || "", placeholders);
-
+    // Button setup
+    const components: ActionRowBuilder<ButtonBuilder>[] = [];
     if (config.button?.enabled) {
         const button = new ButtonBuilder()
             .setStyle(config.button.style || ButtonStyle.Primary)
@@ -42,89 +36,105 @@ export default async (
             .setDisabled(false)
             .setLabel(config.button.label || "Say hi");
 
-        if (config.button.emoji) {
-            button.setEmoji(config.button.emoji);
+        if (config.button.emoji) button.setEmoji(config.button.emoji);
+
+        components.push(new ActionRowBuilder<ButtonBuilder>().addComponents(button));
+    }
+
+    // CHANNEL MESSAGE
+    const channelContent = replacePlaceholder(config.message?.content || "", placeholders);
+    const channelEmbedConfig = config.message?.embed;
+
+    let channelEmbed: any | undefined;
+    if (channelEmbedConfig) {
+        channelEmbed = {};
+        if (channelEmbedConfig.title)
+            channelEmbed.title = replacePlaceholder(channelEmbedConfig.title, placeholders);
+        if (channelEmbedConfig.description)
+            channelEmbed.description = replacePlaceholder(channelEmbedConfig.description, placeholders);
+
+        if (!channelEmbed.title && !channelEmbed.description) {
+            channelEmbed = undefined; // skip empty embed
         }
 
-        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
-        components.push(row);
+        if (channelEmbed) {
+            channelEmbed.color = channelEmbedConfig.color || 0x333333;
+            if (channelEmbedConfig.image)
+                channelEmbed.image = { url: replacePlaceholder(channelEmbedConfig.image, placeholders) };
+            if (channelEmbedConfig.thumbnail)
+                channelEmbed.thumbnail = { url: replacePlaceholder(channelEmbedConfig.thumbnail, placeholders) };
+            if (channelEmbedConfig.footer?.text)
+                channelEmbed.footer = {
+                    text: replacePlaceholder(channelEmbedConfig.footer.text, placeholders),
+                    icon_url: channelEmbedConfig.footer.icon_url
+                        ? replacePlaceholder(channelEmbedConfig.footer.icon_url, placeholders)
+                        : undefined
+                };
+        }
     }
 
-    const hasEmbed =
-        embedConfig &&
-    (embedConfig.title || embedConfig.description || embedConfig.image || embedConfig.thumbnail);
-
-    if (hasEmbed) {
-        const { title, description, color, image, thumbnail, footer } = embedConfig;
-        const embed = {
-            title: title ? replacePlaceholder(title, placeholders) : undefined,
-            description: description ? replacePlaceholder(description, placeholders) : undefined,
-            color: color || 0x333333,
-            image: image ? { url: replacePlaceholder(image, placeholders) } : undefined,
-            thumbnail: thumbnail ? { url: replacePlaceholder(thumbnail, placeholders) } : undefined,
-            footer: footer?.text
-                ? {
-                    text: replacePlaceholder(footer.text, placeholders),
-                    icon_url: footer.icon_url ? replacePlaceholder(footer.icon_url, placeholders) : undefined
-                }
-                : undefined
-        };
-
-        sentMessage = await channel.send({
-            content: content || undefined, // send content too if available
-            embeds: [embed]
-        });
-    } else if (content) {
-    // Only send the plain content if embed is not valid
-        sentMessage = await channel.send({ content });
-    }
+    // === SEND TO CHANNEL ===
+    const sentMessage = await channel.send({
+        content: channelContent || undefined,
+        embeds: channelEmbed ? [channelEmbed] : undefined,
+        components: components.length ? components : undefined
+    });
 
     if (config.delete_after_leave && sentMessage) {
         const welcomeMessageIds = { ...(config.welcome_message_ids || {}) };
-        welcomeMessageIds[member.id] = sentMessage?.id;
+        welcomeMessageIds[member.id] = sentMessage.id;
         await updateWelcome(guild.id, { welcome_message_ids: welcomeMessageIds });
-
     }
 
-    if (config.delete_after && Number.isFinite(config.delete_after)) {
-        setTimeout(() => {
-            sentMessage?.delete().catch(() => {});
-        }, config.delete_after);
+    // Auto-delete
+    // in miliseconds
+    if (config.delete_after && Number.isFinite(config.delete_after) && config.delete_after > 0) {
+        setTimeout(() => sentMessage?.delete().catch(() => {}), config.delete_after * 1000);
     }
 
+    // DM
     if (config.dm?.enabled) {
         try {
-            const content = replacePlaceholder(config.dm.message?.content || "", placeholders);
+            const dmChannel = await member.createDM().catch(() => null);
+            if (!dmChannel) {
+                return;
+            }
 
-            if (config.dm.message?.embed) {
-                const { title, description, color, image, thumbnail, footer } = config.dm.message.embed;
+            const dmContent = replacePlaceholder(config.dm.message?.content || "", placeholders);
+            const dmEmbedConfig = config.dm.message?.embed;
 
-                const embed = {
-                    title: title ? replacePlaceholder(title, placeholders) : undefined,
-                    description: description ? replacePlaceholder(description, placeholders) : undefined,
-                    color: color || 0x333333,
-                    image: image ? { url: replacePlaceholder(image, placeholders) } : undefined,
-                    thumbnail: thumbnail ? { url: replacePlaceholder(thumbnail, placeholders) } : undefined,
-                    footer: footer?.text
-                        ? {
-                            text: replacePlaceholder(footer.text, placeholders),
-                            icon_url: footer.icon_url ? replacePlaceholder(footer.icon_url, placeholders) : undefined
-                        }
-                        : undefined
-                };
+            let dmEmbed: any | undefined;
+            if (dmEmbedConfig) {
+                dmEmbed = {};
+                if (dmEmbedConfig.title) dmEmbed.title = replacePlaceholder(dmEmbedConfig.title, placeholders);
+                if (dmEmbedConfig.description) dmEmbed.description = replacePlaceholder(dmEmbedConfig.description, placeholders);
+                if (!dmEmbed.title && !dmEmbed.description) dmEmbed = undefined; // skip empty embed
+                if (dmEmbed) {
+                    dmEmbed.color = dmEmbedConfig.color || 0x333333;
+                    if (dmEmbedConfig.image) dmEmbed.image = { url: replacePlaceholder(dmEmbedConfig.image, placeholders) };
+                    if (dmEmbedConfig.thumbnail) dmEmbed.thumbnail = { url: replacePlaceholder(dmEmbedConfig.thumbnail, placeholders) };
+                    if (dmEmbedConfig.footer?.text)
+                        dmEmbed.footer = {
+                            text: replacePlaceholder(dmEmbedConfig.footer.text, placeholders),
+                            icon_url: dmEmbedConfig.footer.icon_url
+                                ? replacePlaceholder(dmEmbedConfig.footer.icon_url, placeholders)
+                                : undefined
+                        };
+                }
+            }
 
+            if (dmContent || dmEmbed) {
                 await member.send({
-                    content: content,
-                    embeds: [embed]
+                    content: dmContent || undefined,
+                    embeds: dmEmbed ? [dmEmbed] : undefined
                 });
-            } else if (content) {
-                await member.send({ content: content });
             }
         } catch (err) {
-            console.warn(err);
+            console.warn("[Welcome DM] Failed to send DM:", err);
         }
     }
 
+    // card
     if (config.card?.enabled) {
         try {
             const { in_embed, background, text_color } = config.card;
@@ -177,38 +187,53 @@ export default async (
         }
     }
 
-    if (config.reactions?.welcome_message_emojis?.length && sentMessage) {
+    // Reactions
+    if (config.reactions?.welcome_message_emojis?.length && sentMessage?.id) {
         for (const emoji of config.reactions.welcome_message_emojis) {
             try {
                 await sentMessage.react(emoji);
             } catch (err) {
-                console.warn(err);
+                console.warn(`[Welcome Reaction] Failed to react with ${emoji}:`, err);
             }
         }
     }
 
-
+    // Roles
     if (config.role_ids?.length) {
-        for (const roleId of config.role_ids) {
-            try {
+        const botMember = guild.members.me;
+        if (!botMember) {
+            console.warn("[Welcome Role] Bot member not cached, skipping role assignments.");
+        } else {
+            for (const roleId of config.role_ids) {
                 const role = guild.roles.cache.get(roleId);
-                if (role) await member.roles.add(role);
-            } catch (err) {
-                console.error(err);
+                if (!role) continue;
+
+                // Only add role if bot's highest role is above target role
+                if (botMember.roles.highest.position <= role.position) {
+                    console.warn(`[Welcome Role] Cannot assign role ${role.name} due to hierarchy.`);
+                    continue;
+                }
+
+                try {
+                    await member.roles.add(role);
+                } catch (err) {
+                    console.error(`[Welcome Role] Failed to add role ${role.name}:`, err);
+                }
             }
         }
     }
 
+    // Ghost pings
     if (config.ping_ids?.length) {
         for (const channelId of config.ping_ids) {
-            try {
-                const pingChannel = guild.channels.cache.get(channelId);
-                if (!pingChannel || !pingChannel.isTextBased()) continue;
+            const pingChannel = guild.channels.cache.get(channelId);
+            if (!pingChannel || !pingChannel.isTextBased()) continue;
 
+            try {
                 const ghostMessage = await pingChannel.send(`<@${member.id}>`);
                 setTimeout(() => ghostMessage.delete().catch(() => {}), 3000);
             } catch (err) {
-                console.error(`Failed to ghost ping in ${channelId}`, err);
+                console.error(`[Welcome Ghost Ping] Failed in ${channelId}:`, err);
             }
         }
     }

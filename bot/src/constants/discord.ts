@@ -6,9 +6,8 @@ import type { ContentData, notificationConfig, NotificationType } from "@/typing
 export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, inviteCode?: string, inviteCount?: number) => {
     const user = member.user;
     const guild = member.guild;
-    if (!inviter) return {};
 
-    return {
+    const placeholders: Record<string, string | number> = {
         // user
         "user.mention": `<@${user.id}>`,
         "user.id": user.id,
@@ -21,17 +20,22 @@ export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, 
         "guild.id": guild.id,
         "guild.avatar": guild.iconURL() || "",
         "guild.rules": guild.rulesChannel ? `<#${guild.rulesChannel.id}>` : "",
-        "guild.memberCount": guild.memberCount,
-
-        // inviter
-        "inviter.mention": `<@${inviter.id}>`,
-        "inviter.id": inviter.id,
-        "inviter.tag": inviter.tag,
-        "inviter.name": inviter.username,
-        "inviter.avatar": inviter.displayAvatarURL(),
-        "inviter.code": inviteCode || "",
-        "inviter.count": inviteCount || 0
+        "guild.memberCount": guild.memberCount
     };
+
+    if (inviter) {
+        Object.assign(placeholders, {
+            "inviter.mention": `<@${inviter.id}>`,
+            "inviter.id": inviter.id,
+            "inviter.tag": inviter.tag,
+            "inviter.name": inviter.username,
+            "inviter.avatar": inviter.displayAvatarURL(),
+            "inviter.code": inviteCode || "",
+            "inviter.count": inviteCount || 0
+        });
+    }
+
+    return placeholders;
 };
 
 export const notificationPlaceholders = (

@@ -1,8 +1,20 @@
+import { BskyAgent } from "@atproto/api";
 import axios from "axios";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
 import appConfig from "../config";
+
+const agent = new BskyAgent({ service: "https://bsky.social" });
+
+async function bskySession() {
+    if (!agent.session) {
+        await agent.login({
+            identifier: appConfig.apiSecrets.blueskyIdentifier,
+            password: appConfig.apiSecrets.blueskyPassword
+        });
+    }
+}
 
 // YouTube
 async function fetchLatestYouTubeContent(config: notificationConfig): Promise<ContentData | null> {
@@ -51,7 +63,13 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
         const tokenResp = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`);
         const accessToken = tokenResp.data.access_token;
 
-        const username = config.creator.username.toLowerCase();
+        const username = config.creator?.username || (config as any).creatorHandle;
+        if (!username) throw new Error("Missing username");
+
+        if (!username) {
+            return null;
+        }
+
         const userResp = await axios.get(`https://api.twitch.tv/helix/users?login=${username}`, {
             headers: { "Client-ID": clientId, Authorization: `Bearer ${accessToken}` }
         });
@@ -79,23 +97,30 @@ async function fetchLatestTwitchContent(config: notificationConfig): Promise<Con
 }
 
 // Bluesky
-async function fetchLatestBlueskyContent(config: notificationConfig): Promise<ContentData | null> {
+export async function fetchLatestBlueskyContent(
+    config: notificationConfig
+): Promise<ContentData | null> {
     try {
-        const blueskyHandle = config.creator.username;
-        const url = `https://bsky.app/api/profile/${blueskyHandle}/posts?limit=1`;
-        const response = await axios.get(url);
+        await bskySession();
 
-        const post = response.data.posts?.[0];
-        if (!post) return null;
+        const blueskyHandle = config.creator?.username || (config as any).creatorHandle;
+        if (!blueskyHandle) throw new Error("Missing blueskyHandle");
+
+        const feed = await agent.getAuthorFeed({ actor: blueskyHandle, limit: 1 });
+        const item = feed.data.feed?.[0];
+        if (!item) return null;
+
+        const post = item.post; // PostView
+        const author = post.author; // ProfileViewBasic
 
         return {
             id: post.cid,
-            type: post.type,
-            text: post.text,
-            timestamp: Math.floor(new Date(post.createdAt).getTime() / 1000),
+            type: post.$type,
+            text: (post.record as any)?.text || "",
+            timestamp: Math.floor(new Date(post.indexedAt).getTime() / 1000),
             creator: {
-                posts: post.author.postsCount || 0,
-                followers: post.author.followersCount || 0
+                posts: (author as any).postsCount || 0,
+                followers: (author as any).followersCount || 0
             },
             link: `https://bsky.app/profile/${blueskyHandle}/post/${post.cid}`
         };
@@ -105,10 +130,12 @@ async function fetchLatestBlueskyContent(config: notificationConfig): Promise<Co
     }
 }
 
+
 // reddit
 async function fetchLatestRedditContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const subreddit = config.creator.username;
+        const subreddit = config.creator?.username || (config as any).creatorHandle;
+        if (!subreddit) throw new Error("Missing subreddit name");
 
         const url = `https://www.reddit.com/r/${subreddit}/new.json?limit=1`;
         const response = await axios.get(url, { headers: { "User-Agent": "DiscordBot/1.0" } });
