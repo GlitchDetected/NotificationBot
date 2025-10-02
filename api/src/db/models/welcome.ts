@@ -1,7 +1,5 @@
-import type { Insertable } from "kysely";
-
 import { db } from "../index";
-import type { Database } from "../types";
+import type { WelcomeTable } from "../types";
 
 export function getWelcome(guildId: string) {
     return db
@@ -11,25 +9,21 @@ export function getWelcome(guildId: string) {
         .executeTakeFirst();
 }
 
-const DISALLOWED_UPDATE_COLUMNS = [
-    "created_at"
-] satisfies (keyof Database["welcome"])[];
-
-export function upsertWelcome(welcome: Insertable<Database["welcome"]>) {
-    const updateConfig = welcome;
-
-    for (const k of Object.keys(updateConfig) as typeof DISALLOWED_UPDATE_COLUMNS) {
-        if (!DISALLOWED_UPDATE_COLUMNS.includes(k)) continue;
-        updateConfig[k] = undefined as unknown as never;
-    }
-
+export function createWelcome(data: Omit<WelcomeTable, "created_at" | "updated_at">) {
     return db
         .insertInto("welcome")
-        .values(welcome)
-        .onConflict((oc) => oc
-            .column("guild_id")
-            .doUpdateSet(updateConfig)
-        )
+        .values(data)
         .returningAll()
-        .executeTakeFirst() as unknown as Promise<Database["welcome"]>;
+        .executeTakeFirst();
+}
+
+export function updateWelcome(
+    guildId: string,
+    updates: Partial<Omit<WelcomeTable, "created_at" | "updated_at">>
+) {
+    return db
+        .updateTable("welcome")
+        .set(updates)
+        .where("guild_id", "=", guildId)
+        .executeTakeFirst();
 }

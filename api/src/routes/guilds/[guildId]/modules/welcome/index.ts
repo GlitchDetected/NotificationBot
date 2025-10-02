@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 
 import appConfig from "@/src/config";
-import { now } from "@/src/constants/global";
 import { HttpErrorMessage } from "@/src/constants/http-error";
-import { getWelcome, upsertWelcome } from "@/src/db/models/welcome";
+import { createWelcome, getWelcome, updateWelcome } from "@/src/db/models/welcome";
+import type { WelcomeTable } from "@/src/db/types";
 import { httpError } from "@/src/utils/httperrorHandler";
 import type { ApiV1GuildsModulesWelcomeGetResponse, GuildEmbed } from "@/typings";
 
@@ -72,19 +72,123 @@ router.get("/", async (c) => {
 
 router.patch("/", async (c) => {
     const guildId = c.req.param("guildId");
+    const updateData: Partial<Omit<WelcomeTable, "createdAt" | "updatedAt">> = {};
+
     const body = await c.req.json() as ApiV1GuildsModulesWelcomeGetResponse;
     console.log(body);
 
-    if (!guildId) {
-        return c.json({ error: "Missing guildId parameter" }, 400);
-    }
-
     try {
-        const config = await getWelcome(guildId!);
-        // CREATE new configuration
-        if (!config) {
-            const newConfig = await upsertWelcome({
-                guild_id: guildId,
+        let config = await getWelcome(guildId!);
+        if (config) {
+            if (typeof body.enabled === "boolean") {
+                updateData.enabled = body.enabled;
+            }
+
+            if (typeof body.channelId === "string") {
+                updateData.channel_id = body.channelId;
+            }
+
+            if (Array.isArray(body.pingIds)) {
+                updateData.ping_ids = JSON.stringify(body.pingIds);
+            }
+
+            if (Array.isArray(body.roleIds)) {
+                updateData.role_ids = JSON.stringify(body.roleIds);
+            }
+
+            if (typeof body.delete_after === "number") {
+                updateData.delete_after = body.delete_after;
+            }
+
+            if (typeof body.delete_after_leave === "boolean") {
+                updateData.delete_after_leave = body.delete_after_leave;
+            }
+
+            if (typeof body.restore === "boolean") {
+                updateData.is_restorable = body.restore;
+            }
+
+            if (typeof body.message === "object" && body.message !== null) {
+                updateData.message = {
+                    content:
+                    typeof body.message.content === "string"
+                        ? body.message.content
+                        : config.message?.content ?? null,
+                    embed:
+                    typeof body.message.embed === "object" && body.message.embed !== null
+                        ? body.message.embed
+                        : config.message?.embed ?? undefined
+                };
+            }
+
+            if (typeof body.dm === "object" && body.dm !== null) {
+                updateData.dm = {
+                    enabled: typeof body.dm.enabled === "boolean"
+                        ? body.dm.enabled
+                        : config.dm?.enabled ?? false,
+                    message: {
+                        content: "content" in (body.dm.message || {})
+                            ? body.dm.message?.content
+                            : config.dm?.message?.content ?? undefined,
+                        embed: "embed" in (body.dm.message || {})
+                            ? body.dm.message?.embed
+                            : config.dm?.message?.embed ?? undefined
+                    }
+                };
+            }
+
+            if (typeof body.reactions === "object" && body.reactions !== null) {
+                updateData.reactions = {
+                    welcome_message_emojis: Array.isArray(body.reactions.welcomeMessageEmojis)
+                        ? body.reactions.welcomeMessageEmojis
+                        : config.reactions?.welcome_message_emojis ?? [],
+                    first_message_emojis: Array.isArray(body.reactions.firstMessageEmojis)
+                        ? body.reactions.firstMessageEmojis
+                        : config.reactions?.first_message_emojis ?? []
+                };
+            }
+
+            if (typeof body.card === "object" && body.card !== null) {
+                updateData.card = {
+                    enabled: typeof body.card.enabled === "boolean"
+                        ? body.card.enabled
+                        : config.card?.enabled ?? false,
+                    in_embed: typeof body.card.inEmbed === "boolean"
+                        ? body.card.inEmbed
+                        : config.card?.in_embed ?? false,
+                    background: "background" in body.card
+                        ? body.card.background
+                        : config.card?.background ?? undefined,
+                    text_color: typeof body.card.textColor === "number"
+                        ? body.card.textColor
+                        : config.card?.text_color ?? undefined
+                };
+            }
+
+            if (typeof body.button === "object" && body.button !== null) {
+                updateData.button = {
+                    enabled: typeof body.button.enabled === "boolean"
+                        ? body.button.enabled
+                        : config.button?.enabled ?? false,
+                    style: [1, 2, 3, 4].includes(body.button.style)
+                        ? body.button.style
+                        : config.button?.style ?? 1,
+                    type: 0,
+                    emoji: "emoji" in body.button
+                        ? body.button.emoji
+                        : config.button?.emoji ?? null,
+                    label: "label" in body.button
+                        ? body.button.label
+                        : config.button?.label ?? null,
+                    ping: typeof body.button.ping === "boolean"
+                        ? body.button.ping
+                        : config.button?.ping ?? false
+                };
+            }
+            await updateWelcome(guildId!, updateData);
+        } else {
+            config = await createWelcome({
+                guild_id: guildId!,
                 enabled: body.enabled,
                 channel_id: body.channelId,
                 message: {
@@ -92,11 +196,12 @@ router.patch("/", async (c) => {
             "Welcome to {guild.name} {user.name}, we are currently at {guild.memberCount} members!",
                     embed: body.dm?.message?.embed ?? undefined
                 },
-                role_ids: body.roleIds ?? [],
-                ping_ids: body.pingIds ?? [],
-                delete_after: body.delete_after,
-                delete_after_leave: body.delete_after_leave,
+                role_ids: Array.isArray(body.roleIds) ? JSON.stringify(body.roleIds) : null,
+                ping_ids: Array.isArray(body.pingIds) ? JSON.stringify(body.pingIds) : null,
+                delete_after: body.delete_after ?? null,
+                delete_after_leave: body.delete_after_leave ?? null,
                 is_restorable: body.restore,
+                welcome_message_ids: null,
                 dm: {
                     enabled: body.dm?.enabled ?? false,
                     message: {
@@ -125,130 +230,11 @@ router.patch("/", async (c) => {
                     emoji: body.button?.emoji ?? null,
                     label: body.button?.label ?? null,
                     ping: body.button?.ping ?? false
-                },
-                created_at: now,
-                updated_at: now
-            });
-
-            return c.json(newConfig);
-        }
-
-        // UPDATE existing configuration
-        if (typeof body.enabled === "boolean") {
-            config.enabled = body.enabled;
-        }
-
-        if (typeof body.channelId === "string") {
-            config.channel_id = body.channelId;
-        }
-
-        if (Array.isArray(body.roleIds)) {
-            config.role_ids = body.roleIds.map(String);
-        }
-
-        if (Array.isArray(body.pingIds)) {
-            config.ping_ids = body.pingIds.map(String);
-        }
-
-        if (typeof body.delete_after === "number") {
-            config.delete_after = body.delete_after;
-        }
-
-        if (typeof body.delete_after_leave === "boolean") {
-            config.delete_after_leave = body.delete_after_leave;
-        }
-
-        if (typeof body.restore === "boolean") {
-            config.is_restorable = body.restore;
-        }
-
-        if (typeof body.message === "object" && body.message !== null) {
-            config.message = {
-                content:
-                    typeof body.message.content === "string"
-                        ? body.message.content
-                        : config.message?.content ?? null,
-                embed:
-                    typeof body.message.embed === "object" && body.message.embed !== null
-                        ? body.message.embed
-                        : config.message?.embed ?? undefined
-            };
-        }
-
-        if (typeof body.dm === "object" && body.dm !== null) {
-            config.dm = {
-                enabled: typeof body.dm.enabled === "boolean"
-                    ? body.dm.enabled
-                    : config.dm?.enabled ?? false,
-                message: {
-                    content: "content" in (body.dm.message || {})
-                        ? body.dm.message?.content
-                        : config.dm?.message?.content ?? undefined,
-                    embed: "embed" in (body.dm.message || {})
-                        ? body.dm.message?.embed
-                        : config.dm?.message?.embed ?? undefined
                 }
-            };
+            });
         }
 
-        if (typeof body.reactions === "object" && body.reactions !== null) {
-            config.reactions = {
-                welcome_message_emojis: Array.isArray(body.reactions.welcomeMessageEmojis)
-                    ? body.reactions.welcomeMessageEmojis
-                    : config.reactions?.welcome_message_emojis ?? [],
-                first_message_emojis: Array.isArray(body.reactions.firstMessageEmojis)
-                    ? body.reactions.firstMessageEmojis
-                    : config.reactions?.first_message_emojis ?? []
-            };
-        }
-
-        if (typeof body.card === "object" && body.card !== null) {
-            config.card = {
-                enabled: typeof body.card.enabled === "boolean"
-                    ? body.card.enabled
-                    : config.card?.enabled ?? false,
-                in_embed: typeof body.card.inEmbed === "boolean"
-                    ? body.card.inEmbed
-                    : config.card?.in_embed ?? false,
-                background: "background" in body.card
-                    ? body.card.background
-                    : config.card?.background ?? undefined,
-                text_color: typeof body.card.textColor === "number"
-                    ? body.card.textColor
-                    : config.card?.text_color ?? undefined
-            };
-        }
-
-        if (typeof body.button === "object" && body.button !== null) {
-            config.button = {
-                enabled: typeof body.button.enabled === "boolean"
-                    ? body.button.enabled
-                    : config.button?.enabled ?? false,
-                style: [1, 2, 3, 4].includes(body.button.style)
-                    ? body.button.style
-                    : config.button?.style ?? 1,
-                type: 0,
-                emoji: "emoji" in body.button
-                    ? body.button.emoji
-                    : config.button?.emoji ?? null,
-                label: "label" in body.button
-                    ? body.button.label
-                    : config.button?.label ?? null,
-                ping: typeof body.button.ping === "boolean"
-                    ? body.button.ping
-                    : config.button?.ping ?? false
-            };
-        }
-
-        config.updated_at = now;
-        if (!config.created_at) {
-            config.created_at = now;
-        }
-
-
-        const updatedConfig = await upsertWelcome(config);
-        return c.json(updatedConfig);
-
+        return c.json(config);
     } catch {
         return c.json({ error: "Internal server error" }, 500);
     }

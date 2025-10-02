@@ -127,7 +127,6 @@ router.get("/emojis", async (c) => {
 
 router.patch("/follow-updates", async (c) => {
     const guildId = c.req.param("guildId");
-
     const user = c.get("user");
 
     if (!user?.access_token) {
@@ -137,51 +136,36 @@ router.patch("/follow-updates", async (c) => {
     const body = await c.req.json() as ApiV1GuildsGetResponse["follownewsChannel"];
     console.log(body);
 
+    if (!body || !("channelId" in body)) {
+        return httpError(HttpErrorMessage.BadRequest);
+    }
+
     try {
         let config = await getFollowUpdates(guildId!);
 
         let channelName: string | null = null;
-        if (body?.channelId) {
+        if (body.channelId) {
             const res = await fetch(`https://discord.com/api/v10/channels/${body.channelId}`, {
-                headers: {
-                    Authorization: `Bot ${TOKEN}`
-                }
+                headers: { Authorization: `Bot ${TOKEN}` }
             });
 
+            if (!res.ok) throw new Error("Failed to fetch channel data");
             const channelData = await res.json();
-            channelName = channelData.name;
+            channelName = channelData.name ?? null;
         }
 
+        const updateData = {
+            channel_id: body.channelId ?? null,
+            name: channelName
+        };
+
         if (config) {
-            if (!body) {
-                return httpError(HttpErrorMessage.BadRequest);
-            }
-
-            const updateData: Partial<typeof body> & { name?: string; } = {};
-
-            // Update channelId if provided
-            if ("channelId" in body) {
-                updateData.channelId = body.channelId ?? null;
-
-                if (body.channelId) {
-                    const res = await fetch(`https://discord.com/api/v10/channels/${body.channelId}`, {
-                        headers: {
-                            Authorization: `Bot ${TOKEN}`
-                        }
-                    });
-                    const channelData = await res.json();
-                    updateData.name = channelData.name ?? null;
-                } else {
-                    updateData.name = undefined;
-                }
-            }
-
             await updateFollowUpdates(guildId!, updateData);
         } else {
             config = await createFollowUpdates({
                 guild_id: guildId!,
-                channel_id: body?.channelId ?? null,
-                name: channelName ?? null
+                channel_id: updateData.channel_id,
+                name: updateData.name
             });
         }
 
@@ -189,9 +173,12 @@ router.patch("/follow-updates", async (c) => {
             channelId: config?.channel_id,
             name: config?.name
         });
+
     } catch (error) {
         console.error("Error updating follow-updates:", error);
+        return httpError(HttpErrorMessage.ServerError);
     }
 });
+
 
 export default router;

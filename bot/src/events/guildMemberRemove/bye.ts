@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import type { Client, GuildMember, User } from "discord.js";
+import type { Client, GuildMember, Message, User } from "discord.js";
 import { AttachmentBuilder } from "discord.js";
 
 import { welcomerPlaceholders } from "@/src/constants/discord";
@@ -14,9 +14,11 @@ export default async (
     inviteCode?: string,
     inviteCount?: number
 ) => {
+    console.log(`[Welcome] Member left: ${member.user.tag} (${member.id})`);
+
     const { guild } = member;
 
-    let sentMessage;
+    let sentMessage: Message | undefined;
 
     const placeholders = {
         ...welcomerPlaceholders(member, inviter, inviteCode, inviteCount)
@@ -29,31 +31,36 @@ export default async (
     const channel = guild.channels.cache.get(config.channel_id);
     if (!channel || !channel.isTextBased()) return;
 
-    const content = replacePlaceholder(config.message?.content || "", placeholders);
-
-    // delete welcome message after leave
-    const welcomeConfig = await getWelcome(guild.id);
-
-    const messageId = welcomeConfig?.welcome_message_ids?.[member.id];
-    if (!messageId) return;
-
-    if (!welcomeConfig || !welcomeConfig.welcome_message_ids || !welcomeConfig.channel_id) return;
-    const welcomeChannel = guild.channels.cache.get(welcomeConfig.channel_id);
-    if (!welcomeChannel || !welcomeChannel.isTextBased()) return;
     try {
-        const msg = await welcomeChannel.messages.fetch(messageId);
-        if (msg) await msg.delete();
-    } catch {
-        return;
+        const welcomeConfig = await getWelcome(guild.id);
+        const messageId = welcomeConfig?.welcome_message_ids?.[member.id];
+        if (messageId && welcomeConfig?.welcome_message_ids && welcomeConfig.channel_id) {
+            const welcomeChannel = guild.channels.cache.get(welcomeConfig.channel_id);
+            if (welcomeChannel?.isTextBased()) {
+                const msg = await welcomeChannel.messages.fetch(messageId).catch(() => null);
+                if (msg) await msg.delete().catch(() => null);
+
+                // Remove from DB
+                delete welcomeConfig.welcome_message_ids[member.id];
+                await updateWelcome(guild.id, {
+                    welcome_message_ids: welcomeConfig.welcome_message_ids
+                });
+            }
+        }
+    } catch (err) {
+        console.warn("[Bye] Failed to delete welcome message, continuing:", err);
     }
-    await updateWelcome(guild.id, {
-        welcome_message_ids: welcomeConfig.welcome_message_ids
-    });
 
+    const content = replacePlaceholder(config.message?.content || "", placeholders);
+    const embedConfig = config.message?.embed;
 
-    if (config.message?.embed) {
-        const { title, description, color, image, thumbnail, footer } = config.message.embed;
+    // Only send the embed if it has at least a title, description, image, or thumbnail
+    const hasEmbed =
+        embedConfig &&
+    (embedConfig.title || embedConfig.description || embedConfig.image || embedConfig.thumbnail);
 
+    if (hasEmbed) {
+        const { title, description, color, image, thumbnail, footer } = embedConfig;
         const embed = {
             title: title ? replacePlaceholder(title, placeholders) : undefined,
             description: description ? replacePlaceholder(description, placeholders) : undefined,
@@ -69,16 +76,17 @@ export default async (
         };
 
         sentMessage = await channel.send({
-            content,
+            content: content || undefined, // send content too if available
             embeds: [embed]
         });
-    } else {
+    } else if (content) {
+    // Only send the plain content if embed is not valid
         sentMessage = await channel.send({ content });
     }
 
     if (config.delete_after && Number.isFinite(config.delete_after)) {
         setTimeout(() => {
-            sentMessage.delete().catch(() => {});
+            sentMessage?.delete().catch(() => {});
         }, config.delete_after);
     }
 
@@ -95,12 +103,12 @@ export default async (
             ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
             ctx.font = "bold 36px Sans";
-            ctx.fillStyle = text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#ffffff";
+            ctx.fillStyle = text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#000000";
             ctx.fillText(member.user.username, 320, 100);
 
             ctx.font = "28px Sans";
-            ctx.fillStyle = "#dddddd";
-            ctx.fillText(`Welcome to ${member.guild.name}`, 320, 200);
+            ctx.fillStyle = "#000000";
+            ctx.fillText(`Goodbye ${member.guild.name}`, 320, 200);
 
             const avatar = await loadImage(
                 member.user.displayAvatarURL({ extension: "png", size: 256 })
@@ -130,7 +138,7 @@ export default async (
             }
 
         } catch (err) {
-            console.warn("Failed to generate welcome card:", err);
+            console.warn("Failed to generate goodbye card:", err);
         }
     }
 };

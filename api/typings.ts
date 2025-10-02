@@ -152,8 +152,8 @@ export interface ApiV1GuildsModulesWelcomeGetResponse {
     embed?: GuildEmbed;
   };
 
-  roleIds: string[];
-  pingIds: string[];
+  roleIds: string | null;
+  pingIds: string | null;
   delete_after?: number;
   delete_after_leave?: boolean;
   restore: boolean;

@@ -7,8 +7,7 @@ import { guildStore } from "@/common/guildStore";
 import Modal from "@/components/input/modal";
 import { Button } from "@/components/ui/button";
 import {
-    Tooltip,
-    TooltipTrigger
+    Tooltip
 } from "@/components/ui/tooltip";
 
 interface Props {
@@ -30,7 +29,7 @@ export function DeleteNotification({
     return (
         <>
             <Tooltip>
-                <TooltipTrigger>Delete Notification</TooltipTrigger>
+                {/* <TooltipTrigger>Delete Notification</TooltipTrigger> */}
                 <Button onClick={() => setOpen(true)} disabled={!id}>
                     <span>
                         <HiTrash />
@@ -55,9 +54,9 @@ export function DeleteNotification({
                     if (id) remove(id);
                 }}
             >
-                Are you sure you want to delete the {"\""}
+                Are you sure you want to delete {"\""}
                 {name}
-                {"\""} channel from your notifications list?
+                {"\""} ({id})?
             </Modal>
         </>
     );

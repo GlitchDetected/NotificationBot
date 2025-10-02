@@ -104,10 +104,11 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
 
                 <div className="text-lg flex gap-5">
                     <Skeleton
-                        className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0"
+                        isLoading={!guild?.id}
+                        className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0 relative top-1"
                     >
                         <ImageReduceMotion
-                            alt="Random Server"
+                            alt="guild icon"
                             className="rounded-full"
                             url={`https://cdn.discordapp.com/icons/${guild?.id}/${guild?.icon}`}
                             size={128}

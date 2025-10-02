@@ -1,4 +1,5 @@
-import type { ColumnType, Generated } from "kysely";
+import type { Generated } from "kysely";
+
 import type { GuildEmbed } from "@/typings";
 
 export interface ByeTable {
@@ -21,8 +22,8 @@ export interface ByeTable {
         text_color?: number;
     } | null;
 
-    created_at: ColumnType<Date, string | undefined, never>;
-    updated_at: ColumnType<Date, string | undefined, never>;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface DmNotificationsTable {
@@ -32,20 +33,20 @@ export interface DmNotificationsTable {
     source: string | null;
     thumbnail: string | null;
     message: string | null;
-    created_at: ColumnType<Date, string | undefined, never>;
-    updated_at: ColumnType<Date, string | undefined, never>;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface FollowUpdatesTable {
     guild_id: string;
-    channel_id: string;
-    name: string;
+    channel_id: string | null;
+    name: string | null;
 }
 
 export interface NotificationsTable {
     id: Generated<string>;
     guild_id: string;
-    channel_id: string;
+    channel_id: string | null;
     role_id: string | null;
     type: 0 | 1 | 2 | 3 | null;
     flags: number | null;
@@ -58,14 +59,38 @@ export interface NotificationsTable {
     } | null;
 
     creator: {
-        id: string;
-        username: string;
-        custom_url: string;
+        id: string | null;
+        username: string | null;
+        custom_url: string | null;
         avatar_url: string | null;
     } | null;
 
-    created_at: ColumnType<Date, string | undefined, never>;
-    updated_at: ColumnType<Date, string | undefined, never>;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ReviewsTable {
+    guild_id: string;
+    name: string | null;
+    icon: string | null;
+    member_count: number | null;
+    review: string | null;
+
+    created_at: string;
+    updated_at: string;
+}
+
+export interface UserTable {
+    id: string | null;
+    email: string | null;
+    username: string | null;
+    display_name: string | null;
+    avatar_hash: string | null;
+    access_token: string;
+    refresh_token: string;
+
+    created_at: string;
+    updated_at: string;
 }
 
 export interface WelcomeTable {
@@ -78,8 +103,8 @@ export interface WelcomeTable {
         embed?: GuildEmbed;
     } | null;
 
-    role_ids: string[];
-    ping_ids: string[];
+    role_ids: string | null;
+    ping_ids: string | null;
 
     delete_after: number | null;
     delete_after_leave: boolean | null;
@@ -116,8 +141,8 @@ export interface WelcomeTable {
 
     welcome_message_ids: Record<string, string> | null;
 
-    created_at: ColumnType<Date, string | undefined, never>;
-    updated_at: ColumnType<Date, string | undefined, never>;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface Database {
@@ -125,5 +150,7 @@ export interface Database {
     dmnotifications: DmNotificationsTable;
     followupdates: FollowUpdatesTable;
     notifications: NotificationsTable;
+    reviews: ReviewsTable;
+    user: UserTable;
     welcome: WelcomeTable;
 }

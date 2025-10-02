@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import type { Client, GuildMember, User } from "discord.js";
+import type { Client, GuildMember, Message, User } from "discord.js";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 import { welcomerPlaceholders } from "@/src/constants/discord";
@@ -14,8 +14,10 @@ export default async (
     inviteCount?: number
 ) => {
     const { guild } = member;
+    console.log(`[Welcome] Member joined: ${member.user.tag} (${member.id})`);
 
-    let sentMessage;
+    let sentMessage: Message | undefined;
+
     const components: ActionRowBuilder<ButtonBuilder>[] = [];
 
     const placeholders = {
@@ -23,6 +25,8 @@ export default async (
     };
 
     const config = await getWelcome(guild.id);
+
+    const embedConfig = config?.message?.embed;
 
     if (!config || !config.enabled || !config.channel_id) return;
 
@@ -46,9 +50,12 @@ export default async (
         components.push(row);
     }
 
-    if (config.message?.embed) {
-        const { title, description, color, image, thumbnail, footer } = config.message.embed;
+    const hasEmbed =
+        embedConfig &&
+    (embedConfig.title || embedConfig.description || embedConfig.image || embedConfig.thumbnail);
 
+    if (hasEmbed) {
+        const { title, description, color, image, thumbnail, footer } = embedConfig;
         const embed = {
             title: title ? replacePlaceholder(title, placeholders) : undefined,
             description: description ? replacePlaceholder(description, placeholders) : undefined,
@@ -64,27 +71,24 @@ export default async (
         };
 
         sentMessage = await channel.send({
-            content,
-            embeds: [embed],
-            components
+            content: content || undefined, // send content too if available
+            embeds: [embed]
         });
-    } else {
-        sentMessage = await channel.send({
-            content,
-            components
-        });
+    } else if (content) {
+    // Only send the plain content if embed is not valid
+        sentMessage = await channel.send({ content });
     }
 
-    if (config.delete_after_leave) {
+    if (config.delete_after_leave && sentMessage) {
         const welcomeMessageIds = { ...(config.welcome_message_ids || {}) };
-        welcomeMessageIds[member.id] = sentMessage.id;
+        welcomeMessageIds[member.id] = sentMessage?.id;
         await updateWelcome(guild.id, { welcome_message_ids: welcomeMessageIds });
 
     }
 
     if (config.delete_after && Number.isFinite(config.delete_after)) {
         setTimeout(() => {
-            sentMessage.delete().catch(() => {});
+            sentMessage?.delete().catch(() => {});
         }, config.delete_after);
     }
 

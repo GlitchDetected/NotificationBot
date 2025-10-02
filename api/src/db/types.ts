@@ -103,8 +103,8 @@ export interface WelcomeTable {
         embed?: GuildEmbed;
     } | null;
 
-    role_ids: string[];
-    ping_ids: string[];
+    role_ids: string | null;
+    ping_ids: string | null;
 
     delete_after: number | null;
     delete_after_leave: boolean | null;
