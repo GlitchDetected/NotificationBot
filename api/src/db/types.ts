@@ -22,8 +22,8 @@ export interface ByeTable {
         text_color?: number;
     } | null;
 
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface DmNotificationsTable {
@@ -33,8 +33,8 @@ export interface DmNotificationsTable {
     source: string | null;
     thumbnail: string | null;
     message: string | null;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface FollowUpdatesTable {
@@ -65,8 +65,8 @@ export interface NotificationsTable {
         avatar_url: string | null;
     } | null;
 
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface ReviewsTable {
@@ -76,8 +76,8 @@ export interface ReviewsTable {
     member_count: number | null;
     review: string | null;
 
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface UserTable {
@@ -89,8 +89,8 @@ export interface UserTable {
     access_token: string;
     refresh_token: string;
 
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface WelcomeTable {
@@ -141,8 +141,8 @@ export interface WelcomeTable {
 
     welcome_message_ids: Record<string, string> | null;
 
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface Database {
