@@ -22,7 +22,7 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
         const apiKey = appConfig.apiSecrets.youtubeAPI;
         if (!apiKey) throw new Error("Missing YouTube API key");
 
-        const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creatorId}&part=snippet,id&order=date&maxResults=1&type=video`;
+        const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creator_id}&part=snippet,id&order=date&maxResults=1&type=video`;
         const response = await axios.get(url);
         const item = response.data.items?.[0];
         if (!item) return null;
@@ -44,7 +44,7 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             subscriberCount: videoDetails.statistics?.subscriberCount || "0",
             videoCount: videoDetails.statistics?.videoCount || "0",
             viewCount: videoDetails.statistics?.viewCount || "0",
-            channelUrl: `https://youtube.com/channel/${config.creatorId}`,
+            channelUrl: `https://youtube.com/channel/${config.creator_id}`,
             link: `https://youtube.com/watch?v=${videoId}`
         };
     } catch (err) {

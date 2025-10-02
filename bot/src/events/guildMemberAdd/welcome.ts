@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import type { Client, GuildMember, User } from "discord.js";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
@@ -14,7 +16,6 @@ export default async (
     inviteCount?: number
 ) => {
     const { guild } = member;
-    console.log(`[Welcome] Member joined: ${member.user.tag} (${member.id})`);
 
     const placeholders = {
         ...welcomerPlaceholders(member, inviter, inviteCode, inviteCount)
@@ -32,7 +33,7 @@ export default async (
     if (config.button?.enabled) {
         const button = new ButtonBuilder()
             .setStyle(config.button.style || ButtonStyle.Primary)
-            .setCustomId("welcome-button")
+            .setCustomId(`welcome-button-${member.id}`)
             .setDisabled(false)
             .setLabel(config.button.label || "Say hi");
 
@@ -201,24 +202,26 @@ export default async (
     // Roles
     if (config.role_ids?.length) {
         const botMember = guild.members.me;
-        if (!botMember) {
-            console.warn("[Welcome Role] Bot member not cached, skipping role assignments.");
-        } else {
-            for (const roleId of config.role_ids) {
-                const role = guild.roles.cache.get(roleId);
-                if (!role) continue;
+        if (!botMember) return; // if bot member is not cached, skip
 
-                // Only add role if bot's highest role is above target role
-                if (botMember.roles.highest.position <= role.position) {
-                    console.warn(`[Welcome Role] Cannot assign role ${role.name} due to hierarchy.`);
-                    continue;
-                }
+        for (const roleId of config.role_ids) {
+        // Skip @everyone role
+            if (roleId === guild.id) continue;
 
-                try {
-                    await member.roles.add(role);
-                } catch (err) {
+            const role = guild.roles.cache.get(roleId);
+            if (!role) continue; // role doesn't exist, skip
+
+            // Skip if bot's highest role is not above the target role
+            if (botMember.roles.highest.position <= role.position) continue;
+
+            // Try to add role while ignoring missing permissions
+            try {
+                await member.roles.add(role);
+            } catch (err: any) {
+                if (err.code !== 50013 && err.code !== 10011) { // 50013 = Missing Permissions, 10011 = Unknown Role
                     console.error(`[Welcome Role] Failed to add role ${role.name}:`, err);
                 }
+            // silently skip missing permissions or unknown roles
             }
         }
     }

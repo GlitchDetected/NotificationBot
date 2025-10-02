@@ -20,7 +20,7 @@ export default async (
     };
 
     const dbConfig = await getNotificationById(id);
-    if (!dbConfig || !dbConfig.id || !dbConfig.guild_id) return;
+    if (!dbConfig || !dbConfig.id || !dbConfig.guild_id || !dbConfig.channel_id) return;
 
     if (dbConfig.type !== type) {
         return;

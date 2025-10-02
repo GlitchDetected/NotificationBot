@@ -25,15 +25,15 @@ export interface GuildEmbed {
 
 export type notificationConfig = {
   id: string;
-  guildId: string;
-  channelId: string;
-  roleId: string | null;
+  guild_id: string;
+  channel_id: string;
+  role_id: string | null;
 
   type: 0 | 1 | 2 | 3;
   flags: number;
   regex: string | null;
 
-  creatorId: string;
+  creator_id: string;
 
   message?: {
     content: string | null;
@@ -43,7 +43,7 @@ export type notificationConfig = {
   creator: {
     id: string;
     username: string;
-    customUrl: string;
-    avatarUrl: string | null;
+    custom_url: string;
+    avatar_url: string | null;
   };
 };

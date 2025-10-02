@@ -40,83 +40,100 @@ export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, 
 
 export const notificationPlaceholders = (
     guild: Guild,
-    config: notificationConfig,
+    config: notificationConfig | undefined,
     type: NotificationType,
-    contentData: ContentData
+    contentData: ContentData | undefined
 ) => {
-    const placeholders: Record<string, any> = {
-        "creator.name": config.creator?.username ?? "Unknown",
-        "creator.id": config.creator?.id ?? "Unknown",
-        "creator.link": config.creator?.customUrl ?? "",
-        "creator.avatar": config.creator?.avatarUrl ?? "",
-
-        // Guild meta
-        "guild.name": guild.name,
-        "guild.id": guild.id,
-        "guild.avatar": guild.iconURL() || "",
-        "guild.rules": guild.rulesChannel ? `<#${guild.rulesChannel.id}>` : "",
-        "guild.memberCount": guild.memberCount.toLocaleString(),
-
-        ping: config.roleId ? `<@&${config.roleId}>` : ""
+    // Properly typed defaults
+    const creator = config?.creator ?? {
+        id: null,
+        username: null,
+        custom_url: null,
+        avatar_url: null
+    };
+    const contentCreator = contentData?.creator ?? {
+        id: null,
+        username: null,
+        custom_url: null,
+        avatar_url: null,
+        posts: 0,
+        followers: 0
     };
 
-    // Platform-specific placeholders
+    const placeholders: Record<string, any> = {
+        "creator.name": creator.username ?? "Unknown",
+        "creator.id": creator.id ?? "Unknown",
+        "creator.link": creator.custom_url ?? "",
+        "creator.avatar": creator.avatar_url ?? "",
+
+        // Guild meta
+        "guild.name": guild?.name ?? "Unknown",
+        "guild.id": guild?.id ?? "Unknown",
+        "guild.avatar": guild?.iconURL() ?? "",
+        "guild.rules": guild?.rulesChannel ? `<#${guild.rulesChannel.id}>` : "",
+        "guild.memberCount": guild?.memberCount?.toLocaleString() ?? "0",
+
+        ping: config?.role_id ? `<@&${config.role_id}>` : ""
+    };
+
+    if (!contentData) return placeholders;
+
     switch (type) {
         case 0: // YouTube
             Object.assign(placeholders, {
-                "video.title": contentData.videoTitle,
-                "video.id": contentData.videoId,
-                "video.link": `https://youtube.com/watch?v=${contentData.videoId}`,
-                "video.thumbnail": `https://i4.ytimg.com/vi/${contentData.videoId}/hqdefault.jpg`,
-                "video.uploaded.ago": `<t:${contentData.timestamp}:R>`,
-                "video.uploaded.at": `<t:${contentData.timestamp}:f>`,
-                "creator.subs": contentData.subscriberCount,
-                "creator.videos": contentData.videoCount,
-                "creator.views": contentData.viewCount
+                "video.title": contentData.videoTitle ?? "",
+                "video.id": contentData.videoId ?? "",
+                "video.link": contentData.videoId ? `https://youtube.com/watch?v=${contentData.videoId}` : "",
+                "video.thumbnail": contentData.videoId ? `https://i4.ytimg.com/vi/${contentData.videoId}/hqdefault.jpg` : "",
+                "video.uploaded.ago": contentData.timestamp ? `<t:${contentData.timestamp}:R>` : "",
+                "video.uploaded.at": contentData.timestamp ? `<t:${contentData.timestamp}:f>` : "",
+                "creator.subs": contentData.subscriberCount ?? 0,
+                "creator.videos": contentData.videoCount ?? 0,
+                "creator.views": contentData.viewCount ?? 0
             });
             break;
 
         case 1: // Reddit
             Object.assign(placeholders, {
-                "post.id": contentData.id,
-                "post.title": contentData.title,
-                "post.text": contentData.text || "",
-                "post.thumbnail": contentData.thumbnail || "",
-                "post.flair": contentData.flair || "",
-                "post.posted.ago": `<t:${contentData.timestamp}:R>`,
-                "post.posted.at": `<t:${contentData.timestamp}:f>`,
-                "author.username": contentData.author.username,
-                "author.id": contentData.author.id,
-                "author.link": `https://reddit.com/user/${contentData.author.username}`,
-                "subreddit.name": contentData.subreddit.name,
-                "subreddit.id": contentData.subreddit.id,
-                "subreddit.members": contentData.subreddit.members
+                "post.id": contentData.id ?? "",
+                "post.title": contentData.title ?? "",
+                "post.text": contentData.text ?? "",
+                "post.thumbnail": contentData.thumbnail ?? "",
+                "post.flair": contentData.flair ?? "",
+                "post.posted.ago": contentData.timestamp ? `<t:${contentData.timestamp}:R>` : "",
+                "post.posted.at": contentData.timestamp ? `<t:${contentData.timestamp}:f>` : "",
+                "author.username": contentData.author?.username ?? "Unknown",
+                "author.id": contentData.author?.id ?? "Unknown",
+                "author.link": contentData.author?.username ? `https://reddit.com/user/${contentData.author.username}` : "",
+                "subreddit.name": contentData.subreddit?.name ?? "Unknown",
+                "subreddit.id": contentData.subreddit?.id ?? "Unknown",
+                "subreddit.members": contentData.subreddit?.members ?? 0
             });
             break;
 
         case 2: // Twitch
             Object.assign(placeholders, {
-                "stream.title": contentData.title,
-                "stream.id": contentData.id,
-                "stream.link": `https://twitch.tv/${config.creator.username}`,
-                "stream.game": contentData.game || "",
-                "stream.thumbnail": contentData.thumbnail,
-                "stream.live.since": `<t:${contentData.startedAt}:R>`,
-                "stream.live.start": `<t:${contentData.startedAt}:f>`
+                "stream.title": contentData.title ?? "",
+                "stream.id": contentData.id ?? "",
+                "stream.link": creator.username ? `https://twitch.tv/${creator.username}` : "",
+                "stream.game": contentData.game ?? "",
+                "stream.thumbnail": contentData.thumbnail ?? "",
+                "stream.live.since": contentData.startedAt ? `<t:${contentData.startedAt}:R>` : "",
+                "stream.live.start": contentData.startedAt ? `<t:${contentData.startedAt}:f>` : ""
             });
             break;
 
         case 3: // Bluesky
             Object.assign(placeholders, {
-                "post.id": contentData.id,
-                "post.type": contentData.type,
-                "post.text": contentData.text,
-                "post.link": contentData.link,
-                "post.posted.ago": `<t:${contentData.timestamp}:R>`,
-                "post.posted.at": `<t:${contentData.timestamp}:f>`,
-                "creator.handle": config.creator.username,
-                "creator.posts": contentData.creator.posts,
-                "creator.followers": contentData.creator.followers
+                "post.id": contentData.id ?? "",
+                "post.type": contentData.type ?? "",
+                "post.text": contentData.text ?? "",
+                "post.link": contentData.link ?? "",
+                "post.posted.ago": contentData.timestamp ? `<t:${contentData.timestamp}:R>` : "",
+                "post.posted.at": contentData.timestamp ? `<t:${contentData.timestamp}:f>` : "",
+                "creator.handle": creator.username ?? "Unknown",
+                "creator.posts": contentCreator.posts ?? 0,
+                "creator.followers": contentCreator.followers ?? 0
             });
             break;
     }
