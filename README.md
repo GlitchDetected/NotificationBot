@@ -181,6 +181,9 @@ docker build -t notificationbot-api .
 docker build -t notificationbot .
 docker build -t notificationbot-web .
 
+# or
+
+sudo docker compose up -d --build
 docker compose up -d
 ```
 use --no-cache if you are having problems
