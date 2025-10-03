@@ -2,7 +2,7 @@ version: '3'
 services:
   tts:
     container_name: notificationbot-web
-    image: notificationbot-web
+    build: .
     restart: unless-stopped
     ports:
       - "9000:3000"
