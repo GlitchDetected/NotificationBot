@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    },
     "target": "ES2017",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,

@@ -26,7 +26,7 @@ export default {
             VoiceStateManager: 0
         } as CacheWithLimitsOptions
     },
-    databaseUri: String(process.env["pgConnectionString"]),
+    databaseUri: String(process.env["DATABASE_URL"]),
     redisString: String(process.env["REDIS_STRING"]),
 
     apiSecrets: {

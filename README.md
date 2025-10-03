@@ -84,7 +84,7 @@ DISCORD_TOKEN=""
 DISCORD_ENDPOINT = "https://discord.com/api/v10"
 
 # Database variables
-pgConnectionString="postgresql://postgres@localhost:5432/notificationbot"
+DATABASE_URL="postgresql://postgres@localhost:5432/notificationbot"
 REDIS_STRING="redis://default@localhost:6379"
 FORCE_DB_RESET="false"
 
@@ -115,7 +115,7 @@ owner=""
 # Database variables
 # Create migration using - npx sequelize-cli migration:generate --name example-name
 # Run migration - npx sequelize-cli db:migrate
-pgConnectionString="postgresql://postgres@localhost:5432/notificationbot"
+DATABASE_URL="postgresql://postgres@localhost:5432/notificationbot"
 REDIS_STRING="redis://default@localhost:6379"
 FORCE_DB_RESET="false"
 

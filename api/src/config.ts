@@ -16,7 +16,7 @@ export default {
         blueskyPassword: String(process.env["BLUESKY_PASSWORD"])
     },
 
-    databaseUri: String(process.env["pgConnectionString"]),
+    databaseUri: String(process.env["DATABASE_URL"]),
     redisString: String(process.env["REDIS_STRING"]),
     discordEndpoint: String(process.env["DISCORD_ENDPOINT"]),
 
