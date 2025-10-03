@@ -19,7 +19,7 @@ export async function Footer(props: HTMLProps<HTMLDivElement>) {
     return (
         <div className={cn("text-primary/75 w-full mt-10 text-left", props.className)} {...props}>
             <div className="flex items-center gap-1 font-semibold">
-                <BsDiscord className="relative top-[1px] text-red-900" />
+                <BsDiscord className="relative top-[1px] text-red-700" />
                 <span className="text-xl bg-gradient-to-r from-red-900 to-red-400 bg-clip-text text-transparent">
                     NotificationBot
                 </span>
