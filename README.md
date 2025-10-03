@@ -176,20 +176,16 @@ docker compose up -d
 ```
 git reset --hard
 sudo git pull
+
 docker compose down
+sudo docker image prune -a
 
-docker build -t notificationbot-api .
-docker build -t notificationbot .
-docker build -t notificationbot-web .
-
-# quick redeploy
 sudo docker compose up -d --build
 
 # dev testing
-sudo docker compose build
-sudo docker compose up -d
+sudo docker compose build --no-cache
 
-docker compose up -d
+sudo docker compose up -d
 ```
 use --no-cache if you are having problems
 
