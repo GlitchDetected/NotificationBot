@@ -1,7 +1,7 @@
 services:
   tts:
     container_name: notificationbot-api
-    image: .
+    build: .
     restart: unless-stopped
     ports:
       - "9001:3001"
