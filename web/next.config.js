@@ -1,4 +1,5 @@
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+/* eslint-disable @typescript-eslint/no-require-imports */
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -24,4 +25,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

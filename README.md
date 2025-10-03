@@ -174,8 +174,9 @@ docker compose up -d
 
 ## Updating
 ```
-docker compose down
+git reset --hard
 sudo git pull
+docker compose down
 
 docker build -t notificationbot-api .
 docker build -t notificationbot .
