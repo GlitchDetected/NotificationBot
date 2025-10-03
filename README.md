@@ -183,6 +183,7 @@ docker build -t notificationbot-web .
 
 docker compose up -d
 ```
+use --no-cache if you are having problems
 
 ## Contributing
 
