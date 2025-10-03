@@ -1,7 +1,7 @@
 FROM node:22
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml tsconfig.json ./
 
 RUN npm install -g pnpm
 
