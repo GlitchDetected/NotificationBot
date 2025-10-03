@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && tsc-alias",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -44,6 +44,7 @@
     "rehype-raw": "^7.0.0",
     "sharp": "^0.34.4",
     "tailwind-merge": "^3.3.1",
+    "tsc-alias": "^1.8.16",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

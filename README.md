@@ -181,9 +181,13 @@ docker build -t notificationbot-api .
 docker build -t notificationbot .
 docker build -t notificationbot-web .
 
-# or
-
+# quick redeploy
 sudo docker compose up -d --build
+
+# dev testing
+sudo docker compose build
+sudo docker compose up -d
+
 docker compose up -d
 ```
 use --no-cache if you are having problems
