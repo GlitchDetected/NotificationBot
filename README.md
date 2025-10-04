@@ -172,10 +172,24 @@ docker build -t notificationbot-web .
 docker compose up -d
 ```
 
+```
+docker pull postgres
+docker volume create postgres_data
+docker run --name postgres_container -e -d -p 5432:5432 -v postgres_data:/var/lib/postgresql/data postgres
+docker ps
+```
+
+```
+docker pull redis
+docker pull redis/redis-stack-server:latest
+docker run -d --name some-redis -p 6379:6379 redis
+docker ps
+```
+
 ## Updating
 ```
 git reset --hard
-sudo git pull
+git pull
 
 sudo docker compose down
 sudo docker image prune -a
