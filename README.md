@@ -177,7 +177,7 @@ docker compose up -d
 git reset --hard
 sudo git pull
 
-docker compose down
+sudo docker compose down
 sudo docker image prune -a
 
 sudo docker compose up -d --build
