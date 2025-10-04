@@ -10,12 +10,14 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-        
-    redis:
-      image: redis:latest
-      container_name: redis-service
-      healthcheck:
-        test: ["CMD", "redis-cli", "ping"]
-        interval: 1s
-        timeout: 3s
-        retries: 5
+
+  redis:
+    image: redis:latest
+    container_name: redis-service
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    ports:
+      - "6379:6379"
