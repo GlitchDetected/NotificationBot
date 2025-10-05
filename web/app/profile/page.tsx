@@ -70,7 +70,7 @@ export default function Home() {
         <div className="flex flex-col w-full">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="relative top-2 w-full">
-                    <Smartinput value={search} setValue={setSearch} placeholder="Search by name" thin />
+                    <Smartinput value={search} setValue={setSearch} placeholder="Search by guild name or id" thin />
                 </div>
                 <div className="flex items-center gap-3">
                     <Button asChild size="sm" variant="secondary">
@@ -119,8 +119,8 @@ export default function Home() {
 
             {guilds.length > MAX_GUILDS && (
                 <ScreenMessage
-                    title="There are too many servers.."
-                    description={`To save some performance, use the search to find a guild. Showing ${MAX_GUILDS} out of ~${guilds.length < 1000 ? length : Math.round(length / 1000) * 1000}.`}
+                    title="You have too many servers to process"
+                    description={`Use the searchbar to find a guild. Showing ${MAX_GUILDS} out of ~${guilds.length < 1000 ? length : Math.round(length / 1000) * 1000}.`}
                 ></ScreenMessage>
             )}
         </div>

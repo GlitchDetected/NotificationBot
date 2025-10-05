@@ -32,9 +32,9 @@ Note that `cdn.discordapp.com` no longer works due to [attachment authentication
 <br />
 
 **Background templates:**
-- [gameroom](//backgrounds/gameroom.jpg)
-- [grass](//backgrounds/grass.jpg)
-- [retro](//backgrounds/retro.jpg)
+- [gameroom](/backgrounds/gameroom.jpg)
+- [grass](/backgrounds/grass.jpg)
+- [retro](/backgrounds/retro.jpg)
 
 ### 🧨 Auto delete
 Automatically delete the welcome message after a certain amount of time. Set to 0 seconds to disable this functionality.

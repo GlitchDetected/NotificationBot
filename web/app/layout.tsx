@@ -1,15 +1,10 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { cookies } from "next/headers";
-import Image from "next/image";
-import Link from "next/link";
 import { CookiesProvider } from "next-client-cookies/server";
 
+import NavBar from "@/components/navbar";
 import Notice, { NoticeType } from "@/components/notice";
-import { LoginButton } from "@/components/ui/login-button";
-import { LoginHeader } from "@/components/ui/nav-header";
-import { links } from "@/lib/data";
 import { cn } from "@/utils/cn";
 import { notosansJP, outfit } from "@/utils/font";
 import { getBaseUrl } from "@/utils/urls";
@@ -17,14 +12,14 @@ import { getBaseUrl } from "@/utils/urls";
 import { Provider } from "./provider";
 
 export const viewport: Viewport = {
-    themeColor: "#1c1c1c",
+    themeColor: "#5e0202",
     initialScale: 0.85
 };
 
 export const generateMetadata = (): Metadata => {
-    const title = "NotificationBot - notifications for everything";
+    const title = "NotificationBot - Next Generation of Notifications";
     const description =
-        "Engage with leaderboards, levels, and more! Have fun with commands like /rank, /leaderboard and protect your server with /lockdown!";
+        "Setup notifications from your favorite platforms in a haste without slash commands!";
 
     return {
         metadataBase: new URL(getBaseUrl()),
@@ -117,46 +112,5 @@ function NoScript() {
                 type={NoticeType.Info}
             />
         </noscript>
-    );
-}
-
-async function NavBar() {
-    const jar = await cookies();
-
-    return (
-        <nav
-            className="fixed top-0 left-1/2 transform -translate-x-1/2
-                w-full sm:w-[55rem] h-[4.5rem] sm:h-[4rem]
-                sm:top-6 z-[999]
-                flex items-center justify-between
-                px-6 sm:px-10 lg:px-20
-                rounded-none sm:rounded-xl
-                shadow-xs shadow-gray-600/90
-                bg-foreground/40 backdrop-blur-xs backdrop-brightness-75"
-        >
-            <div className="flex gap-4 items-center">
-                <Link href="/" className="flex items-center gap-1">
-                    <Image src="/notificationbot_transparent.png" alt="Logo" width={50} height={50} />
-                    <span className="text-lg font-semibold">NotificationBot</span>
-                </Link>
-            </div>
-
-            <ul className="flex-5 gap-8 text-[0.9rem] font-medium">
-                {links.map((link) => (
-                    <Link
-                        key={link.hash}
-                        className="px-3 py-2 transition"
-                        href={link.hash}
-                    >
-                        {link.name}
-                    </Link>
-                ))}
-            </ul>
-
-            {jar.get("sessiontoken")?.value
-                ? <LoginHeader />
-                : <LoginButton
-                    className="ml-auto" />}
-        </nav>
     );
 }

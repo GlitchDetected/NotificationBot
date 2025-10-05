@@ -23,7 +23,7 @@ import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import ArrowPic from "@/public/arrow.webp";
 import thumbnail from "@/public/assets/thumbnail.png";
-import Grasspic from "@/public/backgrounds/grass.jpg";
+import Welcome from "@/public/assets/welcome.webp";
 import { cn } from "@/utils/cn";
 import { handwritten, montserrat } from "@/utils/font";
 
@@ -41,7 +41,7 @@ const messageProps = (command?: string) => ({
     commandUsed: command
         ? {
             name: command,
-            username: "@Panda1",
+            username: "@explosiveapple1",
             avatar: "/user.webp",
             bot: false
         }
@@ -210,12 +210,11 @@ export default function Home() {
                             <div className="flex gap-2 mt-5">
                                 <Button asChild>
                                     <Link
-                                        prefetch={false}
-                                        href="/profile"
+                                        href="/dashboard?to=notifications"
                                         target="_blank"
                                     >
-                                        <BsYoutube />
-                                        Set up now!
+                                        <HiArrowRight />
+                                        Setup
                                     </Link>
                                 </Button>
                             </div>
@@ -280,12 +279,11 @@ export default function Home() {
                             <div className="flex gap-2 mt-5">
                                 <Button asChild>
                                     <Link
-                                        prefetch={false}
-                                        href="/profile"
+                                        href="/profile/dmnotifications"
                                         target="_blank"
                                     >
-                                        <BsYoutube />
-                                        Set up now!
+                                        <HiArrowRight />
+                                        Setup
                                     </Link>
                                 </Button>
                             </div>
@@ -295,7 +293,7 @@ export default function Home() {
                             <DiscordMessage
                                 mode={"DARK"}
                                 user={{
-                                    username: "Panda1",
+                                    username: "explosiveapple1",
                                     avatar: "/user.webp",
                                     bot: false
                                 }}
@@ -306,7 +304,7 @@ export default function Home() {
                             <DiscordMessage {...messageProps()}>
                                 <DiscordMarkdown
                                     mode="DARK"
-                                    text={"Hey **@Panda1**, you have a new notification"}
+                                    text={"Hey **@explosiveapple1**, you have a new notification"}
                                 />
                                 <DiscordMessageEmbed mode="DARK" title="From: [https://rss.nytimes.com/services/xml/rss/nyt/World.xml](https://rss.nytimes.com/services/xml/rss/nyt/World.xml)" color={0xFF0000}>
                                     <Image
@@ -342,7 +340,7 @@ export default function Home() {
                                 includes custom backgrounds
                             </Badge>
 
-                            <h3 className={styles.h3}>Greetings</h3>
+                            <h3 className={styles.h3}>Automatically greet new members</h3>
 
                             <div className="pt-6">
                                 Automatic messages for new and leaving members. Supports direct messages.
@@ -350,7 +348,7 @@ export default function Home() {
                             <div className="flex gap-2 mt-6">
                                 <Button asChild>
                                     <Link
-                                        href="/dashboard?to=greeting"
+                                        href="/dashboard?to=welcomer"
                                         target="_blank"
                                     >
                                         <HiArrowRight />
@@ -362,14 +360,13 @@ export default function Home() {
 
                         <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
                             <DiscordMessage {...messageProps()}>
-                                <DiscordMarkdown mode={"DARK"} text="Welcome @user to **a very special server** 👋" />
+                                <DiscordMarkdown mode={"DARK"} text="Welcome **@explosiveapple1** to **a very special server** 👋" />
                                 <Image
                                     alt="example welcome card"
-                                    src={Grasspic}
-                                    height={(256 + 16) / 2}
+                                    className="rounded-md shadow-md w-full mt-2"
+                                    src={Welcome}
                                     itemProp="image"
                                     loading="lazy"
-                                    width={1024 / 2}
                                 />
                             </DiscordMessage>
                         </div>
@@ -377,7 +374,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>Create webhook messages 🖊️</h2>
+                    <h2 className={styles.h2}>Create webhook messages 🤖</h2>
 
                     <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
                         <div className="md:w-1/2">
@@ -390,7 +387,7 @@ export default function Home() {
                                 Supports embeds for free
                             </Badge>
 
-                            <h3 className={styles.h3}>Webhooks</h3>
+                            <h3 className={styles.h3}>Easily send webhooks</h3>
 
                             <div className="pt-6">
                                 Easily send a message with a webhook right in the dashboard!
@@ -398,7 +395,7 @@ export default function Home() {
                             <div className="flex gap-2 mt-6">
                                 <Button asChild>
                                     <Link
-                                        href="/dashboard?to=custom-commands"
+                                        href="/dashboard?to=webhook"
                                         target="_blank"
                                     >
                                         <HiArrowRight />
@@ -412,7 +409,7 @@ export default function Home() {
                             <DiscordMessage
                                 mode={"DARK"}
                                 user={{
-                                    username: "Panda1",
+                                    username: "explosiveapple1",
                                     avatar: "/user.webp",
                                     bot: false
                                 }}
@@ -440,7 +437,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>Easily set up your server</h2>
+                    <h2 className={styles.h2}>Automatic setup⚡</h2>
 
                     <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
                         <div className="md:w-1/2">
@@ -457,7 +454,7 @@ export default function Home() {
                                         rel="noopener noreferrer"
                                         className="flex items-center gap-2"
                                     >
-                                        <HiTerminal className="w-5 h-5" />
+                                        <HiArrowRight className="w-5 h-5" />
                                         More Commands
                                     </Link>
                                 </Button>
@@ -573,7 +570,7 @@ export default function Home() {
                 <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
                     Highly trusted by server owners & staff
                 </h2>
-                <p className="mt-4 text-sm sm:text-md text-gray-400">We appreciate every feedback you give us!</p>
+                <p className="mt-4 text-sm sm:text-md text-gray-400">Reliability is the #1 priority</p>
             </div>
 
             <div className="mb-24 w-full px-4">
