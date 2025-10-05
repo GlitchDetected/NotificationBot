@@ -12,7 +12,7 @@ import { createSession } from "./api";
 const cookieDomain = process.env.NEXT_PUBLIC_COOKIE_DOMAIN;
 
 const defaultCookieOptions = {
-    secure: getBaseUrl().startsWith("http://"),
+    secure: getBaseUrl().startsWith("https://"),
     httpOnly: false,
     sameSite: "lax",
     domain: cookieDomain, // "." + (domain.startsWith("dev.") ? domain.replace(/^dev\./, "") : domain),

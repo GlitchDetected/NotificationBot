@@ -12,10 +12,9 @@
 
 <br/>
 <p align="center">
-<a href="https://notificationbot.xyz/">Website</a> -
-<a href="https://docs.notificationbot.xyz">Documentation</a>
+<a href="https://notificationbot.top/">Website</a> -
+<a href="https://notificationbot.top/docs">Documentation</a>
 </p>
-
 ---
 
 ## Core Philosophy
