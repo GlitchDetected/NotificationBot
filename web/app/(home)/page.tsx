@@ -189,7 +189,7 @@ export default function Home() {
                 className="flex flex-col gap-28 my-10"
             >
                 <div>
-                    <h2 className={styles.h2}>Platform Notifications 🔊</h2>
+                    <h2 className={styles.h2}>Customizable Notifications 🔊</h2>
                     <Box className="flex flex-col md:flex-row gap-10 items-center">
                         <div className="md:w-1/2 flex flex-col items-start">
                             <Badge
@@ -201,29 +201,27 @@ export default function Home() {
                                 Supports up to 3 platforms
                             </Badge>
 
-                            <h3 className={styles.h3}>Notifications from your favorite platforms</h3>
+                            <h3 className={styles.h3}>Enjoy notifications from your favorite platforms</h3>
 
                             <div className="pt-6">
-                                Setup notifications for your favorite sites like YouTube, TikTok, and Twitch—no slash commands needed!
+                                Setup notifications for your favorite sites like YouTube, TikTok, and Twitch. No slash commands needed!
                             </div>
 
                             <div className="flex gap-2 mt-5">
                                 <Button asChild>
                                     <Link
                                         prefetch={false}
-                                        href="https://youtu.be/NS5fZ1ltovE?si=I3nViYb4sx3n3Uvo"
+                                        href="/profile"
                                         target="_blank"
                                     >
                                         <BsYoutube />
-                                        Watch YouTube Video
+                                        Set up now!
                                     </Link>
                                 </Button>
                             </div>
                         </div>
 
-                        <div
-                            className="bg-discord-gray px-8 py-6 md:py-12 rounded-lg flex flex-col sm:flex-row sm:items-center md:flex-col md:items-start lg:flex-row lg:items-center gap-4 min-h-56"
-                        >
+                        <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
                             <DiscordMessage {...messageProps()}>
                                 <DiscordMarkdown
                                     mode="DARK"
@@ -250,7 +248,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>DM Notifications 🔊</h2>
+                    <h2 className={styles.h2}>Notifications in your DMs 📥</h2>
                     <Box className="flex flex-col md:flex-row gap-10 items-center">
                         <div className="md:w-1/2 flex flex-col items-start">
                             <Badge
@@ -283,19 +281,17 @@ export default function Home() {
                                 <Button asChild>
                                     <Link
                                         prefetch={false}
-                                        href="https://youtu.be/NS5fZ1ltovE?si=I3nViYb4sx3n3Uvo"
+                                        href="/profile"
                                         target="_blank"
                                     >
                                         <BsYoutube />
-                                        Watch YouTube Video
+                                        Set up now!
                                     </Link>
                                 </Button>
                             </div>
                         </div>
 
-                        <div
-                            className="bg-discord-gray px-8 py-6 md:py-12 rounded-lg flex flex-col sm:flex-row sm:items-center md:flex-col md:items-start lg:flex-row lg:items-center gap-4 min-h-56"
-                        >
+                        <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
                             <DiscordMessage
                                 mode={"DARK"}
                                 user={{
@@ -333,7 +329,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>Automatic Welcoming/Leaving Messages</h2>
+                    <h2 className={styles.h2}>Top-notch greeting system</h2>
 
                     <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
                         <div className="md:w-1/2">

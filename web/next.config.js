@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
@@ -17,11 +14,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn.bsky.app', port: '', pathname: '/**' },
       { protocol: 'http', hostname: 'localhost', port: '5000', pathname: '/**' },
     ],
-  },
-  webpack: (config) => {
-    if (!config.resolve.plugins) config.resolve.plugins = [];
-    config.resolve.plugins.push(new TsconfigPathsPlugin());
-    return config;
   },
 };
 
