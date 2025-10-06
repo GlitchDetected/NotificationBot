@@ -56,7 +56,7 @@ export const generateMetadata = (): Metadata => {
         },
         twitter: {
             card: "summary",
-            site: "notificationbot.xyz",
+            site: "notificationbot.top",
             title,
             description,
             images: `${getBaseUrl()}/bot.webp`

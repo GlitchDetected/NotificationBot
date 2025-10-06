@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HiExternalLink } from "react-icons/hi";
+import { HiExternalLink, HiLockClosed } from "react-icons/hi";
 
 import { getGuild } from "@/lib/discord/guild";
 import { cn } from "@/utils/cn";
@@ -14,7 +14,23 @@ export async function DiscordServer({
     const guild = await getGuild(guildId);
     const widget = await guild?.fetchWidget();
 
-    if (!guild) return <></>;
+    if (!guild) {
+        console.warn(`guild ${guildId} not available`);
+
+        return (
+            <div
+                className={cn(
+                    "flex items-center gap-3 p-4 bg-foreground/50 rounded-xl text-neutral-400",
+                    "border border-neutral-800"
+                )}
+            >
+                <HiLockClosed className="w-5 h-5 text-neutral-500" />
+                <span className="text-sm">
+                    <strong>{guildId}</strong> is not available
+                </span>
+            </div>
+        );
+    }
 
     return (
         <Link

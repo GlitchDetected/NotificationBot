@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HiBeaker, HiExternalLink, HiStar } from "react-icons/hi";
+import { HiBeaker, HiExternalLink, HiLockClosed, HiStar } from "react-icons/hi";
 
 import { Badge } from "@/components/ui/badge";
 import { getRepository } from "@/lib/github";
@@ -12,7 +12,23 @@ export async function Repository({
 }) {
     const repo = await getRepository(fullname);
 
-    if (!repo) return <></>;
+    if (!repo || !repo.html_url) {
+        console.warn(`[Repository] ${fullname} appears to be private or missing`, repo);
+
+        return (
+            <div
+                className={cn(
+                    "flex items-center gap-3 p-4 bg-foreground/50 rounded-xl text-neutral-400",
+                    "border border-neutral-800"
+                )}
+            >
+                <HiLockClosed className="w-5 h-5 text-neutral-500" />
+                <span className="text-sm">
+                    Repository <strong>{fullname}</strong> is closed source as of now
+                </span>
+            </div>
+        );
+    }
 
     return (
         <Link

@@ -1,16 +1,16 @@
 ## Terms of Service
-**last modified 6/26/25 (MM/DD/YYYY)**
+**last modified 10/5/25 (MM/DD/YYYY)**
 ___
 
-These Terms of Service apply to the website "notificationbot.xyz," all its associated subdomains, and our Discord bot application(s) with the user ID(s) "1125449347451068437".
-"we", "us", and "our" refer to the online service NOTIFICATIONBOT.
+These Terms of Service apply to the website "notificationbot.top," all its associated subdomains, and our Discord bot application(s) with the user ID(s) "1366507117044957276".
+"we", "us", and "our" refer to the online service notificationbot.
 
 ## General
-This page contains the Terms of Service ("Agreement," "Terms of Use") that all users must adhere to. We are required to clearly define the applicable rights and limitations. By using our service, you …
+This page contains the Terms of Service ("Agreement," "Terms of Use") that all users must adhere to. We are required to clearly define the applicable rights and limitations. By using our service, you…
 * (1.) … accept these Terms of Service.
 * (2.) … accept our Privacy Policy.
 * (3.) … automatically enter into a contract between you (the "Consumer," "User"), us, and these Terms of Service.
-* (4.) … confirm that you have reached the digital age of majority in your notificationboty or have the consent of your legal guardian.
+* (4.) … confirm that you have reached the digital age of majority in your notificationbot or have the consent of your legal guardian.
 <br /><br />
 If you do not agree to these Terms of Service or the Privacy Policy, you agree not to use this service in any way. If you use a translator and there is any discrepancy, the English and original versions shall prevail.
 
@@ -44,13 +44,10 @@ Virtual elements (including but not limited to images, graphics, design, text, v
 You agree not to edit, distribute, develop, publish, sell as your property, or otherwise reuse it without the express written permission of an authorized person who owns the proprietary rights.
 
 Any media uploaded is done so with the users consent and NOTIFICATIONBOT and its developers are not responsible for users uploading copyrighted/trademarked content at any given time or instance. This includes but is not limited to
-- Rank, Greet & Farewell banners
-- Leaderboard Rank Card emojis
-- Leaderboard banners
-- Discord user avatars or banners
+- Bot avatar or banner
 
 ## Age requirements
-By accessing our Services, you confirm that you are at least 13 years old and meet the minimum age for digital consent applicable in your notificationboty. If you are old enough in your notificationboty to access our Services but not old enough to agree to our Terms, your parent or legal guardian must agree to the Terms on your behalf. Ask your parent or legal guardian to read these terms with you. If you are a parent or legal guardian and you allow your teen to use the Services, these Terms also apply to you and you are responsible for your teen's activities on the Services.
+By accessing our Services, you confirm that you are at least 13 years old and meet the minimum age for digital consent applicable in your notificationbot. If you are old enough in your notificationbot to access our Services but not old enough to agree to our Terms, your parent or legal guardian must agree to the Terms on your behalf. Ask your parent or legal guardian to read these terms with you. If you are a parent or legal guardian and you allow your teen to use the Services, these Terms also apply to you and you are responsible for your teen's activities on the Services.
 
 ## Governing Law and Dispute Resolution
 Any dispute or claim arising from or related to these Terms of Service, including any non-contractual disputes or claims connected to their subject matter or formation, shall be governed by and construed in accordance with the laws of the Republic of Austria.

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { AnchorHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from "react";
+import { HiLockClosed } from "react-icons/hi";
 
 import { getUser } from "@/lib/discord/user";
 import { cn } from "@/utils/cn";
@@ -16,7 +17,23 @@ export async function Person({
     social?: string;
 }) {
     const user = await getUser(id);
-    if (!user) return;
+    if (!user) {
+        console.warn(`${user} not available`);
+
+        return (
+            <div
+                className={cn(
+                    "flex items-center gap-3 p-4 bg-foreground/50 rounded-xl text-neutral-400",
+                    "border border-neutral-800"
+                )}
+            >
+                <HiLockClosed className="w-5 h-5 text-neutral-500" />
+                <span className="text-sm">
+                    <strong>{user}</strong> is not available
+                </span>
+            </div>
+        );
+    }
 
     const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar?.startsWith("a_") ? "gif" : "webp"}?size=64`;
 

@@ -1,5 +1,5 @@
 ## Privacy Policy
-**last modified 6/26/25 (MM/DD/YYYY)**
+**last modified 10/5/25 (MM/DD/YYYY)**
 ___
 
 This Privacy Policy adheres to and encompasses the same definitions and entities as outlined in the Terms of Service.
@@ -32,19 +32,19 @@ In certain circumstances, we may be required to retain your personal data for lo
 We may collect or share personal data if we think someone’s life is in danger - for example, to help resolve an urgent medical situation.
 
 ## Children's Privacy and Data Collection
-It is our policy to ensure that our Service is not directed towards children under the age of 13 and/or those who have not yet reached the applicable minimum age for providing digital consent in their respective notificationboty. As such, we do not knowingly collect personal information from individuals within this age group. In the event that we become aware that an individual under the aforementioned age has provided us with personal information, we will take immediate and appropriate action to delete such information from our database in an irrevocable manner. We take this matter very seriously and are committed to protecting the privacy of children.
+It is our policy to ensure that our Service is not directed towards children under the age of 13 and/or those who have not yet reached the applicable minimum age for providing digital consent in their respective notificationbot. As such, we do not knowingly collect personal information from individuals within this age group. In the event that we become aware that an individual under the aforementioned age has provided us with personal information, we will take immediate and appropriate action to delete such information from our database in an irrevocable manner. We take this matter very seriously and are committed to protecting the privacy of children.
 
 ## Data Processing and Transfer Policy
-We are headquartered in Austria, which is located in Europe. By using our Service, you acknowledge and agree that your personal data may be processed and transferred to the United States, Germany, Austria, Japan, and other countries. This may include countries that have different data protection laws than those in your notificationboty of residence. We take all necessary measures to ensure that your data is processed securely and in accordance with applicable laws and regulations.
+We are headquartered in Austria, which is located in Europe. By using our Service, you acknowledge and agree that your personal data may be processed and transferred to the United States, Germany, Austria, Japan, and other countries. This may include countries that have different data protection laws than those in your notificationbot of residence. We take all necessary measures to ensure that your data is processed securely and in accordance with applicable laws and regulations.
 
 ## Data Deletion Procedure
-If you wish to have all of your personal data that has been collected by us permanently deleted, please contact us via email at privacy@notificationbot.xyz. We will take all necessary steps to ensure that your request is processed in a timely and efficient manner. In addition, we kindly request that you log out of our Service from all devices and browsers on which you have accessed it. If necessary, please also manually delete all cookies associated with our Service. This will help to ensure that your personal data is fully removed from our systems.
+If you wish to have all of your personal data that has been collected by us permanently deleted, please contact us via email at privacy@notificationbot.top. We will take all necessary steps to ensure that your request is processed in a timely and efficient manner. In addition, we kindly request that you log out of our Service from all devices and browsers on which you have accessed it. If necessary, please also manually delete all cookies associated with our Service. This will help to ensure that your personal data is fully removed from our systems.
 
 ## Managing Cookies and Analytics
 On our website, we utilize third-party website analytics tools, including Plausible Analytics, to collect anonymized information about your use of our services. These tools use cookies to gather data about user behavior and interactions. If you do not wish for cookies to be used in this manner, you have the option to disable them by adjusting the settings on your internet browser. For detailed instructions on how to disable cookies, please consult the help screen or support documentation provided by your internet browser provider.
 
 ## Data Access Request Procedure
-If you wish to make a request to access your personal data that we have collected, you may do so by sending an email to privacy@notificationbot.xyz. Upon receipt of your request, we will initiate the necessary procedures to provide you with a link to access your personal data. This process will be completed within 30 days of receiving your request.
+If you wish to make a request to access your personal data that we have collected, you may do so by sending an email to privacy@notificationbot.top. Upon receipt of your request, we will initiate the necessary procedures to provide you with a link to access your personal data. This process will be completed within 30 days of receiving your request.
  
 ## Privacy Policy Updates and Changes
 We reserve the right to make changes to our Privacy Policy at our discretion in order to reflect updates to our business processes, current acceptable practices, or legal or regulatory changes. In the event that we decide to make changes to our Privacy Policy, we will post the updated version on our website at the same link where you currently access our Privacy Policy. Please note that we may update our Privacy Policy at any time without prior notice.
@@ -52,4 +52,4 @@ We reserve the right to make changes to our Privacy Policy at our discretion in 
 It is important to note that we have no control over the privacy policies of any external services that may be linked on our website. We are not affiliated with any of the services linked on our website and cannot be held responsible for their privacy practices.
 
 ## Contact
-If you have any questions about these terms, please contact us at privacy@notificationbot.xyz.
+If you have any questions about these terms, please contact us at privacy@notificationbot.top.
