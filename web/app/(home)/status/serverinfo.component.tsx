@@ -11,18 +11,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { intl } from "@/utils/intl";
 
-import type { ApiV1StatusGetResponse } from "./api";
+import type { ApiCluster } from "./api";
 
 export function Side({
     status
 }: {
-    status: ApiV1StatusGetResponse;
+    status: ApiCluster[];
 }) {
     const [guildId, setGuildId] = useState<string>("");
 
     const clusterId = useMemo(
         () => /^\d{15,20}$/.test(guildId) ?
-            getClusterId(guildId || "", status.clusters.length)
+            getClusterId(guildId || "", status.length)
             : null,
         [guildId]
     );
@@ -46,13 +46,13 @@ export function Side({
                 <AccordionItem value="item-1">
                     <AccordionContent className="flex flex-col gap-4 text-balance">
                         <Row name="Uptime">
-                            {status.clusters[0].uptime}
+                            {status[0].uptime}
                         </Row>
                         <Row name="Latency avg">
-                            {~~(status.clusters.reduce((prev, cur) => prev + cur.ping, 0) / status.clusters.length)}ms
+                            {~~(status.reduce((prev, cur) => prev + cur.ping, 0) / status.length)}ms
                         </Row>
                         <Row name="Memory">
-                            {intl.format(~~(status.clusters.reduce((prev, cur) => prev + cur.memory, 0)))}mb
+                            {intl.format(~~(status.reduce((prev, cur) => prev + cur.memory, 0)))}mb
                         </Row>
                     </AccordionContent>
                 </AccordionItem>

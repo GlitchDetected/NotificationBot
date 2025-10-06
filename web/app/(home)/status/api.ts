@@ -11,46 +11,7 @@ export interface ApiCluster {
     users: number;
 }
 
-export interface ApiNode {
-    id: string;
-    uptime: string;
-    memory: number;
-    usage: number;
-    players: number;
-}
-
-interface ServerInfo {
-    presence: string;
-    discord_bot: string;
-    bot: {
-        guilds: number;
-        users: number;
-        latency: number;
-        commands_loaded: number;
-    };
-    system: {
-        cpu_usage: {
-            user: number;
-            system: number;
-        };
-        memory_usage: number;
-    };
-    uptime: string;
-    environment: {
-        typescript_version: string;
-        platform: string;
-        processor: string;
-    };
-    data_source: string;
-}
-
-export interface ApiV1StatusGetResponse {
-    clusters: ApiCluster[];
-    nodes: ApiNode[];
-    serverinfo: ServerInfo[];
-}
-
-export async function getStatus(): Promise<ApiV1StatusGetResponse | ApiError | undefined> {
+export async function getStatus(): Promise<ApiCluster[] | ApiError | undefined> {
     const res = await fetch(
         `${process.env.NEXT_PUBLIC_API}/status`,
         {
@@ -59,5 +20,6 @@ export async function getStatus(): Promise<ApiV1StatusGetResponse | ApiError | u
         }
     );
 
-    return res.json();
+    const data: ApiCluster[] = await res.json();
+    return data;
 }

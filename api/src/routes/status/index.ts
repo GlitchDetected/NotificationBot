@@ -1,33 +1,22 @@
 import { Hono } from "hono";
 
+import { getAllShards } from "../../db/models/shard";
+
 const router = new Hono();
 
-// localhost:3001/status/
-// api.notificationbot/status/
-
-let latestStatus: unknown = null; // in memory storage
-
-router.post("/", (c) => {
+router.get("/", async (c) => {
     try {
-        const data = c.req.json;
-        console.log("Received POST /status:"); // , data
+        const shards = await getAllShards();
 
-        // save to resource / in memory
-        latestStatus = data;
+        if (!shards || shards.length === 0) {
+            return c.json({ message: "No shard data available" }, 404);
+        }
 
-        return c.json({ message: "Status data updated" }, 200);
+        return c.json(shards, 200);
     } catch (err) {
-        console.error("Error processing status data:", err);
+        console.error("Error fetching shard data:", err);
         return c.json({ error: "Internal server error" }, 500);
     }
-});
-
-router.get("/", (c) => {
-    if (!latestStatus) {
-        return c.json({ message: "No status data available" }, 404);
-    }
-
-    return c.json(latestStatus, 200);
 });
 
 export default router;

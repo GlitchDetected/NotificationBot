@@ -1,6 +1,8 @@
 import type { Client, Message } from "discord.js";
 
-export default (client: Client) => {
+import saveShards from "@/src/utils/saveShards";
+
+export default async (client: Client) => {
 
     interface Activity {
         name: string;
@@ -14,6 +16,7 @@ export default (client: Client) => {
 
     if (client.user) {
         console.log(`${client.user.tag} is online`);
+        await saveShards(client);
 
         let currentIndex = 0;
 

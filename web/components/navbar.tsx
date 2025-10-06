@@ -46,7 +46,7 @@ export default function NavBar() {
                 {links.map((link) => (
                     <Link
                         key={link.hash}
-                        className="px-3 py-2 transition hover:text-blurple"
+                        className="px-3 py-2 transition hover:text-red-600"
                         href={link.hash}
                     >
                         {link.name}

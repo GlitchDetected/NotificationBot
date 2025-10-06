@@ -59,8 +59,8 @@ export function Cluster(cluster: ApiCluster) {
 
 function Icon({ theping }: { theping: number; }) {
     const emoteId = theping > 0
-        ? "1390384976805236826"
-        : "1390384976805236826";
+        ? "1424866580902449192"
+        : "1424866580902449192";
 
     return (
         <Image

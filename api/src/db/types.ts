@@ -145,6 +145,18 @@ export interface WelcomeTable {
     updated_at?: string;
 }
 
+export interface ShardTable {
+    id: number;
+    name: string;
+    ping: number;
+    uptime: string;
+    memory: number;
+    guilds: number;
+    users: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Database {
     bye: ByeTable;
     dmnotifications: DmNotificationsTable;
@@ -153,4 +165,5 @@ export interface Database {
     reviews: ReviewsTable;
     user: UserTable;
     welcome: WelcomeTable;
+    shard: ShardTable;
 }
