@@ -437,15 +437,15 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>Automatic setup⚡</h2>
+                    <h2 className={styles.h2}>Useful Slash Commands⚡</h2>
 
                     <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
                         <div className="md:w-1/2">
 
-                            <h3 className={styles.h3}>/serversetup</h3>
+                            <h3 className={styles.h3}>We offer slash commands as well</h3>
 
                             <div className="pt-6">
-                                Easily set up your server{"'"}s notification channels and categories
+                                For now we only have 6 slash commands, we will add more soon!
                             </div>
                             <div className="flex gap-2 mt-6">
                                 <Button asChild>
@@ -462,8 +462,8 @@ export default function Home() {
                         </div>
 
                         <div className="bg-discord-gray w-full md:w-1/2 px-8 py-4 rounded-lg">
-                            <DiscordMessage {...messageProps("serversetup")}>
-                                <DiscordMarkdown mode={"DARK"} text="Set up began..." />
+                            <DiscordMessage {...messageProps("purge")}>
+                                <DiscordMarkdown mode={"DARK"} text="Successfully deleted 9 messages!" />
                             </DiscordMessage>
                         </div>
                     </Box>
