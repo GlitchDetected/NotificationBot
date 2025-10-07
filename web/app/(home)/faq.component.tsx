@@ -44,8 +44,8 @@ const data = [
         title: "Is the notification system free to use?",
         content: (
             <div>
-                It is free but there are limitations for how many notification channels you can have{" "}
-                <LinkTag href="/vote">vote for NotificationBot on top.gg</LinkTag> if you start using it a lot.
+                It is free for now but I might add some paid features in the future{" "}
+                <LinkTag href="/vote">give NotificationBot a vote on top.gg</LinkTag>!
             </div>
         )
     },
@@ -82,8 +82,8 @@ const data = [
     },
     {
         startContent: <HiBell />,
-        title: "log system coming soon?",
-        content: <div itemProp="text">yes. i promise</div>
+        title: "How can I support the developer",
+        content: <div itemProp="text">You can boost our discord server or give the bot a vote on top.gg</div>
     }
 ];
 

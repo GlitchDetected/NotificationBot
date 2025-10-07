@@ -56,8 +56,8 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
 // Twitch
 async function fetchLatestTwitchContent(config: notificationConfig): Promise<ContentData | null> {
     try {
-        const clientId = process.env.TWITCH_CLIENT_ID;
-        const clientSecret = process.env.TWITCH_CLIENT_SECRET;
+        const clientId = appConfig.apiSecrets.twitchClientId;
+        const clientSecret = appConfig.apiSecrets.twitchClientSecret;
         if (!clientId || !clientSecret) throw new Error("Missing Twitch credentials");
 
         const tokenResp = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`);

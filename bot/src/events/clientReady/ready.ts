@@ -1,7 +1,7 @@
 import type { Client, Message } from "discord.js";
 
-import saveShards from "@/src/utils/saveShards";
-
+import { fetchNotifications } from "@/src/lib/notification";
+import saveShards from "@/src/lib/saveShards";
 export default async (client: Client) => {
 
     interface Activity {
@@ -34,16 +34,17 @@ export default async (client: Client) => {
         };
 
         updateActivity();
+        setInterval(updateActivity, 86400000); // ms
 
-        // 24h = 86400000ms
-        // 1s = 1000ms
-        setInterval(updateActivity, 86400000);
+        fetchNotifications(client);
+        setInterval(fetchNotifications, 5 * 60 * 1000);
+
+        client.on("messageCreate", (message: Message) => {
+            if (message.author.bot) return;
+
+            if (message.mentions.has(client!.user!)) {
+                message.reply(`Oh hey ${message.author.username}! use /help to get help!`);
+            }
+        });
     }
-    client.on("messageCreate", (message: Message) => {
-        if (message.author.bot) return;
-
-        if (message.mentions.has(client!.user!)) {
-            message.reply(`Oh hey ${message.author.username}! use /help to get help!`);
-        }
-    });
 };

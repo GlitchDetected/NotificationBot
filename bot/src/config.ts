@@ -33,7 +33,9 @@ export default {
         botApiSecret: String(process.env["API_SECRET"]),
         youtubeAPI: String(process.env["YTV3API"]),
         blueskyIdentifier: String(process.env["BLUESKY_IDENTIFIER"]),
-        blueskyPassword: String(process.env["BLUESKY_PASSWORD"])
+        blueskyPassword: String(process.env["BLUESKY_PASSWORD"]),
+        twitchClientId: String(process.env["TWITCH_CLIENT_ID"]),
+        twitchClientSecret: String(process.env["TWITCH_CLIENT_SECRET"])
     },
 
     cluster: {
@@ -50,6 +52,7 @@ export default {
     guildId: process.env["GUILD_ID"] ?? "",
     supportServer: process.env["SUPPORT_SERVER"] ?? "",
     supportChannel: process.env["SUPPORT_CHANNEL_ID"] ?? "",
+    updatesChannel: process.env["UPDATES_CHANNEL_ID"] ?? "",
 
     api: {
         api_url: String(process.env["API_URL"])

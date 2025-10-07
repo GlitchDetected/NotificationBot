@@ -1,27 +1,42 @@
-import { Client, IntentsBitField } from "discord.js";
+import { Client, IntentsBitField, ShardingManager } from "discord.js";
+import path from "path";
 
 import eventHandler from "@/src/handlers/eventHandler";
 
 import config from "./config";
 
-const client = new Client({
-    intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.GuildPresences,
-        IntentsBitField.Flags.MessageContent
-    ]
-});
+const isManager = process.argv.includes("--manager");
 
-(() => {
-    try {
-        eventHandler(client);
+if (isManager) {
+    // === Manager process ===
+    const manager = new ShardingManager(path.resolve(__dirname, "index.js"), {
+        token: config.client.token,
+        totalShards: "auto"
+    });
 
-        client.login(config.client.token);
+    manager.on("shardCreate", (shard) => {
+        console.log(`Launched shard ${shard.id}`);
+    });
 
-    } catch (error) {
-        console.log(`Error: ${error}`);
-    }
+    manager.spawn();
 
-})();
+} else {
+    const client = new Client({
+        intents: [
+            IntentsBitField.Flags.Guilds,
+            IntentsBitField.Flags.GuildMembers,
+            IntentsBitField.Flags.GuildMessages,
+            IntentsBitField.Flags.GuildPresences,
+            IntentsBitField.Flags.MessageContent
+        ]
+    });
+
+    (() => {
+        try {
+            eventHandler(client);
+            client.login(config.client.token);
+        } catch (error) {
+            console.log(`Error: ${error}`);
+        }
+    })();
+}

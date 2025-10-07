@@ -130,7 +130,7 @@ export default function Home() {
                     </h1>
 
                     <span className="text-lg font-medium max-w-[38rem] mb-4">
-                        We introduce you to notifications from your favorite platforms, a full-on welcoming system, and webhooks!
+                        We introduce you to customizable notifications from your favorite platforms, a full-on welcoming system, and useful slash commands!
                     </span>
 
                     <div className="space-y-4">
@@ -153,7 +153,7 @@ export default function Home() {
 
                             <Button asChild>
                                 <Link
-                                    href="https://discord.gg/QnZcYsf2E9"
+                                    href="/support"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-2"
@@ -298,23 +298,22 @@ export default function Home() {
                                     bot: false
                                 }}
                             >
-                                <DiscordMarkdown mode={"DARK"} text="Demonstration below" />
+                                <DiscordMarkdown mode={"DARK"} text="Demo below!" />
                             </DiscordMessage>
 
                             <DiscordMessage {...messageProps()}>
                                 <DiscordMarkdown
                                     mode="DARK"
-                                    text={"Hey **@explosiveapple1**, you have a new notification"}
+                                    text={"Hey **@explosiveapple1**, you have a new notifications"}
                                 />
-                                <DiscordMessageEmbed mode="DARK" title="From: [https://rss.nytimes.com/services/xml/rss/nyt/World.xml](https://rss.nytimes.com/services/xml/rss/nyt/World.xml)" color={0xFF0000}>
-                                    <Image
-                                        alt=""
-                                        className="rounded-md shadow-md w-full mt-2"
-                                        itemProp="image"
-                                        loading="lazy"
-                                        src={thumbnail}
-                                    />
+                                <DiscordMessageEmbed
+                                    mode="DARK"
+                                    title="new notification from nyt"
+                                    color={0xFF0000}
+                                >
+                                    https://rss.nytimes.com/services/xml/rss/nyt/World.xml
                                 </DiscordMessageEmbed>
+
                             </DiscordMessage>
 
                             <span className="text-sm mt-1 opacity-75">
@@ -544,7 +543,8 @@ export default function Home() {
                         </Card>
                     ))}
 
-                    <div className="w-full flex justify-center items-center">
+                    {/* Button centered below all cards */}
+                    <div className="w-full col-span-full flex justify-center items-center mt-4">
                         <Button className="w-fit px-4 py-2 flex items-center gap-2" asChild>
                             <Link
                                 href="/commands"

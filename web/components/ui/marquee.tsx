@@ -12,6 +12,7 @@ export type MarqueeProps = HTMLAttributes<HTMLDivElement> & {
     fade?: boolean;
     innerClassName?: string;
     numberOfCopies?: number;
+    height?: string | number;
 };
 
 export function Marquee({
@@ -22,17 +23,19 @@ export function Marquee({
     fade = false,
     className,
     innerClassName,
-    numberOfCopies = 2,
+    numberOfCopies = 9,
+    height = "15rem",
     ...rest
 }: MarqueeProps) {
     return (
         <div
             className={cn(
-                "group flex gap-[1rem] overflow-hidden",
+                "group relative overflow-hidden w-full flex",
                 direction === "left" ? "flex-row" : "flex-col",
                 className
             )}
             style={{
+                height,
                 maskImage: fade
                     ? `linear-gradient(${
                         direction === "left" ? "to right" : "to bottom"

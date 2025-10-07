@@ -15,3 +15,10 @@ export function getNotificationsByGuild(guildId: string) {
         .where("guild_id", "=", guildId)
         .execute();
 }
+
+export function getAllNotifications() {
+    return db
+        .selectFrom("notifications")
+        .selectAll()
+        .execute();
+}
