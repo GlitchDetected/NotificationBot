@@ -12,7 +12,7 @@ export default async function Home({ params }: Props) {
 
     switch (pathname) {
         case "support":
-            return redirect("https://top.gg/bot/1366507117044957276#vote");
+            return redirect("https://discord.gg/GNdJMJCBdu");
         case "vote":
             return redirect("https://top.gg/bot/1366507117044957276#vote" + utm);
         case "add":
@@ -21,6 +21,7 @@ export default async function Home({ params }: Props) {
         case "guides":
             return redirect("/docs/home");
         case "invite":
+            return redirect("https://discord.com/oauth2/authorize?client_id=1366507117044957276");
         case "youtube": {
             const res = (await fetch("https://discord.gg/GNdJMJCBdu", fetchOptions)
                 .then((res) => res.json())
