@@ -66,8 +66,7 @@ export function Side({
                     setValue={setGuildId}
                     description={/^\d{15,20}$/.test(guildId) ? `Your guild is on cluster #${clusterId}.` : ""}
                 />
-
-                Discord bots are divided into clusters or shards, which are logical processes running on the CPU, akin to multithreading.
+                Sharding is the process of breaking a Discord bot into smaller processes so that it has a better time handling events
             </div>
         </div>
     );

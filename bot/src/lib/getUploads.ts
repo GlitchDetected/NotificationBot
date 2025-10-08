@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BskyAgent } from "@atproto/api";
 import axios from "axios";
 

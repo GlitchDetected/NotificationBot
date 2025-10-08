@@ -1,4 +1,4 @@
-import type {ApplicationCommand, Client, ChatInputApplicationCommandData} from "discord.js";
+import type { ApplicationCommand, ChatInputApplicationCommandData, Client } from "discord.js";
 
 import areCommandsDifferent from "@/src/utils/areCommandsDifferent";
 import getApplicationCommands from "@/src/utils/getApplicationCommands";

@@ -14,8 +14,6 @@ export default async (
     inviteCode?: string,
     inviteCount?: number
 ) => {
-    console.log(`[Welcome] Member left: ${member.user.tag} (${member.id})`);
-
     const { guild } = member;
 
     let sentMessage: Message | undefined;

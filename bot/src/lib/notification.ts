@@ -22,7 +22,7 @@ export default async function sendNotification(
     const fetcher = fetchers[type];
     if (!fetcher) return;
 
-    // 🔹 Always fetch latest data
+    // fetch latest data
     const latestContent = await fetcher(config);
     if (!latestContent || !latestContent.link) return;
 
@@ -37,10 +37,25 @@ export default async function sendNotification(
     content += `\n${latestContent.link}`;
 
     if (dbConfig.role_id) {
-        content = `<@&${dbConfig.role_id}> ${content}`;
+        let roleMention: string;
+
+        if (dbConfig.role_id.toLowerCase() === "everyone") {
+            roleMention = "@everyone";
+            // Remove any duplicates in the message content
+            content = content.replace(/@+everyone/g, "@everyone").trim();
+        } else {
+        // Only valid numbers for role IDs
+            const roleId = dbConfig.role_id.replace(/[^0-9]/g, "");
+            roleMention = `<@&${roleId}>`;
+            // Remove duplicates if somehow present
+            const regex = new RegExp(`<@&${roleId}>`, "g");
+            content = content.replace(regex, "").trim();
+        }
+
+        // Prepend sanitized role mention
+        content = `${roleMention} ${content}`;
     }
 
-    // 🔹 Send message (with embed if defined)
     if (dbConfig.message?.embed) {
         const { title, description, color, image, thumbnail, footer } = dbConfig.message.embed;
 
@@ -64,11 +79,13 @@ export default async function sendNotification(
     } else {
         await channel.send({ content });
     }
-
-    console.log(`📨 Sent latest update for ${dbConfig.id} (${type})`);
 }
 
 export async function fetchNotifications(client: Client) {
+    if (!client?.guilds?.cache) {
+        return;
+    }
+
     try {
         const configs = await getAllNotifications();
         for (const config of configs) {

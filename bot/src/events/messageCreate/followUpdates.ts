@@ -9,25 +9,21 @@ export default async (client: Client, member: GuildMember) => {
 
     const config = await getFollowUpdates(guild.id);
     if (!config?.channel_id) {
-        console.warn(`⚠️ No follow update channel configured for guild ${guild.id}`);
         return;
     }
 
     const updateGuild = await client.guilds.fetch(envConfig.guildId).catch(() => null);
     if (!updateGuild) {
-        console.error(`❌ Update guild (${envConfig.guildId}) not found.`);
         return;
     }
 
     const updateChannel = updateGuild.channels.cache.get(envConfig.updatesChannel) as TextChannel | undefined;
     if (!updateChannel) {
-        console.error(`❌ Update channel (${envConfig.updatesChannel}) not found in guild ${envConfig.guildId}.`);
         return;
     }
 
     const followChannel = await client.channels.fetch(config.channel_id).catch(() => null) as TextChannel | null;
     if (!followChannel) {
-        console.warn(`⚠️ Invalid follow channel (${config.channel_id}) for guild ${guild.id}`);
         return;
     }
 
