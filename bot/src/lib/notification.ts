@@ -75,7 +75,22 @@ export default async function sendNotification(
                 : undefined
         };
 
-        await channel.send({ content, embeds: [embed] });
+        const cleanedEmbed = Object.fromEntries(
+            Object.entries(embed).filter(([_, v]) => v !== undefined)
+        );
+
+        const hasValidFields =
+            cleanedEmbed.title ||
+        cleanedEmbed.description ||
+        cleanedEmbed.image ||
+        cleanedEmbed.thumbnail ||
+        cleanedEmbed.footer;
+
+        if (hasValidFields) {
+            await channel.send({ content, embeds: [cleanedEmbed] });
+        } else {
+            await channel.send({ content });
+        }
     } else {
         await channel.send({ content });
     }
