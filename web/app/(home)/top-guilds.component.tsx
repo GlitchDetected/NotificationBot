@@ -16,7 +16,7 @@ export default async function Topguilds() {
     return (
         <div className="w-full my-16 px-4">
             <div className="items-center text-xl text-zinc-400 mt-[-16rem]">
-                Powering <strong>{userCount.toLocaleString()}</strong> users across <strong>{guildCount.toLocaleString()}</strong> servers
+                Notifying <strong>{userCount.toLocaleString()}</strong> users across <strong>{guildCount.toLocaleString()}</strong> servers
             </div>
             <Marquee
                 fade={true}

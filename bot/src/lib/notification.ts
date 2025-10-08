@@ -3,6 +3,7 @@ import type { Client, Guild, Message } from "discord.js";
 import { notificationPlaceholders } from "@/src/constants/discord";
 import { getAllNotifications, getNotificationById } from "@/src/db/models/notifications";
 import { fetchers } from "@/src/lib/getUploads";
+import redis from "@/src/lib/redis";
 import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
 
@@ -26,6 +27,11 @@ export default async function sendNotification(
     const latestContent = await fetcher(config);
     if (!latestContent || !latestContent.link) return;
 
+    // Redis key for last sent content
+    const redisKey = `notification:last:${dbConfig.id}`;
+    const lastSentLink = await redis.get(redisKey);
+    if (lastSentLink === latestContent.link) return;
+
     const channel = guild.channels.cache.get(dbConfig.channel_id);
     if (!channel || !channel.isTextBased()) return;
 
@@ -44,7 +50,7 @@ export default async function sendNotification(
             // Remove any duplicates in the message content
             content = content.replace(/@+everyone/g, "@everyone").trim();
         } else {
-        // Only valid numbers for role IDs
+            // Only valid numbers for role IDs
             const roleId = dbConfig.role_id.replace(/[^0-9]/g, "");
             roleMention = `<@&${roleId}>`;
             // Remove duplicates if somehow present
@@ -81,48 +87,57 @@ export default async function sendNotification(
 
         const hasValidFields =
             cleanedEmbed.title ||
-        cleanedEmbed.description ||
-        cleanedEmbed.image ||
-        cleanedEmbed.thumbnail ||
-        cleanedEmbed.footer;
+            cleanedEmbed.description ||
+            cleanedEmbed.image ||
+            cleanedEmbed.thumbnail ||
+            cleanedEmbed.footer;
 
         if (hasValidFields) {
             await channel.send({ content, embeds: [cleanedEmbed] });
+            await redis.set(redisKey, latestContent.link);
         } else {
             await channel.send({ content });
+            await redis.set(redisKey, latestContent.link);
         }
     } else {
         await channel.send({ content });
+        await redis.set(redisKey, latestContent.link);
     }
 }
 
-export async function fetchNotifications(client: Client) {
-    if (!client?.guilds?.cache) {
-        return;
-    }
+export function fetchNotifications(client: Client) {
+    const run = async () => {
+        if (!client?.guilds?.cache) return;
 
-    try {
-        const configs = await getAllNotifications();
-        for (const config of configs) {
-            if (!config.channel_id || !config.id || config.type === null) continue;
-            const guild = client.guilds.cache.get(config.guild_id);
-            if (!guild) continue;
+        try {
+            const configs = await getAllNotifications();
+            for (const config of configs) {
+                if (!config.channel_id || !config.id || config.type === null) continue;
+                const guild = client.guilds.cache.get(config.guild_id);
+                if (!guild) continue;
 
-            try {
-                await sendNotification(
-                    client,
-                    {} as Message,
-                    config.id,
-                    guild,
-                    config as notificationConfig,
-                    config.type,
-                    {} as ContentData
-                );
-            } catch (err) {
-                console.error(`Error sending notification for ${config.id}:`, err);
+                try {
+                    await sendNotification(
+                        client,
+                        {} as Message,
+                        config.id,
+                        guild,
+                        config as notificationConfig,
+                        config.type,
+                        {} as ContentData
+                    );
+                } catch (err) {
+                    console.error(`Error sending notification for ${config.id}:`, err);
+                }
             }
+        } catch (err) {
+            console.error("Error fetching notifications:", err);
         }
-    } catch (err) {
-        console.error("Error fetching notifications:", err);
-    }
+    };
+
+    // Run immediately
+    run();
+
+    // Run every 1 minute
+    setInterval(run, 60 * 1000);
 }

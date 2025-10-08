@@ -34,7 +34,6 @@ export default (client: Client) => {
                 };
 
                 await upsertShard(shardPayload);
-                console.log(`Shard ${shardId} status successfully saved to DB`);
             }
         } catch (error) {
             console.error("Error saving shard status to DB:", error);

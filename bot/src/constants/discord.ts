@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Guild, GuildMember, User } from "discord.js";
+import type { Client, Guild, GuildMember, User } from "discord.js";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
+
+export function getTotalStats(client: Client) {
+    const totalGuilds = client.guilds.cache.size;
+    const totalUsers = client.guilds.cache.reduce((acc, g) => acc + (g.memberCount || 0), 0);
+
+    return { totalGuilds, totalUsers };
+}
 
 export const welcomerPlaceholders = (member: GuildMember, inviter: User | null, inviteCode?: string, inviteCount?: number) => {
     const user = member.user;

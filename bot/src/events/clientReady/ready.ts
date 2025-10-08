@@ -1,31 +1,38 @@
 import type { Client, Message } from "discord.js";
 
+import { getTotalStats } from "@/src/constants/discord";
 import { fetchNotifications } from "@/src/lib/notification";
 import saveShards from "@/src/lib/saveShards";
+
 export default async (client: Client) => {
-
-    interface Activity {
-        name: string;
-        type: number;
-    }
-
-    const activities: Activity[] = [
-        { name: "/help", type: 4 },
-        { name: "https://discord.gg/QnZcYsf2E9 | /help", type: 4 }
-    ];
 
     if (client.user) {
         console.log(`${client.user.tag} is online`);
         await saveShards(client);
+        await fetchNotifications(client);
 
         let currentIndex = 0;
 
         const updateActivity = () => {
+            if (!client.user) return;
+
+            const { totalGuilds, totalUsers } = getTotalStats(client);
+
+            const activities = [
+                { name: `/help | ${totalGuilds} guild${totalGuilds !== 1 ? "s" : ""}`, type: 4 },
+                {
+                    name: `Notifying ${totalUsers.toLocaleString()} users across ${totalGuilds} servers${totalGuilds !== 1 ? "s" : ""}`,
+                    type: 4
+                },
+                { name: "https://notificationbot.top | /help", type: 4 },
+                { name: `Keeping ${totalUsers.toLocaleString()} users updated`, type: 4 }
+            ];
+
             const activity = activities[currentIndex];
 
             console.log(`Status: ${activity.name}`);
 
-            client.user!.setPresence({
+            client.user.setPresence({
                 status: "dnd",
                 activities: [activity]
             });
@@ -36,14 +43,11 @@ export default async (client: Client) => {
         updateActivity();
         setInterval(updateActivity, 86400000); // ms
 
-        fetchNotifications(client);
-        setInterval(fetchNotifications, 5 * 60 * 1000);
-
         client.on("messageCreate", (message: Message) => {
             if (message.author.bot) return;
 
             if (message.mentions.has(client!.user!)) {
-                message.reply(`Oh hey ${message.author.username}! use /help to get help!`);
+                message.reply(`Hello ${message.author.username}, use /help if you need any help`);
             }
         });
     }
