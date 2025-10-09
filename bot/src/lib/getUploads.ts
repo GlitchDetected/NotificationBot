@@ -48,8 +48,22 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             channelUrl: `https://youtube.com/channel/${config.creator_id}`,
             link: `https://youtube.com/watch?v=${videoId}`
         };
-    } catch (err) {
-        console.error("YouTube fetch error:", err);
+    } catch (err: any) {
+        if (axios.isAxiosError(err) && err.response?.status === 403) {
+            const errData = err.response.data;
+            const reason = errData?.error?.errors?.[0]?.reason;
+
+            if (reason === "quotaExceeded") {
+                console.warn(
+                    "[YouTube] ⚠️ API quota limit reached — consider rotating API keys or waiting for reset."
+                );
+            } else {
+                console.warn("[YouTube] Forbidden (403):", reason || "Unknown reason");
+            }
+        } else {
+            console.error("YouTube fetch error:", err);
+        }
+
         return null;
     }
 }
