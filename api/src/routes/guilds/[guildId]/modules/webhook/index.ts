@@ -8,7 +8,6 @@ const router = new Hono();
 router.post("/", async (c) => {
     try {
         const body = await c.req.json() as ApiV1GuildsModulesWebhookGetResponse;
-        console.log(body);
 
         if (!body.webhookUrl) {
             return c.json({ error: "A webhook url is required" });

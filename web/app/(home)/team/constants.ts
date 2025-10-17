@@ -14,14 +14,13 @@ export const members = [
         team: TeamType.Developer,
         social: "https://github.com/glitchdetected"
     },
-
     {
-        id: "1249812467861684239",
+        id: "1255569584925315205",
         team: TeamType.AdditionalProgramming,
-        social: "https://github.com/TermuxHackz"
+        social: "https://github.com"
     },
     {
-        id: "920487197046607872",
+        id: "1249812467861684239",
         team: TeamType.Donator
     }
 ] as const;

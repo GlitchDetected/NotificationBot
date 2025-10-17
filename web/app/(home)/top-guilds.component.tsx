@@ -1,3 +1,5 @@
+import { HiCheckCircle, HiHand } from "react-icons/hi";
+
 import { UserAvatar } from "@/components/ui/avatar";
 import { Marquee } from "@/components/ui/marquee";
 import { defaultFetchOptions } from "@/lib/api";
@@ -18,24 +20,34 @@ export default async function Topguilds() {
             <div className="items-center text-xl text-zinc-400 mt-[-16rem]">
                 Notifying <strong>{userCount.toLocaleString()}</strong> users across <strong>{guildCount.toLocaleString()}</strong> servers
             </div>
-            <Marquee
-                fade={true}
-                pauseOnHover={true}
-            >
+            <Marquee fade pauseOnHover>
                 {guilds.map((guild) => (
-                    <div key={guild.id} className="flex flex-col items-center justify-center w-64 h-48 mx-4">
+                    <div
+                        key={guild.id}
+                        className="flex items-center justify-start w-80 h-32 mx-4 bg-zinc-900/40 rounded-2xl p-4 backdrop-blur-sm"
+                    >
                         <UserAvatar
                             alt={guild.name}
-                            className="w-16 h-16 rounded-full mb-2"
+                            className="w-16 h-16 rounded-full"
                             src={
                                 guild.icon
                                     ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=128`
                                     : "/discord.webp"
                             }
                         />
-                        <div className="text-center font-semibold text-lg">{guild.name}</div>
-                        <div className="text-center text-sm text-zinc-400">
-                            {guild.memberCount.toLocaleString()} members
+                        <div className="ml-4 flex flex-col justify-end">
+                            <div className="flex items-center gap-2 font-semibold text-lg text-white">
+                                {guild.name}
+                                {guild.verified && (
+                                    <HiCheckCircle className="w-5 h-5 text-blue-400" title="Verified Server" />
+                                )}
+                                {guild.partnered && (
+                                    <HiHand className="w-5 h-5 text-purple-400" title="Partnered Server" />
+                                )}
+                            </div>
+                            <div className="text-sm text-zinc-400">
+                                {guild.memberCount.toLocaleString()} members
+                            </div>
                         </div>
                     </div>
                 ))}

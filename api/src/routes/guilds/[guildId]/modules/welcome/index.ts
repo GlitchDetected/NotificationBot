@@ -75,7 +75,6 @@ router.patch("/", async (c) => {
     const updateData: Partial<Omit<WelcomeTable, "createdAt" | "updatedAt">> = {};
 
     const body = await c.req.json() as ApiV1GuildsModulesWelcomeGetResponse;
-    console.log(body);
 
     try {
         let config = await getWelcome(guildId!);

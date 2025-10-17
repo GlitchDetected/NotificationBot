@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BsChat, BsDiscord, BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
+import { BsDiscord } from "react-icons/bs";
 import { HiPlus } from "react-icons/hi";
 import { HiArrowRight, HiChartBar, HiCheck, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -18,7 +18,6 @@ import {
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
-import { Marquee } from "@/components/ui/marquee";
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import ArrowPic from "@/public/arrow.webp";
@@ -28,6 +27,7 @@ import { cn } from "@/utils/cn";
 import { handwritten, montserrat } from "@/utils/font";
 
 import { Faq } from "./faq.component";
+import IntegrationsMarquee from "./integrations.component";
 import Reviews from "./reviews.component";
 import Topguilds from "./top-guilds.component";
 
@@ -52,33 +52,6 @@ const messageProps = (command?: string) => ({
         bot: true
     }
 });
-
-const integrationsData = [
-    {
-        name: "YouTube",
-        icon: BsYoutube,
-        content:
-      "With placeholders like `video.title`, `video.uploaded.ago`, and `creator.subs`, NotificationBot will notify your server whenever a YouTube creator uploads."
-    },
-    {
-        name: "Twitch",
-        icon: BsTwitch,
-        content:
-      "We use `stream.title`, `stream.game`, and even `stream.live.since` to make stream notifications that feel personal and timely."
-    },
-    {
-        name: "Reddit",
-        icon: BsReddit,
-        content:
-      "The bot pulls `post.title`, `post.flair`, and `author.username` so cleanly that our Reddit integration feels native."
-    },
-    {
-        name: "Bluesky",
-        icon: BsChat,
-        content:
-      "`post.text`, `post.type`, and `creator.handle` let us deliver Bluesky posts right to Discord"
-    }
-];
 
 const evenMoreContent = [
     {
@@ -121,7 +94,7 @@ export default function Home() {
                 <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
                     <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
                         <span className="bg-gradient-to-r from-red-900 to-red-600 bg-clip-text text-transparent">
-                            The Next generation
+                            The Next Generation
                         </span>{" "}
                         of{" "}
                         <span className="inline-flex items-center">
@@ -481,23 +454,7 @@ export default function Home() {
                 </p>
             </div>
 
-            <div className="w-full my-16 px-4">
-                <Marquee className="py-2" fade={true} pauseOnHover={true}>
-                    {integrationsData.map((integration, i) => (
-                        <Card key={i} className="w-80 mx-4 shrink-0">
-                            <CardHeader className="flex flex-row items-center gap-4">
-                                <integration.icon className="w-10 h-10 text-red-500" />
-                                <CardTitle className="text-base">
-                                    {integration.name}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="text-sm text-muted-foreground">
-                                {integration.content}
-                            </CardContent>
-                        </Card>
-                    ))}
-                </Marquee>
-            </div>
+            <IntegrationsMarquee/>
 
             <div className="max-w-7xl mx-auto px-20">
                 <div className="relative flex justify-center items-center mb-12 mt-32">

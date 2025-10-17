@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
     const guild = guildStore((g) => g);
 
     // const cookies = useCookies();
-    // const session = useMemo(() => cookies.get("session"), [cookies]);
+    // const session = useMemo(() => cookies.get("sessiontoken="), [cookies]);
     // if (!session) redirect(`/login?callback=/dashboard/${params.guildId}`);
 
     const url = `/guilds/${params.guildId}` as const;

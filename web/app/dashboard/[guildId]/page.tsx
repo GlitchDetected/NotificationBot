@@ -3,7 +3,6 @@
 import { HiBookOpen } from "react-icons/hi";
 
 import { OverviewLink } from "@/components/overview-link";
-import { Section } from "@/components/section";
 
 import FollowUpdates from "./updates.component";
 
@@ -19,8 +18,6 @@ export default function Home() {
             />
 
             <FollowUpdates />
-
-            <Section title="Miscellaneous">Coming soon...</Section>
         </>
     );
 }

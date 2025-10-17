@@ -2,6 +2,7 @@ import type { Client, Message } from "discord.js";
 
 import { getTotalStats } from "@/src/constants/discord";
 import { fetchNotifications } from "@/src/lib/notification";
+import redis from "@/src/lib/redis";
 import saveShards from "@/src/lib/saveShards";
 
 export default async (client: Client) => {
@@ -10,6 +11,15 @@ export default async (client: Client) => {
         console.log(`${client.user.tag} is online`);
         await saveShards(client);
         await fetchNotifications(client);
+
+        setInterval(async () => {
+            try {
+                await redis.flushall();
+                console.log("[Redis] Cache cleared");
+            } catch (err) {
+                console.error("Error clearing Redis cache:", err);
+            }
+        }, 7 * 24 * 60 * 60 * 1000);
 
         let currentIndex = 0;
 
@@ -21,7 +31,7 @@ export default async (client: Client) => {
             const activities = [
                 { name: `/help | ${totalGuilds} guild${totalGuilds !== 1 ? "s" : ""}`, type: 4 },
                 {
-                    name: `Notifying ${totalUsers.toLocaleString()} users across ${totalGuilds} servers${totalGuilds !== 1 ? "s" : ""}`,
+                    name: `Notifying ${totalUsers.toLocaleString()} users across ${totalGuilds} server${totalGuilds !== 1 ? "s" : ""}`,
                     type: 4
                 },
                 { name: "https://notificationbot.top | /help", type: 4 },

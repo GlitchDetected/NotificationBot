@@ -30,7 +30,7 @@ const data = [
                     Select a server and click on {"\""}Continue{"\""}.
                 </li>
                 <li>
-                    Do <span className="font-semibold">not uncheck</span> any permissions (or the bot will malfunction) and click
+                    <span className="font-semibold">DO NOT UNCHECK</span> any permissions and click
                     on {"\""}Authorize{"\""}.
                 </li>
                 <li>

@@ -33,16 +33,21 @@ export default function NavBar() {
                     shadow-xs shadow-gray-600/90
                     bg-foreground/40 backdrop-blur-xs backdrop-brightness-75">
 
-            {/* Logo */}
-            <div className="flex items-center gap-2 sm:gap-4">
+            {/* Left: Logo */}
+            <div className="hidden sm:flex ml-auto">
                 <Link href="/" className="flex items-center gap-1">
-                    <Image src="/notificationbot_transparent.png" alt="Logo" width={40} height={40} />
-                    <span className="text-lg font-semibold">NotificationBot</span>
+                    <Image
+                        src="/bot.webp"
+                        alt="Logo"
+                        width={40}
+                        height={40}
+                    />
                 </Link>
             </div>
 
+
             {/* Desktop Links */}
-            <ul className="hidden sm:flex absolute left-1/2 transform -translate-x-1/2 gap-8 text-[0.9rem] font-medium">
+            <ul className="hidden sm:flex flex-1 justify-center gap-8 text-[0.9rem] font-medium">
                 {links.map((link) => (
                     <Link
                         key={link.hash}

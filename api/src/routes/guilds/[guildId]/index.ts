@@ -134,7 +134,6 @@ router.patch("/follow-updates", async (c) => {
     }
 
     const body = await c.req.json() as ApiV1GuildsGetResponse["follownewsChannel"];
-    console.log(body);
 
     if (!body || !("channelId" in body)) {
         return httpError(HttpErrorMessage.BadRequest);

@@ -8,6 +8,17 @@ import appConfig from "../config";
 
 const agent = new BskyAgent({ service: "https://bsky.social" });
 
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 403) {
+            // Ignore all 403s globally
+            return Promise.resolve({ data: null });
+        }
+        return Promise.reject(error);
+    }
+);
+
 async function bskySession() {
     if (!agent.session) {
         await agent.login({
@@ -49,19 +60,9 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             link: `https://youtube.com/watch?v=${videoId}`
         };
     } catch (err: any) {
+        // Silently ignore 403 Forbidden errors
         if (axios.isAxiosError(err) && err.response?.status === 403) {
-            const errData = err.response.data;
-            const reason = errData?.error?.errors?.[0]?.reason;
-
-            if (reason === "quotaExceeded") {
-                console.warn(
-                    "[YouTube] ⚠️ API quota limit reached — consider rotating API keys or waiting for reset."
-                );
-            } else {
-                console.warn("[YouTube] Forbidden (403):", reason || "Unknown reason");
-            }
-        } else {
-            console.error("YouTube fetch error:", err);
+            return null;
         }
 
         return null;
@@ -182,7 +183,10 @@ async function fetchLatestRedditContent(config: notificationConfig): Promise<Con
     }
 }
 
-export const fetchers: Record<NotificationType, (config: notificationConfig) => Promise<ContentData | null>> = {
+export const fetchers: Record<
+    NotificationType,
+    (config: notificationConfig) => Promise<ContentData | null>
+> = {
     0: fetchLatestYouTubeContent,
     1: fetchLatestTwitchContent,
     2: fetchLatestBlueskyContent,

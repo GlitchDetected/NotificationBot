@@ -97,7 +97,7 @@ export function BlueskyNotificationModal({
                         How to get a user&apos;s handle
                     </span>
                     <br />
-                    Most bluesky handles are formatted like: <code className="break-all">randomuser.bsky.social</code>, while
+                    Most bluesky handles are formatted like this: <code className="break-all">blueskyuser.bsky.social</code>, while
                     others may have a domain as their handle: <code>example.com</code>.
                 </div>
             </Modal>
