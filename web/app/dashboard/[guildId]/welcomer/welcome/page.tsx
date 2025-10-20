@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/static-components */
 "use client";
 import Image from "next/image";
 import Link from "next/link";

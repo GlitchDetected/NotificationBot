@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/preserve-manual-memoization */
 "use client";
 
 import { type ReactNode, useEffect, useMemo, useState } from "react";

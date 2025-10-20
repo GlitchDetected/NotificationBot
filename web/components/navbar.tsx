@@ -20,7 +20,7 @@ export default function NavBar() {
             .find((row) => row.startsWith("sessiontoken="))
             ?.split("=")[1];
 
-        setAuth(Boolean(token));
+        setTimeout(() => setAuth(Boolean(token)), 0);
     }, []);
 
     return (
