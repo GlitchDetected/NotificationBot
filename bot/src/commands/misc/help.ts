@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     ActionRowBuilder,
     type ChatInputCommandInteraction,
@@ -110,13 +111,14 @@ export default {
 
             collector.on("end", async () => {
                 try {
-                    await sentMessage.edit({
-                        components: []
-                    });
-                } catch (error) {
-                    console.error("Error clearing components after collector end:", error);
+                    await sentMessage.edit({ components: [] });
+                } catch (error: any) {
+                    console.warn(
+                        `[help.ts] Could not clear components after collector end: ${error.name || "Error"} - ${error.message || "Unknown error"}`
+                    );
                 }
             });
+
         } catch (error) {
             console.error("Error fetching commands:", error);
             await interaction.editReply(

@@ -3,7 +3,7 @@ All commands can be found by typing `/` into the Discord chat box, or going to t
 
 ## Languages
 NotificationBot is currently only available in english
-- 🇺🇸 English
+- 🇺🇸 English ![emoji](https://img.shields.io/badge/dynamic/json?color=green&label=hr&style=flat&logo=crowdin&query=%24.progress.3.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-en.com%2Fstats-15336720-606257.json)
 <br />
 
 ## Funding

@@ -1,25 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Client, Guild, TextChannel } from "discord.js";
-import { ActionRowBuilder,
+import {
+    ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    EmbedBuilder } from "discord.js";
+    EmbedBuilder
+} from "discord.js";
 
 import config from "@/src/config";
 
 export default async (client: Client, guild: Guild) => {
-
     const commands = await client.application?.commands.fetch();
     if (!commands) return;
 
-    const formattedCommands = Array.from(commands.values()).map((cmd) => `</${cmd.name}:${cmd.id}>`);
+    const formattedCommands = Array.from(commands.values()).map(
+        (cmd) => `</${cmd.name}:${cmd.id}>`
+    );
     const commandList = formattedCommands.join(" ");
 
-    const channel = guild.systemChannel ?? guild.channels.cache.find(
+    // Find a usable text channel
+    const channel =
+        guild.systemChannel ??
+    guild.channels.cache.find(
         (ch): ch is TextChannel =>
-            ch.type === 0 && ch.permissionsFor(guild.members.me!)?.has("SendMessages")
+            ch.type === 0 &&
+        ch
+            .permissionsFor(guild.members.me!)
+            ?.has(["SendMessages", "EmbedLinks"])
     );
 
-    if (!channel) return;
+    // Exit early if no suitable channel or missing permissions
+    if (
+        !channel ||
+    !channel
+        .permissionsFor(guild.members.me!)
+        ?.has(["SendMessages", "EmbedLinks"])
+    ) {
+        console.warn(
+            `[guildCreate] Skipping welcome message for "${guild.name}" — no channel with SendMessages + EmbedLinks permissions.`
+        );
+        return;
+    }
 
     const embed = new EmbedBuilder()
         .setDescription(`
@@ -51,6 +72,11 @@ Yes, just type slash (/) in the chat box to get started
             .setURL(config.dashboard)
     );
 
-    channel.send({ embeds: [embed], components: [row] });
-
+    try {
+        await channel.send({ embeds: [embed], components: [row] });
+    } catch (error: any) {
+        console.warn(
+            `[guildCreate] Failed to send welcome message in "${guild.name}" — ${error.name || "Error"}: ${error.message || "Unknown error"}`
+        );
+    }
 };

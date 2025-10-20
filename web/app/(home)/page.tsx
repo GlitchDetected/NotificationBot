@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BsDiscord } from "react-icons/bs";
-import { HiPlus } from "react-icons/hi";
-import { HiArrowRight, HiChartBar, HiCheck, HiDocument, HiTerminal, HiTrash } from "react-icons/hi";
+import { HiLightningBolt, HiPlus } from "react-icons/hi";
+import { HiArrowRight, HiChartBar, HiCheck, HiCollection, HiDocument, HiDocumentText, HiPresentationChartBar, HiSpeakerphone, HiTrash } from "react-icons/hi";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
 import DiscordMessageEmbed from "@/components/discord/embed";
@@ -56,8 +56,8 @@ const messageProps = (command?: string) => ({
 const evenMoreContent = [
     {
         icon: HiDocument,
-        title: "Vote",
-        text: "Voting helps our bot grow!"
+        title: "/Vote",
+        text: "Voting helps promote our Discord bot on top.gg!"
     },
     {
         icon: HiTrash,
@@ -65,24 +65,24 @@ const evenMoreContent = [
         text: "Use /purge to delete old notifications from the bot"
     },
     {
-        icon: HiTerminal,
-        title: "Rolling out new features",
-        text: "We are constantly working on the bot"
+        icon: HiCollection,
+        title: "Logging system",
+        text: "This will be coming out soon"
     },
     {
-        icon: HiTerminal,
-        title: "Great support",
-        text: "If you see any bugs, just use /support and we will fix the bug immediately"
+        icon: HiPresentationChartBar,
+        title: "Support and bugs",
+        text: "If you encounter any bugs, use /support and we will fix the bug immediately, so that you can have the best experience!"
     },
     {
-        icon: HiTerminal,
-        title: "Github notifications",
-        text: "coming soon"
+        icon: HiDocumentText,
+        title: "Webhooks",
+        text: "Send webhooks right from the dashboard"
     },
     {
-        icon: HiTerminal,
-        title: "Global",
-        text: "Used globally by many users"
+        icon: HiSpeakerphone,
+        title: "Announcements",
+        text: "/announce to send notifications if you prefer sending them on discord"
     }
 ];
 
@@ -103,7 +103,7 @@ export default function Home() {
                     </h1>
 
                     <span className="text-lg font-medium max-w-[38rem] mb-4">
-                        We introduce you to customizable notifications from your favorite platforms, a full-on welcoming system, and useful slash commands!
+                        We introduce you to fully customizable notifications from your favorite platforms, a full-on welcoming system, and slash commands!
                     </span>
 
                     <div className="space-y-4">
@@ -299,7 +299,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                    <h2 className={styles.h2}>Top-notch greeting system</h2>
+                    <h2 className={styles.h2}>Top-notch greeting system 👋</h2>
 
                     <Box className="flex flex-col md:flex-row-reverse gap-10 items-center">
                         <div className="md:w-1/2">
@@ -442,7 +442,7 @@ export default function Home() {
                 </div>
             </article>
 
-            <div className="text-center mb-16">
+            <div className="text-center">
                 <h2 className="text-xl font-bold">
                     <span className="text-red-900">Integrations </span>
                     with your favorite{" "}
@@ -457,7 +457,7 @@ export default function Home() {
             <IntegrationsMarquee/>
 
             <div className="max-w-7xl mx-auto px-20">
-                <div className="relative flex justify-center items-center mb-12 mt-32">
+                <div className="relative flex justify-center items-center mt-32">
                     {evenMoreContent.map(({ icon: Icon }, index) => {
                         const rotation = 180 / (evenMoreContent.length - 1) * index;
                         return (
@@ -468,7 +468,7 @@ export default function Home() {
                                     transform: `rotate(-${rotation}deg) translateX(120px) rotate(${rotation}deg)`
                                 }}
                             >
-                                <div className="flex justify-center items-center bg-zinc-700 rounded-full h-16 w-16">
+                                <div className="flex justify-center items-center bg-red-700 rounded-full h-16 w-16">
                                     <Icon className="h-8 w-8 text-white" />
                                 </div>
                             </div>
@@ -500,15 +500,14 @@ export default function Home() {
                         </Card>
                     ))}
 
-                    {/* Button centered below all cards */}
-                    <div className="w-full col-span-full flex justify-center items-center mt-4">
-                        <Button className="w-fit px-4 py-2 flex items-center gap-2" asChild>
-                            <Link
-                                href="/commands"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2"
-                            >
-                                <HiTerminal className="w-5 h-5" />
+                    <div className="justify-center w-full relative overflow-hidden rounded-lg border border-border group p-px h-fit">
+                        <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_0%_50%,#ef4444_50%,hsl(var(--input)/30)_7%)]" />
+                        <Button
+                            asChild
+                            className="w-full px-2 backdrop-blur-xs backdrop-brightness-50 md:backdrop-brightness-25 bg-none rounded-[6px] hover:bg-red-500"
+                        >
+                            <Link prefetch={false} href="/commands">
+                                <HiLightningBolt />
                                 More Commands
                             </Link>
                         </Button>
