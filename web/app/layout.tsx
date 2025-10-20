@@ -47,7 +47,7 @@ export const generateMetadata = (): Metadata => {
         openGraph: {
             title: {
                 default: title,
-                template: "%s on NotificationBot Dashboard"
+                template: "NotificationBot Dashboard | %s"
             },
             description,
             type: "website",

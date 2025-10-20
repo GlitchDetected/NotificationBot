@@ -1,7 +1,7 @@
 {
-  "name": "NotificationBotWeb",
-  "short_name": "NotificationBotWeb",
-  "description": "Dashboard for the NotificationBot Discord Bot",
+  "name": "NotificationBot Dashboard",
+  "short_name": "NotificationBot",
+  "description": "The official dashboard for NotificationBot",
   "scope": "/",
   "start_url": "/",
   "form_factor": "wide",
