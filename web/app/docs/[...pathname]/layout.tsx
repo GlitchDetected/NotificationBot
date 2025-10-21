@@ -22,7 +22,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
     const url = getCanonicalUrl("docs", ...pathname);
     const images = {
-        url: meta?.image || `${getBaseUrl()}//notificationbot.png`,
+        url: meta?.image || `${getBaseUrl()}/bot.webp`,
         alt: meta?.description,
         heigth: 1008,
         width: 1935
@@ -69,15 +69,15 @@ export default async function RootLayout({ params, children }: Props) {
                         ))}
                     </ul>
 
-                    <LinkButton className="w-full !justify-start" href="/support" target="_blank" variant="blurple">
+                    <LinkButton className="w-full justify-start!" href="/support" target="_blank" variant="blurple">
                         <BsDiscord />
                         Join Support
                     </LinkButton>
-                    <LinkButton className="w-full !justify-start" href="/invite" target="_blank" variant="secondary">
+                    <LinkButton className="w-full justify-start!" href="/invite" target="_blank" variant="secondary">
                         <HiUserAdd />
                         Invite NotificationBot
                     </LinkButton>
-                    <LinkButton className="w-full !justify-start" href="/profile" target="_blank">
+                    <LinkButton className="w-full justify-start!" href="/profile" target="_blank">
                         <HiViewGridAdd />
                         Dashboard
                     </LinkButton>
@@ -107,7 +107,7 @@ function NavButton({ page }: { page: (typeof metadata.pages)[0]; }) {
 
     return (
         <li>
-            <LinkButton className="w-full !justify-start bg-transparent h-[30px]" href={`/docs/${file}`} size="sm">
+            <LinkButton className="w-full justify-start! bg-transparent h-[30px]" href={`/docs/${file}`} size="sm">
                 <span className="mr-[2px]">{icon}</span>
                 {name}
             </LinkButton>

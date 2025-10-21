@@ -500,7 +500,7 @@ export default function Home() {
                         </Card>
                     ))}
 
-                    <div className="justify-center w-full relative overflow-hidden rounded-lg border border-border group p-px h-fit">
+                    <div className="flex justify-center items-center w-full relative overflow-hidden rounded-lg border border-border group p-px h-fit">
                         <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_0%_50%,#ef4444_50%,hsl(var(--input)/30)_7%)]" />
                         <Button
                             asChild

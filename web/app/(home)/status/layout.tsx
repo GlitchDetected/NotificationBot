@@ -50,7 +50,7 @@ export default function RootLayout({
 
     return (<>
         <h1
-            className={cn(montserrat.className, "lg:text-5xl text-4xl font-bold dark:text-neutral-100 text-neutral-900 break-words mb-2 mt-15")}
+            className={cn(montserrat.className, "lg:text-5xl text-4xl font-bold dark:text-neutral-100 text-neutral-900 wrap-break-word mb-2 mt-15")}
         >
             <span className="bg-linear-to-r from-red-900 to-orange-400 bg-clip-text text-transparent h-20 break-keep">Notificationbot</span>
             {" status"}

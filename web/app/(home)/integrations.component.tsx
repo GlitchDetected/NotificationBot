@@ -35,7 +35,6 @@ const integrationsData = [
 ];
 
 export default function IntegrationsMarquee() {
-    // Helper: render text with <Codeblock> for backtick sections
     const renderTextWithCode = (text: string) => {
         const parts = text.split(/(`[^`]+`)/g);
         return parts.map((part, i) => {

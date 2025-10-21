@@ -22,14 +22,14 @@ export const generateMetadata = (): Metadata => {
             description,
             type: "website",
             url,
-            images: `${getBaseUrl()}//notificationbot.png`
+            images: `${getBaseUrl()}/bot.webp`
         },
         twitter: {
             card: "summary",
             site: "notificationbot.top",
             title,
             description,
-            images: `${getBaseUrl()}//notificationbot.png`
+            images: `${getBaseUrl()}/bot.webp`
         }
     };
 };
