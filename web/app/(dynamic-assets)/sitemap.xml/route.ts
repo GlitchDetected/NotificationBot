@@ -1,3 +1,4 @@
+import docsMetadata from "@/public/docs/meta.json";
 import { getCanonicalUrl } from "@/utils/urls";
 
 interface Sitemap {
@@ -5,7 +6,7 @@ interface Sitemap {
     priority: number;
 }
 
-export const revalidate = 691200; // 8 days
+export const revalidate = 691_200; // 8 days
 
 // const fetchOptions = {
 //     headers: {
@@ -17,6 +18,10 @@ export function GET() {
     // const guildIds = await fetch(`${process.env.NEXT_PUBLIC_API}/guilds`, fetchOptions).then((res) => res.json()) as string[];
 
     const sitemap = [
+        {
+            url: getCanonicalUrl(),
+            priority: 1
+        },
         {
             url: getCanonicalUrl("dashboard"),
             priority: 0.8
@@ -43,6 +48,7 @@ export function GET() {
         }
     ] satisfies Sitemap[];
 
+    for (const page of docsMetadata.pages) sitemap.push({ url: getCanonicalUrl("docs", page.file.split(".")[0]), priority: 0.6 });
     // for (const guildId of guildIds) sitemap.push({ url: getCanonicalUrl("notifications", guildId), priority: 0.5 });
 
     return new Response(

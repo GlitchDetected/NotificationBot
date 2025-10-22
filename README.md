@@ -4,18 +4,16 @@
 <br/>
 
   <p align="center">
-    <img src="/notificationbot.png" alt="Logo" width="192">
+    <img src="https://notificationbot.top/bot.webp" alt="Logo" width="192">
     </p>
-
-## NotificationBot
-> Notify your Discord Server from a variety of sources, YouTube, Twitch, etc.
 
 <br/>
 <p align="center">
 <a href="https://notificationbot.top/">Website</a> -
 <a href="https://notificationbot.top/docs">Documentation</a>
 </p>
----
+
+**Notificationbot** transforms your Discord server with a powerful, all-in-one dashboard that makes welcoming new members and managing notifications effortless and quick.
 
 ## Core Philosophy
 - **Responsiveness**  
@@ -225,7 +223,7 @@ Don't forget to give the project a star!
 <!-- LICENSE -->
 ## License
 
-Distributed under the Unlicense License. See `LICENSE` for more information.
+NotificationBot is licensed under the `GNU GENERAL PUBLIC LICENSE`. See `license.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
