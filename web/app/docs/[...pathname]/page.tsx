@@ -2,9 +2,9 @@ import { readFile } from "fs/promises";
 
 import { Faq } from "@/app/(home)/faq.component";
 import CustomMarkdown from "@/components/markdown";
-import Codeblock from "@/components/markdown/codeblock";
 import Notice, { NoticeType } from "@/components/notice";
 import { HomeButton, ScreenMessage, SupportButton } from "@/components/screen-message";
+import { Code } from "@/components/ui/typography";
 import metadata from "@/public/docs/meta.json";
 
 interface Props {
@@ -40,9 +40,9 @@ export default async function Home({ params }: Props) {
                 <Notice type={NoticeType.Info} message="Required bot permissions:" location="bottom">
                     <div className="flex flex-wrap gap-1">
                         {meta.permissions.bot.map((perm) => (
-                            <Codeblock key={perm}>
+                            <Code key={perm}>
                                 {perm}
-                            </Codeblock>
+                            </Code>
                         ))}
                     </div>
                 </Notice>

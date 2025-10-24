@@ -8,7 +8,6 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 import DiscordMessageEmbed from "@/components/discord/embed";
 import { DiscordMarkdown } from "@/components/discord/markdown";
 import DiscordMessage from "@/components/discord/message";
-import Codeblock from "@/components/markdown/codeblock";
 import { Badge } from "@/components/ui/badge";
 import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/card";
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
+import { Code } from "@/components/ui/typography";
 import ArrowPic from "@/public/arrow.webp";
 import thumbnail from "@/public/assets/thumbnail.png";
 import Welcome from "@/public/assets/welcome.webp";
@@ -235,7 +235,7 @@ export default function Home() {
                             <h3 className={styles.h3}>Notifications sent right into your DMs</h3>
 
                             <div className="pt-6">
-                                For this to work, just make sure <Codeblock>direct messages</Codeblock> is turned on!
+                                For this to work, just make sure <Code>direct messages</Code> is turned on!
 
                                 <ol className="mt-4">
                                     {[

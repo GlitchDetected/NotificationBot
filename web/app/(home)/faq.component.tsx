@@ -3,15 +3,14 @@
 import { isValidElement } from "react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
-import Codeblock from "@/components/markdown/codeblock";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger
 } from "@/components/ui/accordion";
-import LinkTag from "@/components/ui/link-tag";
 import { Section } from "@/components/ui/section";
+import { Anchor, Code, Ol } from "@/components/ui/typography";
 
 const data = [
     {
@@ -19,13 +18,13 @@ const data = [
         title: "How do I invite NotificationBot to my Server?",
         subtitle: "Invite NotificationBot to your server to get started!",
         content: (
-            <ol className="list-decimal list-inside marker:text-neutral-500" itemProp="text">
+            <Ol itemProp="text">
                 <li>
-                    Be sure to have the <Codeblock>Manage Server</Codeblock> permission on the server you want{" "}
-                    <LinkTag href="/add">invite NotificationBot</LinkTag> into.
+                    Be sure to have the <Code>Manage Server</Code> permission on the server you want{" "}
+                    <Anchor href="/add">invite NotificationBot</Anchor> into.
                 </li>
                 <li>
-                    Open Discord{"'"}s add-app flow at <LinkTag href="/add">/add</LinkTag>.
+                    Open Discord{"'"}s add-app flow at <Anchor href="/add">/add</Anchor>.
                 </li>
                 <li>
                     Select a server and click on {"\""}Continue{"\""}.
@@ -37,7 +36,7 @@ const data = [
                 <li>
                     <span className="font-semibold">Done!</span> You should now find yourself on the Dashboard for your server!
                 </li>
-            </ol>
+            </Ol>
         )
     },
     {
@@ -46,7 +45,7 @@ const data = [
         content: (
             <div>
                 It is free for now but I might add some paid features in the future{" "}
-                <LinkTag href="/vote">give NotificationBot a vote on top.gg</LinkTag>!
+                <Anchor href="/vote">give NotificationBot a vote on top.gg</Anchor>!
             </div>
         )
     },
@@ -57,10 +56,10 @@ const data = [
             <div itemProp="text">
                 <ol className="list-decimal list-inside marker:text-neutral-500 mb-4">
                     <li>
-                        <LinkTag href="/add">Invite NotificationBot</LinkTag> to your server
+                        <Anchor href="/add">Invite NotificationBot</Anchor> to your server
                     </li>
                     <li>
-                        Go to the <LinkTag href="/profile">Dashboard</LinkTag>, find your server and click {"\""}manage{"\""}.
+                        Go to the <Anchor href="/profile">Dashboard</Anchor>, find your server and click {"\""}manage{"\""}.
                     </li>
                     <li>
                         Go to the tab that says {"\""}Third Party Notifications{"\""}
@@ -70,7 +69,7 @@ const data = [
                     </li>
                 </ol>
                 You can also watch the video tutorial below or{" "}
-                <LinkTag href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">watch it on YouTube</LinkTag>.
+                <Anchor href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">watch it on YouTube</Anchor>.
                 <iframe
                     className="mt-2 aspect-video rounded-lg"
                     width="100%"

@@ -12,7 +12,7 @@ import { getBaseUrl } from "@/utils/urls";
 import Notice, { NoticeType } from "../notice";
 import { Separator } from "../ui/separator";
 import Channel from "./channel";
-import Codeblock from "./codeblock";
+import Code from "./Code";
 import Emoji from "./emoji";
 import Timestamp from "./timestamp";
 import User from "./user";
@@ -104,7 +104,7 @@ export default async function CustomMarkdown({ markdown }: { markdown: string; }
 
 
                 code: ({ children, ...props }) => {
-                    return <Codeblock {...props}>{children}</Codeblock>;
+                    return <Code {...props}>{children}</Code>;
                 },
                 img: ({ alt = "image", ...props }) => {
                     const isFullWidth = typeof props.src === "string" && props.src?.includes("fullwidth=true");

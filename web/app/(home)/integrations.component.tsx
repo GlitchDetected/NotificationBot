@@ -3,9 +3,9 @@
 import React from "react";
 import { BsChat, BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
 
-import Codeblock from "@/components/markdown/codeblock";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/marquee";
+import { Code } from "@/components/ui/typography";
 
 const integrationsData = [
     {
@@ -40,7 +40,7 @@ export default function IntegrationsMarquee() {
         return parts.map((part, i) => {
             if (part.startsWith("`") && part.endsWith("`")) {
                 const code = part.slice(1, -1);
-                return <Codeblock key={i}>{code}</Codeblock>;
+                return <Code key={i}>{code}</Code>;
             }
             return <span key={i}>{part}</span>;
         });
