@@ -1,5 +1,6 @@
 "use client";
 
+import { isValidElement } from "react";
 import { HiBell, HiCash, HiChat, HiUserAdd } from "react-icons/hi";
 
 import Codeblock from "@/components/markdown/codeblock";
@@ -87,13 +88,32 @@ const data = [
     }
 ];
 
-interface Props {
-    showTitle?: boolean;
-}
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: data.map((item) => ({
+        "@type": "Question",
+        name: item.title,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: extractText(item.content)
+        }
+    }))
+};
 
-export function Faq({ showTitle = false }: Props) {
+export function Faq({
+    showTitle = false
+}: {
+    showTitle?: boolean;
+}) {
     return (
-        <div className="my-4 w-full" itemType="https://schema.org/FAQPage" itemScope>
+        <div>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(schema)
+                }}
+            />
             {showTitle ? (
                 <Section className="mb-4" title="Frequently Asked Questions about NotificationBot">
                     Commonly asked questions about NotificationBot and how to use it.
@@ -114,4 +134,20 @@ export function Faq({ showTitle = false }: Props) {
             </Accordion>
         </div>
     );
+}
+
+function extractText(content: React.ReactNode): string {
+    if (typeof content === "string") return content;
+    if (typeof content === "number") return content.toString();
+
+    if (isValidElement(content)) {
+        if ((content.props as React.PropsWithChildren).children) {
+            return extractText((content.props as React.PropsWithChildren).children);
+        }
+    }
+    if (!Array.isArray(content)) return "";
+
+    return content
+        .map((child) => extractText(child))
+        .join(" ");
 }

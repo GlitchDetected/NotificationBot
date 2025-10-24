@@ -15,9 +15,9 @@ export const members = [
         social: "https://github.com/glitchdetected"
     },
     {
-        id: "1255569584925315205",
+        id: "920487197046607872",
         team: TeamType.AdditionalProgramming,
-        social: "https://github.com"
+        social: "https://github.com/glitchdetected"
     },
     {
         id: "1249812467861684239",
