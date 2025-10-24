@@ -11,8 +11,8 @@ import { getBaseUrl } from "@/utils/urls";
 
 import Notice, { NoticeType } from "../notice";
 import { Separator } from "../ui/separator";
+import { Code } from "../ui/typography";
 import Channel from "./channel";
-import Code from "./Code";
 import Emoji from "./emoji";
 import Timestamp from "./timestamp";
 import User from "./user";
@@ -134,13 +134,13 @@ export default async function CustomMarkdown({ markdown }: { markdown: string; }
                 ),
 
                 table: (props) => (
-                    <table className="mt-4 table-auto w-full divide-y-1 divide-accent overflow-scroll" {...props} />
+                    <table className="mt-4 table-auto w-full divide-y divide-accent overflow-scroll" {...props} />
                 ),
                 th: (props) => (
                     <th className=" px-2 pb-2 font-medium text-neutral-800 dark:text-neutral-200 text-left" {...props} />
                 ),
                 tbody: (props) => <tbody className="[&>*:nth-child(odd)]:bg-neutral-800/15" {...props} />,
-                tr: (props) => <tr className="divide-x-1 divide-accent" {...props} />,
+                tr: (props) => <tr className="divide-x divide-accent" {...props} />,
                 td: (props) => <td className="px-2 py-1 divide-x-8 divide-accent break-all" {...props} />,
 
                 iframe: ({ className, ...props }) => {
