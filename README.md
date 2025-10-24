@@ -91,7 +91,13 @@ FRONTEND_SITE="http://localhost:3000"
 PORT="3001"
 API_SECRET="secret123"
 
-YTV3API="
+YTV3API=
+
+BLUESKY_IDENTIFIER=
+BLUESKY_PASSWORD=
+
+TWITCH_CLIENT_ID=
+TWITCH_CLIENT_SECRET=
 ```
 - pnpm install
 - pnpm dev
@@ -119,6 +125,14 @@ FORCE_DB_RESET="false"
 # variables to send http requests
 API_URL="http://localhost:3001"
 API_SECRET="secret123"
+
+YTV3API=
+
+BLUESKY_IDENTIFIER=
+BLUESKY_PASSWORD=
+
+TWITCH_CLIENT_ID=
+TWITCH_CLIENT_SECRET=
 ```
 - pnpm install
 - pnpm dev
@@ -144,6 +158,9 @@ GITHUB_TOKEN=""
 
 # https://www.geetest.com/en/ recommended for this
 NEXT_PUBLIC_CAPTCHA_ID=""
+
+SENTRY_AUTH_TOKEN=
+NEXT_PUBLIC_SENTRY_DSN=
 ```
 - pnpm install
 - pnpm dev

@@ -504,7 +504,7 @@ export default function Home() {
                         <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_0%_50%,#ef4444_50%,hsl(var(--input)/30)_7%)]" />
                         <Button
                             asChild
-                            className="w-full px-2 backdrop-blur-xs backdrop-brightness-50 md:backdrop-brightness-25 bg-none rounded-[6px] hover:bg-red-500"
+                            className="w-full px-2 backdrop-blur-xs backdrop-brightness-50 md:backdrop-brightness-25 bg-none rounded-[6px]"
                         >
                             <Link prefetch={false} href="/commands">
                                 <HiLightningBolt />

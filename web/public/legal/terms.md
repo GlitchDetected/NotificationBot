@@ -49,9 +49,6 @@ Any media uploaded is done so with the users consent and NOTIFICATIONBOT and its
 ## Age requirements
 By accessing our Services, you confirm that you are at least 13 years old and meet the minimum age for digital consent applicable in your notificationbot. If you are old enough in your notificationbot to access our Services but not old enough to agree to our Terms, your parent or legal guardian must agree to the Terms on your behalf. Ask your parent or legal guardian to read these terms with you. If you are a parent or legal guardian and you allow your teen to use the Services, these Terms also apply to you and you are responsible for your teen's activities on the Services.
 
-## Governing Law and Dispute Resolution
-Any dispute or claim arising from or related to these Terms of Service, including any non-contractual disputes or claims connected to their subject matter or formation, shall be governed by and construed in accordance with the laws of the Republic of Austria.
-
 ## Violations
 In the event of violations of our Terms of Service, we reserve the right to delete the content in question from our database, to exclude the responsible user from our Service and to take legal action. Any violation against these Terms of Service will be dealt with on an individual basis by the Service management.
 

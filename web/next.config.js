@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+    reactStrictMode: true,
+    eslint: {
+        ignoreDuringBuilds: true
+    },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.discordapp.com', pathname: '/avatars/**' },
@@ -18,3 +21,17 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+const { withSentryConfig } = require("@sentry/nextjs");
+
+module.exports = withSentryConfig(
+  module.exports,
+  {
+    org: "random-development",
+    project: "notificationbotweb",
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    disableLogger: true,
+    automaticVercelMonitors: true,
+  }
+);
