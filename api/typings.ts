@@ -25,15 +25,15 @@ export interface GuildEmbed {
 
 export type notificationConfig = {
   id: string;
-  guildId: string;
-  channelId: string | null;
-  roleId: string | null;
+  guild_id: string;
+  channel_id: string;
+  role_id: string | null;
 
-  type: 0 | 1 | 2 | 3;
+  type: 0 | 1 | 2 | 3 | 4;
   flags: number;
   regex: string | null;
 
-  creatorId: string | null;
+  creator_id: string;
 
   message?: {
     content: string | null;
@@ -41,10 +41,10 @@ export type notificationConfig = {
   };
 
   creator: {
-    id: string | null;
-    username: string | null;
-    customUrl: string | null;
-    avatarUrl: string | null;
+    id: string;
+    username: string;
+    custom_url: string;
+    avatar_url: string | null;
   };
 };
 
@@ -323,7 +323,8 @@ export enum NotificationType {
   YouTube = 0,
   Twitch = 1,
   Bluesky = 2,
-  Reddit = 3
+  Reddit = 3,
+  GitHub = 4
 }
 
 export enum NotificationFlags {

@@ -267,7 +267,8 @@ export enum NotificationType {
   YouTube = 0,
   Twitch = 1,
   Bluesky = 2,
-  Reddit = 3
+  Reddit = 3,
+  GitHub = 4
 }
 
 export enum NotificationFlags {

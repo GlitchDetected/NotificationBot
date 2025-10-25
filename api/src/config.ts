@@ -1,6 +1,5 @@
 import "@dotenvx/dotenvx/config";
 
-// export config as a constant value
 export default {
     client: {
         token: String(process.env["DISCORD_TOKEN"]),
@@ -11,9 +10,21 @@ export default {
     apiSecrets: {
         botApiSecret: String(process.env["API_SECRET"]),
         jwtSecret: String(process.env["JWT_SECRET"]),
+
         youtubeAPI: String(process.env["YTV3API"]),
+
         blueskyIdentifier: String(process.env["BLUESKY_IDENTIFIER"]),
-        blueskyPassword: String(process.env["BLUESKY_PASSWORD"])
+        blueskyPassword: String(process.env["BLUESKY_PASSWORD"]),
+
+        twitchClientId: String(process.env["TWITCH_CLIENT_ID"]),
+        twitchClientSecret: String(process.env["TWITCH_CLIENT_SECRET"]),
+
+        redditClientId: String(process.env["REDDIT_CLIENT_ID"]),
+        redditClientSecret: String(process.env["REDDIT_CLIENT_SECRET"]),
+        redditUsername: String(process.env["REDDIT_USERNAME"]),
+        redditPassword: String(process.env["REDDIT_PASSWORD"]),
+
+        githubToken: String(process.env["GITHUB_TOKEN"])
     },
 
     databaseUri: String(process.env["DATABASE_URL"]),

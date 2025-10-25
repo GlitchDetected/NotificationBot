@@ -31,11 +31,21 @@ export default {
 
     apiSecrets: {
         botApiSecret: String(process.env["API_SECRET"]),
+
         youtubeAPI: String(process.env["YTV3API"]),
+
         blueskyIdentifier: String(process.env["BLUESKY_IDENTIFIER"]),
         blueskyPassword: String(process.env["BLUESKY_PASSWORD"]),
+
         twitchClientId: String(process.env["TWITCH_CLIENT_ID"]),
-        twitchClientSecret: String(process.env["TWITCH_CLIENT_SECRET"])
+        twitchClientSecret: String(process.env["TWITCH_CLIENT_SECRET"]),
+
+        redditClientId: String(process.env["REDDIT_CLIENT_ID"]),
+        redditClientSecret: String(process.env["REDDIT_CLIENT_SECRET"]),
+        redditUsername: String(process.env["REDDIT_USERNAME"]),
+        redditPassword: String(process.env["REDDIT_PASSWORD"]),
+
+        githubToken: String(process.env["GITHUB_TOKEN"])
     },
 
     cluster: {

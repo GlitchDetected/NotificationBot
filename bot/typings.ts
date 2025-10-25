@@ -8,7 +8,8 @@ export enum NotificationType {
   YouTube = 0,
   Twitch = 1,
   Bluesky = 2,
-  Reddit = 3
+  Reddit = 3,
+  GitHub = 4
 }
 
 export interface GuildEmbed {
@@ -29,7 +30,7 @@ export type notificationConfig = {
   channel_id: string;
   role_id: string | null;
 
-  type: 0 | 1 | 2 | 3;
+  type: 0 | 1 | 2 | 3 | 4;
   flags: number;
   regex: string | null;
 

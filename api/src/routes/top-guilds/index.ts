@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import pLimit from "p-limit";
 
 import config from "@/src/config";
 
@@ -6,6 +7,36 @@ const router = new Hono();
 
 const DISCORD_ENDPOINT = config.discordEndpoint;
 const BOT_TOKEN = config.client.token;
+
+interface DiscordGuild {
+    id: string;
+    name: string;
+    icon?: string | null;
+    features?: string[];
+    approximate_member_count?: number;
+    verified?: boolean;
+}
+
+const limit = pLimit(3);
+
+async function fetchGuildDetails(id: string, retries = 2): Promise<DiscordGuild | null> {
+    try {
+        const res = await fetch(`${DISCORD_ENDPOINT}/guilds/${id}?with_counts=true`, {
+            headers: {
+                Authorization: `Bot ${BOT_TOKEN}`
+            }
+        });
+
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (err) {
+        if (retries > 0) {
+            return fetchGuildDetails(id, retries - 1);
+        }
+        console.error("Fetch error for guild", id, err);
+        return null;
+    }
+}
 
 router.get("/", async (c) => {
     try {
@@ -24,20 +55,10 @@ router.get("/", async (c) => {
         let totalUsers = 0;
 
         const allGuilds = await Promise.all(
-            botGuilds.map(async (guild: { id: string; }) => {
-                try {
-                    const detailRes = await fetch(`${DISCORD_ENDPOINT}/guilds/${guild.id}?with_counts=true`, {
-                        headers: {
-                            Authorization: `Bot ${BOT_TOKEN}`
-                        }
-                    });
-
-                    if (!detailRes.ok) {
-                        console.error("Failed to fetch guild:", guild.id);
-                        return null;
-                    }
-
-                    const full = await detailRes.json();
+            botGuilds.map((guild: { id: string; }) =>
+                limit(async () => {
+                    const full = await fetchGuildDetails(guild.id);
+                    if (!full) return null;
 
                     const memberCount = full.approximate_member_count || 0;
                     totalUsers += memberCount;
@@ -50,11 +71,8 @@ router.get("/", async (c) => {
                         verified: full.verified || false,
                         partnered: full.features?.includes("PARTNERED") || false
                     };
-                } catch (err) {
-                    console.error("Fetch error for guild", guild.id, err);
-                    return null;
-                }
-            })
+                })
+            )
         );
 
         const validGuilds = allGuilds.filter(Boolean);
@@ -64,7 +82,8 @@ router.get("/", async (c) => {
             userCount: totalUsers,
             guilds: validGuilds
         });
-    } catch {
+    } catch (err) {
+        console.error(err);
         return c.json({ error: "Internal server error" }, 500);
     }
 });

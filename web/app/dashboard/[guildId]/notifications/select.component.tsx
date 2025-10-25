@@ -1,6 +1,6 @@
 import { PopoverClose } from "@radix-ui/react-popover";
 import React, { useState } from "react";
-import { BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
+import { BsGithub, BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
 import { FaBluesky } from "react-icons/fa6";
 
 import { badgeVariants } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import { type ApiV1GuildsModulesNotificationsGetResponse, NotificationType } fro
 import { cn } from "@/utils/cn";
 
 import { BlueskyNotificationModal } from "./blsk.component";
+import { GitHubNotificationModal } from "./github.component";
 import { RedditNotificationModal } from "./rddt.component";
 import { TwitchNotificationModal } from "./twch.component";
 import { YoutubeNotificationModal } from "./yt.component";
@@ -23,7 +24,8 @@ const Platform = {
     YouTube: 0,
     Twitch: 1,
     Bluesky: 2,
-    Reddit: 3
+    Reddit: 3,
+    GitHub: 4
 } as const;
 
 interface Props {
@@ -77,6 +79,12 @@ export function CreateNotificationSelect({ style, add, set }: Props) {
                 isOpen={platform === Platform.Reddit}
                 onClose={() => setPlatform(null)}
             />
+            <GitHubNotificationModal
+                add={add}
+                set={set}
+                isOpen={platform === Platform.GitHub}
+                onClose={() => setPlatform(null)}
+            />
         </>
     );
 }
@@ -119,5 +127,7 @@ export function Icon({ type, className }: { type: NotificationType; className?: 
             return <FaBluesky className={cn("text-blue-500", className)} />;
         case NotificationType.Reddit:
             return <BsReddit className={cn("text-orange-500", className)} />;
+        case NotificationType.GitHub:
+            return <BsGithub className={cn("text-gray-500", className)} />;
     }
 }

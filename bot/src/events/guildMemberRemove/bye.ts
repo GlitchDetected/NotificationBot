@@ -82,10 +82,8 @@ export default async (
         sentMessage = await channel.send({ content });
     }
 
-    if (config.delete_after && Number.isFinite(config.delete_after)) {
-        setTimeout(() => {
-            sentMessage?.delete().catch(() => {});
-        }, config.delete_after);
+    if (config.delete_after && Number.isFinite(config.delete_after) && config.delete_after > 0) {
+        setTimeout(() => sentMessage?.delete().catch(() => {}), config.delete_after * 1000);
     }
 
     if (config.card?.enabled) {

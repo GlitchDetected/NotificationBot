@@ -10,7 +10,7 @@ import Notice, { NoticeType } from "@/components/notice";
 import { LoginButton } from "@/components/ui/login-button";
 import { LoginHeader } from "@/components/ui/nav-header";
 import { cn } from "@/utils/cn";
-import { notosansJP, outfit } from "@/utils/font";
+import { notosans, outfit } from "@/utils/font";
 import { getBaseUrl } from "@/utils/urls";
 
 import { Provider } from "./provider";
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     className={cn(
                         "w-full max-w-7xl overflow-x-hidden xl:overflow-visible!",
                         outfit.variable,
-                        notosansJP.variable
+                        notosans.variable
                     )}
                     style={{ overflow: "visible" }}
                 >

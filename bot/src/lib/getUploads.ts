@@ -28,16 +28,50 @@ async function bskySession() {
     }
 }
 
+async function getRedditToken() {
+    const clientId = appConfig.apiSecrets.redditClientId;
+    const clientSecret = appConfig.apiSecrets.redditClientSecret;
+    const username = appConfig.apiSecrets.redditUsername;
+    const password = appConfig.apiSecrets.redditPassword;
+
+    const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+
+    const tokenResp = await axios.post(
+        "https://www.reddit.com/api/v1/access_token",
+        new URLSearchParams({ grant_type: "password", username, password }).toString(),
+        {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Basic ${basicAuth}`,
+                "User-Agent": `NotificationBot/1.0 (by u/${appConfig.apiSecrets.redditUsername})`
+            }
+        }
+    );
+
+    return tokenResp.data.access_token;
+}
+
 // YouTube
 async function fetchLatestYouTubeContent(config: notificationConfig): Promise<ContentData | null> {
     try {
         const apiKey = appConfig.apiSecrets.youtubeAPI;
-        if (!apiKey) throw new Error("Missing YouTube API key");
+        if (!apiKey) {
+            console.error("Missing YouTube API key");
+            throw new Error("Missing YouTube API key");
+        }
 
         const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${config.creator_id}&part=snippet,id&order=date&maxResults=1&type=video`;
+        console.log(`Fetching YouTube videos from: ${url.replace(apiKey, "API_KEY_HIDDEN")}`);
+
         const response = await axios.get(url);
+        console.log(`YouTube API response status: ${response.status}`);
+        console.log("YouTube API response data:", JSON.stringify(response.data, null, 2));
+
         const item = response.data.items?.[0];
-        if (!item) return null;
+        if (!item) {
+            console.warn("No videos found in YouTube response");
+            return null;
+        }
 
         const videoId = item.id.videoId;
         const snippet = item.snippet;
@@ -46,7 +80,10 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
         const videoDetailsResp = await axios.get(videoUrl);
         const videoDetails = videoDetailsResp.data.items?.[0];
 
-        if (!videoDetails) return null;
+        if (!videoDetails) {
+            console.warn("No video details found");
+            return null;
+        }
 
         return {
             id: videoId,
@@ -60,9 +97,24 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             link: `https://youtube.com/watch?v=${videoId}`
         };
     } catch (err: any) {
-        // Silently ignore 403 Forbidden errors
-        if (axios.isAxiosError(err) && err.response?.status === 403) {
-            return null;
+        // Log the error details instead of silently ignoring
+        if (axios.isAxiosError(err)) {
+            console.error("YouTube API Error:", {
+                status: err.response?.status,
+                statusText: err.response?.statusText,
+                data: err.response?.data,
+                message: err.message
+            });
+
+            // Check if it's a quota error
+            if (err.response?.status === 403) {
+                const errorData = err.response.data;
+                if (errorData?.error?.errors?.[0]?.reason === "quotaExceeded") {
+                    console.error("YouTube API quota exceeded!");
+                }
+            }
+        } else {
+            console.error("YouTube fetch error:", err);
         }
 
         return null;
@@ -153,11 +205,25 @@ async function fetchLatestRedditContent(config: notificationConfig): Promise<Con
         const subreddit = config.creator?.username || (config as any).creatorHandle;
         if (!subreddit) throw new Error("Missing subreddit name");
 
-        const url = `https://www.reddit.com/r/${subreddit}/new.json?limit=1`;
-        const response = await axios.get(url, { headers: { "User-Agent": "DiscordBot/1.0" } });
+        const token = await getRedditToken();
 
-        const post = response.data.data.children?.[0]?.data;
-        if (!post) return null;
+        const response = await axios.get(
+            `https://oauth.reddit.com/r/${subreddit}/new.json?limit=1&raw_json=1`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "User-Agent": `web:notificationbot:v1.0.0 (by /u/${appConfig.apiSecrets.redditUsername})`,
+                    Accept: "application/json"
+                },
+                validateStatus: () => true
+            }
+        );
+
+        const post = response.data?.data?.children?.[0]?.data;
+        if (!post) {
+            console.warn(`[Reddit] No valid post found for: r/${subreddit}`, response.data);
+            return null;
+        }
 
         return {
             id: post.id,
@@ -183,6 +249,97 @@ async function fetchLatestRedditContent(config: notificationConfig): Promise<Con
     }
 }
 
+// GitHub
+async function fetchLatestGitHubContent(config: notificationConfig): Promise<ContentData | null> {
+    try {
+        const repoHandle = config.creator?.username || (config as any).creatorHandle;
+        if (!repoHandle) throw new Error("Missing repository handle");
+
+        const [owner, repo] = repoHandle.split("/");
+        if (!owner || !repo) throw new Error("Invalid repository format");
+
+        // GitHub API doesn't require authentication for public repos
+        const headers: Record<string, string> = {
+            Accept: "application/vnd.github.v3+json",
+            "User-Agent": "NotificationBot/1.0"
+        };
+
+        if (appConfig.apiSecrets.githubToken) {
+            headers["Authorization"] = `Bearer ${appConfig.apiSecrets.githubToken}`;
+        }
+
+        // Fetch latest release
+        const releaseResp = await axios.get(
+            `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
+            {
+                headers,
+                validateStatus: (status) => status === 200 || status === 404
+            }
+        );
+
+        if (releaseResp.status === 200 && releaseResp.data) {
+            const release = releaseResp.data;
+            return {
+                id: release.id.toString(),
+                title: release.name || release.tag_name,
+                text: release.body || "",
+                tag: release.tag_name,
+                timestamp: Math.floor(new Date(release.published_at).getTime() / 1000),
+                author: {
+                    username: release.author.login,
+                    avatarUrl: release.author.avatar_url
+                },
+                repository: {
+                    name: `${owner}/${repo}`,
+                    stars: 0,
+                    url: `https://github.com/${owner}/${repo}`
+                },
+                link: release.html_url
+            };
+        }
+
+        // If no releases, fetch latest commit from default branch
+        const repoResp = await axios.get(
+            `https://api.github.com/repos/${owner}/${repo}`,
+            { headers }
+        );
+
+        if (!repoResp.data) return null;
+
+        const defaultBranch = repoResp.data.default_branch || "main";
+
+        const commitResp = await axios.get(
+            `https://api.github.com/repos/${owner}/${repo}/commits/${defaultBranch}`,
+            { headers }
+        );
+
+        if (!commitResp.data) return null;
+
+        const commit = commitResp.data;
+
+        return {
+            id: commit.sha,
+            title: commit.commit.message.split("\n")[0], // First line of commit message
+            text: commit.commit.message,
+            timestamp: Math.floor(new Date(commit.commit.author.date).getTime() / 1000),
+            author: {
+                username: commit.author?.login || commit.commit.author.name,
+                avatarUrl: commit.author?.avatar_url || ""
+            },
+            repository: {
+                name: `${owner}/${repo}`,
+                stars: repoResp.data.stargazers_count || 0,
+                url: `https://github.com/${owner}/${repo}`
+            },
+            link: commit.html_url
+        };
+
+    } catch (err) {
+        console.error("GitHub fetch error:", err);
+        return null;
+    }
+}
+
 export const fetchers: Record<
     NotificationType,
     (config: notificationConfig) => Promise<ContentData | null>
@@ -190,5 +347,6 @@ export const fetchers: Record<
     0: fetchLatestYouTubeContent,
     1: fetchLatestTwitchContent,
     2: fetchLatestBlueskyContent,
-    3: fetchLatestRedditContent
+    3: fetchLatestRedditContent,
+    4: fetchLatestGitHubContent
 };
