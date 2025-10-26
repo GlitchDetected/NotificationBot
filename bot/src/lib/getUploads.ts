@@ -8,17 +8,6 @@ import appConfig from "../config";
 
 const agent = new BskyAgent({ service: "https://bsky.social" });
 
-axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response?.status === 403) {
-            // Ignore all 403s globally
-            return Promise.resolve({ data: null });
-        }
-        return Promise.reject(error);
-    }
-);
-
 async function bskySession() {
     if (!agent.session) {
         await agent.login({
@@ -31,14 +20,12 @@ async function bskySession() {
 async function getRedditToken() {
     const clientId = appConfig.apiSecrets.redditClientId;
     const clientSecret = appConfig.apiSecrets.redditClientSecret;
-    const username = appConfig.apiSecrets.redditUsername;
-    const password = appConfig.apiSecrets.redditPassword;
 
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
     const tokenResp = await axios.post(
         "https://www.reddit.com/api/v1/access_token",
-        new URLSearchParams({ grant_type: "password", username, password }).toString(),
+        new URLSearchParams({ grant_type: "client_credentials" }).toString(),
         {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -199,7 +186,7 @@ export async function fetchLatestBlueskyContent(
 }
 
 
-// reddit
+// Reddit
 async function fetchLatestRedditContent(config: notificationConfig): Promise<ContentData | null> {
     try {
         const subreddit = config.creator?.username || (config as any).creatorHandle;
@@ -212,7 +199,8 @@ async function fetchLatestRedditContent(config: notificationConfig): Promise<Con
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "User-Agent": `web:notificationbot:v1.0.0 (by /u/${appConfig.apiSecrets.redditUsername})`,
+                    "User-Agent": `web:notificationbot:1.0.0 (by /u/${appConfig.apiSecrets.redditUsername})`,
+                    "X-OAuth-Client-ID": appConfig.apiSecrets.redditClientId,
                     Accept: "application/json"
                 },
                 validateStatus: () => true
@@ -231,7 +219,7 @@ async function fetchLatestRedditContent(config: notificationConfig): Promise<Con
             text: post.selftext || "",
             thumbnail: post.thumbnail && post.thumbnail.startsWith("http") ? post.thumbnail : "",
             flair: post.link_flair_text || "",
-            timestamp: Math.floor(post.created_utc),
+            timestamp: post.created_utc,
             author: {
                 username: post.author,
                 id: post.author_fullname || ""
