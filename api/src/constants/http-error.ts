@@ -6,6 +6,7 @@ export const HttpErrorCode = {
     NotFound: 404,
     NoConfigFound: 404,
     ChannelNotFound: 400,
+    TooManyRequests: 429,
 
     // 5xx
     ServerError: 500,
@@ -30,6 +31,7 @@ export const HttpErrorMessage = {
     NotFound: "This route cannot be found or method is not in use",
     NoConfigFound: "No configuration found for this resource",
     ChannelNotFound: "Discord channel not found or set",
+    TooManyRequests: "You are being rate limited for sending too many requests",
 
     // 5xx
     ServerError: "Something went wrong, try again later",

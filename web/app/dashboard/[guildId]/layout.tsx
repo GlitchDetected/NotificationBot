@@ -106,7 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 <div className="text-lg flex gap-5">
                     <Skeleton
                         isLoading={!guild?.id}
-                        className="rounded-full h-14 w-14 ring-offset-[var(--background-rgb)] ring-2 ring-offset-2 ring-red-400/40 shrink-0 relative top-1"
+                        className="rounded-full size-14 ring-offset-(--background-rgb) ring-2 ring-offset-2 ring-red-400/40 shrink-0 relative top-1 left-1"
                     >
                         <ImageReduceMotion
                             alt="guild icon"

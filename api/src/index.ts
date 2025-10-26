@@ -1,8 +1,11 @@
 import "@dotenvx/dotenvx/config";
 
 import { serve } from "@hono/node-server";
+import type { Context } from "hono";
 import { Hono } from "hono";
+import { every } from "hono/combine";
 import { cors } from "hono/cors";
+import { rateLimiter } from "hono-rate-limiter";
 
 import config from "./config";
 import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error";
@@ -13,11 +16,29 @@ const app = new Hono();
 export default app;
 
 app.use(
-    cors({
-        origin: config.dashboard,
-        credentials: true,
-        exposeHeaders: ["Set-Cookie"]
-    })
+    "*",
+    every(
+        rateLimiter({
+            windowMs: 60 * 1000, // 1 minute
+            limit: 10,
+            standardHeaders: true,
+            keyGenerator: (c) => c.req.header("CF-Connecting-IP") ?? c.req.header("X-Real-IP") ?? c.req.header("X-Forwarded-For") ?? "unknown",
+            handler: (c: Context) => {
+                return c.json(
+                    {
+                        status: HttpErrorCode.TooManyRequests,
+                        message: HttpErrorMessage.TooManyRequests
+                    },
+                    HttpErrorCode.TooManyRequests
+                );
+            }
+        }),
+        cors({
+            origin: config.dashboard,
+            credentials: true,
+            exposeHeaders: ["Set-Cookie"]
+        })
+    )
 );
 
 app.route("/", baseMiddleware);
