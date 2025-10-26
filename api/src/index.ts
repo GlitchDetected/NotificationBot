@@ -19,10 +19,14 @@ app.use(
     "*",
     every(
         rateLimiter({
-            windowMs: 60 * 1000, // 1 minute
-            limit: 10,
+            windowMs: 10 * 60 * 1000, // 10 minutes
+            limit: 30,
             standardHeaders: true,
-            keyGenerator: (c) => c.req.header("CF-Connecting-IP") ?? c.req.header("X-Real-IP") ?? c.req.header("X-Forwarded-For") ?? "unknown",
+            keyGenerator: (c) =>
+                c.req.header("CF-Connecting-IP") ??
+        c.req.header("X-Real-IP") ??
+        c.req.header("X-Forwarded-For") ??
+        "unknown",
             handler: (c: Context) => {
                 return c.json(
                     {
