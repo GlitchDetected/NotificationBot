@@ -1,6 +1,8 @@
 import { type APIEmbed, WebhookClient } from "discord.js";
 import { Hono } from "hono";
 
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { httpError } from "@/src/utils/httperrorHandler";
 import type { ApiV1GuildsModulesWebhookGetResponse } from "@/typings";
 
 const router = new Hono();
@@ -10,12 +12,12 @@ router.post("/", async (c) => {
         const body = await c.req.json() as ApiV1GuildsModulesWebhookGetResponse;
 
         if (!body.webhookUrl) {
-            return c.json({ error: "A webhook url is required" });
+            return httpError(HttpErrorMessage.BadRequest);
         }
 
         const match = body.webhookUrl.match(/\/webhooks\/(\d+)\/([\w-]+)/);
         if (!match) {
-            return c.json({ error: "Your webhook URL is invalid" });
+            return httpError(HttpErrorMessage.BadRequest);
         }
         const [, webhookId, webhookToken] = match;
 

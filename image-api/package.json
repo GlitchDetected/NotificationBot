@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "image-api",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",

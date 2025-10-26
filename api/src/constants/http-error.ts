@@ -7,6 +7,8 @@ export const HttpErrorCode = {
     NoConfigFound: 404,
     ChannelNotFound: 400,
     TooManyRequests: 429,
+    MaxGuildsReached: 400,
+    ParameterRequired: 400,
 
     // 5xx
     ServerError: 500,
@@ -32,6 +34,8 @@ export const HttpErrorMessage = {
     NoConfigFound: "No configuration found for this resource",
     ChannelNotFound: "Discord channel not found or set",
     TooManyRequests: "You are being rate limited for sending too many requests",
+    MaxGuildsReached: "You have reached the maximum number of allowed configurations for this guild.",
+    ParameterRequired: "A required parameter is missing in the request.",
 
     // 5xx
     ServerError: "Something went wrong, try again later",

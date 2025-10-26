@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import pLimit from "p-limit";
 
 import config from "@/src/config";
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { httpError } from "@/src/utils/httperrorHandler";
 
 const router = new Hono();
 
@@ -47,7 +49,7 @@ router.get("/", async (c) => {
         });
 
         if (!res.ok) {
-            return c.json({ error: "Failed to fetch guilds" }, 500);
+            return httpError(HttpErrorMessage.BadRequest);
         }
 
         const botGuilds = await res.json();
@@ -84,7 +86,7 @@ router.get("/", async (c) => {
         });
     } catch (err) {
         console.error(err);
-        return c.json({ error: "Internal server error" }, 500);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 

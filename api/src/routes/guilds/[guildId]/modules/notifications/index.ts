@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BskyAgent } from "@atproto/api";
 import axios from "axios";
 import { Hono } from "hono";
@@ -12,6 +13,9 @@ import { NotificationType } from "@/typings";
 
 const router = new Hono();
 
+import { HttpErrorMessage } from "@/src/constants/http-error";
+import { httpError } from "@/src/utils/httperrorHandler";
+
 import notificationIdRouter from "./[id]";
 router.route("/:id", notificationIdRouter); // dynamic route
 
@@ -20,7 +24,7 @@ router.get("/", async (c) => {
     const guildId = c.req.param("guildId");
 
     if (!guildId) {
-        return c.json({ error: "guildId parameter is required" });
+        return httpError(HttpErrorMessage.ParameterRequired);
     }
 
     try {
@@ -60,7 +64,7 @@ router.get("/", async (c) => {
             })));
     } catch (error) {
         console.error("Error fetching notification configuration:", error);
-        return c.json({ error: "Failed to fetch notifications" }, 500);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 
@@ -73,7 +77,7 @@ router.post("/", async (c) => {
 
         const existing = await getNotificationByGuild(guildId!);
         if (existing.length >= 10) {
-            return c.json({ error: "Guild has reached the max of 10 notifications." }, 400);
+            return httpError(HttpErrorMessage.MaxGuildsReached);
         }
 
         const defaultMessage: Record<NotificationType, string> = {
@@ -111,13 +115,13 @@ router.post("/", async (c) => {
         switch (type) {
             case NotificationType.YouTube: {
                 if (!body.creatorHandle) {
-                    return c.json({ error: "creatorHandle is required for YouTube." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 creatorId = await getYtChannelId(body.creatorHandle);
 
                 if (!creatorId) {
-                    return c.json({ error: "YouTube channel not found." }, 404);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 const latestVideo = await fetchers[NotificationType.YouTube]({
@@ -126,7 +130,7 @@ router.post("/", async (c) => {
                 } as any);
 
                 if (!latestVideo) {
-                    return c.json({ error: "YouTube channel has no videos." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 creatorUsername = body.creatorHandle;
@@ -135,14 +139,14 @@ router.post("/", async (c) => {
 
             case NotificationType.Twitch: {
                 if (!body.creatorHandle) {
-                    return c.json({ error: "creatorHandle is required for Twitch." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 const clientId = appConfig.apiSecrets.twitchClientId;
                 const clientSecret = appConfig.apiSecrets.twitchClientSecret;
 
                 if (!clientId || !clientSecret) {
-                    return c.json({ error: "Twitch credentials not configured." }, 500);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 const tokenResp = await axios.post(
@@ -161,7 +165,7 @@ router.post("/", async (c) => {
                 );
                 const user = userResp.data.data?.[0];
                 if (!user) {
-                    return c.json({ error: "Twitch user not found." }, 404);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 creatorId = user.id;
@@ -178,13 +182,13 @@ router.post("/", async (c) => {
 
             case NotificationType.Bluesky: {
                 if (!body.creatorHandle) {
-                    return c.json({ error: "creatorHandle is required for Bluesky." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 const agent = new BskyAgent({ service: "https://bsky.social" });
 
                 if (!appConfig.apiSecrets.blueskyIdentifier || !appConfig.apiSecrets.blueskyPassword) {
-                    return c.json({ error: "Bluesky credentials not configured." }, 500);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 await agent.login({
@@ -194,7 +198,7 @@ router.post("/", async (c) => {
 
                 const profile = await agent.getProfile({ actor: body.creatorHandle });
                 if (!profile.data) {
-                    return c.json({ error: "Bluesky user not found." }, 404);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 creatorId = profile.data.did;
@@ -207,7 +211,7 @@ router.post("/", async (c) => {
                 } as any);
 
                 if (!latestPost) {
-                    return c.json({ error: "Bluesky user has no posts." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 break;
@@ -215,7 +219,7 @@ router.post("/", async (c) => {
 
             case NotificationType.Reddit: {
                 if (!body.creatorHandle) {
-                    return c.json({ error: "creatorHandle is required for Reddit." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 creatorId = body.creatorHandle;
@@ -227,7 +231,7 @@ router.post("/", async (c) => {
                 } as any);
 
                 if (!latestRedditPost) {
-                    return c.json({ error: "Reddit subreddit not found or has no posts." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 break;
@@ -235,13 +239,13 @@ router.post("/", async (c) => {
 
             case NotificationType.GitHub: {
                 if (!body.creatorHandle) {
-                    return c.json({ error: "creatorHandle is required for GitHub." }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 // Validate format (owner/repo)
                 const parts = body.creatorHandle.split("/");
                 if (parts.length !== 2) {
-                    return c.json({ error: "Invalid GitHub repository format. Use: owner/repo" }, 400);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 const [owner, repo] = parts;
@@ -262,28 +266,28 @@ router.post("/", async (c) => {
                     );
 
                     if (repoResp.status === 404) {
-                        return c.json({ error: "GitHub repository not found." }, 404);
+                        return httpError(HttpErrorMessage.BadRequest);
                     }
 
                     if (repoResp.status !== 200) {
-                        return c.json({ error: "Failed to verify GitHub repository." }, 400);
+                        return httpError(HttpErrorMessage.BadRequest);
                     }
 
                 } catch (error) {
                     console.error("GitHub verification error:", error);
-                    return c.json({ error: "Failed to verify GitHub repository." }, 500);
+                    return httpError(HttpErrorMessage.BadRequest);
                 }
 
                 break;
             }
 
             default:
-                return c.json({ error: "Unsupported notification type." }, 400);
+                return httpError(HttpErrorMessage.BadRequest);
         }
 
         if (!creatorId) {
             console.error("Creator ID is null after switch statement");
-            return c.json({ error: "Failed to retrieve creator ID." }, 400);
+            return httpError(HttpErrorMessage.BadRequest);
         }
 
         const config = await upsertNotification({

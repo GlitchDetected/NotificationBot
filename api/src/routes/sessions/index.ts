@@ -97,7 +97,7 @@ router.post("/", async (c) => {
 
     } catch (err) {
         console.error("Error processing sessions data:", err);
-        return c.json({ error: "Internal server error" });
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 
@@ -118,7 +118,7 @@ router.get("/", (c) => {
         });
     } catch (err) {
         console.error("Error processing sessions data:", err);
-        return c.json({ error: "Internal server error" });
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 

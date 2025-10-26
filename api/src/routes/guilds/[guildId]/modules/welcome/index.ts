@@ -66,7 +66,7 @@ router.get("/", async (c) => {
             }
         });
     } catch {
-        return c.json({ error: "Internal server error" }, 500);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 
@@ -235,7 +235,7 @@ router.patch("/", async (c) => {
 
         return c.json(config);
     } catch {
-        return c.json({ error: "Internal server error" }, 500);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 

@@ -1,7 +1,9 @@
 import { Hono } from "hono";
 
 import { now } from "@/src/constants/global";
+import { HttpErrorMessage } from "@/src/constants/http-error";
 import { deleteNotification, getNotificationById, upsertNotification } from "@/src/db/models/notifications";
+import { httpError } from "@/src/utils/httperrorHandler";
 import type { ApiV1GuildsModulesNotificationsGetResponse } from "@/typings";
 
 const router = new Hono();
@@ -10,7 +12,7 @@ router.get("/", async (c) => {
     const id = c.req.param("id");
 
     if (!id) {
-        return c.json({ error: "Missing id parameter" }, 400);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 
     try {
@@ -45,14 +47,14 @@ router.patch("/", async (c) => {
     const body = await c.req.json() as ApiV1GuildsModulesNotificationsGetResponse;
 
     if (!id) {
-        return c.json({ error: "Missing id parameter" }, 400);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 
     try {
         const config = await getNotificationById(id);
 
         if (!config) {
-            return c.json({ error: "Notification configuration not found" }, 404);
+            return httpError(HttpErrorMessage.BadRequest);
         }
 
         if (config) {
@@ -125,7 +127,7 @@ router.patch("/", async (c) => {
         }
 
     } catch {
-        return c.json({ error: "Internal server error" }, 500);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 });
 
@@ -133,7 +135,7 @@ router.delete("/", async (c) => {
     const id = c.req.param("id");
 
     if (!id) {
-        return c.json({ error: "Missing id parameter" }, 400);
+        return httpError(HttpErrorMessage.BadRequest);
     }
 
     try {
