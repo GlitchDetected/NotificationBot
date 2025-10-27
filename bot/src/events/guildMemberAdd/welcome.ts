@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createCanvas, loadImage } from "@napi-rs/canvas";
 import type { Client, GuildMember, User } from "discord.js";
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
+import appConfig from "@/src/config";
 import { welcomerPlaceholders } from "@/src/constants/discord";
 import { getWelcome, updateWelcome } from "@/src/db/models/welcome";
 import { replacePlaceholder } from "@/src/utils/replacePlaceholder";
@@ -140,51 +140,31 @@ export default async (
         try {
             const { in_embed, background, text_color } = config.card;
 
-            const canvas = createCanvas(1024, 450);
-            const ctx = canvas.getContext("2d");
+            const params = new URLSearchParams({
+                type: "welcome",
+                username: member.user.username,
+                members: member.guild.memberCount.toString(),
+                hash: member.user.id,
+                background: background || "#222",
+                text_color: text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#fff"
+            });
 
-            const bgImage = await loadImage(
-                background || "https://i.imgur.com/zvWTUVu.jpg"
-            );
-            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-
-            ctx.font = "bold 36px Sans";
-            ctx.fillStyle = text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#ffffff";
-            ctx.fillText(member.user.username, 320, 100);
-
-            ctx.font = "28px Sans";
-            ctx.fillStyle = "#dddddd";
-            ctx.fillText(`Welcome to ${member.guild.name}`, 320, 200);
-
-            const avatar = await loadImage(
-                member.user.displayAvatarURL({ extension: "png", size: 256 })
-            );
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(160, 225, 100, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-            ctx.drawImage(avatar, 60, 125, 200, 200);
-            ctx.restore();
-
-            const buffer = canvas.toBuffer("image/png");
-            const attachment = new AttachmentBuilder(buffer, { name: "welcome.png" });
+            const cardImageUrl = `${appConfig.api.image_api}/welcome-card?${params.toString()}`;
 
             if (in_embed) {
                 await channel.send({
                     embeds: [
                         {
-                            image: { url: "attachment://welcome.png" }
+                            image: { url: cardImageUrl }
                         }
-                    ],
-                    files: [attachment]
+                    ]
                 });
             } else {
-                await channel.send({ files: [attachment] });
+                await channel.send({ content: cardImageUrl });
             }
 
         } catch (err) {
-            console.warn("Failed to generate welcome card:", err);
+            console.warn("Failed to send welcome card:", err);
         }
     }
 

@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 
-import imagesRouter from "./images";
+import welcomeCardRouter from "./welcome-card";
 
 const router = new Hono();
 
-router.route("/images", imagesRouter);
+router.route("/welcome-card", welcomeCardRouter);
 
 export default router;

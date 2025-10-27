@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { Anchor } from "@/components/ui/typography";
 import { cn } from "@/utils/cn";
 import { getBaseUrl, getCanonicalUrl } from "@/utils/urls";
 
@@ -60,6 +61,8 @@ export default function RootLayout({
             className="text-lg font-medium mb-6"
         >
             Please double check to see if all the displayed information is correct!
+            You can also check the uptime of our services over at {""}
+            <Anchor href="https://status.notificationbot.top">status.notificationbot.top</Anchor>
         </div>
 
         <div className="mb-12">

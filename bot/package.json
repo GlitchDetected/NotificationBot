@@ -12,7 +12,6 @@
   "dependencies": {
     "@atproto/api": "^0.17.4",
     "@dotenvx/dotenvx": "^1.51.0",
-    "@napi-rs/canvas": "^0.1.80",
     "@stylistic/eslint-plugin": "^5.5.0",
     "axios": "^1.12.2",
     "discord-api-types": "^0.38.31",

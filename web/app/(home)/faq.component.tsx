@@ -82,8 +82,8 @@ const data = [
     },
     {
         startContent: <HiBell />,
-        title: "How can I support the developer",
-        content: <div itemProp="text">You can boost our discord server or give the bot a vote on top.gg</div>
+        title: "Where can I view the uptime of NotificationBot's services?",
+        content: <div itemProp="text">Head over to{" "} <Anchor href="https://status.notificationbot.top">status.notificationbot.top</Anchor> </div>
     }
 ];
 

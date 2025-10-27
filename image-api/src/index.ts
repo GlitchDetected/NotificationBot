@@ -1,35 +1,34 @@
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
-import sharp from 'sharp'
 import { HttpErrorCode, HttpErrorMessage } from './constants/http-error.js'
 import baseRouter from "./routes/base-router";
+import sharp from 'sharp'
 
 const app = new Hono()
 
 app.route("/", baseRouter);
 
-app.get('/*', async (c) => {
-  const statusCode = HttpErrorCode.NotFound
+app.all("/*", async () => {
+  const status = HttpErrorCode.NotFound
   const message = HttpErrorMessage.NotFound
 
-  // Generate an SVG to render with Sharp
+  // Build SVG for error display
   const svg = `
-  <svg width="500" height="200">
-    <rect width="100%" height="100%" fill="#222"/>
-    <text x="30" y="80" font-size="24" fill="#fff" font-family="Sans">Status: ${statusCode}</text>
-    <text x="30" y="130" font-size="24" fill="#fff" font-family="Sans">Message: ${message}</text>
+  <svg width="800" height="300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="#111"/>
+    <text x="50%" y="40%" fill="#fff" font-size="48" font-family="Sans" text-anchor="middle">${status}</text>
+    <text x="50%" y="60%" fill="#bbb" font-size="28" font-family="Sans" text-anchor="middle">${message}</text>
   </svg>
   `
 
-  // Convert SVG to PNG
-  const imageBuffer = await sharp(Buffer.from(svg))
-    .png()
-    .toBuffer()
-  const pngData = new Uint8Array(imageBuffer)
+  const png = await sharp(Buffer.from(svg)).png().toBuffer()
 
-  return new Response(pngData, {
-    headers: { 'Content-Type': 'image/png' },
-    status: statusCode
+  return new Response(new Uint8Array(png), {
+    status,
+    headers: {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'no-store'
+    }
   })
 })
 

@@ -65,7 +65,8 @@ export default {
     updatesChannel: process.env["UPDATES_CHANNEL_ID"] ?? "",
 
     api: {
-        api_url: String(process.env["API_URL"])
+        api_url: String(process.env["API_URL"]),
+        image_api: String(process.env["IMAGE_API"])
     },
     dashboard: String(process.env["DASHBOARD_URL"]),
 
