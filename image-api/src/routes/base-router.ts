@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-
 import welcomeCardRouter from "./welcome-card";
 
 const router = new Hono();

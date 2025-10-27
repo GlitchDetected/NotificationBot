@@ -218,7 +218,7 @@ export default function Home() {
             defaultMessage={welcome?.message}
             messageAttachmentComponent={welcome.card.enabled &&
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=goodbye&username=${encodeURIComponent(user?.username as string)}&members=1090&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${welcome.card.background ? `&background=${encodeURIComponent(welcome.card.background)}` : ""}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=goodbye&username=${encodeURIComponent(user?.username as string)}&members=1000&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${welcome.card.background ? `&background=${encodeURIComponent(welcome.card.background)}` : ""}`}
                     width={1024 / 2}
                     height={(256 + 16) / 2}
                     loading="lazy"

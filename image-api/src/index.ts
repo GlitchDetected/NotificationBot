@@ -1,7 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import sharp from "sharp";
-
+import { serveStatic } from '@hono/node-server/serve-static'
 import { HttpErrorCode, HttpErrorMessage } from "./constants/http-error.js";
 import baseRouter from "./routes/base-router";
 
@@ -32,6 +32,15 @@ app.all("/*", async () => {
         }
     });
 });
+
+app.get(
+  '/static/*',
+  serveStatic({
+    root: './',
+    rewriteRequestPath: (path) =>
+      path.replace(/^\/static/, '/src/static'),
+  })
+)
 
 const PORT = Number(process.env.PORT) || 5000;
 
