@@ -3,13 +3,13 @@
 <br/>
 <br/>
 
-  <p align="center">
-    <img src="https://notificationbot.top/bot.webp" alt="Logo" width="192">
-    </p>
-
+<p align="center">
+  <img src="doc/logo.png" alt="Logo" width="192" />
+</p>
 <br/>
 <p align="center">
 <a href="https://notificationbot.top/">Website</a> -
+<a href="https://notificationbot.top/status">Status</a> -
 <a href="https://notificationbot.top/docs">Documentation</a>
 </p>
 
@@ -63,12 +63,12 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## setup
-prerequisites: 
+## Setup
+> [!IMPORTANT]  
+> Open a new issue if you find any bugs
+Prerequisites: 
 - Node.js @ https://nodejs.org/en/download
 - npm install -g pnpm
-> [!IMPORTANT]  
-> For node-canvas, you need to install a few dependencies on your machine before running. Refer to https://www.npmjs.com/package/canvas
 
 `./api`
 - cd api
@@ -116,8 +116,6 @@ devs=""
 owner=""
 
 # Database variables
-# Create migration using - npx sequelize-cli migration:generate --name example-name
-# Run migration - npx sequelize-cli db:migrate
 DATABASE_URL="postgresql://postgres@localhost:5432/notificationbot"
 REDIS_STRING="redis://default@localhost:6379"
 FORCE_DB_RESET="false"
@@ -239,8 +237,10 @@ Don't forget to give the project a star!
 
 <!-- LICENSE -->
 ## License
-
-NotificationBot is licensed under the `GNU GENERAL PUBLIC LICENSE`. See `license.txt` for more information.
+<a href="https://www.gnu.org/licenses/gpl-3.0.en.html">
+  <img align="right" height="72" alt="GNU GENERAL PUBLIC LICENSE v3.0" src="doc/GPLv3_Logo.png" />
+</a>
+NotificationBot is licensed under the `GNU GENERAL PUBLIC LICENSE v3.0`. See `license.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -251,6 +251,10 @@ NotificationBot is licensed under the `GNU GENERAL PUBLIC LICENSE`. See `license
 - https://nodejs.org/en/download
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=glitchdetected/notificationbot&type=date&legend=top-left)](https://www.star-history.com/#glitchdetected/notificationbot&type=date&legend=top-left)
 
 [contributors-shield]: https://img.shields.io/github/contributors/GlitchDetected/notificationbot.svg?style=for-the-badge
 [contributors-url]: https://github.com/GlitchDetected/notificationbot/graphs/contributors
