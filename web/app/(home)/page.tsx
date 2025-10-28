@@ -22,7 +22,6 @@ import { Scrollwheel } from "@/components/ui/scrollwheel";
 import { Code } from "@/components/ui/typography";
 import ArrowPic from "@/public/arrow.webp";
 import thumbnail from "@/public/assets/thumbnail.png";
-import Welcome from "@/public/assets/welcome.webp";
 import { cn } from "@/utils/cn";
 import { handwritten, montserrat } from "@/utils/font";
 
@@ -336,7 +335,7 @@ export default function Home() {
                                 <Image
                                     alt="example welcome card"
                                     className="rounded-md shadow-md w-full mt-2"
-                                    src={Welcome}
+                                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=goodbye&username=explosiveapple&members=1000&hash=e310ef650877b405e4e953eb59aa58d9&id=1255569584925315205&background=${encodeURIComponent("https://notificationbot.top/static/gameroom.jpg")}`}
                                     itemProp="image"
                                     loading="lazy"
                                 />

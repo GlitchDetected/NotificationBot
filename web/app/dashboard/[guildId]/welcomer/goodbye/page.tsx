@@ -140,7 +140,7 @@ export default function Home() {
             defaultMessage={bye?.message}
             messageAttachmentComponent={bye.card.enabled &&
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=welcome&username=${encodeURIComponent(user?.username as string)}&members=1000&hash=${encodeURIComponent(user?.id as string)}/${encodeURIComponent(user?.avatarHash as string)}${bye.card.background ? `&background=${encodeURIComponent(bye.card.background)}` : ""}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=welcome&username=${encodeURIComponent(user?.username as string)}&members=1000&hash=${encodeURIComponent(user?.avatarHash as string)}&id=${encodeURIComponent(user?.id as string)}${bye.card.background ? `&background=${encodeURIComponent(bye.card.background)}` : ""}`}
                     width={1024 / 2}
                     height={(256 + 16) / 2}
                     loading="lazy"

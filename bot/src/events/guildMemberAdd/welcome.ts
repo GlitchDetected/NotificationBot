@@ -144,12 +144,14 @@ export default async (
                 type: "welcome",
                 username: member.user.username,
                 members: member.guild.memberCount.toString(),
-                hash: member.user.id,
+                hash: member.user.avatar ?? "",
+                id: member.user.id,
                 background: background || "#222",
                 text_color: text_color ? `#${text_color.toString(16).padStart(6, "0")}` : "#fff"
             });
 
             const cardImageUrl = `${appConfig.api.image_api}/welcome-card?${params.toString()}`;
+            console.log(`${appConfig.api.image_api}/welcome-card?${params.toString()}`);
 
             if (in_embed) {
                 await channel.send({

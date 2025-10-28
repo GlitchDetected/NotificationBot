@@ -7,7 +7,8 @@ router.get("/", async (c) => {
     const type = c.req.query("type");
     const username = c.req.query("username") || "Unknown User";
     const members = c.req.query("members") || "0";
-    const hash = c.req.query("hash") || "";
+    const avatarHash = c.req.query("hash") || ""; // Discord avatar hash
+    const userId = c.req.query("id") || "";
     const background = c.req.query("background") || "#222";
     const textColor = c.req.query("text_color") || "#fff";
 
@@ -29,11 +30,10 @@ router.get("/", async (c) => {
             return c.text("Error fetching background image", 500);
         }
     } else {
-        // Solid color background: create a plain image
         baseImage = await sharp({
             create: {
-                width: 960,
-                height: 540,
+                width: 1024,
+                height: 450,
                 channels: 3,
                 background: background,
             },
@@ -42,23 +42,63 @@ router.get("/", async (c) => {
             .toBuffer();
     }
 
-    // Create SVG overlay with the text
+    // Fetch Discord avatar image if hash exists
+
+let avatarBuffer: Buffer | null = null;
+const AVATAR_SIZE = 128; // width & height of avatar
+const CARD_HEIGHT = 450;
+
+if (userId && avatarHash) {
+    try {
+        const avatarUrl = `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.webp?size=128`;
+        const response = await fetch(avatarUrl);
+        if (response.ok) {
+            const arrayBuffer = await response.arrayBuffer();
+            avatarBuffer = await sharp(Buffer.from(arrayBuffer))
+                .resize(AVATAR_SIZE, AVATAR_SIZE)
+                .composite([
+                    {
+                        input: Buffer.from(
+                            `<svg width="${AVATAR_SIZE}" height="${AVATAR_SIZE}"><circle cx="${AVATAR_SIZE/2}" cy="${AVATAR_SIZE/2}" r="${AVATAR_SIZE/2}" fill="white"/></svg>`
+                        ),
+                        blend: "dest-in"
+                    }
+                ])
+                .png()
+                .toBuffer();
+        }
+    } catch (err) {
+        console.warn("Failed to fetch Discord avatar:", err);
+    }
+}
+
+    // Create SVG overlay with text, leaving space for avatar
     const svgOverlay = `
-<svg width="960" height="540">
-  <text x="50" y="120" font-size="50" fill="${textColor}" font-family="Sans">${title}</text>
-  <text x="50" y="200" font-size="38" fill="${textColor}" font-family="Sans">Members: ${members}</text>
-  <text x="50" y="260" font-size="28" fill="${textColor}" font-family="Sans">Hash: ${hash}</text>
+<svg width="1024" height="450">
+  <text x="170" y="120" font-size="50" fill="${textColor}" font-family="Sans">${title}</text>
+  <text x="170" y="200" font-size="38" fill="${textColor}" font-family="Sans">Members: ${members}</text>
 </svg>
 `;
 
-    // Composite the text on top of the background
-    const finalImage = await sharp(baseImage)
-        .resize(960, 540) // ensure consistent size
-        .composite([{ input: Buffer.from(svgOverlay), top: 0, left: 0 }])
-        .png()
-        .toBuffer();
+    let finalImage = sharp(baseImage).resize(1024, 450);
 
-    return c.body(new Uint8Array(finalImage), {
+    // Composite the avatar on the left if available
+if (avatarBuffer) {
+    finalImage = finalImage.composite([
+        {
+            input: avatarBuffer,
+            top: Math.floor((CARD_HEIGHT - AVATAR_SIZE) / 2), // center vertically
+            left: 50 // padding from left
+        },
+        { input: Buffer.from(svgOverlay), top: 0, left: 0 }
+    ]);
+} else {
+    finalImage = finalImage.composite([{ input: Buffer.from(svgOverlay), top: 0, left: 0 }]);
+}
+
+    const finalBuffer = await finalImage.png().toBuffer();
+
+    return c.body(new Uint8Array(finalBuffer), {
         status: 200,
         headers: { "Content-Type": "image/png" },
     });
