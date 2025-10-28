@@ -151,7 +151,10 @@ export default function Home() {
                 </div>
             </div>
 
-            <Topguilds />
+            <div className="w-full flex justify-center">
+                <Topguilds />
+            </div>
+
 
             <Scrollwheel />
 
@@ -335,9 +338,11 @@ export default function Home() {
                                 <Image
                                     alt="example welcome card"
                                     className="rounded-md shadow-md w-full mt-2"
-                                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=goodbye&username=explosiveapple&members=1000&hash=e310ef650877b405e4e953eb59aa58d9&id=1255569584925315205&background=${encodeURIComponent("https://notificationbot.top/static/gameroom.jpg")}`}
+                                    src={`${process.env.NEXT_PUBLIC_IMAGE_API}/welcome-card?type=welcome&username=explosiveapple&members=1000&hash=e310ef650877b405e4e953eb59aa58d9&id=1255569584925315205&background=${encodeURIComponent("https://notificationbot.top/static/gameroom.jpg")}`}
                                     itemProp="image"
                                     loading="lazy"
+                                    width={1024}
+                                    height={512}
                                 />
                             </DiscordMessage>
                         </div>
@@ -453,7 +458,10 @@ export default function Home() {
                 </p>
             </div>
 
-            <IntegrationsMarquee/>
+            <div className="w-full flex justify-center">
+                <IntegrationsMarquee />
+            </div>
+
 
             <div className="max-w-7xl mx-auto px-20">
                 <div className="relative flex justify-center items-center mt-32">
@@ -499,11 +507,12 @@ export default function Home() {
                         </Card>
                     ))}
 
-                    <div className="flex justify-center items-center w-full relative overflow-hidden rounded-lg border border-border group p-px h-fit">
+                    {/* ✅ Centered Button */}
+                    <div className="flex justify-center items-center mx-auto relative overflow-hidden rounded-lg border border-border group p-px h-fit col-span-1 sm:col-span-2 lg:col-span-3">
                         <span className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite_reverse] bg-[conic-gradient(from_90deg_at_0%_50%,#ef4444_50%,hsl(var(--input)/30)_7%)]" />
                         <Button
                             asChild
-                            className="w-full px-2 backdrop-blur-xs backdrop-brightness-50 md:backdrop-brightness-25 bg-none rounded-[6px]"
+                            className="px-2 backdrop-blur-xs backdrop-brightness-50 md:backdrop-brightness-25 bg-none rounded-[6px]"
                         >
                             <Link prefetch={false} href="/commands">
                                 <HiLightningBolt />

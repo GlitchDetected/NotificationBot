@@ -233,7 +233,7 @@ export default function Home() {
                                 </DiscordMessage>
                             </div>
                         </div>
-                        <div className="text-sm m-1 text-neutral-500">The preview might display things wrong*</div>
+                        <div className="text-sm m-1 text-neutral-500">Preview UI might be a little bit off**</div>
                     </div>
                 )}
             </div>

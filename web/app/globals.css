@@ -75,6 +75,7 @@
     scroll-behavior: smooth;
     min-height: 100svh;
     background: #000000;
+    overflow-x: hidden;
   }
 }
 

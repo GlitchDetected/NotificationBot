@@ -20,7 +20,7 @@ const data = [
         content: (
             <Ol itemProp="text">
                 <li>
-                    Be sure to have the <Code>Manage Server</Code> permission on the server you want{" "}
+                    Be sure to have the <Code>Manage Server</Code> permission on the server you want to{" "}
                     <Anchor href="/add">invite NotificationBot</Anchor> into.
                 </li>
                 <li>
@@ -44,8 +44,8 @@ const data = [
         title: "Is the notification system free to use?",
         content: (
             <div>
-                It is free for now but I might add some paid features in the future{" "}
-                <Anchor href="/vote">give NotificationBot a vote on top.gg</Anchor>!
+                It is free for now but I might add some paid features in the future!
+                We would appreciate it if you give <Anchor href="/vote">NotificationBot a vote on top.gg</Anchor>
             </div>
         )
     },
@@ -115,7 +115,7 @@ export function Faq({
             />
             {showTitle ? (
                 <Section className="mb-4" title="Frequently Asked Questions about NotificationBot">
-                    Commonly asked questions about NotificationBot and how to use it.
+                    These questions are commonly asked
                 </Section>
             ) : (
                 <b className="sr-only">Frequently Asked Questions for NotificationBot</b>
