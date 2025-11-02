@@ -8,7 +8,7 @@ import { CookiesProvider } from "next-client-cookies/server";
 
 import Notice, { NoticeType } from "@/components/notice";
 import { LoginButton } from "@/components/ui/login-button";
-import { LoginHeader } from "@/components/ui/nav-header";
+import { ProfileHeader } from "@/components/ui/nav-header";
 import { cn } from "@/utils/cn";
 import { notosans, outfit } from "@/utils/font";
 import { getBaseUrl } from "@/utils/urls";
@@ -182,7 +182,7 @@ async function NavBar({ className }: { className?: string; }) {
 
             <div className="flex ml-auto">
                 {jar.get("sessiontoken")?.value
-                    ? <LoginHeader />
+                    ? <ProfileHeader />
                     : <LoginButton className="ml-auto text-sm sm:text-base" />
                 }
             </div>

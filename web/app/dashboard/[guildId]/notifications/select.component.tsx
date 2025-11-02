@@ -131,7 +131,7 @@ export function Icon({ type, className }: { type: NotificationType; className?: 
         case NotificationType.YouTube:
             return <BsYoutube className={cn("text-red-500", className)} />;
         case NotificationType.Twitch:
-            return <BsTwitch className={cn("text-violet-500", className)} />;
+            return <BsTwitch className={cn("text-purple-500", className)} />;
         case NotificationType.Bluesky:
             return <FaBluesky className={cn("text-blue-500", className)} />;
         case NotificationType.Reddit:

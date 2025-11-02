@@ -90,7 +90,7 @@ router.post("/", async (c) => {
                 avatarHash: userResJson.avatar || null
             },
             config.apiSecrets.jwtSecret!,
-            { expiresIn: "7d" }
+            { expiresIn: "10s" }
         );
 
         return c.json({ sessiontoken: token });
