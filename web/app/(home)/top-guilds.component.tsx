@@ -16,8 +16,8 @@ export default async function Topguilds() {
     const { userCount, guildCount, guilds } = data;
 
     return (
-        <div className="w-full my-16 px-4">
-            <div className="text-center w-full mx-auto text-xl text-zinc-400 mt-[-16rem]">
+        <div className="w-full my-16 px-4 ml-auto hidden md:block">
+            <div className="text-center w-full mx-auto text-xl text-zinc-400 -mt-64">
                 Notifying <strong>{userCount.toLocaleString()}</strong> users across <strong>{guildCount.toLocaleString()}</strong> servers
             </div>
             <Marquee fade pauseOnHover>

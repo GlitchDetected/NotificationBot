@@ -154,7 +154,7 @@ function Guild({ id, name, icon, botInGuild }: ApiV1UsersMeGuildsGetResponse) {
         >
             <ImageReduceMotion
                 alt=""
-                className="absolute top-[-48px] left-0 w-full z-0 blur-xl opacity-30 pointer-events-none"
+                className="absolute -top-12 left-0 w-full z-0 blur-xl opacity-30 pointer-events-none"
                 size={16}
                 url={`https://cdn.discordapp.com/icons/${id}/${icon}`}
                 forceStatic={true}

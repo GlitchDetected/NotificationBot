@@ -35,7 +35,8 @@ export default async (client: Client) => {
                     type: 4
                 },
                 { name: "https://notificationbot.top | /help", type: 4 },
-                { name: `Keeping ${totalUsers.toLocaleString()} users updated`, type: 4 }
+                { name: `Keeping ${totalUsers.toLocaleString()} users notified`, type: 4 },
+                { name: `Online since ${new Date(client.readyAt!).toLocaleDateString()}`, type: 3 }
             ];
 
             const activity = activities[currentIndex];

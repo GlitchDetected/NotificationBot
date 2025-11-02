@@ -85,7 +85,8 @@ router.post("/", async (c) => {
             [NotificationType.Twitch]: "Hey {ping}, **{creator.name}** just went live!\n{stream.link}",
             [NotificationType.Bluesky]: "Hey {ping}, {creator.handle} just posted!\n{post.link}",
             [NotificationType.Reddit]: "Hey {ping}, {author.name} just posted in **{subreddit.name}**!\n{post.link}",
-            [NotificationType.GitHub]: "Hey {ping}, new release in **{repo.name}**: {release.title}\n{release.link}"
+            [NotificationType.GitHub]: "Hey {ping}, new release in **{repo.name}**: {release.title}\n{release.link}",
+            [NotificationType.Kick]: "Hey {ping}, **{creator.name}** just went live on Kick!\n{stream.link}"
         };
 
         async function defaultAvatarUrl(type: NotificationType, creatorId: string): Promise<string | null> {
@@ -101,6 +102,15 @@ router.post("/", async (c) => {
                 case NotificationType.GitHub:
                     const owner = creatorId.split("/")[0];
                     return `https://github.com/${owner}.png`;
+                case NotificationType.Kick: {
+                    try {
+                        const res = await axios.get(`https://kick.com/api/v2/channels/${creatorId}?include=stream`);
+                        const avatar = res.data?.user?.profile_pic;
+                        return avatar || null;
+                    } catch {
+                        return null;
+                    }
+                }
                 default:
                     return null;
             }
@@ -126,7 +136,7 @@ router.post("/", async (c) => {
 
                 const latestVideo = await fetchers[NotificationType.YouTube]({
                     ...body,
-                    creator_id: creatorId // Note: using creator_id, not creatorId
+                    creator_id: creatorId
                 } as any);
 
                 if (!latestVideo) {
@@ -277,6 +287,29 @@ router.post("/", async (c) => {
                     console.error("GitHub verification error:", error);
                     return httpError(HttpErrorMessage.BadRequest);
                 }
+
+                break;
+            }
+
+            case NotificationType.Kick: {
+                if (!body.creatorHandle) {
+                    return httpError(HttpErrorMessage.BadRequest);
+                }
+
+                // Use the fetcher to get creator info
+                const creator = await fetchers[NotificationType.Kick](body);
+
+                if (!creator) {
+                    return httpError(HttpErrorMessage.BadRequest);
+                }
+
+                creatorId = body.creatorHandle;
+                creatorUsername = body.creatorHandle;
+                avatarUrl =
+                    creator.avatar ||
+        (creator.creator?.id
+            ? `https://files.kick.com/images/user/${creator.creator.id}/profile_image.png`
+            : null);
 
                 break;
             }

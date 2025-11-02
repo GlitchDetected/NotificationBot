@@ -164,18 +164,20 @@ async function NavBar({ className }: { className?: string; }) {
                 </Link>
             </div>
 
-            <ul
-                className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-3 sm:gap-5 md:gap-6 text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] font-medium"
-            >
+            <ul className="absolute left-1/2 -translate-x-1/2 flex justify-center gap-2 xs:gap-3 sm:gap-5 md:gap-6 text-[0.7rem] xs:text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] font-medium">
                 {links.map((link) => (
                     <Link
                         key={link.hash}
-                        className="px-2 py-1 transition hover:text-red-600"
+                        className={cn(
+                            "px-2 py-1 transition hover:text-red-600",
+                            link.name === "Commands" && "hidden sm:inline"
+                        )}
                         href={link.hash}
                     >
                         {link.name}
                     </Link>
                 ))}
+
             </ul>
 
             <div className="flex ml-auto">

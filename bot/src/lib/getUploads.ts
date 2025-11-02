@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BskyAgent } from "@atproto/api";
+import { client as KickClient } from "@nekiro/kick-api";
 import axios from "axios";
 
 import type { ContentData, notificationConfig, NotificationType } from "@/typings";
@@ -16,6 +17,11 @@ async function bskySession() {
         });
     }
 }
+
+const kickClient = new KickClient({
+    clientId: appConfig.apiSecrets.kickClientId,
+    clientSecret: appConfig.apiSecrets.kickClientSecret
+});
 
 async function getRedditToken() {
     const clientId = appConfig.apiSecrets.redditClientId;
@@ -84,24 +90,20 @@ async function fetchLatestYouTubeContent(config: notificationConfig): Promise<Co
             link: `https://youtube.com/watch?v=${videoId}`
         };
     } catch (err: any) {
-        // Log the error details instead of silently ignoring
         if (axios.isAxiosError(err)) {
-            console.error("YouTube API Error:", {
-                status: err.response?.status,
-                statusText: err.response?.statusText,
-                data: err.response?.data,
-                message: err.message
-            });
+            const status = err.response?.status;
+            const errorReason = err.response?.data?.error?.errors?.[0]?.reason;
+            const errorMessage = err.response?.data?.error?.message;
 
-            // Check if it's a quota error
-            if (err.response?.status === 403) {
-                const errorData = err.response.data;
-                if (errorData?.error?.errors?.[0]?.reason === "quotaExceeded") {
-                    console.error("YouTube API quota exceeded!");
-                }
+            if (status === 403 && errorReason === "quotaExceeded") {
+                console.error("YouTube quota reached");
+            } else {
+                console.error(
+                    `YouTube fetch failed (${status ?? "no status"}): ${errorMessage ?? err.message}`
+                );
             }
         } else {
-            console.error("YouTube fetch error:", err);
+            console.error("YouTube fetch error:", err.message || err);
         }
 
         return null;
@@ -328,6 +330,55 @@ async function fetchLatestGitHubContent(config: notificationConfig): Promise<Con
     }
 }
 
+// Kick
+export async function fetchLatestKickContent(config: notificationConfig): Promise<ContentData | null> {
+    try {
+        const username = config.creator?.username || (config as any).creatorHandle;
+        if (!username) throw new Error("Missing Kick username");
+
+        const data = await kickClient.channels.getChannel(username);
+
+        if (!data) {
+            return null;
+        }
+
+        const user = data.user ?? {};
+        const livestream = data.livestream ?? null;
+
+        const avatar =
+            user.profile_pic ||
+            (user.id ? `https://files.kick.com/images/user/${user.id}/profile_image.png` : "");
+
+
+        const baseData: ContentData = {
+            id: livestream?.id?.toString() || `${username}-offline`,
+            title: livestream?.session_title || `${user.username || username} on Kick`,
+            category: livestream?.category?.name || livestream?.categories?.[0]?.name || "Just Chatting",
+            thumbnail:
+        livestream?.thumbnail?.url ||
+        "",
+            startedAt: livestream?.created_at
+                ? Math.floor(new Date(livestream.created_at).getTime() / 1000)
+                : Math.floor(Date.now() / 1000),
+
+            viewerCount: livestream?.viewer_count ?? 0,
+            link: `https://kick.com/${username}`,
+            avatar,
+            creator: {
+                username: user?.username || username,
+                id: user?.id?.toString() || "",
+                followers: data?.followers_count ?? 0
+            }
+        };
+
+        return baseData;
+
+    } catch (err: any) {
+        console.error("Kick fetch error:", err.message || err);
+        return null;
+    }
+}
+
 export const fetchers: Record<
     NotificationType,
     (config: notificationConfig) => Promise<ContentData | null>
@@ -336,5 +387,6 @@ export const fetchers: Record<
     1: fetchLatestTwitchContent,
     2: fetchLatestBlueskyContent,
     3: fetchLatestRedditContent,
-    4: fetchLatestGitHubContent
+    4: fetchLatestGitHubContent,
+    5: fetchLatestKickContent
 };

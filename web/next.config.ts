@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
             { protocol: "https", hostname: "www.redditstatic.com", pathname: "/**" },
             { protocol: "https", hostname: "upload.wikimedia.org", pathname: "/**" },
             { protocol: "https", hostname: "github.com", pathname: "/**" },
+            { protocol: "https", hostname: "kick.com", pathname: "/**" },
             { protocol: "http", hostname: "localhost", port: "5000", pathname: "/**" }
         ]
     }

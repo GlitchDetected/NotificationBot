@@ -143,6 +143,50 @@ export const notificationPlaceholders = (
                 "creator.followers": contentCreator.followers ?? 0
             });
             break;
+
+        case 4: // GitHub
+            Object.assign(placeholders, {
+                "repo.name": contentData.repoName ?? "",
+                "repo.id": contentData.id ?? "",
+                "repo.link": contentData.link ?? "",
+                "repo.description": contentData.description ?? "",
+                "repo.language": contentData.language ?? "",
+                "repo.stars": contentData.stars ?? 0,
+                "repo.forks": contentData.forks ?? 0,
+                "repo.updated": contentData.timestamp
+                    ? `<t:${contentData.timestamp}:R>`
+                    : "",
+                "release.title": contentData.releaseTitle ?? "",
+                "release.link": contentData.releaseLink ?? "",
+                "creator.username": contentCreator.username ?? "Unknown",
+                "creator.link": contentCreator.username
+                    ? `https://github.com/${contentCreator.username}`
+                    : "",
+                "creator.avatar": contentCreator.avatar_url ?? ""
+            });
+            break;
+
+        case 5: // Kick
+            Object.assign(placeholders, {
+                "stream.title": contentData.title ?? "",
+                "stream.category": contentData.category ?? "",
+                "stream.thumbnail": contentData.thumbnail ?? "",
+                "stream.viewers": contentData.viewerCount ?? 0,
+                "stream.link": contentData.link ?? "",
+                "stream.live.since": contentData.startedAt
+                    ? `<t:${contentData.startedAt}:R>`
+                    : "",
+                "stream.live.start": contentData.startedAt
+                    ? `<t:${contentData.startedAt}:f>`
+                    : "",
+                "creator.username": contentCreator.username ?? "Unknown",
+                "creator.followers": contentCreator.followers ?? 0,
+                "creator.link": contentCreator.username
+                    ? `https://kick.com/${contentCreator.username}`
+                    : "",
+                "creator.avatar": contentCreator.avatar_url ?? ""
+            });
+            break;
     }
 
     return placeholders;

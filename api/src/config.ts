@@ -24,7 +24,10 @@ export default {
         redditUsername: String(process.env["REDDIT_USERNAME"]),
         redditPassword: String(process.env["REDDIT_PASSWORD"]),
 
-        githubToken: String(process.env["GITHUB_TOKEN"])
+        githubToken: String(process.env["GITHUB_TOKEN"]),
+
+        kickClientId: String(process.env["KICK_CLIENT_ID"]),
+        kickClientSecret: String(process.env["KICK_CLIENT_SECRET"])
     },
 
     databaseUri: String(process.env["DATABASE_URL"]),

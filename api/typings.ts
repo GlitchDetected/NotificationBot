@@ -29,7 +29,7 @@ export type notificationConfig = {
   channel_id: string;
   role_id: string | null;
 
-  type: 0 | 1 | 2 | 3 | 4;
+  type: 0 | 1 | 2 | 3 | 4 | 5;
   flags: number;
   regex: string | null;
 
@@ -324,7 +324,8 @@ export enum NotificationType {
   Twitch = 1,
   Bluesky = 2,
   Reddit = 3,
-  GitHub = 4
+  GitHub = 4,
+  Kick = 5
 }
 
 export enum NotificationFlags {

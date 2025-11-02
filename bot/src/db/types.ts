@@ -48,7 +48,7 @@ export interface NotificationsTable {
     guild_id: string;
     channel_id: string | null;
     role_id: string | null;
-    type: 0 | 1 | 2 | 3 | 4 | null;
+    type: 0 | 1 | 2 | 3 | 4 | 5 | null;
     flags: number | null;
     regex: string | null;
     creator_id: string | null;

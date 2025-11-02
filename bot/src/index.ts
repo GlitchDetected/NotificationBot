@@ -8,7 +8,7 @@ import config from "./config";
 const isManager = process.argv.includes("--manager");
 
 if (isManager) {
-    // === Manager process ===
+    // manager process
     const manager = new ShardingManager(path.resolve(__dirname, "index.js"), {
         token: config.client.token,
         totalShards: "auto"

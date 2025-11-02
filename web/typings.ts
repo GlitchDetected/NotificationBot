@@ -9,12 +9,12 @@ export interface ApiV1TopguildsGetResponse {
     userCount: number;
     guildCount: number;
     guilds: {
-    id: string;
-    name: string;
-    icon: string | null;
-    memberCount: number;
-    verified: boolean;
-    partnered: boolean;
+      id: string;
+      name: string;
+      icon: string | null;
+      memberCount: number;
+      verified: boolean;
+      partnered: boolean;
     }[];
 }
 
@@ -268,7 +268,8 @@ export enum NotificationType {
   Twitch = 1,
   Bluesky = 2,
   Reddit = 3,
-  GitHub = 4
+  GitHub = 4,
+  Kick = 5
 }
 
 export enum NotificationFlags {

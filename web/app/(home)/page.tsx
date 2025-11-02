@@ -8,6 +8,7 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 import DiscordMessageEmbed from "@/components/discord/embed";
 import { DiscordMarkdown } from "@/components/discord/markdown";
 import DiscordMessage from "@/components/discord/message";
+import { AvatarGroup, UserAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Box from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
@@ -20,15 +21,17 @@ import {
 import ScrollToTopButton from "@/components/ui/scroll-top";
 import { Scrollwheel } from "@/components/ui/scrollwheel";
 import { Code } from "@/components/ui/typography";
-import ArrowPic from "@/public/arrow.webp";
+import { defaultFetchOptions } from "@/lib/api";
 import thumbnail from "@/public/assets/thumbnail.png";
+import type { ApiV1TopguildsGetResponse } from "@/typings";
 import { cn } from "@/utils/cn";
-import { handwritten, montserrat } from "@/utils/font";
+import { toFixedArrayLength } from "@/utils/fixed-array";
+import { montserrat } from "@/utils/font";
 
 import { Faq } from "./faq.component";
 import IntegrationsMarquee from "./integrations.component";
+import MessageAnimation from "./messageanimation.component";
 import Reviews from "./reviews.component";
-import Topguilds from "./top-guilds.component";
 
 const styles = {
     h2: cn(montserrat.className, "lg:text-5xl text-4xl bg-gradient-to-b bg-clip-text text-transparent from-red-900 from-40% to-red-500 font-bold mb-4"),
@@ -85,15 +88,23 @@ const evenMoreContent = [
     }
 ];
 
-export default function Home() {
+export default async function Home() {
+    const data: ApiV1TopguildsGetResponse | null = await fetch(
+        `${process.env.NEXT_PUBLIC_API}/top-guilds`,
+        defaultFetchOptions
+    )
+        .then((res) => res.json())
+        .catch(() => null);
+
     return (
         <div className="flex flex-col items-center w-full">
 
-            <div className="flex w-full items-center gap-8 mb-16 md:mb-12 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
+            <div className="flex w-full items-center gap-8 mb-5 md:mb-8 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
                 <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
+
                     <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
-                        <span className="bg-gradient-to-r from-red-900 to-red-600 bg-clip-text text-transparent">
-                            The Next Generation
+                        <span className="bg-linear-to-r from-red-900 to-red-600 bg-clip-text text-transparent">
+                            Next Generation
                         </span>{" "}
                         of{" "}
                         <span className="inline-flex items-center">
@@ -101,8 +112,9 @@ export default function Home() {
                         </span>
                     </h1>
 
-                    <span className="text-lg font-medium max-w-[38rem] mb-4">
-                        We introduce you to fully customizable notifications from your favorite platforms, a full-on welcoming system, and slash commands!
+                    <span className="text-lg font-medium max-w-152 mb-4">
+                        We introduce you to fully customizable notifications from your favorite platforms,
+                        a full-on welcoming system, and slash commands!
                     </span>
 
                     <div className="space-y-4">
@@ -136,7 +148,7 @@ export default function Home() {
                             </Button>
                         </div>
 
-                        <span className={cn("lg:ml-auto flex gap-2 text-neutral-500 font-medium opacity-80 pl-20 lg:pr-20 rotate-2 scale-110 relative pt-0.5", handwritten.className)}>
+                        {/* <span className={cn("lg:ml-auto flex gap-2 text-neutral-500 font-medium opacity-80 pl-20 lg:pr-20 rotate-2 scale-110 relative pt-0.5", handwritten.className)}>
                             <Image
                                 src={ArrowPic}
                                 width={24}
@@ -146,15 +158,48 @@ export default function Home() {
                                 draggable={false}
                             />
                             Add NotificationBot to get started!
-                        </span>
+                        </span> */}
+                    </div>
+                    {data && data.guilds && data.guilds.length > 0 && (
+                        <div className="mr-auto flex flex-col items-start gap-3">
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
+                                    Used by many servers:
+                                </span>
+                                <AvatarGroup className="mr-auto">
+                                    {toFixedArrayLength(data.guilds, 8).map((guild) => (
+                                        <UserAvatar
+                                            key={"homeGuildGrid-" + guild.id}
+                                            alt={guild.name}
+                                            className="-mr-2"
+                                            src={
+                                                guild.icon
+                                                    ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=128`
+                                                    : "/discord.webp"
+                                            }
+                                        />
+                                    ))}
+                                </AvatarGroup>
+                                <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                                    and <strong>{data.guildCount.toLocaleString()}</strong> others
+                                </span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                {/* Desktop: right side */}
+                <div className="ml-auto w-fit xl:w-1/2 hidden md:block">
+                    <div className="flex gap-4 relative left-14 w-fit">
+                        <MessageAnimation />
                     </div>
                 </div>
             </div>
-
-            <div className="w-full flex justify-center">
-                <Topguilds />
+            {/* Mobile: below hero text */}
+            <div className="block md:hidden w-full">
+                <div className="flex justify-center">
+                    <MessageAnimation />
+                </div>
             </div>
-
 
             <Scrollwheel />
 
@@ -484,7 +529,7 @@ export default function Home() {
                 </div>
 
                 <div className="text-center mb-20 mt-12">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-red-900 to-red-500">
                         Countless more Features
                     </h2>
                     <p className="mt-4 text-sm sm:text-md text-gray-400">
@@ -531,7 +576,7 @@ export default function Home() {
             </div>
 
             <div className="text-center mb-16 px-4">
-                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-500">
+                <h2 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-red-900 to-red-500">
                     Highly trusted by server owners & staff
                 </h2>
                 <p className="mt-4 text-sm sm:text-md text-gray-400">Reliability is the #1 priority</p>
