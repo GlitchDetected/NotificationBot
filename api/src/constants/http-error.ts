@@ -6,12 +6,15 @@ export const HttpErrorCode = {
     NotFound: 404,
     Conflict: 409,
     TooManyRequests: 429,
+    ParameterRequired: 400,
 
     // 5xx — Server Errors
     InternalServerError: 500,
     BadGateway: 502,
     ServiceUnavailable: 503,
     GatewayTimeout: 504,
+    ServerError: 500,
+    GuildFetchError: 500,
 
     // Custom Application-Level 4xx (use 422–499 range)
     MissingParameter: 422, // Unprocessable Entity
@@ -31,12 +34,15 @@ export const HttpErrorMessage = {
     NotFound: "The requested resource could not be found",
     Conflict: "Request conflicts with current state of the resource",
     TooManyRequests: "Too many requests — please try again later",
+    ParameterRequired: "A required parameter is missing in the request.",
 
     // 5xx
     InternalServerError: "Internal server error — please try again later",
     BadGateway: "Invalid response received from upstream server",
     ServiceUnavailable: "Service temporarily unavailable — please retry later",
     GatewayTimeout: "Upstream server timed out responding to the request",
+    ServerError: "Something went wrong, try again later",
+    GuildFetchError: "Failed to fetch guild details, guildId required",
 
     // Custom / Application-Level
     MissingParameter: "A required parameter is missing or invalid",

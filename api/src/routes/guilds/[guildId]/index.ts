@@ -31,7 +31,7 @@ router.get("/", async (c) => {
     });
 
     if (!guildRes.ok) {
-        return httpError(HttpErrorMessage.guildFetchError);
+        return httpError(HttpErrorMessage.GuildFetchError);
     }
 
     const guild = await guildRes.json();
@@ -69,7 +69,7 @@ router.get("/channels", async (c) => {
     });
 
     if (!channelsRes.ok) {
-        return httpError(HttpErrorMessage.guildFetchError);
+        return httpError(HttpErrorMessage.GuildFetchError);
     }
 
     const channels = await channelsRes.json();
@@ -93,7 +93,7 @@ router.get("/roles", async (c) => {
     });
 
     if (!rolesRes.ok) {
-        return httpError(HttpErrorMessage.guildFetchError);
+        return httpError(HttpErrorMessage.GuildFetchError);
     }
 
     const roles = await rolesRes.json();
@@ -117,7 +117,7 @@ router.get("/emojis", async (c) => {
     });
 
     if (!emojisRes.ok) {
-        return httpError(HttpErrorMessage.guildFetchError);
+        return httpError(HttpErrorMessage.GuildFetchError);
     }
 
     const emojis = await emojisRes.json();
