@@ -68,14 +68,14 @@ function Dropdown({ user }: { user: User; }) {
                 <button
                     className="ml-auto truncate flex hover:bg-background py-2 px-4 rounded-lg duration-200 items-center data-[state=open]:bg-background outline-none"
                 >
-                    <Avatar className="mr-2 border-2 border-red-800 rounded-full">
+                    <Avatar className="mr-2 border-2 border-red-800 rounded-full w-7 h-7 sm:w-8 sm:h-8">
                         <AvatarImage
                             alt={user.username}
                             src={user.avatarHash ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatarHash}?size=96` : "/discord.webp"}
                         />
                     </Avatar>
 
-                    <p className="mr-1 relative bottom-px truncate block text-primary-foreground font-medium tracking-tight">{user.displayName || user.username}</p>
+                    <p className="mr-1 relative bottom-px truncate block text-primary-foreground font-medium tracking-tight text-xs sm:text-sm">{user.displayName || user.username}</p>
                     <HiChevronDown />
                 </button>
             </DropdownMenuTrigger>
