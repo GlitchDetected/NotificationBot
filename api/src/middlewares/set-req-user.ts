@@ -33,11 +33,7 @@ export const setReqUser: MiddlewareHandler = async (c, next) => {
             }
         }
     } catch (error: any) {
-        // Check for expired token error
         if (error.name === "TokenExpiredError") {
-            console.warn("JWT expired, removing session token");
-
-            // Remove the expired JWT cookie
             setCookie(c, "sessiontoken", "", {
                 path: "/",
                 maxAge: 0,
@@ -46,16 +42,11 @@ export const setReqUser: MiddlewareHandler = async (c, next) => {
                 sameSite: "Lax"
             });
 
-            return c.json({
-                message: HttpErrorMessage.InvalidSessionToken,
-                refreshPage: true
-            }, 401);
+            return httpError(HttpErrorMessage.InvalidSessionToken);
         }
 
         console.error("JWT verification error:", error);
-        return c.json({
-            message: HttpErrorMessage.InvalidSessionToken
-        }, 401);
+        return httpError(HttpErrorMessage.InvalidSessionToken);
     }
 
     await next();

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from "react";
 
 import type { User } from "@/common/userStore";
@@ -27,12 +26,6 @@ export async function authorize({ setState }: { setState: React.Dispatch<React.S
 
     if (!res) {
         setState(State.Failure);
-        return null;
-    }
-
-    if ((res as any).refreshPage) {
-        console.warn("Session expired, refreshing page...");
-        window.location.reload();
         return null;
     }
 
