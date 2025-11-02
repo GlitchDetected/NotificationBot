@@ -181,11 +181,10 @@ async function NavBar({ className }: { className?: string; }) {
             </ul>
 
             <div className="flex ml-auto">
-                {jar.get("sessiontoken")?.value ? (
-                    <LoginHeader />
-                ) : (
-                    <LoginButton className="ml-auto text-sm sm:text-base" />
-                )}
+                {jar.get("sessiontoken")?.value
+                    ? <LoginHeader />
+                    : <LoginButton className="ml-auto text-sm sm:text-base" />
+                }
             </div>
         </nav>
     );

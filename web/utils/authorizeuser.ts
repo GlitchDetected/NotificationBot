@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type React from "react";
 
 import type { User } from "@/common/userStore";
@@ -13,7 +14,6 @@ export async function authorize({ setState }: { setState: React.Dispatch<React.S
     setState(State.Idle);
 
     const res = (await fetch(`${process.env.NEXT_PUBLIC_API}/sessions`, {
-    // must return exact structure as User in order to authorize
         credentials: "include"
     })
         .then((res) => res.json())
@@ -27,6 +27,12 @@ export async function authorize({ setState }: { setState: React.Dispatch<React.S
 
     if (!res) {
         setState(State.Failure);
+        return null;
+    }
+
+    if ((res as any).refreshPage) {
+        console.warn("Session expired, refreshing page...");
+        window.location.reload();
         return null;
     }
 

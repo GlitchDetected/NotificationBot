@@ -68,7 +68,7 @@ function UserButton({
                         url={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatarHash}`}
                         size={96}
                     />
-                    <p className="mr-1 relative bottom-[1px] truncate block">
+                    <p className="mr-1 relative bottom-px truncate block">
                         {user.displayName || user.username}
                     </p>
                     <HiChevronDown />
