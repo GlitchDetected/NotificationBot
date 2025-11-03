@@ -69,11 +69,11 @@ const data = [
                     </li>
                 </ol>
                 You can also watch the video tutorial below or{" "}
-                <Anchor href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">watch it on YouTube</Anchor>.
+                <Anchor href="https://youtu.be/DtWhSFajVlw">watch it on YouTube</Anchor>.
                 <iframe
                     className="mt-2 aspect-video rounded-lg"
                     width="100%"
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    src="https://youtu.be/DtWhSFajVlw"
                     title="NotificationBot Ranking system"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                 />

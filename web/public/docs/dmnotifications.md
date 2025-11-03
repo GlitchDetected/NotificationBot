@@ -4,7 +4,7 @@
 
 ![DM notification example](/notificationbot.png?fullwidth=true)
 
-<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" height="513" frameborder="0" allow="autoplay">
+<iframe src="https://www.youtube.com/embed/DtWhSFajVlw" height="513" frameborder="0" allow="autoplay">
 </iframe>
 
 ## Setup

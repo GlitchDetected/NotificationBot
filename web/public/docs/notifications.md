@@ -4,7 +4,7 @@
 - And **free custom messages** for every notification you set up!
 <br />
 
-<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" height="513" frameborder="0" allow="autoplay">
+<iframe src="https://www.youtube.com/embed/DtWhSFajVlw" height="513" frameborder="0" allow="autoplay">
 </iframe>
 
 ## Setup
