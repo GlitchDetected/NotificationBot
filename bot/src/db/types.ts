@@ -32,7 +32,7 @@ export interface DmNotificationsTable {
     embedcolor: number | null;
     source: string | null;
     thumbnail: string | null;
-    message: string | null;
+    text: string | null;
     created_at: string;
     updated_at: string;
 }

@@ -21,7 +21,7 @@ export async function up(db: Kysely<any>): Promise<void> {
       .addColumn('embedcolor', 'integer')
       .addColumn('source', 'varchar')
       .addColumn('thumbnail', 'varchar')
-      .addColumn('message', 'varchar')
+      .addColumn('text', 'varchar')
       .addColumn('created_at', 'timestamp', col => col.notNull().defaultTo(sql`now()`))
       .addColumn('updated_at', 'timestamp', col => col.notNull().defaultTo(sql`now()`))
       .execute();

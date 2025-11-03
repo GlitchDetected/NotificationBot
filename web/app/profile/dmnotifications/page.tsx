@@ -7,7 +7,6 @@ import { type User, userStore } from "@/common/userStore";
 import Switch from "@/components/input/api-switch";
 import ImageUrlInput from "@/components/input/imageurlinput";
 import TextInput from "@/components/input/textinput";
-import { Section } from "@/components/section";
 import { deepMerge } from "@/utils/merge";
 
 export default function Home() {
@@ -99,25 +98,23 @@ export default function Home() {
                 <TextInput
                     name="Message"
                     url="/dashboard/@me/dmnotifications"
-                    dataName="message"
+                    dataName="text"
                     description="Custom message"
                     type="text"
-                    defaultState={user?.extended?.dmnotifications?.message || "You got a new notifications from"}
+                    defaultState={user?.extended?.dmnotifications?.text || ""}
                     disabled={!enabled}
                     onSave={(value) => {
                         userStore.setState(
                             deepMerge<User>(user, {
                                 extended: {
                                     dmnotifications: {
-                                        message: String(value)
+                                        text: String(value)
                                     }
                                 }
                             })
                         );
                     }}
                 />
-
-                <Section title="Optional thumbnail"></Section>
 
                 <ImageUrlInput
                     name="Thumbnail"

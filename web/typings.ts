@@ -171,14 +171,12 @@ export interface ApiV1GuildsModulesPassportGetResponse {
 }
 
 export interface ApiV1UsersMeGetResponse {
-  voteCount?: number;
-
   dmnotifications?: {
     enabled?: boolean;
     embedcolor?: number;
     source?: string | null;
     thumbnail?: string | null;
-    message?: string | null;
+    text?: string | null;
   };
 }
 

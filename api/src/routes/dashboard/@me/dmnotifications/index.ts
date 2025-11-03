@@ -7,29 +7,7 @@ import type { ApiV1UsersMeGetResponse } from "@/typings";
 
 const router = new Hono();
 
-type UpdatableFields = "enabled" | "embedcolor" | "source" | "thumbnail" | "message";
-
-router.get("/", async (c) => {
-    try {
-        const user = c.get("user");
-
-        if (!user?.access_token) {
-            return httpError(HttpErrorMessage.MissingAccess);
-        }
-
-        const config = await getDmNotification(user.id);
-
-        return c.json({
-            enabled: config?.enabled ?? false,
-            embedcolor: config?.embedcolor ?? 0,
-            source: config?.source ?? null,
-            thumbnail: config?.thumbnail ?? null,
-            message: config?.message ??	"You got a new notifications from"
-        });
-    } catch (error) {
-        console.error("Error fetching user dmnotifications configuration:", error);
-    }
-});
+type UpdatableFields = "enabled" | "embedcolor" | "source" | "thumbnail" | "text";
 
 router.patch("/", async (c) => {
     const user = c.get("user");
@@ -39,6 +17,7 @@ router.patch("/", async (c) => {
     }
 
     const body = await c.req.json() as ApiV1UsersMeGetResponse["dmnotifications"];
+    console.log(body);
 
     try {
         let config = await getDmNotification(user.id);
@@ -48,9 +27,8 @@ router.patch("/", async (c) => {
         }
 
         if (config) {
-            const keys: ("enabled" | "embedcolor" | "source" | "thumbnail" | "message")[] =
-                ["enabled", "embedcolor", "source", "thumbnail", "message"];
-
+            const keys: ("enabled" | "embedcolor" | "source" | "thumbnail" | "text")[] =
+                ["enabled", "embedcolor", "source", "thumbnail", "text"];
             const updateData: Partial<typeof body> = {};
 
             for (const key of keys) {
@@ -58,6 +36,7 @@ router.patch("/", async (c) => {
                     (updateData as Record<UpdatableFields, unknown>)[key] = body[key];
                 }
             }
+
             await updateDmNotification(user.id, updateData);
         } else {
             // Create
@@ -67,7 +46,7 @@ router.patch("/", async (c) => {
                 embedcolor: body?.embedcolor ?? 0,
                 source: body?.source ?? null,
                 thumbnail: body?.thumbnail ?? null,
-                message: body?.message ?? "You got a new notification from"
+                text: body?.text ?? "undefined"
             });
         }
 
@@ -76,7 +55,7 @@ router.patch("/", async (c) => {
             embedcolor: config?.embedcolor,
             source: config?.source,
             thumbnail: config?.thumbnail,
-            message: config?.message
+            text: config?.text
         });
     } catch (error) {
         console.error("Error creating/updating user dmnotifications configuration:", error);

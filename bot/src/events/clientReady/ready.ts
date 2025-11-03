@@ -1,6 +1,7 @@
 import type { Client, Message } from "discord.js";
 
 import { getTotalStats } from "@/src/constants/discord";
+import { fetchDmNotifications } from "@/src/lib/dmNotifications";
 import { fetchNotifications } from "@/src/lib/notification";
 import redis from "@/src/lib/redis";
 import saveShards from "@/src/lib/saveShards";
@@ -11,6 +12,7 @@ export default async (client: Client) => {
         console.log(`${client.user.tag} is online`);
         await saveShards(client);
         await fetchNotifications(client);
+        await fetchDmNotifications(client);
 
         setInterval(async () => {
             try {
