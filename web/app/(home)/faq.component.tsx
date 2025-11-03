@@ -73,7 +73,7 @@ const data = [
                 <iframe
                     className="mt-2 aspect-video rounded-lg"
                     width="100%"
-                    src="https://youtu.be/DtWhSFajVlw"
+                    src="https://www.youtube.com/embed/DtWhSFajVlw"
                     title="NotificationBot Ranking system"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                 />
