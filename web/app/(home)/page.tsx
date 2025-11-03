@@ -99,7 +99,7 @@ export default async function Home() {
     return (
         <div className="flex flex-col items-center w-full">
 
-            <div className="flex w-full items-center gap-8 mb-5 md:mb-8 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
+            <div className="flex w-full items-center gap-8 mb-8 md:mb-10 min-h-[500px] h-[calc(100svh-14rem)] md:h-[calc(100dvh-16rem)]">
                 <div className="md:min-w-96 w-full md:w-2/3 xl:w-1/2 flex flex-col space-y-6">
 
                     <h1 className={cn(montserrat.className, "lg:text-7xl md:text-6xl text-5xl font-semibold text-neutral-900 dark:text-neutral-100")}>
@@ -189,7 +189,7 @@ export default async function Home() {
                 </div>
                 {/* Desktop: right side */}
                 <div className="ml-auto w-fit xl:w-1/2 hidden md:block">
-                    <div className="flex gap-4 relative left-14 w-fit">
+                    <div className="flex gap-4 justify-end xl:relative xl:left-14 w-full xl:w-fit">
                         <MessageAnimation />
                     </div>
                 </div>
@@ -503,10 +503,9 @@ export default async function Home() {
                 </p>
             </div>
 
-            <div className="w-full flex justify-center">
+            <div className="w-full overflow-hidden">
                 <IntegrationsMarquee />
             </div>
-
 
             <div className="max-w-7xl mx-auto px-20">
                 <div className="relative flex justify-center items-center mt-32">

@@ -4,7 +4,11 @@ import React from "react";
 import { BsChat, BsReddit, BsTwitch, BsYoutube } from "react-icons/bs";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Marquee } from "@/components/ui/marquee";
+import {
+    Marquee,
+    MarqueeContent,
+    MarqueeItem
+} from "@/components/ui/marquee";
 import { Code } from "@/components/ui/typography";
 
 const integrationsData = [
@@ -37,30 +41,40 @@ const integrationsData = [
 export default function IntegrationsMarquee() {
     const renderTextWithCode = (text: string) => {
         const parts = text.split(/(`[^`]+`)/g);
-        return parts.map((part, i) => {
-            if (part.startsWith("`") && part.endsWith("`")) {
-                const code = part.slice(1, -1);
-                return <Code key={i}>{code}</Code>;
-            }
-            return <span key={i}>{part}</span>;
-        });
+        return parts.map((part, i) =>
+            part.startsWith("`") && part.endsWith("`") ? (
+                <Code key={i} className="text-lg font-semibold text-foreground/90">
+                    {part.slice(1, -1)}
+                </Code>
+            ) : (
+                <span key={i} className="text-lg leading-relaxed">
+                    {part}
+                </span>
+            )
+        );
     };
 
     return (
-        <div className="w-full my-16 px-4">
-            <Marquee className="py-2" fade pauseOnHover>
-                {integrationsData.map((integration, i) => (
-                    <Card key={i} className="w-80 mx-4 shrink-0">
-                        <CardHeader className="flex flex-row items-center gap-4">
-                            <integration.icon className="w-10 h-10 text-red-500" />
-                            <CardTitle className="text-base">{integration.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-sm text-gray-400">
-                            {renderTextWithCode(integration.content)}
-                        </CardContent>
-                    </Card>
-                ))}
+        <section className="relative w-full my-24 overflow-hidden">
+            <Marquee className="relative py-6">
+                <MarqueeContent speed={40} pauseOnHover autoFill>
+                    {integrationsData.map((integration, i) => (
+                        <MarqueeItem key={i} className="mx-10">
+                            <Card className="w-md h-60 shrink-0 border-border backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300">
+                                <CardHeader className="flex flex-row items-center gap-6 mb-4">
+                                    <integration.icon className="w-14 h-14 text-red-500" />
+                                    <CardTitle className="text-2xl font-semibold">
+                                        {integration.name}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="text-gray-400 text-lg leading-relaxed space-y-2">
+                                    {renderTextWithCode(integration.content)}
+                                </CardContent>
+                            </Card>
+                        </MarqueeItem>
+                    ))}
+                </MarqueeContent>
             </Marquee>
-        </div>
+        </section>
     );
 }
